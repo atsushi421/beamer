@@ -35,6 +35,7 @@
             "name": "ptex2pdf (ja)",
             "tools": [
                 "ptex2pdf (uplatex)",
+                "ptex2pdf (uplatex)"
             ]
         }
     ],
