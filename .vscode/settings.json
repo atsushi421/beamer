@@ -1,0 +1,135 @@
+{
+    // -------------------- LaTeX Workshop --------------------
+    // 使用パッケージのコマンドや環境の補完を有効にする
+    "latex-workshop.intellisense.package.enabled": true,
+    // 生成ファイルを削除するときに対象とするファイル
+    "latex-workshop.latex.clean.fileTypes": [
+        "*.aux",
+        "*.bbl",
+        "*.blg",
+        "*.idx",
+        "*.ind",
+        "*.lof",
+        "*.lot",
+        "*.out",
+        "*.toc",
+        "*.acn",
+        "*.acr",
+        "*.alg",
+        "*.glg",
+        "*.glo",
+        "*.gls",
+        "*.ist",
+        "*.fls",
+        "*.log",
+        "*.fdb_latexmk",
+        "*.snm",
+        "*.nav",
+        "*.dvi",
+        "*.synctex.gz"
+    ],
+    "latex-workshop.latex.autoClean.run": "onBuilt",
+    // ビルドのレシピ
+    "latex-workshop.latex.recipes": [
+        {
+            "name": "ptex2pdf (ja)",
+            "tools": [
+                "ptex2pdf (uplatex)",
+            ]
+        }
+    ],
+    // ビルドのレシピに使われるパーツ
+    "latex-workshop.latex.tools": [
+        {
+            "name": "ptex2pdf",
+            "command": "ptex2pdf",
+            "args": [
+                "-l",
+                "-ot",
+                "-kanji=utf8 -synctex=1",
+                "%DOC%"
+            ]
+        },
+        {
+            "name": "ptex2pdf (uplatex)",
+            "command": "ptex2pdf",
+            "args": [
+                "-l",
+                "-u",
+                "-ot",
+                "-kanji=utf8 -synctex=1",
+                "%DOC%"
+            ]
+        },
+    ],
+    "terminal.integrated.shell.windows": "C:\\Program Files\\Git\\bin\\bash.exe",
+    "workbench.editorAssociations": {
+        "*.ipynb": "jupyter-notebook",
+        "*.py": "default"
+    },
+    "editor.minimap.enabled": true,
+    "editor.renderWhitespace": "all",
+    "files.eol": "\r\n",
+    "explorer.confirmDelete": false,
+    "notebook.cellToolbarLocation": {
+        "default": "right",
+        "jupyter-notebook": "left"
+    },
+    "cSpell.customDictionaries": {
+        "custom-dictionary-user": {
+            "name": "custom-dictionary-user",
+            "path": "~/.cspell/custom-dictionary-user.txt",
+            "addWords": true,
+            "scope": "user"
+        }
+    },
+    "files.insertFinalNewline": true,
+    "python.linting.flake8Enabled": true,
+    "editor.codeActionsOnSave": {
+        "source.organizeImports": true
+    },
+    "python.linting.mypyEnabled": true,
+    "grammarly.config.documentDomain": "academic",
+    "grammarly.config.suggestions.InformalPronounsAcademic": true,
+    "grammarly.patterns": [
+        "**/*.txt",
+        "**/*.tex",
+        "**/*.md"
+    ],
+    "terminal.integrated.profiles.windows": {
+        "PowerShell": {
+            "source": "PowerShell",
+            "icon": "terminal-powershell"
+        },
+        "Command Prompt": {
+            "path": [
+                "${env:windir}\\Sysnative\\cmd.exe",
+                "${env:windir}\\System32\\cmd.exe"
+            ],
+            "args": [],
+            "icon": "terminal-cmd"
+        },
+        "Git Bash": {
+            "source": "Git Bash"
+        },
+        "Ubuntu-20.04 (WSL)": {
+            "path": "C:\\WINDOWS\\System32\\wsl.exe",
+            "args": [
+                "-d",
+                "Ubuntu-20.04"
+            ]
+        }
+    },
+    "terminal.integrated.defaultProfile.windows": "Ubuntu-20.04 (WSL)",
+    "python.analysis.extraPaths": [
+        "C:\\Users\\atsushi\\AppData\\Local\\Programs\\Python\\Python39\\lib\\site-packages\\"
+    ],
+    "diffEditor.renderSideBySide": false,
+    "python.linting.flake8Args": [
+        "--max-line-length=100"
+    ],
+    "window.zoomLevel": -1,
+    "files.trimTrailingWhitespace": true,
+    "files.trimFinalNewlines": true,
+    "editor.formatOnSave": true,
+}
