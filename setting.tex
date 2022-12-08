@@ -1,0 +1,61 @@
+\documentclass[aspectratio=169, dvipdfmx, 14pt]{beamer}% dvipdfmxしたい
+
+%%%%% Packages %%%%%
+\usepackage{bxdpx-beamer}% dvipdfmxなので必要
+\usepackage{pxjahyper}% 日本語で'しおり'したい
+\usepackage{tikz}
+\usepackage{tcolorbox}
+\usetikzlibrary{shapes}
+\usepackage{xcolor}
+
+
+%%%%% Settings %%%%%
+\usetheme{metropolis}
+\metroset{sectionpage=progressbar}
+\metroset{block=fill}
+
+%%%%% Original Command %%%%%
+\newcommand{\hlcap}[3][yellow]{\tikz[baseline=(x.base)]{\node[rectangle,rounded corners,fill=#1!10](x){$#2$} node[below of=x, color=#1]{#3};}}
+\newcommand{\subt}[1]{\vspace{-2mm}{\fontsize{10pt}{0cm}\selectfont \textcolor{lightgray}{#1}}\vspace{-1mm}}
+
+\tcbset{
+    framebox/.style={
+            enhanced,
+            boxsep=0pt,       % 箱の上下左右の余白を指定
+            colback=white,
+            boxrule=1pt,
+            colframe=#1
+        },
+    framebox/.default=red
+}
+\newcommand{\upbln}[3]{
+    \tcboxmath[
+        framebox=#2,
+        top=0.5ex,bottom=0.5ex,    % 箱の上下の余白を指定
+        left=0.5ex,right=0.5ex,    % 箱の左右の余白を指定
+        overlay={
+                \node[
+                    above,
+                    rectangle callout,                         % nodeを吹き出しの形に
+                    callout absolute pointer={(frame.north)},  % 吹き出しの先端を絶対的に指定
+                    fill=#2!20
+                ] at ([yshift=2ex]frame.north) {\footnotesize#3};
+            }
+    ]{#1}
+}
+\newcommand{\lwbln}[3]{
+    \tcboxmath[
+        framebox=#2,
+        top=0.5ex,bottom=0.5ex,    % 箱の上下の余白を指定
+        left=0.5ex,right=0.5ex,    % 箱の左右の余白を指定
+        overlay={
+                \node[
+                    below,
+                    rectangle callout,                         % nodeを吹き出しの形に
+                    callout absolute pointer={(frame.south)},  % 吹き出しの先端を絶対的に指定
+                    fill=#2!20
+                ] at ([yshift=-2ex]frame.south) {\footnotesize#3};
+            }
+    ]{#1}
+}
+\tcbuselibrary{theorems,skins}
