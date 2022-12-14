@@ -23,4 +23,26 @@
 			"\\end{block}"
 		]
 	},
+	"2column": {
+		"prefix": "2 column",
+		"body": [
+			"\\begin{columns}",
+			"\\begin{column}{0.5\\linewidth}",
+			"$1",
+			"\\end{column}",
+			"\\begin{column}{0.5\\linewidth}",
+			"$2",
+			"\\end{column}",
+			"\\end{columns}"
+		]
+	},
+	"image": {
+		"prefix": "image",
+		"body": [
+			"\\centering",
+			"\\adjustbox{max width=\\textwidth, max height=$1\\textheight}{",
+			"\\includegraphics{figure/$2}",
+			"}"
+		]
+	}
 }

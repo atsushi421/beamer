@@ -1,4 +1,4 @@
-\documentclass[aspectratio=169, dvipdfmx, 14pt]{beamer}% dvipdfmxしたい
+\documentclass[aspectratio=169, dvipdfmx, 14pt, compress]{beamer}% dvipdfmxしたい
 
 %%%%% Packages %%%%%
 \usepackage{bxdpx-beamer}% dvipdfmxなので必要
@@ -8,19 +8,22 @@
 \usetikzlibrary{shapes}
 \usepackage{xcolor}
 \usepackage[absolute,overlay]{textpos}
+\usepackage{adjustbox}
+\usepackage{caption}
 
 
 %%%%% Settings %%%%%
-\usetheme{metropolis}
-\metroset{sectionpage=progressbar}
+\usetheme[sectionpage=none, subsectionpage=progressbar]{metropolis}
 \metroset{block=fill}
 \setbeamerfont{frametitle}{size=\normalsize}
+\addtobeamertemplate{frametitle}{}{\vspace{-2em}}
 \definecolor{coolblack}{rgb}{0.0, 0.18, 0.39}
 \setbeamercolor{frametitle}{bg=coolblack,fg=white}
 \definecolor{lightgray}{rgb}{0.83, 0.83, 0.83}
 \setbeamercolor{progress bar}{bg=lightgray, fg=coolblack}
 \makeatletter
 \setlength{\metropolis@frametitle@padding}{1.4ex}% <- default 2.2 ex
+\setbeamersize{text margin left=15pt, text margin right=15pt}
 
 
 %%%%% Original Command %%%%%

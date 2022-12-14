@@ -277,3 +277,6 @@ TSWLatexianTemp*
 
 # New
 template.pdf
+main.pdf
+*.png
+*.pptx
