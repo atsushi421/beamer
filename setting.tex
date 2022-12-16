@@ -1,4 +1,4 @@
-\documentclass[aspectratio=169, dvipdfmx, 14pt, compress]{beamer}% dvipdfmxしたい
+\documentclass[aspectratio=169, dvipdfmx, 12pt, compress]{beamer}% dvipdfmxしたい
 
 %%%%% Packages %%%%%
 \usepackage{bxdpx-beamer}% dvipdfmxなので必要
@@ -15,8 +15,9 @@
 %%%%% Settings %%%%%
 \usetheme[sectionpage=none, subsectionpage=progressbar]{metropolis}
 \metroset{block=fill}
-\setbeamerfont{frametitle}{size=\normalsize}
-\addtobeamertemplate{frametitle}{}{\vspace{-2em}}
+\setbeamerfont{frametitle}{size=\large}
+\addtobeamertemplate{frametitle}{}{\vspace{-1em}}
+\addtobeamertemplate{footline}{}{\vspace{-1em}}
 \definecolor{coolblack}{rgb}{0.0, 0.18, 0.39}
 \setbeamercolor{frametitle}{bg=coolblack,fg=white}
 \definecolor{lightgray}{rgb}{0.83, 0.83, 0.83}
@@ -29,6 +30,8 @@
 %%%%% Original Command %%%%%
 \newcommand{\subt}[1]{\vspace{-2mm}{\fontsize{10pt}{0cm}\selectfont \textcolor{lightgray}{#1}}\vspace{-1mm}}
 \newcommand{\lastpage}[0]{\begin{frame}\begin{textblock*}{1.0\linewidth}(0pt, 50pt)\includegraphics[scale=0.512]{\beamerDir/master_figure/last.pdf}\end{textblock*}\end{frame}}
+\newcommand{\todo}[1]{\alert{\LARGE\textbf{TODO:} #1}}
+\newcommand{\headerheight}[0]{8mm}
 
 \tcbset{
     framebox/.style={

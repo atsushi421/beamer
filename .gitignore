@@ -277,6 +277,7 @@ TSWLatexianTemp*
 
 # New
 template.pdf
-main.pdf
+paper/**/*.pdf
 *.png
 *.pptx
+*.pptm

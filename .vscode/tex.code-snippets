@@ -24,7 +24,7 @@
 		]
 	},
 	"2column": {
-		"prefix": "2 column",
+		"prefix": "2column",
 		"body": [
 			"\\begin{columns}",
 			"\\begin{column}{0.5\\linewidth}",
@@ -40,9 +40,23 @@
 		"prefix": "image",
 		"body": [
 			"\\centering",
-			"\\adjustbox{max width=\\textwidth, max height=$1\\textheight}{",
+			"\\adjustbox{max width=\\textwidth}{",
 			"\\includegraphics{figure/$2}",
 			"}"
+		]
+	},
+	"elist": {
+		"prefix": "easylist",
+		"body": [
+			"\\begin{easylist}[itemize]",
+			"@ $1",
+			"\\end{easylist}"
+		]
+	},
+	"addhh": {
+		"prefix": "add header height",
+		"body": [
+			"\\vspace{\\headerheight}"
 		]
 	}
 }
