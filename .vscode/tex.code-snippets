@@ -58,5 +58,24 @@
 		"body": [
 			"\\vspace{\\headerheight}"
 		]
+	},
+	"row": {
+		"prefix": "table row",
+		"body": [
+			"$$1$ & $2 \\\\\\\\\\hline"
+		]
+	},
+	"notation": {
+		"prefix": "notation table",
+		"body": [
+			"\\begin{table}[tb]",
+			"\\adjustbox{max width=\\textwidth}{",
+			"\\centering\\begin{tabular}{|c|l|} \\hline",
+			"\\textbf{Notations}      & \\textbf{Descriptions} \\\\\\\\\\hline",
+			"$1",
+			"\\end{tabular}",
+			"}",
+			"\\end{table}"
+		]
 	}
 }

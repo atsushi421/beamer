@@ -13,7 +13,7 @@
 
 
 %%%%% Settings %%%%%
-\usetheme[sectionpage=none, subsectionpage=progressbar]{metropolis}
+\usetheme[sectionpage=progressbar, subsectionpage=progressbar]{metropolis}
 \metroset{block=fill}
 \setbeamerfont{frametitle}{size=\large}
 \addtobeamertemplate{frametitle}{}{\vspace{-1em}}
@@ -25,6 +25,7 @@
 \makeatletter
 \setlength{\metropolis@frametitle@padding}{1.4ex}% <- default 2.2 ex
 \setbeamersize{text margin left=15pt, text margin right=15pt}
+\usefonttheme{professionalfonts}
 
 
 %%%%% Original Command %%%%%
@@ -32,6 +33,7 @@
 \newcommand{\lastpage}[0]{\begin{frame}\begin{textblock*}{1.0\linewidth}(0pt, 50pt)\includegraphics[scale=0.512]{\beamerDir/master_figure/last.pdf}\end{textblock*}\end{frame}}
 \newcommand{\todo}[1]{\alert{\LARGE\textbf{TODO:} #1}}
 \newcommand{\headerheight}[0]{8mm}
+\newcommand{\tabml}[1]{\hspace{-2.1mm}\begin{tabular}{l} #1 \end{tabular}}
 
 \tcbset{
     framebox/.style={
