@@ -1,0 +1,90 @@
+\section{SYSTEM MODEL}
+\label{sec: system_model}
+
+
+\begin{frame}{}
+    以下では, 上記の説明から抽出したマルチスレッド エグゼキューターのリアルタイム関連の動作をカバーするスケジューリング モデルを紹介する．簡単にするために, wait\_set にアクセスまたは更新するスレッドによって発生するオーバーヘッドはゼロであると仮定する
+\end{frame}
+
+\begin{frame}{Notations1}
+    \begin{table}[tb]
+        \adjustbox{max width=\textwidth}{
+            \centering\begin{tabular}{|c|l|} \hline
+                \textbf{Notations}      & \textbf{Descriptions}                                                                          \\\hline
+                $C_i$                   & チェイン                                                                                       \\\hline
+                $m$                     & スレッド数                                                                                     \\\hline
+                $\Gamma $               & チェインのセット                                                                               \\\hline
+                $c_{i,j}$               & $C_i$の$j$番目のコールバック                                                                   \\\hline
+                $e_{i,j}$               & $c_{i,j}$のWCET                                                                                \\\hline
+                $E_i$                   & $C_i$内のコールバックのWCETの合計                                                              \\\hline
+                $D_i$                   & $C_i$のデッドライン                                                                            \\\hline
+                $T_i$                   & $C_i$の周期                                                                                    \\\hline
+                $U_i$                   & $C_i$の利用率                                                                                  \\\hline
+                $\mathcal{G}(c_{i,j}) $ & $c_{i,j}$が属すmutually exclusiveコールバックグループのインデックス                            \\\hline
+                $\theta_i$              & \tabml{$\mathcal{C}_{i}$ の各コールバックが属すmutually exclusiveコールバック グループの集合． \\ $\theta_{i}=\cup_{\forall c_{i, j} \in \mathcal{C}_{i}}\left\{\mathcal{G}\left(c_{i, j}\right)\right\}$} \\\hline
+            \end{tabular}
+        }
+    \end{table}
+\end{frame}
+
+\begin{frame}{Notation2}
+    \begin{table}[tb]
+        \adjustbox{max width=\textwidth}{
+            \centering\begin{tabular}{|c|l|} \hline
+                \textbf{Notations} & \textbf{Descriptions}                                        \\\hline
+                $J_{i}^{k}$        & $\mathcal{C}_{i}$ の $k$番目のインスタンス                   \\\hline
+                $c_{i, j}^{k}$     & $J_{i}^{k}$ に含まれる$c_{i, j}$ のコールバック インスタンス \\\hline
+            \end{tabular}
+        }
+    \end{table}
+\end{frame}
+
+\subsection{Workload Model}
+\label{ssec: workload_model}
+
+\begin{frame}{チェーンの定義}
+    \begin{itemize}
+        \item $m$ スレッド上のマルチスレッド エグゼキュータによってスケジュールされた一連の独立した処理チェーン (略してチェーンと呼ぶ) $\Gamma=\left\{\mathcal{C}_{1}, \mathcal{C}_{2}, \cdots, \mathcal{C}_{|\Gamma|}\right\}$ を検討する
+        \item 各スレッドは専用プロセッサに静的に展開されており，スレッドはいつでもプロセッサを使用できる
+        \item 各チェーン $\mathcal{C}_{i} \in \Gamma$ は, コールバック $\mathcal{C}_{i}=\left\{c_{i, 1}, c_{i, 2}, \cdots, c_{i,\left|\mathcal{C}_{i}\right|}\right\}$ の順序付けられたシーケンスで構成される．
+        \item $\mathcal{C}_{i}$ の最初のコールバック $c_{i, 1}$ (それぞれ, 最後のコールバック $c_{i,\left|\mathcal{C}_{i}\right|}$ ) は, $\mathcal{C}_{i}$ のソース コールバック (それぞれ, シンク コールバック) と呼ばれる
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item 各コールバック $c_{i, j}$ は最悪実行時間 (WCET) $e_{i, j}$ によって特徴付けられる．
+        \item コールバックは, 固有の相互に排他的なコールバック グループまたは再入可能なコールバック グループのいずれかに属している可能性がある．
+        \item コールバック $c_{i, j}$ が相互に排他的なコールバック グループに属していない場合, $c_{i, j}$ が再入可能なコールバック グループに属していることを意味する．
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item チェーン $\mathcal{C}_{i}$ は, チェーン インスタンスの無限シーケンスをリリースする．
+        \item $T_{i}$ の期間は, $\mathcal{C}_{i} \cdot \mathcal{C}_{i}$ の 2 つの連続するチェーン インスタンスのリリース時刻の間の最小間隔
+        \item 相対デッドライン $D_{i}$ があり, 時間 $r$ でリリースされた $\mathcal{C}_{i}$ の各チェーン インスタンスは, その絶対デッドライン $r+D_{i}$ までに終了する必要がある．
+        \item チェーンにはデッドラインが制限されている, つまり $D_{i} \leq T_{i}$ があると想定している．
+        \item $\mathcal{C}_{i}$ の使用率は $U_{i}=E_{i} / T_{i}$ である．
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item $J_{i}^{k}$ 内の連続する要素 $c_{i, j}^{k}$ と $c_{i, j+1}^{k}$ の各ペアについて, $c_{i, j}^{k}$ を $c_{i, j+1}^{k}$ の先行要素, $c_{i, j+1}^{k}$ を $c_{i, j}^{k}$ の後続要素と呼びます．
+        \item 非シンク コールバック インスタンス $c_{i, j}^{k}$ が実行を終了すると, 後続のインスタンスを呼び出すメッセージが生成される．
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{応答時間の定義}
+    \begin{itemize}
+        \item 応答時間 $R\left(J_{i}^{k}\right)$ は,  $J_{i}^{k}$ のリリース時刻と終了時間の間の時間間隔である．
+        \item チェーン $\mathcal{C}_{i}$ の最悪の場合の応答時間 $\mathcal{R}_{i}^{w c}$ は, そのすべてのインスタンスの中で最大の応答時間である．
+        \item チェーンは, そのすべてのインスタンスがデッドラインを満たしている場合 (つまり, $\mathcal{R}_{i}^{w c} \leq D_{i}$), スケジュール可能であると言われ, $\Gamma$ は, すべてのチェーンがスケジュール可能である場合 (つまり, $\forall i: \mathcal{R}_{i}^{w c} \leq D_{i}$), スケジュール可能であると言われます
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{本論文の目的}
+    このホワイト ペーパーの目的は, システム $\Gamma$ がマルチスレッド エグゼキュータでスケジュール可能かどうかを判断し, $\Gamma$ がスケジュール可能である場合, 各チェーン $\mathcal{C}_{i} \in \Gamma$ の $\mathcal{R}_{i}^{w c}$ の安全な上限を計算することである．
+    \todo{どういうこと？}
+\end{frame}
