@@ -110,5 +110,4 @@
     "window.zoomLevel": -1,
     "files.trimTrailingWhitespace": true,
     "files.trimFinalNewlines": true,
-    "editor.formatOnSave": true,
 }

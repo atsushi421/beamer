@@ -69,7 +69,7 @@
 		"prefix": "notation table",
 		"body": [
 			"\\begin{table}[tb]",
-			"\\adjustbox{max width=\\textwidth}{",
+			"\\adjustbox{max width=\\textwidth, max height=\\textwidth}{",
 			"\\centering\\begin{tabular}{|c|l|} \\hline",
 			"\\textbf{Notations}      & \\textbf{Descriptions} \\\\\\\\\\hline",
 			"$1",
