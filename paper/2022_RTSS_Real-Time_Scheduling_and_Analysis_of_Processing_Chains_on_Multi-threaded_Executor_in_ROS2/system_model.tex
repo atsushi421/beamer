@@ -86,7 +86,7 @@
     \begin{itemize}
         \item 応答時間 $R\left(J_{i}^{k}\right)$ は,  $J_{i}^{k}$ のリリース時刻と終了時間の間の時間間隔である
         \item チェーン $\mathcal{C}_{i}$ の最悪応答時間 $\mathcal{R}_{i}^{w c}$ は, そのすべてのインスタンスの中で最大の応答時間である
-        \item チェーンは, そのすべてのインスタンスがデッドラインを満たしている場合 (つまり, $\mathcal{R}_{i}^{w c} \leq D_{i}$), スケジュール可能であると言われ, $\Gamma$ は, すべてのチェーンがスケジュール可能である場合 (つまり, $\forall i: \mathcal{R}_{i}^{w c} \leq D_{i}$), スケジュール可能であると言われる
+        \item チェーンは, そのすべてのインスタンスがデッドラインを満たしている場合 (つまり, $\mathcal{R}_{i}^{w c} \leq D_{i}$), スケジュール可能であると言われ, $\Gamma$ は, すべてのチェーンがスケジュール可能である場合 (つまり, $\forall i: \mathcal{R}_{i}^{w c} \leq D_{i}$), スケジュール可能であると呼ぶ
     \end{itemize}
 \end{frame}
 
@@ -111,7 +111,7 @@
 
 
     \begin{itemize}
-        \item コールバックインスタンス$c_{i, j}$は、それがリリースされ、その前のインスタンスがすべて実行中か終了しているとき、\al{pending} と言われる
+        \item コールバックインスタンス$c_{i, j}$は、それがリリースされ、その前のインスタンスがすべて実行中か終了しているとき、\al{pending} と呼ぶ
         \item pendingコールバックインスタンス$c_{i, j}$は、\al{ready} または\al{P-blocked} のいずれかである
               \begin{itemize}
                   \item  $c_{i, j}$ がmutually exclusive コールバックグループに属している場合, $c_{i, j}$ と同じコールバックグループ内のコールバックのインスタンス ($c_{i, j}$ 自体を含む) が実行されていない場合, $c_{i, j}$ はreadyである
@@ -122,28 +122,24 @@
     \end{itemize}
 \end{frame}
 
-\begin{frame}{pending}
-    \assume{pending}{a}
-\end{frame}
-
 \begin{frame}{$\Omega$}
     エグゼキュータは, 実行のために選択できるreadyコールバックインスタンスを記録するreadyセット $\Omega$ を持っている
 \end{frame}
 
 \begin{frame}{Eligible}
     \begin{itemize}
-        \item $\Omega$ 内のreadyのコールバックインスタンス $c_{i, j}$ が選択されるための前提条件は, \al{eligible}であることである
-        \item mutually exclusive コールバックグループに属す $\Omega$ 内のコールバックインスタンス $c_{i, j}$ は, $c_{i, j}$ と同じコールバックグループ内のコールバックのインスタンスが実行されていない場合にeligibleであり, それ以外の場合は \al{R-blocked}される
-        \item 対照的に, reentrant コールバックグループに属すコールバックインスタンスは, $\Omega$ にある場合は常にeligibleである
-        \item つまり, いつでも, $\Omega$ のコールバックインスタンスはeligibleであるか, R-blockedされている
+        \item $\Omega$ 内の ready のコールバックインスタンス $c_{i, j}$ が選択されるための前提条件は, \al{eligible} であることである
+        \item mutually exclusive コールバックグループに属す $\Omega$ 内のコールバックインスタンス $c_{i, j}$ は, $c_{i, j}$ と同じコールバックグループ内のコールバックのインスタンスが実行されていない場合に eligible であり, それ以外の場合は \al{R-blocked} される
+        \item 対照的に, reentrant コールバックグループに属すコールバックインスタンスは, $\Omega$ にある場合は常に eligible である
+        \item つまり, いつでも, $\Omega$ のコールバックインスタンスは eligible であるか, R-blockedされている
         \item つまり, mutually exclusive同じコールバックグループ内のコールバックのコールバックインスタンスは, 並列に実行されることは決してない
     \end{itemize}
 \end{frame}
 
 \begin{frame}{updated, poling point}
     \begin{itemize}
-        \item コールバックインスタンスは, readyでもすぐには $\Omega$ に追加されない
-        \item 代わりに, $\Omega$ にeligibleなコールバックがなく, スレッドがアイドル状態の場合にのみ, readyのコールバックインスタンスを $\Omega$ に追加できる
+        \item コールバックインスタンスは, ready でもすぐには $\Omega$ に追加されない
+        \item 代わりに, $\Omega$ に eligible なコールバックがなく, スレッドがアイドル状態の場合にのみ, ready のコールバックインスタンスを $\Omega$ に追加できる
         \item $\Omega$ は, $\Omega$ に新しい要素が追加された時点で更新されると言う
         \item さらに, $\Omega$ が更新されると, まず $\Omega$ が $\emptyset$ に設定され, その後, 現在すべての ready コールバックインスタンスが $\Omega$ に追加される
         \item 特に, $\Omega$ が更新される時点を\al{ポーリングポイント}として定義する
@@ -154,7 +150,6 @@
 \begin{frame}{}
     \begin{itemize}
         \item $\Omega$ 内のeligibleなコールバックインスタンスは、$m$ 個のスレッドによって1つずつ選択され、ノンプリエンプティブに実行される
-        \item 各スレッドは専用のプロセッサ上に静的に配置されていると仮定していることを思い出してください
         \item スレッドとは、処理リソースの観点から、対応するプロセッサを表すものである
     \end{itemize}
 \end{frame}
@@ -170,9 +165,9 @@
 
 \begin{frame}{}
     \begin{itemize}
-        \item $c_{i, j}$ が P-blockedまたは R-blockedのいずれかである場合, ブロックされていると言われる
-        \item $J_{i}^{k}$ のコールバックインスタンスが実行されているときにチェーンインスタンス $J_{i}^{k}$ が実行されており, $J_{i}^{k}$ のコールバックインスタンスがブロックされているときに $J_{i}^{k}$ がブロックされていると言う
-        \item スレッドは, 何らかのコールバックインスタンスが実行されているときはビジーであると言われ, コールバックインスタンスが実行されていないときはアイドル状態であると言われる
+        \item $c_{i, j}$ が P-blockedまたは R-blockedのいずれかである場合, \al{ブロックされている}と呼ぶ
+        \item $J_{i}^{k}$ のコールバックインスタンスが実行されているときにチェーンインスタンス $J_{i}^{k}$ が実行されており, $J_{i}^{k}$ のコールバックインスタンスがブロックされているときに \al{$J_{i}^{k}$ がブロックされている}と言う
+        \item スレッドは, 何らかのコールバックインスタンスが実行されているときは\al{ビジーである}と呼び, コールバックインスタンスが実行されていないときは\al{アイドル状態}と呼ぶ
     \end{itemize}
 \end{frame}
 
@@ -185,7 +180,7 @@
 
     \end{itemize}
     \centering
-    \adjustbox{max width=\textwidth, max height=0.4\textheight}{
+    \adjustbox{max width=\textwidth, max height=0.35\textheight}{
         \includegraphics{figure/system_model_example_a_b.png}
     }
 \end{frame}
@@ -205,7 +200,7 @@
 \begin{frame}{R-blocked 例}
     \vspace{\headerheight}
     \centering
-    \adjustbox{max width=\textwidth, max height=0.8\textwidth}{
+    \adjustbox{max width=\textwidth, max height=0.7\textwidth}{
         \includegraphics{figure/system_model_example_sup1.jpg}
     }
 \end{frame}
@@ -215,14 +210,4 @@
         \item $c_{2,2}^{1}$ によって R-block される $c_{3,2}^{1}$ は eligible でないため， $\Omega$ から削除される
         \item $c_{3,2}^{1}$ が $\Omega$ から削除された後, $(2,4)$ の時間間隔中に P-blocked され, $\Omega$ に追加できない
     \end{itemize}
-\end{frame}
-
-\begin{frame}{}
-    \begin{theorem}[test]
-        addtobeamertemplate
-    \end{theorem}
-
-    \begin{lemma}[ada]
-        adaf
-    \end{lemma}
 \end{frame}

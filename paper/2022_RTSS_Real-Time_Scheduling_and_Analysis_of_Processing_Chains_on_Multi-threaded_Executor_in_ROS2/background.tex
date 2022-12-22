@@ -29,10 +29,10 @@
 
 \begin{frame}{Executor}
     \begin{itemize}
-        \item ROS 2 クライアント ライブラリのエグゼキュータは, OS プロセス内のノードのコールバックの実行を調整する
+        \item ROS 2 クライアントライブラリのエグゼキュータは, OS プロセス内のノードのコールバックの実行を調整する
         \item ROS 2 には 以下の 2 つの組み込みエグゼキュータが用意されている
               \begin{itemize}
-                  \item 1 つのスレッドでコールバックを実行するシングルスレッド エグゼキュータ
+                  \item 1 つのスレッドでコールバックを実行するシングルスレッドエグゼキュータ
                   \item コールバックの処理を複数のスレッドに分散するマルチスレッドエグゼキュータ
               \end{itemize}
         \item この論文では, マルチスレッドエグゼキュータ上で実行される処理チェーンとして実装されるアプリケーションに焦点を当てる
@@ -53,7 +53,7 @@
 \begin{frame}{処理チェーン}
     \begin{itemize}
         \item チェーンの各頂点は, コールバックを表す
-        \item 処理チェーンは, 特定のイベント (通常は, システム タイマーによってアクティベーションされる時間イベント) によってトリガされ, 複数のエグゼキューターにまたがる
+        \item 処理チェーンは, 特定のイベント (通常は, システムタイマによってアクティベーションされる時間イベント) によってトリガされ, 複数のエグゼキューターにまたがる
     \end{itemize}
 
     \centering
@@ -99,11 +99,11 @@
 \label{ssec: scheduling_of_multi_threaded_executor}
 
 \begin{frame}{}
-    以下では, ROS 2 のマルチスレッドエグゼキュータでのスケジューリング動作を紹介する
-\end{frame}
+    \begin{itemize}
+        \item 以下では, ROS 2 のマルチスレッドエグゼキュータでのスケジューリング動作を紹介する
+        \item 本論文の内容は, ROS 2 Foxy Fitzroy に基づいている
+    \end{itemize}
 
-\begin{frame}{}
-    \assume{本論文の内容は, ROS 2 Foxy Fitzroy に基づいている}
 \end{frame}
 
 \begin{frame}{コールバック}
@@ -120,7 +120,7 @@
         \setlength{\linewidth}{0.98\columnwidth}
         \begin{itemize}
             \item コールバックはタイマー, サブスクライバ, サービス, クライアントの 4 つのタイプに分類される
-            \item 4 つのコールバック タイプの優先順位は, タイマー $\succ$ サブスクライバ $\succ$ サービス $\succ$ クライアント
+            \item 4 つのコールバックタイプの優先順位は, タイマー $\succ$ サブスクライバ $\succ$ サービス $\succ$ クライアント
                   \begin{itemize}
                       \item $\succ$: より高い優先度を持つ
                   \end{itemize}
@@ -133,7 +133,7 @@
 \end{frame}
 
 \begin{frame}{}
-    \assume{簡単にするために, この論文の残りの部分にはコールバック タイプに関する情報は含めない}
+    \assume{簡単にするために, この論文の残りの部分にはコールバックタイプに関する情報は含めない}
 \end{frame}
 
 
@@ -159,9 +159,7 @@
         \begin{column}{0.6\linewidth}
             \begin{itemize}
                 \item スレッドは, wait\_set にアクセスする前に, mutually exclusiveロック \al{low\_priority\_wait\_mutex} を保持する必要がある
-                      \begin{itemize}
-                          \item wait\_set にアクセスして変更できるのは, 一度に 1 つのスレッドだけ
-                      \end{itemize}
+                \item すなわち wait\_set にアクセスして変更できるのは, 一度に 1 つのスレッドだけ
                 \item それ以外の場合, スレッドはブロックされ, ロックがリリースされるのを待つ
             \end{itemize}
         \end{column}
@@ -203,16 +201,15 @@
 \end{frame}
 
 \begin{frame}{yield\_before\_execute}
-    \setlength{\linewidth}{0.98\columnwidth}
     \begin{itemize}
         \item yield\_before\_execute の構成が false に設定されている場合, スレッドは選択されたコールバックの実行をすぐに開始する
         \item それ以外の場合, yield\_before\_execute が true に設定されている場合, スレッドは, 再度スケジュールされるまでプロセッサを OS に譲る
+        \item この作業では, 既定の構成 yield\_before\_execute $=$ false を考慮する
     \end{itemize}
 
     \assume{
-
+        \setlength{\linewidth}{0.98\columnwidth}
         \begin{itemize}
-            \item この作業では, 既定の構成 yield\_before\_execute $=$ false を考慮する
             \item コールバックは最も早く到着したメッセージでノンプリエンプティブに実行される
                   \begin{itemize}
                       \item ROS 2 では, 各コールバックには到着したメッセージをバッファリングするためのキューがあり, その深さはユーザによって指定される

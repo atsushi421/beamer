@@ -1,0 +1,127 @@
+\section{RESPONSE TIME ANALYSIS}
+\label{sec: responce_time_analysys}
+
+
+\begin{frame}{}
+    \begin{itemize}
+        \item 明示的に指定されていない限り, 以下では, インデックスを削除し, $J$ を使用して分析対象のチェーンを示す
+        \item $J$ は時刻 $r$ でリリースされ, 時刻 $f$ で終了する
+        \item したがって, $r_{i}$ でリリースされ, $s_{i}$ で実行を開始する $J$ の $i^{t h}$ コールバック インスタンスを $c_{i}$ で表す
+        \item $\mathcal{C}$ 以外のすべてのチェーンは干渉チェーンと見なされる
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item 私たちの意図は, $J$ が干渉チェーンからのワークロードによって遅れたコールバック インスタンスでデッドラインに間に合わない可能性があるかどうかを判断することである
+        \item この観点から, 時間間隔 $\left[r, \min \left\{s_{|\mathcal{C}|}, r+D\right\}\right)$ を $J$ の問題ウィンドウとして定義し, 問題ウィンドウ中の $J$ のコールバック インスタンスの実行に焦点を当てる
+        \item より具体的には, $J$ の各コールバック インスタンス $c_{i}$ を $r+D$ までのリリース時刻で検討し, チェーンの干渉によって遅延する可能性のある時間の長さを分析する
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item 一般性を失うことなく, $s_{i}>$ の場合は $s_{i}=r+D$, $r_{i}>r+D$ の場合は $r_{i}=r+D$ とする
+        \item さらに,  $J$ のデッドラインよりも早いデッドラインを持つすべてのチェーン インスタンスがスケジュール可能であると仮定する (この仮定はセクション V の後半で削除される)
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item 以下では, 最初に, $R(J)$ を各干渉チェーン $\mathcal{C}_{k}$ に関連する $\mathcal{Q}_{k}$ の値に制限する問題を要約する手法を開発する
+        \item $J$ .次に, 各 $\mathcal{C}_{k}$ の $\mathcal{Q}_{k}$ をバインドする
+        \item 最後に, 上記の結果を組み合わせて, スケジューリング可能性と応答時間の分析を実行するアルゴリズムを開発する
+    \end{itemize}
+\end{frame}
+
+
+\subsection{preparation}
+\label{ssec: preparation}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item 従来の優先度駆動型スケジューラ (固定優先度プリエンプティブ スケジューリングなど) では, 優先度の高い他のタスクによってのみタスクを遅らせることができる
+        \item ただし, これは ROS 2 には当てはまりません
+        \item コールバック インスタンスはバッチでスケジュールされ, 各コールバック インスタンスはプリエンプティブに実行されないため, 干渉するチェーンが $J$ のコールバック インスタンスの実行に干渉する可能性がある
+        \item 以下では, 最初に, $J$ でのコールバック インスタンスの実行を遅らせる可能性のある干渉チェーンからのワークロードを特定する
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item  $r+D$ より前のデッドラインを持つすべてのチェーン インスタンスはスケジュール可能であると想定されるため, 明らかに, 同じ干渉チェーンの最大 1 つのコールバック インスタンスが $[r, r+D)$ でいつでも実行される
+        \item したがって, 干渉チェーン $\mathcal{C}_{k}$ のすべてのコールバック インスタンスは, $\left[r_{i}, s_{i}\right)$ 中に順次実行する必要がある
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Sub-interfering sequence}
+    \begin{definition}[Sub-interfering sequence]
+        $\mathcal{C}_{k}$ から $c_{i}$ へのサブ干渉シーケンス「$\mathcal{S}_{k, i}=\left\langle e_{k, a}^{\prime}, e_{k, b}, \cdots\right\rangle$ は、が $\left[r_{i}, s_{i}\right)$ の間に実行された $\mathcal{C}_{k}$ のコールバックインスタンスの実行時間シーケンス
+        ここで、$e_{k, a}^{\prime}$ はコールバック・インスタンス $c_{k, a}$ が $\left[r_{i}, s_{i}\right)$ の間に実行された時間の長さを表す。
+    \end{definition}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item 特に, $r_{i}=s_{i}$ の場合は $\mathcal{S}_{k, i}=\langle 0\rangle$ を定義する
+        \item 同様に, $\mathcal{S}_{k}=\left\{\mathcal{S}_{k, 1}, \mathcal{S}_{k, 2}, \cdots, \mathcal{S}_{k,|\mathcal{C}|}\right\}$ は, $\mathcal{C}_{k}$ から $J$ への干渉シーケンスを示す
+        \item これは, $J$ の各コールバック インスタンスへの $\mathcal{C}_{k}$ のサブ干渉シーケンスの和集合によって特徴付けられる
+        \item たとえば, 図 3.(c) の $\mathcal{C}_{1}$ から $c_{3,2}^{1}$ へのサブ干渉シーケンスは $\langle 1,1\rangle$ であり, 値は $[2,4)$ の $c_{1,1}^{1}$ と $c_{1,2}^{1}$ の部分的な実行時間に対応する
+        \item $\mathcal{C}_{k}$ から $J$ への干渉作業は, 次のように定義される
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Interfering work}
+    \begin{definition}[Interfering work]
+        ある干渉鎖 $\mathcal{C}_{k}$ から $J$ への Interfering work $\mathcal{I}_{k}$ は、$J$ の問題ウィンドウの間、$J$ のコールバックインスタンスが実行されていないときに $\mathcal{C}_{k}$ が実行した時間の合計、すなわち $\mathcal{S}_{k}$ の全値の合計である。
+    \end{definition}
+\end{frame}
+
+\begin{frame}{}
+    \todo{}
+\end{frame}
+
+\begin{frame}{Lemma1}
+    \begin{lemma}[]
+        $c_{i}$ がブロックされていない場合, すべての $m$ スレッドは $\left[r_{i}, s_{i}\right)$ の任意の時点でビジーである
+    \end{lemma}
+\end{frame}
+
+
+
+\setbeamercolor{BlueBox}{fg=white, bg=coolblack!60}
+
+
+\begin{frame}{Lemma1 証明1}
+    \begin{itemize}
+        \item 補題を矛盾によって証明する
+        \item $c_{i}$ が $t$ でブロックされておらず, $t \in\left[r_{i}, s_{i}\right)$ で $t$ でアイドル状態のスレッドがあるとする
+        \item この場合、$t$ において $\Omega$ に他の eligible なコールバックインスタンスが存在してはならない（さもなければ、アイドルスレッドにスケジューリングされる）
+    \end{itemize}
+
+        \vspace{3mm}
+    \begin{beamercolorbox}[wd=\textwidth, sep=0pt, rounded=true]{BlueBox}
+            - mutually exclusive コールバックグループに属す $\Omega$ 内のコールバックインスタンス $c_{i, j}$ は, $c_{i, j}$ と同じコールバックグループ内のコールバックのインスタンスが実行されていない場合に eligible であり, それ以外の場合は R-blocked される \\
+            - 対照的に, reentrant コールバックグループに属すコールバックインスタンスは, $\Omega$ にある場合は常に eligible である
+    \end{beamercolorbox}
+\end{frame}
+
+\begin{frame}{Lemma1 証明2}
+\begin{itemize}
+    \item $c_{i}$ の以前のインスタンスはすべて $r$ で終了し, $c_{i}$ はブロックされていないため, $c_{i}$ は $t$ で ready である必要がある
+    \item したがって, $\Omega$ を更新しなければならず, $c_{i}$ は $\Omega$ に追加される必要がある
+
+        \vspace{3mm}
+    \begin{beamercolorbox}[wd=\textwidth, sep=0pt, rounded=true]{BlueBox}
+        $\Omega$ に eligible なコールバックがなく, スレッドがアイドル状態の場合にのみ, ready のコールバックインスタンスを $\Omega$ に追加できる
+    \end{beamercolorbox}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Lemma 証明3}
+\begin{itemize}
+    \item セクションIII-B によると, $\Omega$ のコールバックインスタンスはブロックされているか, eligibleである
+    \item そして, $c_{i}$ は, 仮定によってブロックされないので、eligible でなければならず，アイドルスレッドにスケジュールされなければならない
+    \item これは仮定と矛盾する $\square$
+\end{itemize}
+\end{frame}
