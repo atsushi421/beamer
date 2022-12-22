@@ -26,14 +26,75 @@
 \setlength{\metropolis@frametitle@padding}{1.4ex}% <- default 2.2 ex
 \setbeamersize{text margin left=15pt, text margin right=15pt}
 \usefonttheme{professionalfonts}
+\definecolor{cobalt}{rgb}{0.0, 0.28, 0.67}
+% Change standard block width
+\addtobeamertemplate{block begin}{%
+    \centering
+    \begin{columns}\begin{column}{0.9\textwidth}
+        \centering
+        }{}
+        \addtobeamertemplate{block end}{}{\end{column}\end{columns}}
+% Change alert block width
+\addtobeamertemplate{block alerted begin}{%
+    \centering
+    \begin{columns}\begin{column}{0.9\textwidth}
+        \centering
+        }{}
+        \addtobeamertemplate{block alerted end}{}{\end{column}\end{columns}}
+% Change example block width
+\addtobeamertemplate{block example begin}{%
+    \centering
+    \begin{columns}\begin{column}{0.9\textwidth}
+        \centering
+        }{}
+        \addtobeamertemplate{block example end}{}{\end{column}\end{columns}}
+% Itemize color
+\setbeamertemplate{itemize item}{\color{black}\scriptsize$\blacksquare$}
+\setbeamertemplate{itemize subitem}{\color{black}\scriptsize$-$}
+% Assumption color
+\setbeamercolor{block title example}{fg=black!80,bg=cobalt!35}
+\setbeamercolor{block body example}{fg=black,bg=cobalt!15}
+% Definition
+\BeforeBeginEnvironment{definition}{
+    \setbeamercolor{block title}{use=alerted text, bg=alerted text.fg!70,fg=white}
+    \setbeamercolor{block body}{use=alerted text, bg=alerted text.fg!20}
+}
+\AfterEndEnvironment{definition}{% return to default
+    \setbeamercolor{block title}{use=structure,fg=structure.fg,bg=structure.fg!20!bg}
+    \setbeamercolor{block body}{parent=normal text,use=block title,bg=block title.bg!50!bg, fg=black}
+}
+% Theorem
+\definecolor{seagreen}{rgb}{0.18, 0.55, 0.34}
+\setbeamertemplate{theorems}[numbered]
+\BeforeBeginEnvironment{theorem}{
+    \setbeamercolor{block title}{fg=black!80,bg=seagreen!40}
+    \setbeamercolor{block body}{fg=black,bg=seagreen!15}
+}
+\AfterEndEnvironment{theorem}{% return to default
+    \setbeamercolor{block title}{use=structure,fg=structure.fg,bg=structure.fg!20!bg}
+    \setbeamercolor{block body}{parent=normal text,use=block title,bg=block title.bg!50!bg, fg=black}
+}
+% Lemma
+\undef{\lemma}
+\newtheorem{lemma}{\translate{Lemma}}
+\BeforeBeginEnvironment{lemma}{
+    \setbeamercolor{block title}{fg=black!80,bg=seagreen!20}
+    \setbeamercolor{block body}{fg=black,bg=seagreen!10}
+}
+\AfterEndEnvironment{lemma}{% return to default
+    \setbeamercolor{block title}{use=structure,fg=structure.fg!80,bg=structure.fg!20!bg}
+    \setbeamercolor{block body}{parent=normal text,use=block title,bg=block title.bg!50!bg, fg=black}
+}
 
 
 %%%%% Original Command %%%%%
 \newcommand{\subt}[1]{\vspace{-2mm}{\fontsize{10pt}{0cm}\selectfont \textcolor{lightgray}{#1}}\vspace{-1mm}}
 \newcommand{\lastpage}[0]{\begin{frame}\begin{textblock*}{1.0\linewidth}(0pt, 50pt)\includegraphics[scale=0.512]{\beamerDir/master_figure/last.pdf}\end{textblock*}\end{frame}}
-\newcommand{\todo}[1]{\alert{\LARGE\textbf{TODO:} #1}}
+\newcommand{\todo}[1]{\al{\LARGE\textbf{TODO:} #1}}
 \newcommand{\headerheight}[0]{8mm}
 \newcommand{\tabml}[1]{\hspace{-2.1mm}\begin{tabular}{l} #1 \end{tabular}}
+\newcommand{\al}[1]{\alert{#1}}
+\newcommand{\assume}[1]{\begin{exampleblock}{Assumption}#1\end{exampleblock}}% Assumption
 
 \tcbset{
     framebox/.style={
