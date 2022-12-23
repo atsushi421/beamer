@@ -10,48 +10,64 @@
 \usepackage[absolute,overlay]{textpos}
 \usepackage{adjustbox}
 \usepackage{caption}
+\usepackage{ifthen}
 
 
 %%%%% Settings %%%%%
 \usetheme[sectionpage=progressbar, subsectionpage=progressbar]{metropolis}
+% block style
 \metroset{block=fill}
+% space between line
+\renewcommand{\baselinestretch}{1.3}
+% space between item
+\newlength{\wideitemsep}
+\setlength{\wideitemsep}{0.9\itemsep}
+% \addtolength{\wideitemsep}{1.0pt} <- more space
+\let\olditem\item
+\renewcommand{\item}{\setlength{\itemsep}{\wideitemsep}\olditem}
+% frame title
+\definecolor{coolblack}{rgb}{0.0, 0.18, 0.39}
+\setbeamercolor{frametitle}{bg=coolblack!90,fg=white}
 \setbeamerfont{frametitle}{size=\large}
 \addtobeamertemplate{frametitle}{}{\vspace{-1em}}
-\addtobeamertemplate{footline}{}{\vspace{-1em}}
-\definecolor{coolblack}{rgb}{0.0, 0.18, 0.39}
-\setbeamercolor{frametitle}{bg=coolblack,fg=white}
-\definecolor{lightgray}{rgb}{0.83, 0.83, 0.83}
-\setbeamercolor{progress bar}{bg=lightgray, fg=coolblack}
 \makeatletter
 \setlength{\metropolis@frametitle@padding}{1.4ex}% <- default 2.2 ex
+% foot line
+\addtobeamertemplate{footline}{}{\vspace{-1em}}
+% normal text color
+\setbeamercolor{normal text}{fg=black!80}
+% progress bar
+\definecolor{lightgray}{rgb}{0.83, 0.83, 0.83}
+\setbeamercolor{progress bar}{bg=lightgray, fg=coolblack}
 \setbeamersize{text margin left=15pt, text margin right=15pt}
+% equation font
 \usefonttheme{professionalfonts}
-\definecolor{cobalt}{rgb}{0.0, 0.28, 0.67}
 % Change standard block width
 \addtobeamertemplate{block begin}{%
     \centering
     \begin{columns}\begin{column}{0.9\textwidth}
-        \centering
-        }{}
-        \addtobeamertemplate{block end}{}{\end{column}\end{columns}}
+            \centering
+            }{}
+            \addtobeamertemplate{block end}{}{\end{column}\end{columns}}
 % Change alert block width
 \addtobeamertemplate{block alerted begin}{%
     \centering
     \begin{columns}\begin{column}{0.9\textwidth}
-        \centering
-        }{}
-        \addtobeamertemplate{block alerted end}{}{\end{column}\end{columns}}
+            \centering
+            }{}
+            \addtobeamertemplate{block alerted end}{}{\end{column}\end{columns}}
 % Change example block width
 \addtobeamertemplate{block example begin}{%
     \centering
     \begin{columns}\begin{column}{0.9\textwidth}
-        \centering
-        }{}
-        \addtobeamertemplate{block example end}{}{\end{column}\end{columns}}
+            \centering
+            }{}
+            \addtobeamertemplate{block example end}{}{\end{column}\end{columns}}
 % Itemize color
 \setbeamertemplate{itemize item}{\color{black}\scriptsize$\blacksquare$}
 \setbeamertemplate{itemize subitem}{\color{black}\scriptsize$-$}
 % Simplification  color
+\definecolor{cobalt}{rgb}{0.0, 0.28, 0.67}
 \setbeamercolor{block title example}{fg=black!80,bg=cobalt!35}
 \setbeamercolor{block body example}{fg=black,bg=cobalt!15}
 % Definition
@@ -91,11 +107,74 @@
 \newcommand{\subt}[1]{\vspace{-2mm}{\fontsize{10pt}{0cm}\selectfont \textcolor{lightgray}{#1}}\vspace{-1mm}}
 \newcommand{\lastpage}[0]{\begin{frame}\begin{textblock*}{1.0\linewidth}(0pt, 50pt)\includegraphics[scale=0.512]{\beamerDir/master_figure/last.pdf}\end{textblock*}\end{frame}}
 \newcommand{\todo}[1]{\al{\LARGE\textbf{TODO:} #1}}
-\newcommand{\headerheight}[0]{8mm}
+\newcommand{\headerheight}[0]{5mm}
+\newcommand{\footerheight}[0]{5mm}
+\newcommand{\slideheight}[0]{\textheight-\headerheight-\footerheight}
 \newcommand{\tabml}[1]{\hspace{-2.1mm}\begin{tabular}{l} #1 \end{tabular}}
 \newcommand{\al}[1]{\alert{#1}}
-\newcommand{\assume}[1]{\begin{exampleblock}{Simplification }#1\end{exampleblock}}% Assumption
+\newcommand{\argempty}[0]{}
+\newcommand{\onlyslide}[1]{
+    \vspace{\headerheight}
+    \begin{minipage}[c][\slideheight][c]{\textwidth}
+        #1
+    \end{minipage}
+}
+\newcommand{\onlyimage}[1]{
+    \onlyslide{
+        \centering
+        \begin{columns}
+            \begin{column}{\textwidth}
+                \centering
+                \adjustbox{max width=\textwidth, max height=\slideheight}{
+                    \includegraphics{#1}
+                }
+            \end{column}
+        \end{columns}
+    }
+}
+% fit image
+\newlength\fitimageht
+\newlength\fitotherht
+\newsavebox\fitimagebox
+\newcommand{\fitimage}[2]{%
+    \sbox\fitimagebox{%
+        \parbox{\textwidth}{%
+            #1\par
+        }%
+    }%
+    \settototalheight{\fitotherht}{%
+        \usebox\fitimagebox
+    }%
+    \setlength\fitimageht{\textheight}%
+    \addtolength\fitimageht{-\fitotherht-\headerheight-\footerheight-1\baselineskip}%
+    \vspace{\headerheight}
+    #1\par
+    \centering
+    \includegraphics[width=\textwidth,height=\fitimageht,keepaspectratio]{#2}
+}
+% Simplification
+\newcommand{\assume}[1]{
+    \begin{exampleblock}{Simplification }
+        #1
+    \end{exampleblock}
+}
+% Re-post
+\setbeamercolor{RepostBox}{fg=black!50, bg=coolblack!10}
+\newcommand{\repost}[1]{
+    \vspace{2mm}
+    \centering
+    \begin{columns}
+        \begin{column}{0.86\textwidth}
+            \begin{beamercolorbox}[wd=\textwidth, sep=2pt, rounded=true, shadow=true]{RepostBox}
+                \begin{tabular}{|p{0.95\textwidth}}
+                    {\fontsize{10pt}{10pt}#1}
+                \end{tabular}
+            \end{beamercolorbox}
+        \end{column}
+    \end{columns}
+}
 
+% equation ballon
 \tcbset{
     framebox/.style={
             enhanced,

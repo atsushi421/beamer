@@ -1,3 +1,5 @@
+% !TeX root = main.tex
+
 \section{SYSTEM MODEL}
 \label{sec: system_model}
 
@@ -7,24 +9,24 @@
 \end{frame}
 
 \begin{frame}{}
-\assume{簡単にするために, wait\_set にアクセスまたは更新するスレッドによって発生するオーバヘッドはゼロであると仮定する}
+    \assume{簡単にするために, wait\_set にアクセスまたは更新するスレッドによって発生するオーバヘッドはゼロであると仮定する}
 \end{frame}
 
 \begin{frame}{Notations1}
     \begin{table}[tb]
-        \adjustbox{max width=\textwidth}{
+        \adjustbox{max width=\textwidth, max height=\slideheight}{
             \centering\begin{tabular}{|c|l|} \hline
-                \textbf{Notations}      & \textbf{Descriptions}                                                                         \\\hline
-                $C_i$                   & チェイン                                                                                      \\\hline
-                $m$                     & スレッド数                                                                                    \\\hline
-                $\Gamma $               & チェインのセット                                                                              \\\hline
-                $c_{i,j}$               & $C_i$の$j$番目のコールバック                                                                  \\\hline
-                $e_{i,j}$               & $c_{i,j}$のWCET                                                                               \\\hline
-                $E_i$                   & $C_i$内のコールバックのWCETの合計                                                             \\\hline
-                $D_i$                   & $C_i$のデッドライン                                                                           \\\hline
-                $T_i$                   & $C_i$の周期                                                                                   \\\hline
-                $U_i$                   & $C_i$の利用率                                                                                 \\\hline
-                $\mathcal{G}(c_{i,j}) $ & $c_{i,j}$が属すmutually exclusiveコールバックグループのインデックス                           \\\hline
+                \textbf{Notations}      & \textbf{Descriptions}                                                                       \\\hline
+                $C_i$                   & チェイン                                                                                    \\\hline
+                $m$                     & スレッド数                                                                                  \\\hline
+                $\Gamma $               & チェインのセット                                                                            \\\hline
+                $c_{i,j}$               & $C_i$の$j$番目のコールバック                                                                \\\hline
+                $e_{i,j}$               & $c_{i,j}$のWCET                                                                             \\\hline
+                $E_i$                   & $C_i$内のコールバックのWCETの合計                                                           \\\hline
+                $D_i$                   & $C_i$のデッドライン                                                                         \\\hline
+                $T_i$                   & $C_i$の周期                                                                                 \\\hline
+                % $U_i$                   & $C_i$の利用率                                                                               \\\hline
+                % $\mathcal{G}(c_{i,j}) $ & $c_{i,j}$が属すmutually exclusiveコールバックグループのインデックス                         \\\hline
                 $\theta_i$              & \tabml{$\mathcal{C}_{i}$ の各コールバックが属すmutually exclusiveコールバックグループの集合 \\ $\theta_{i}=\cup_{\forall c_{i, j} \in \mathcal{C}_{i}}\left\{\mathcal{G}\left(c_{i, j}\right)\right\}$} \\\hline
             \end{tabular}
         }
@@ -51,7 +53,7 @@
     \begin{itemize}
         \item $m$ スレッド上のマルチスレッドエグゼキュータによってスケジュールされた一連の独立した処理チェーン (略してチェーンと呼ぶ) $\Gamma=\left\{\mathcal{C}_{1}, \mathcal{C}_{2}, \cdots, \mathcal{C}_{|\Gamma|}\right\}$ を検討する
 
-        \assume{各スレッドは専用プロセッサに静的に展開されており，スレッドはいつでもプロセッサを使用できる}
+              \assume{各スレッドは専用プロセッサに静的に展開されており，スレッドはいつでもプロセッサを使用できる}
 
         \item 各チェーン $\mathcal{C}_{i} \in \Gamma$ は, コールバック $\mathcal{C}_{i}=\left\{c_{i, 1}, c_{i, 2}, \cdots, c_{i,\left|\mathcal{C}_{i}\right|}\right\}$ の順序付けられたシーケンスで構成される
         \item $\mathcal{C}_{i}$ の最初のコールバック $c_{i, 1}$ (それぞれ, 最後のコールバック $c_{i,\left|\mathcal{C}_{i}\right|}$ ) は, $\mathcal{C}_{i}$ のソースコールバック (それぞれ, シンクコールバック) と呼ばれる
@@ -172,17 +174,15 @@
 \end{frame}
 
 \begin{frame}{例}
-    \begin{itemize}
-        \item $\mathcal{C}_{1}=\left\{c_{1,1}, c_{1,2}\right\}, \mathcal{C}_{2}=\left\{c_{2,1}, c_{2,2}\right\}$ と $\mathcal{C}_{3}=\left\{c_{3,1}, c_{3,2}, c_{3,3}, c_{3,4}\right\}$ の 2 つのスレッドでスケジュールされた 3 つのチェーンがある
-        \item 特に, $c_{2,2}$ と $c_{3,2}$ はmutually exclusive同じコールバックグループに属し, 他のコールバックはreentrant コールバックグループに属す
-        \item すべてのコールバックの優先度と WCET を図 3(b) に示す
-        \item 数字が小さいほど優先度が高くなる
+    \fitimage{
+        \begin{itemize}
+            \item $\mathcal{C}_{1}=\left\{c_{1,1}, c_{1,2}\right\}, \mathcal{C}_{2}=\left\{c_{2,1}, c_{2,2}\right\}$ と $\mathcal{C}_{3}=\left\{c_{3,1}, c_{3,2}, c_{3,3}, c_{3,4}\right\}$ の 2 つのスレッドでスケジュールされた 3 つのチェーンがある
+            \item 特に, $c_{2,2}$ と $c_{3,2}$ はmutually exclusive同じコールバックグループに属し, 他のコールバックはreentrant コールバックグループに属す
+            \item すべてのコールバックの優先度と WCET を図 3(b) に示す
+            \item 数字が小さいほど優先度が高くなる
 
-    \end{itemize}
-    \centering
-    \adjustbox{max width=\textwidth, max height=0.35\textheight}{
-        \includegraphics{figure/system_model_example_a_b.png}
-    }
+        \end{itemize}
+    }{figure/system_model_example_a_b.png}
 \end{frame}
 
 
@@ -198,11 +198,7 @@
 \end{frame}
 
 \begin{frame}{R-blocked 例}
-    \vspace{\headerheight}
-    \centering
-    \adjustbox{max width=\textwidth, max height=0.7\textwidth}{
-        \includegraphics{figure/system_model_example_sup1.jpg}
-    }
+    \onlyimage{figure/system_model_example_sup1.jpg}
 \end{frame}
 
 \begin{frame}{}

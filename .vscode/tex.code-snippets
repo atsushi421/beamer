@@ -52,12 +52,14 @@
 			"\\end{columns}"
 		]
 	},
-	"image": {
-		"prefix": "image",
+	"only_image": {
+		"prefix": "only image",
 		"body": [
+			"\\onlyslide{",
 			"\\centering",
-			"\\adjustbox{max width=\\textwidth, max height=\\textwidth}{",
+			"\\adjustbox{max width=\\textwidth, max height=\\slideheight}{",
 			"\\includegraphics{figure/$2}",
+			"}",
 			"}"
 		]
 	},
@@ -126,5 +128,9 @@
 			"$1",
 			"\\end{itemize}"
 		]
-	}
+	},
+	"root":{
+		"prefix": "root magic command",
+		"body": "% !TeX root = main.tex"
+	},
 }

@@ -1,3 +1,6 @@
+% !TeX root = main.tex
+
+
 \section{RESPONSE TIME ANALYSIS}
 \label{sec: responce_time_analysys}
 
@@ -55,10 +58,12 @@
 \end{frame}
 
 \begin{frame}{Sub-interfering sequence}
-    \begin{definition}[Sub-interfering sequence]
-        $\mathcal{C}_{k}$ から $c_{i}$ へのサブ干渉シーケンス「$\mathcal{S}_{k, i}=\left\langle e_{k, a}^{\prime}, e_{k, b}, \cdots\right\rangle$ は、が $\left[r_{i}, s_{i}\right)$ の間に実行された $\mathcal{C}_{k}$ のコールバックインスタンスの実行時間シーケンス
-        ここで、$e_{k, a}^{\prime}$ はコールバック・インスタンス $c_{k, a}$ が $\left[r_{i}, s_{i}\right)$ の間に実行された時間の長さを表す。
-    \end{definition}
+    \onlyslide{
+        \begin{definition}[Sub-interfering sequence]
+            $\mathcal{C}_{k}$ から $c_{i}$ へのサブ干渉シーケンス「$\mathcal{S}_{k, i}=\left\langle e_{k, a}^{\prime}, e_{k, b}, \cdots\right\rangle$ は、が $\left[r_{i}, s_{i}\right)$ の間に実行された $\mathcal{C}_{k}$ のコールバックインスタンスの実行時間シーケンス
+            ここで、$e_{k, a}^{\prime}$ はコールバック・インスタンス $c_{k, a}$ が $\left[r_{i}, s_{i}\right)$ の間に実行された時間の長さを表す。
+        \end{definition}
+    }
 \end{frame}
 
 \begin{frame}{}
@@ -89,7 +94,7 @@
 
 
 
-\setbeamercolor{BlueBox}{fg=white, bg=coolblack!60}
+\setbeamercolor{BlueBox}{fg=black!50, bg=coolblack!10}
 
 
 \begin{frame}{Lemma1 証明1}
@@ -99,29 +104,23 @@
         \item この場合、$t$ において $\Omega$ に他の eligible なコールバックインスタンスが存在してはならない（さもなければ、アイドルスレッドにスケジューリングされる）
     \end{itemize}
 
-        \vspace{3mm}
-    \begin{beamercolorbox}[wd=\textwidth, sep=0pt, rounded=true]{BlueBox}
-            - mutually exclusive コールバックグループに属す $\Omega$ 内のコールバックインスタンス $c_{i, j}$ は, $c_{i, j}$ と同じコールバックグループ内のコールバックのインスタンスが実行されていない場合に eligible であり, それ以外の場合は R-blocked される \\
-            - 対照的に, reentrant コールバックグループに属すコールバックインスタンスは, $\Omega$ にある場合は常に eligible である
-    \end{beamercolorbox}
+    \repost{mutually exclusive コールバックグループに属す $\Omega$ 内のコールバックインスタンス $c_{i, j}$ は, $c_{i, j}$ と同じコールバックグループ内のコールバックのインスタンスが実行されていない場合に eligible であり, それ以外の場合は R-blocked される}
+    \repost{対照的に, reentrant コールバックグループに属すコールバックインスタンスは, $\Omega$ にある場合は常に eligible である}
 \end{frame}
 
 \begin{frame}{Lemma1 証明2}
-\begin{itemize}
-    \item $c_{i}$ の以前のインスタンスはすべて $r$ で終了し, $c_{i}$ はブロックされていないため, $c_{i}$ は $t$ で ready である必要がある
-    \item したがって, $\Omega$ を更新しなければならず, $c_{i}$ は $\Omega$ に追加される必要がある
+    \begin{itemize}
+        \item $c_{i}$ はブロックされていないため, $c_{i}$ の以前のインスタンスはすべて $r$ で終了し, $c_{i}$ は $t$ で ready である必要がある
+        \item したがって, $\Omega$ を更新しなければならず, $c_{i}$ は $\Omega$ に追加される必要がある
 
-        \vspace{3mm}
-    \begin{beamercolorbox}[wd=\textwidth, sep=0pt, rounded=true]{BlueBox}
-        $\Omega$ に eligible なコールバックがなく, スレッドがアイドル状態の場合にのみ, ready のコールバックインスタンスを $\Omega$ に追加できる
-    \end{beamercolorbox}
-\end{itemize}
+              \repost{$\Omega$ に eligible なコールバックがなく, スレッドがアイドル状態の場合にのみ, ready のコールバックインスタンスを $\Omega$ に追加できる}
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Lemma 証明3}
-\begin{itemize}
-    \item セクションIII-B によると, $\Omega$ のコールバックインスタンスはブロックされているか, eligibleである
-    \item そして, $c_{i}$ は, 仮定によってブロックされないので、eligible でなければならず，アイドルスレッドにスケジュールされなければならない
-    \item これは仮定と矛盾する $\square$
-\end{itemize}
+    \begin{itemize}
+        \item セクションIII-B によると, $\Omega$ のコールバックインスタンスはブロックされているか, eligibleである
+        \item そして, $c_{i}$ は, 仮定によってブロックされないので、eligible でなければならず，アイドルスレッドにスケジュールされなければならない
+        \item これは仮定と矛盾する $\square$
+    \end{itemize}
 \end{frame}

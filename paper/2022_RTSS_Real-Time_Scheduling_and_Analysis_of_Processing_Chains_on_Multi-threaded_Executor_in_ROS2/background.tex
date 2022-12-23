@@ -1,4 +1,4 @@
-% !TeX root = maintex
+% !TeX root = main.tex
 
 
 \section{BACKGROUND}
@@ -9,12 +9,9 @@
 \label{ssec: ros2}
 
 \begin{frame}{ROS 2}
-    ROS 2 は, オペレーティング システム (OS) 上の複数の抽象化レイヤの統合実装
-
-    \centering
-    \adjustbox{max width=\textwidth, max height=0.7\textheight}{
-        \includegraphics{figure/ros2_system.png}
-    }
+    \fitimage{
+        ROS 2 は, オペレーティング システム (OS) 上の複数の抽象化レイヤの統合実装
+    }{figure/ros2_system.png}
 \end{frame}
 
 \begin{frame}{publish/subscribe model}
@@ -51,15 +48,12 @@
 \end{frame}
 
 \begin{frame}{処理チェーン}
-    \begin{itemize}
-        \item チェーンの各頂点は, コールバックを表す
-        \item 処理チェーンは, 特定のイベント (通常は, システムタイマによってアクティベーションされる時間イベント) によってトリガされ, 複数のエグゼキューターにまたがる
-    \end{itemize}
-
-    \centering
-    \adjustbox{max width=\textwidth, max height=0.5\textheight}{
-        \includegraphics{figure/multi_threaded_executor.png}
-    }
+    \fitimage{
+        \begin{itemize}
+            \item チェーンの各頂点は, コールバックを表す
+            \item 処理チェーンは, 特定のイベント (通常は, システムタイマによってアクティベーションされる時間イベント) によってトリガされ, 複数のエグゼキューターにまたがる
+        \end{itemize}
+    }{figure/multi_threaded_executor.png}
 \end{frame}
 
 \begin{frame}{本論文の分析の焦点}
@@ -145,11 +139,7 @@
             \end{block}
         \end{column}
         \begin{column}{0.45\textwidth}
-            \centering
-            \vspace{\headerheight}
-            \adjustbox{max width=\textwidth}{
-                \includegraphics{figure/thread_workflow.png}
-            }
+            \onlyimage{figure/thread_workflow.png}
         \end{column}
     \end{columns}
 \end{frame}
@@ -164,11 +154,7 @@
             \end{itemize}
         \end{column}
         \begin{column}{0.4\linewidth}
-            \centering
-            \vspace{\headerheight}
-            \adjustbox{max width=\textwidth}{
-                \includegraphics{figure/workflow1.jpg}
-            }
+            \onlyimage{figure/workflow1.jpg}
         \end{column}
     \end{columns}
 \end{frame}
@@ -184,20 +170,13 @@
 \end{frame}
 
 \begin{frame}{can\_be\_taken\_fromによるワークフロー}
-    \centering
-    \vspace{\headerheight}
-    \adjustbox{max width=\textwidth}{
-        \includegraphics{figure/workflow2.jpg}
-    }
+    \onlyimage{figure/workflow2.jpg}
 \end{frame}
 
 \begin{frame}{コールバック選択後}
-    コールバックが正常に選択されると, スレッドは low\_priority\_wait\_mutex をリリースし, wait\_set からコールバックを削除する
-
-    \centering
-    \adjustbox{max width=\textwidth}{
-        \includegraphics{figure/workflow3.jpg}
-    }
+    \fitimage{
+        コールバックが正常に選択されると, スレッドは low\_priority\_wait\_mutex をリリースし, wait\_set からコールバックを削除する
+    }{figure/workflow3.jpg}
 \end{frame}
 
 \begin{frame}{yield\_before\_execute}
@@ -220,16 +199,12 @@
 \end{frame}
 
 \begin{frame}{コールバックが選択できない場合}
-    \vspace{\headerheight}
-    \begin{itemize}
-        \item すべてのカテゴリがチェックされ, 実行するコールバックを選択できない場合, スレッドは, wait\_set をリセットし, wait\_set を更新する
-        \item can\_be\_taken\_from が true の場合にのみ, mutually exclusive コールバックグループからのコールバックを wait\_set に追加できる
-    \end{itemize}
-
-    \centering
-    \adjustbox{max width=\textwidth, max height=0.6\textheight}{
-        \includegraphics{figure/workflow4.jpg}
-    }
+    \fitimage{
+        \begin{itemize}
+            \item すべてのカテゴリがチェックされ, 実行するコールバックを選択できない場合, スレッドは, wait\_set をリセットし, wait\_set を更新する
+            \item can\_be\_taken\_from が true の場合にのみ, mutually exclusive コールバックグループからのコールバックを wait\_set に追加できる
+        \end{itemize}
+    }{figure/workflow4.jpg}
 \end{frame}
 
 \begin{frame}{コールバックをwait\_setに追加できない場合}
@@ -240,9 +215,5 @@
 \end{frame}
 
 \begin{frame}{コールバックをwait\_setに追加できない場合（ワークフロー）}
-    \centering
-    \vspace{\headerheight}
-    \adjustbox{max width=0.9\textwidth}{
-        \includegraphics{figure/workflow5.jpg}
-    }
+    \onlyimage{figure/workflow5.jpg}
 \end{frame}
