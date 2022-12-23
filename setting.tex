@@ -1,5 +1,7 @@
 \documentclass[aspectratio=169, dvipdfmx, 12pt, compress]{beamer}% dvipdfmxしたい
 
+
+
 %%%%% Packages %%%%%
 \usepackage{bxdpx-beamer}% dvipdfmxなので必要
 \usepackage{pxjahyper}% 日本語で'しおり'したい
@@ -25,6 +27,8 @@
 % \addtolength{\wideitemsep}{1.0pt} <- more space
 \let\olditem\item
 \renewcommand{\item}{\setlength{\itemsep}{\wideitemsep}\olditem}
+% image border color
+\renewcommand\fbox{\fcolorbox{black!20}{white}}
 % frame title
 \definecolor{coolblack}{rgb}{0.0, 0.18, 0.39}
 \setbeamercolor{frametitle}{bg=coolblack!90,fg=white}
@@ -107,26 +111,26 @@
 \newcommand{\subt}[1]{\vspace{-2mm}{\fontsize{10pt}{0cm}\selectfont \textcolor{lightgray}{#1}}\vspace{-1mm}}
 \newcommand{\lastpage}[0]{\begin{frame}\begin{textblock*}{1.0\linewidth}(0pt, 50pt)\includegraphics[scale=0.512]{\beamerDir/master_figure/last.pdf}\end{textblock*}\end{frame}}
 \newcommand{\todo}[1]{\al{\LARGE\textbf{TODO:} #1}}
-\newcommand{\headerheight}[0]{5mm}
+\newcommand{\headerheight}[0]{7mm}
 \newcommand{\footerheight}[0]{5mm}
 \newcommand{\slideheight}[0]{\textheight-\headerheight-\footerheight}
 \newcommand{\tabml}[1]{\hspace{-2.1mm}\begin{tabular}{l} #1 \end{tabular}}
 \newcommand{\al}[1]{\alert{#1}}
 \newcommand{\argempty}[0]{}
-\newcommand{\onlyslide}[1]{
+\newcommand{\full}[1]{
     \vspace{\headerheight}
     \begin{minipage}[c][\slideheight][c]{\textwidth}
         #1
     \end{minipage}
 }
-\newcommand{\onlyimage}[1]{
-    \onlyslide{
+\newcommand{\fullimage}[1]{
+    \full{
         \centering
         \begin{columns}
             \begin{column}{\textwidth}
                 \centering
                 \adjustbox{max width=\textwidth, max height=\slideheight}{
-                    \includegraphics{#1}
+                    \fbox{\includegraphics{#1}}
                 }
             \end{column}
         \end{columns}
@@ -150,11 +154,12 @@
     \vspace{\headerheight}
     #1\par
     \centering
-    \includegraphics[width=\textwidth,height=\fitimageht,keepaspectratio]{#2}
+    \fbox{\includegraphics[width=\textwidth,height=\fitimageht,keepaspectratio]{#2}}
 }
 % Simplification
 \newcommand{\assume}[1]{
-    \begin{exampleblock}{Simplification }
+    \begin{exampleblock}{Simplification}
+        \setlength{\linewidth}{0.98\columnwidth}
         #1
     \end{exampleblock}
 }

@@ -31,14 +31,6 @@
 			"\\end{alertblock}"
 		]
 	},
-	"e-block": {
-		"prefix": "example block",
-		"body": [
-			"\\begin{exampleblock}{$1}",
-			"$2",
-			"\\end{exampleblock}"
-		]
-	},
 	"2column": {
 		"prefix": "2column",
 		"body": [
@@ -61,20 +53,6 @@
 			"\\includegraphics{figure/$2}",
 			"}",
 			"}"
-		]
-	},
-	"elist": {
-		"prefix": "easylist",
-		"body": [
-			"\\begin{easylist}[itemize]",
-			"@ $1",
-			"\\end{easylist}"
-		]
-	},
-	"addhh": {
-		"prefix": "add header height",
-		"body": [
-			"\\vspace{\\headerheight}"
 		]
 	},
 	"row": {

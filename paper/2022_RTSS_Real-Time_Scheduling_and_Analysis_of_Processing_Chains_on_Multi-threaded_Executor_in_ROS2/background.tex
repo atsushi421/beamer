@@ -57,17 +57,13 @@
 \end{frame}
 
 \begin{frame}{本論文の分析の焦点}
-    \assume{
-        \setlength{\linewidth}{0.98\columnwidth}
-        \begin{itemize}
-            \item 本論文では単一のエグゼキューターのチェーンにバインドされた応答時間を計算することに注意を限定する
-            \item ただし，各エグゼキューターに対して導出された応答時間の境界を追加することにより, チェーンが複数のエグゼキューターにまたがる場合に拡張できる
-        \end{itemize}
-    }
-
-    \centering
-    \adjustbox{max width=\textwidth, max height=0.3\textheight}{
-        \includegraphics{figure/multi_threaded_executor.png}
+    \full{
+        \assume{
+            \begin{itemize}
+                \item 本論文では単一のエグゼキューターのチェーンにバインドされた応答時間を計算することに注意を限定する
+                \item ただし，各エグゼキューターに対して導出された応答時間の境界を追加することにより, チェーンが複数のエグゼキューターにまたがる場合に拡張できる
+            \end{itemize}
+        }
     }
 \end{frame}
 
@@ -134,12 +130,14 @@
 \begin{frame}{Multi-threaded Executorにおけるスレッドのワークフロー}
     \begin{columns}
         \begin{column}{0.55\textwidth}
-            \begin{block}{wait\_set}
-                エグゼキュータ内のすべてのスレッドは, 共通のセット wait\_set によって, 利用可能なメッセージを持つコールバックを記録する
-            \end{block}
+            \full{
+                \begin{block}{wait\_set}
+                    エグゼキュータ内のすべてのスレッドは, 共通のセット wait\_set によって, 利用可能なメッセージを持つコールバックを記録する
+                \end{block}
+            }
         \end{column}
         \begin{column}{0.45\textwidth}
-            \onlyimage{figure/thread_workflow.png}
+            \fullimage{figure/thread_workflow.png}
         \end{column}
     \end{columns}
 \end{frame}
@@ -154,7 +152,7 @@
             \end{itemize}
         \end{column}
         \begin{column}{0.4\linewidth}
-            \onlyimage{figure/workflow1.jpg}
+            \fullimage{figure/workflow1.jpg}
         \end{column}
     \end{columns}
 \end{frame}
@@ -170,7 +168,7 @@
 \end{frame}
 
 \begin{frame}{can\_be\_taken\_fromによるワークフロー}
-    \onlyimage{figure/workflow2.jpg}
+    \fullimage{figure/workflow2.jpg}
 \end{frame}
 
 \begin{frame}{コールバック選択後}
@@ -215,5 +213,5 @@
 \end{frame}
 
 \begin{frame}{コールバックをwait\_setに追加できない場合（ワークフロー）}
-    \onlyimage{figure/workflow5.jpg}
+    \fullimage{figure/workflow5.jpg}
 \end{frame}

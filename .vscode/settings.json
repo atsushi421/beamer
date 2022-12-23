@@ -32,6 +32,13 @@
     // ビルドのレシピ
     "latex-workshop.latex.recipes": [
         {
+            "name": "ptex2pdf (wsl)",
+            "tools": [
+                "ptex2pdf (wsl)",
+                "ptex2pdf (wsl)"
+            ]
+        },
+        {
             "name": "ptex2pdf (ja)",
             "tools": [
                 "ptex2pdf",
@@ -45,6 +52,7 @@
             "name": "ptex2pdf",
             "command": "ptex2pdf",
             "args": [
+                "-interaction=nonstopmode",
                 "-l",
                 "-ot",
                 "-kanji=utf8 -synctex=1",
@@ -52,14 +60,16 @@
             ]
         },
         {
-            "name": "ptex2pdf (uplatex)",
-            "command": "ptex2pdf",
+            "name": "ptex2pdf (wsl)",
+            "command": "wsl.exe",
             "args": [
+                "ptex2pdf",
+                "-interaction=nonstopmode",
                 "-l",
-                "-u",
                 "-ot",
-                "-kanji=utf8 -synctex=1",
-                "%DOC%"
+                "-kanji=utf8",
+                "-synctex=1",
+                "%DOCFILE%"
             ]
         },
     ],
