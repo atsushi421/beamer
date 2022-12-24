@@ -44,7 +44,7 @@
 \begin{frame}{}
     \begin{itemize}
         \item 従来の優先度駆動型スケジューラ (固定優先度プリエンプティブ スケジューリングなど) では, 優先度の高い他のタスクによってのみタスクを遅らせることができる
-        \item ただし, これは ROS 2 には当てはまりません
+        \item ただし, これは ROS 2 には当てはまらない
         \item コールバック インスタンスはバッチでスケジュールされ, 各コールバック インスタンスはプリエンプティブに実行されないため, 干渉するチェーンが $J$ のコールバック インスタンスの実行に干渉する可能性がある
         \item 以下では, 最初に, $J$ でのコールバック インスタンスの実行を遅らせる可能性のある干渉チェーンからのワークロードを特定する
     \end{itemize}
@@ -83,7 +83,36 @@
 \end{frame}
 
 \begin{frame}{}
-    \todo{}
+    \begin{itemize}
+        \item したがって, $\mathcal{I}_{k, i}$ を使用して, $\mathcal{C}_{k}$ から $c_{i}$ への干渉作業を示す．
+        \item これは, $\mathcal{S}_{k, i}$ のすべての値の合計である．
+        \item 明らかに, $\mathcal{I}_{k}=\sum_{i=1}^{|\mathcal{C}|} \mathcal{I}_{k, i}$ . $\left[r_{i}, s_{i}\right), c_{i}$ の間はリリースされるが, 実行されない．
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+    次に, $c_{i}$ の状態に応じて, $\mathcal{I}_{k, i}$ を 3 つのばらばらの部分に分割する．
+    \begin{itemize}
+        \item  $\mathcal{I}_{k, i}^{\mathcal{P}}$ : $c_{i}$ がブロックされている間に, $c_{i}$ と同じコールバックグループに属す $\mathcal{C}_{k}$ のコールバック インスタンスが実行された合計時間．
+
+        \item  $\mathcal{I}_{k, i}^{\mathcal{E}}$ : $c_{i}$ がブロックされている間に, $c_{i}$ とは異なるコールバックグループに属す $\mathcal{C}_{k}$ のコールバック インスタンスが実行された合計時間．
+
+        \item  $\mathcal{I}_{k, i}-\mathcal{I}_{k, i}^{\mathcal{P}}-\mathcal{I}_{k, i}^{\mathcal{E}}$ : $\mathcal{C}_{k}$ から $c_{i}$ への干渉作業 ($\mathcal{I}_{k, i}$ は $\mathcal{C}_{k}$ から $c_{i}$ への干渉作業)．
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item さらに, $\mathcal{I}_{k, i}^{\mathcal{B}}$ を使用して, $c_{i}$ がブロックされているかどうかに関係なく, $c_{i}$ と同じ相互に排他的なコールバックグループに属す $\mathcal{C}_{k}$ のコールバック インスタンスが $\left[r_{i}, s_{i}\right)$ 中に実行された合計時間を示す．
+        \item 明らかに, $\mathcal{I}_{k, i}^{\mathcal{P}} \leq$  $\mathcal{I}_{k, i}^{\mathcal{B}}$ .特に, $c_{i}$ が再入可能なコールバックグループに属している場合, 次の条件を満たす．
+
+              \begin{itemize}
+                  \item  $c_{i}$ はブロックできないため, $\mathcal{I}_{k, i}^{\mathcal{P}}=0$ および $\mathcal{I}_{k, i}^{\mathcal{E}}=0$ ．
+
+                  \item  $\mathcal{I}_{k, i}^{\mathcal{B}}=0$, $c_{i}$ と同じ相互に排他的なコールバックグループに属すコールバック インスタンスがないため．
+
+              \end{itemize}
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Lemma1}
@@ -117,10 +146,51 @@
     \end{itemize}
 \end{frame}
 
-\begin{frame}{Lemma 証明3}
+\begin{frame}{Lemma1 証明3}
     \begin{itemize}
         \item セクションIII-B によると, $\Omega$ のコールバックインスタンスはブロックされているか, eligibleである
         \item そして, $c_{i}$ は, 仮定によってブロックされないので、eligible でなければならず，アイドルスレッドにスケジュールされなければならない
         \item これは仮定と矛盾する $\square$
     \end{itemize}
 \end{frame}
+
+\begin{frame}{Lemma2}
+    \begin{lemma}[]
+        $\mathcal{Q}_{k}=\sum_{i=1}^{|\mathcal{C}|}\left(\mathcal{I}_{k, i}+(m-1) \mathcal{I}_{k, i}^{\mathcal{B}}-\mathcal{I}_{k, i}^{\mathcal{E}}\right)$ とすると，
+        $E+\frac{\sum_{\mathcal{C}_{k} \in \Gamma \backslash\{\mathcal{C}\}} \mathcal{Q}_{k}}{m} \leq D$ の場合，以下が成り立つ
+
+        \begin{equation*}
+            R(J) \leq E+\frac{\sum_{\mathcal{C}_{k} \in \Gamma \backslash\{\mathcal{C}\}} \mathcal{Q}_{k}}{m},
+        \end{equation*}
+    \end{lemma}
+\end{frame}
+
+\begin{frame}{Lemma2 証明}
+    \todo{}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item 補題 2 から, $J$ のスケジューリング可能性は, 各サブ干渉シーケンス $\mathcal{S}_{k, i}$ に関する $\mathcal{I}_{k, i}+(m-1) \mathcal{I}_{k, i}^{\mathcal{B}}-\mathcal{I}_{k, i}^{\mathcal{E}}$ の値によって実際に決定される．
+        \item プレゼンテーションの便宜上, この値を $\mathcal{S}_{k, i}$ の $\mathcal{Q}_{k}$ への寄与と呼び, 次のように定義する．
+
+              \begin{equation*}
+                  \Phi_{k, i}=\mathcal{I}_{k, i}+(m-1) \mathcal{I}_{k, i}^{\mathcal{B}}-\mathcal{I}_{k, i}^{\mathcal{E}}
+              \end{equation*}
+
+              したがって, $\mathcal{Q}_{k}=\sum_{i=1}^{|\mathcal{C}|} \Phi_{k, i}$ .
+    \end{itemize}
+\end{frame}
+
+
+\subsection{An upper bound of response time}
+\label{ssec: an_upper_bound_of_response_time}
+
+\begin{frame}{}
+\begin{itemize}
+    \item 補題 2 によると, $R(J)$ を上限にするには, $J$ の問題ウィンドウ内の各干渉チェーン $\mathcal{C}_{k}$ に関して $\mathcal{Q}_{k}$ を上限に制限する必要がある．
+    \item $\mathcal{Q}_{k}$ の単純な上限は, $\mathcal{I}_{k, i}^{\mathcal{E}}=0$ を考慮し, $\sum_{i=1}^{|\mathcal{C}|} \mathcal{I}_{k, i}$ と $\sum_{i=1}^{|\mathcal{C}|} \mathcal{I}_{k, i}^{\mathcal{B}}$ の上限を別々に検討することで取得できる．
+\end{itemize}
+\end{frame}
+
+\todo{}

@@ -16,21 +16,23 @@
     \begin{table}[tb]
         \adjustbox{max width=\textwidth, max height=\slideheight}{
             \centering\begin{tabular}{|c|l|} \hline
-                \textbf{Notations}      & \textbf{Descriptions}                                                                       \\\hline
-                $C_i$                   & チェイン                                                                                    \\\hline
-                $m$                     & スレッド数                                                                                  \\\hline
-                $\Gamma $               & チェインのセット                                                                            \\\hline
-                $c_{i,j}$               & $C_i$の$j$番目のコールバック                                                                \\\hline
-                $e_{i,j}$               & $c_{i,j}$のWCET                                                                             \\\hline
-                $E_i$                   & $C_i$内のコールバックのWCETの合計                                                           \\\hline
-                $D_i$                   & $C_i$のデッドライン                                                                         \\\hline
-                $T_i$                   & $C_i$の周期                                                                                 \\\hline
+                \textbf{Notations} & \textbf{Descriptions}                                                                       \\\hline
+                $C_i$              & チェイン                                                                                    \\\hline
+                $m$                & スレッド数                                                                                  \\\hline
+                $\Gamma $          & チェインのセット                                                                            \\\hline
+                $c_{i,j}$          & $C_i$の$j$番目のコールバック                                                                \\\hline
+                $e_{i,j}$          & $c_{i,j}$のWCET                                                                             \\\hline
+                $E_i$              & $C_i$内のコールバックのWCETの合計                                                           \\\hline
+                $D_i$              & $C_i$のデッドライン                                                                         \\\hline
+                $T_i$              & $C_i$の周期                                                                                 \\\hline
                 % $U_i$                   & $C_i$の利用率                                                                               \\\hline
                 % $\mathcal{G}(c_{i,j}) $ & $c_{i,j}$が属すmutually exclusiveコールバックグループのインデックス                         \\\hline
-                $\theta_i$              & \tabml{$\mathcal{C}_{i}$ の各コールバックが属すmutually exclusiveコールバックグループの集合 \\ $\theta_{i}=\cup_{\forall c_{i, j} \in \mathcal{C}_{i}}\left\{\mathcal{G}\left(c_{i, j}\right)\right\}$} \\\hline
+                $\theta_i$         & \tabml{$\mathcal{C}_{i}$ の各コールバックが属すmutually exclusiveコールバックグループの集合 \\ $\theta_{i}=\cup_{\forall c_{i, j} \in \mathcal{C}_{i}}\left\{\mathcal{G}\left(c_{i, j}\right)\right\}$} \\\hline
             \end{tabular}
         }
     \end{table}
+
+    \todo{}
 \end{frame}
 
 \begin{frame}{Notation2}
@@ -43,6 +45,8 @@
             \end{tabular}
         }
     \end{table}
+
+    \todo{}
 \end{frame}
 
 \subsection{Workload Model}
@@ -187,14 +191,12 @@
 
 
 \begin{frame}{}
-    \begin{itemize}
-        \item 上矢印は, チェーンインスタンスのリリース時刻を表す
-        \item 右の表は各ポーリングポイントでの $\Omega$ のコールバックインスタンスを示す
-    \end{itemize}
-    \centering
-    \adjustbox{max width=\textwidth, max height=0.6\textheight}{
-        \includegraphics{figure/system_model_example_c_d.png}
-    }
+    \fitimage{
+        \begin{itemize}
+            \item 上矢印は, チェーンインスタンスのリリース時刻を表す
+            \item 右の表は各ポーリングポイントでの $\Omega$ のコールバックインスタンスを示す
+        \end{itemize}
+    }{figure/system_model_example_c_d.png}
 \end{frame}
 
 \begin{frame}{R-blocked 例}
