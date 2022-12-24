@@ -2,23 +2,23 @@
 
 
 \section{RESPONSE TIME ANALYSIS}
-\label{sec: responce_time_analysys}
+\label{sec: responce_time_analysis}
 
 
 \begin{frame}{}
     \begin{itemize}
         \item 明示的に指定されていない限り, 以下では, インデックスを削除し, $J$ を使用して分析対象のチェーンを示す
         \item $J$ は時刻 $r$ でリリースされ, 時刻 $f$ で終了する
-        \item したがって, $r_{i}$ でリリースされ, $s_{i}$ で実行を開始する $J$ の $i^{t h}$ コールバック インスタンスを $c_{i}$ で表す
+        \item したがって, $r_{i}$ でリリースされ, $s_{i}$ で実行を開始する $J$ の $i^{t h}$ コールバックインスタンスを $c_{i}$ で表す
         \item $\mathcal{C}$ 以外のすべてのチェーンは干渉チェーンと見なされる
     \end{itemize}
 \end{frame}
 
 \begin{frame}{}
     \begin{itemize}
-        \item 私たちの意図は, $J$ が干渉チェーンからのワークロードによって遅れたコールバック インスタンスでデッドラインに間に合わない可能性があるかどうかを判断することである
-        \item この観点から, 時間間隔 $\left[r, \min \left\{s_{|\mathcal{C}|}, r+D\right\}\right)$ を $J$ の問題ウィンドウとして定義し, 問題ウィンドウ中の $J$ のコールバック インスタンスの実行に焦点を当てる
-        \item より具体的には, $J$ の各コールバック インスタンス $c_{i}$ を $r+D$ までのリリース時刻で検討し, チェーンの干渉によって遅延する可能性のある時間の長さを分析する
+        \item 私たちの意図は, $J$ が干渉チェーンからのワークロードによって遅れたコールバックインスタンスでデッドラインに間に合わない可能性があるかどうかを判断することである
+        \item この観点から, 時間間隔 $\left[r, \min \left\{s_{|\mathcal{C}|}, r+D\right\}\right)$ を $J$ の問題ウィンドウとして定義し, 問題ウィンドウ中の $J$ のコールバックインスタンスの実行に焦点を当てる
+        \item より具体的には, $J$ の各コールバックインスタンス $c_{i}$ を $r+D$ までのリリース時刻で検討し, チェーンの干渉によって遅延する可能性のある時間の長さを分析する
     \end{itemize}
 \end{frame}
 
@@ -32,7 +32,8 @@
 \begin{frame}{}
     \begin{itemize}
         \item 以下では, 最初に, $R(J)$ を各干渉チェーン $\mathcal{C}_{k}$ に関連する $\mathcal{Q}_{k}$ の値に制限する問題を要約する手法を開発する
-        \item $J$ .次に, 各 $\mathcal{C}_{k}$ の $\mathcal{Q}_{k}$ をバインドする
+        \item $J$
+        \item 次に, 各 $\mathcal{C}_{k}$ の $\mathcal{Q}_{k}$ をバインドする
         \item 最後に, 上記の結果を組み合わせて, スケジューリング可能性と応答時間の分析を実行するアルゴリズムを開発する
     \end{itemize}
 \end{frame}
@@ -45,23 +46,23 @@
     \begin{itemize}
         \item 従来の優先度駆動型スケジューラ (固定優先度プリエンプティブ スケジューリングなど) では, 優先度の高い他のタスクによってのみタスクを遅らせることができる
         \item ただし, これは ROS 2 には当てはまらない
-        \item コールバック インスタンスはバッチでスケジュールされ, 各コールバック インスタンスはプリエンプティブに実行されないため, 干渉するチェーンが $J$ のコールバック インスタンスの実行に干渉する可能性がある
-        \item 以下では, 最初に, $J$ でのコールバック インスタンスの実行を遅らせる可能性のある干渉チェーンからのワークロードを特定する
+        \item コールバックインスタンスはバッチでスケジュールされ, 各コールバックインスタンスはプリエンプティブに実行されないため, 干渉するチェーンが $J$ のコールバックインスタンスの実行に干渉する可能性がある
+        \item 以下では, 最初に, $J$ でのコールバックインスタンスの実行を遅らせる可能性のある干渉チェーンからのワークロードを特定する
     \end{itemize}
 \end{frame}
 
 \begin{frame}{}
     \begin{itemize}
-        \item  $r+D$ より前のデッドラインを持つすべてのチェーン インスタンスはスケジュール可能であると想定されるため, 明らかに, 同じ干渉チェーンの最大 1 つのコールバック インスタンスが $[r, r+D)$ でいつでも実行される
-        \item したがって, 干渉チェーン $\mathcal{C}_{k}$ のすべてのコールバック インスタンスは, $\left[r_{i}, s_{i}\right)$ 中に順次実行する必要がある
+        \item  $r+D$ より前のデッドラインを持つすべてのチェーン インスタンスはスケジュール可能であると想定されるため, 明らかに, 同じ干渉チェーンの最大 1 つのコールバックインスタンスが $[r, r+D)$ でいつでも実行される
+        \item したがって, 干渉チェーン $\mathcal{C}_{k}$ のすべてのコールバックインスタンスは, $\left[r_{i}, s_{i}\right)$ 中に順次実行する必要がある
     \end{itemize}
 \end{frame}
 
 \begin{frame}{Sub-interfering sequence}
     \full{
         \begin{definition}[Sub-interfering sequence]
-            $\mathcal{C}_{k}$ から $c_{i}$ へのサブ干渉シーケンス「$\mathcal{S}_{k, i}=\left\langle e_{k, a}^{\prime}, e_{k, b}, \cdots\right\rangle$ は、が $\left[r_{i}, s_{i}\right)$ の間に実行された $\mathcal{C}_{k}$ のコールバックインスタンスの実行時間シーケンス
-            ここで、$e_{k, a}^{\prime}$ はコールバック・インスタンス $c_{k, a}$ が $\left[r_{i}, s_{i}\right)$ の間に実行された時間の長さを表す。
+            $\mathcal{C}_{k}$ から $c_{i}$ へのサブ干渉シーケンス「$\mathcal{S}_{k, i}=\left\langle e_{k, a}^{\prime}, e_{k, b}, \cdots\right\rangle$ は，が $\left[r_{i}, s_{i}\right)$ の間に実行された $\mathcal{C}_{k}$ のコールバックインスタンスの実行時間シーケンス
+            ここで，$e_{k, a}^{\prime}$ はコールバック・インスタンス $c_{k, a}$ が $\left[r_{i}, s_{i}\right)$ の間に実行された時間の長さを表す.
         \end{definition}
     }
 \end{frame}
@@ -70,7 +71,7 @@
     \begin{itemize}
         \item 特に, $r_{i}=s_{i}$ の場合は $\mathcal{S}_{k, i}=\langle 0\rangle$ を定義する
         \item 同様に, $\mathcal{S}_{k}=\left\{\mathcal{S}_{k, 1}, \mathcal{S}_{k, 2}, \cdots, \mathcal{S}_{k,|\mathcal{C}|}\right\}$ は, $\mathcal{C}_{k}$ から $J$ への干渉シーケンスを示す
-        \item これは, $J$ の各コールバック インスタンスへの $\mathcal{C}_{k}$ のサブ干渉シーケンスの和集合によって特徴付けられる
+        \item これは, $J$ の各コールバックインスタンスへの $\mathcal{C}_{k}$ のサブ干渉シーケンスの和集合によって特徴付けられる
         \item たとえば, 図 3.(c) の $\mathcal{C}_{1}$ から $c_{3,2}^{1}$ へのサブ干渉シーケンスは $\langle 1,1\rangle$ であり, 値は $[2,4)$ の $c_{1,1}^{1}$ と $c_{1,2}^{1}$ の部分的な実行時間に対応する
         \item $\mathcal{C}_{k}$ から $J$ への干渉作業は, 次のように定義される
     \end{itemize}
@@ -78,7 +79,7 @@
 
 \begin{frame}{Interfering work}
     \begin{definition}[Interfering work]
-        ある干渉鎖 $\mathcal{C}_{k}$ から $J$ への Interfering work $\mathcal{I}_{k}$ は、$J$ の問題ウィンドウの間、$J$ のコールバックインスタンスが実行されていないときに $\mathcal{C}_{k}$ が実行した時間の合計、すなわち $\mathcal{S}_{k}$ の全値の合計である。
+        ある干渉鎖 $\mathcal{C}_{k}$ から $J$ への Interfering work $\mathcal{I}_{k}$ は，$J$ の問題ウィンドウの間，$J$ のコールバックインスタンスが実行されていないときに $\mathcal{C}_{k}$ が実行した時間の合計，すなわち $\mathcal{S}_{k}$ の全値の合計である.
     \end{definition}
 \end{frame}
 
@@ -86,16 +87,17 @@
     \begin{itemize}
         \item したがって, $\mathcal{I}_{k, i}$ を使用して, $\mathcal{C}_{k}$ から $c_{i}$ への干渉作業を示す．
         \item これは, $\mathcal{S}_{k, i}$ のすべての値の合計である．
-        \item 明らかに, $\mathcal{I}_{k}=\sum_{i=1}^{|\mathcal{C}|} \mathcal{I}_{k, i}$ . $\left[r_{i}, s_{i}\right), c_{i}$ の間はリリースされるが, 実行されない．
+        \item 明らかに, $\mathcal{I}_{k}=\sum_{i=1}^{|\mathcal{C}|} \mathcal{I}_{k, i}$
+        \item $\left[r_{i}, s_{i}\right), c_{i}$ の間はリリースされるが, 実行されない．
     \end{itemize}
 \end{frame}
 
 \begin{frame}{}
     次に, $c_{i}$ の状態に応じて, $\mathcal{I}_{k, i}$ を 3 つのばらばらの部分に分割する．
     \begin{itemize}
-        \item  $\mathcal{I}_{k, i}^{\mathcal{P}}$ : $c_{i}$ がブロックされている間に, $c_{i}$ と同じコールバックグループに属す $\mathcal{C}_{k}$ のコールバック インスタンスが実行された合計時間．
+        \item  $\mathcal{I}_{k, i}^{\mathcal{P}}$ : $c_{i}$ がブロックされている間に, $c_{i}$ と同じコールバックグループに属す $\mathcal{C}_{k}$ のコールバックインスタンスが実行された合計時間．
 
-        \item  $\mathcal{I}_{k, i}^{\mathcal{E}}$ : $c_{i}$ がブロックされている間に, $c_{i}$ とは異なるコールバックグループに属す $\mathcal{C}_{k}$ のコールバック インスタンスが実行された合計時間．
+        \item  $\mathcal{I}_{k, i}^{\mathcal{E}}$ : $c_{i}$ がブロックされている間に, $c_{i}$ とは異なるコールバックグループに属す $\mathcal{C}_{k}$ のコールバックインスタンスが実行された合計時間．
 
         \item  $\mathcal{I}_{k, i}-\mathcal{I}_{k, i}^{\mathcal{P}}-\mathcal{I}_{k, i}^{\mathcal{E}}$ : $\mathcal{C}_{k}$ から $c_{i}$ への干渉作業 ($\mathcal{I}_{k, i}$ は $\mathcal{C}_{k}$ から $c_{i}$ への干渉作業)．
     \end{itemize}
@@ -103,13 +105,14 @@
 
 \begin{frame}{}
     \begin{itemize}
-        \item さらに, $\mathcal{I}_{k, i}^{\mathcal{B}}$ を使用して, $c_{i}$ がブロックされているかどうかに関係なく, $c_{i}$ と同じ相互に排他的なコールバックグループに属す $\mathcal{C}_{k}$ のコールバック インスタンスが $\left[r_{i}, s_{i}\right)$ 中に実行された合計時間を示す．
-        \item 明らかに, $\mathcal{I}_{k, i}^{\mathcal{P}} \leq$  $\mathcal{I}_{k, i}^{\mathcal{B}}$ .特に, $c_{i}$ が再入可能なコールバックグループに属している場合, 次の条件を満たす．
+        \item さらに, $\mathcal{I}_{k, i}^{\mathcal{B}}$ を使用して, $c_{i}$ がブロックされているかどうかに関係なく, $c_{i}$ と同じ相互に排他的なコールバックグループに属す $\mathcal{C}_{k}$ のコールバックインスタンスが $\left[r_{i}, s_{i}\right)$ 中に実行された合計時間を示す．
+        \item 明らかに, $\mathcal{I}_{k, i}^{\mathcal{P}} \leq$  $\mathcal{I}_{k, i}^{\mathcal{B}}$
+        \item 特に, $c_{i}$ が再入可能なコールバックグループに属している場合, 次の条件を満たす．
 
               \begin{itemize}
                   \item  $c_{i}$ はブロックできないため, $\mathcal{I}_{k, i}^{\mathcal{P}}=0$ および $\mathcal{I}_{k, i}^{\mathcal{E}}=0$ ．
 
-                  \item  $\mathcal{I}_{k, i}^{\mathcal{B}}=0$, $c_{i}$ と同じ相互に排他的なコールバックグループに属すコールバック インスタンスがないため．
+                  \item  $\mathcal{I}_{k, i}^{\mathcal{B}}=0$, $c_{i}$ と同じ相互に排他的なコールバックグループに属すコールバックインスタンスがないため．
 
               \end{itemize}
     \end{itemize}
@@ -130,7 +133,7 @@
     \begin{itemize}
         \item 補題を矛盾によって証明する
         \item $c_{i}$ が $t$ でブロックされておらず, $t \in\left[r_{i}, s_{i}\right)$ で $t$ でアイドル状態のスレッドがあるとする
-        \item この場合、$t$ において $\Omega$ に他の eligible なコールバックインスタンスが存在してはならない（さもなければ、アイドルスレッドにスケジューリングされる）
+        \item この場合，$t$ において $\Omega$ に他の eligible なコールバックインスタンスが存在してはならない（さもなければ，アイドルスレッドにスケジューリングされる）
     \end{itemize}
 
     \repost{mutually exclusive コールバックグループに属す $\Omega$ 内のコールバックインスタンス $c_{i, j}$ は, $c_{i, j}$ と同じコールバックグループ内のコールバックのインスタンスが実行されていない場合に eligible であり, それ以外の場合は R-blocked される}
@@ -142,14 +145,14 @@
         \item $c_{i}$ はブロックされていないため, $c_{i}$ の以前のインスタンスはすべて $r$ で終了し, $c_{i}$ は $t$ で ready である必要がある
         \item したがって, $\Omega$ を更新しなければならず, $c_{i}$ は $\Omega$ に追加される必要がある
 
-              \repost{$\Omega$ に eligible なコールバックがなく, スレッドがアイドル状態の場合にのみ, ready のコールバックインスタンスを $\Omega$ に追加できる}
     \end{itemize}
+    \repost{$\Omega$ に eligible なコールバックがなく, スレッドがアイドル状態の場合にのみ, ready のコールバックインスタンスを $\Omega$ に追加できる}
 \end{frame}
 
 \begin{frame}{Lemma1 証明3}
     \begin{itemize}
         \item セクションIII-B によると, $\Omega$ のコールバックインスタンスはブロックされているか, eligibleである
-        \item そして, $c_{i}$ は, 仮定によってブロックされないので、eligible でなければならず，アイドルスレッドにスケジュールされなければならない
+        \item そして, $c_{i}$ は, 仮定によってブロックされないので，eligible でなければならず，アイドルスレッドにスケジュールされなければならない
         \item これは仮定と矛盾する $\square$
     \end{itemize}
 \end{frame}
@@ -174,12 +177,12 @@
         \item 補題 2 から, $J$ のスケジューリング可能性は, 各サブ干渉シーケンス $\mathcal{S}_{k, i}$ に関する $\mathcal{I}_{k, i}+(m-1) \mathcal{I}_{k, i}^{\mathcal{B}}-\mathcal{I}_{k, i}^{\mathcal{E}}$ の値によって実際に決定される．
         \item プレゼンテーションの便宜上, この値を $\mathcal{S}_{k, i}$ の $\mathcal{Q}_{k}$ への寄与と呼び, 次のように定義する．
 
+    \end{itemize}
               \begin{equation*}
                   \Phi_{k, i}=\mathcal{I}_{k, i}+(m-1) \mathcal{I}_{k, i}^{\mathcal{B}}-\mathcal{I}_{k, i}^{\mathcal{E}}
               \end{equation*}
 
               したがって, $\mathcal{Q}_{k}=\sum_{i=1}^{|\mathcal{C}|} \Phi_{k, i}$ .
-    \end{itemize}
 \end{frame}
 
 
@@ -197,19 +200,20 @@
     まず, $\sum_{i=1}^{|\mathcal{C}|} \mathcal{I}_{k, i}$, つまり $\mathcal{I}_{k}$ をバインドするために, 各干渉チェーン $\mathcal{C}_{k}$ が $J$ の問題ウィンドウで実行できる最大合計時間を計算できる．
 
     \begin{lemma}[]
-        長さ $L$ の $J$ の問題ウィンドウに入る時間ウィンドウで実行される可能性のある $\mathcal{C}_{k}$ のチェーン インスタンスの最大数 $n_{k}(L)$ は, $n_{k}(L)=$  $\left\lceil\frac{L-E_{k}}{T_{k}}\right\rceil+1$ によって上限が決まります．
+        長さ $L$ の $J$ の問題ウィンドウに入る時間ウィンドウで実行される可能性のある $\mathcal{C}_{k}$ のチェーン インスタンスの最大数 $n_{k}(L)$ は, $n_{k}(L)=$  $\left\lceil\frac{L-E_{k}}{T_{k}}\right\rceil+1$ によって上限が決まる．
     \end{lemma}
 \end{frame}
 
 \begin{frame}{Lemma3 証明}
     \begin{itemize}
-        \item 補題 3 の証明は, [21], 固定優先度スケジューリングの下での従来の順次タスク モデルの応答時間分析で一般的に使用されるため, ここでは省略する．直感的には, $\mathcal{C}_{k}$ のチェーン インスタンス全体を含めるための最小の長さは $E_{k}$ であり, 残りの長さの $L-E_{k}$ には最大で $\left\lceil\frac{L-E_{k}}{T_{k}}\right\rceil$ チェーン インスタンスを含めることができる．
+        \item 補題 3 の証明は, [21], 固定優先度スケジューリングの下での従来の順次タスク モデルの応答時間分析で一般的に使用されるため, ここでは省略する
+        \item 直感的には, $\mathcal{C}_{k}$ のチェーン インスタンス全体を含めるための最小の長さは $E_{k}$ であり, 残りの長さの $L-E_{k}$ には最大で $\left\lceil\frac{L-E_{k}}{T_{k}}\right\rceil$ チェーン インスタンスを含めることができる．
     \end{itemize}
 \end{frame}
 
 \begin{frame}{Lemma4}
     \begin{lemma}[]
-        長さ $L$ の $J$ の問題ウィンドウに入る時間ウィンドウで $\mathcal{C}_{k}$ が実行される可能性のある合計時間は, $L \leq E_{k}$ の場合は $L$ によって上限が決まり, それ以外の場合は $W_{k}(L)$ によって上限が決まります．
+        長さ $L$ の $J$ の問題ウィンドウに入る時間ウィンドウで $\mathcal{C}_{k}$ が実行される可能性のある合計時間は, $L \leq E_{k}$ の場合は $L$ によって上限が決まり, それ以外の場合は $W_{k}(L)$ によって上限が決まる．
 
         \begin{equation*}
             W_{k}(L)=\left(n_{k}(L)-1\right) E_{k}+\min \left\{\left(L-E_{k}\right) \bmod T_{k}, E_{k}\right\} .
@@ -227,7 +231,8 @@
 
 \begin{frame}{Theorem 1}
     \begin{theorem}[]
-        $L+e_{|\mathcal{C}|} \leq D$ の場合, $R(J)$ の上限は $L+e_{|\mathcal{C}|}$ である．ここで, $L$ は次の条件を満たす最小数である．
+        $L+e_{|\mathcal{C}|} \leq D$ の場合, $R(J)$ の上限は $L+e_{|\mathcal{C}|}$ である
+        ここで, $L$ は次の条件を満たす最小数である．
 
         $L=E-e_{|\mathcal{C}|}+\frac{\sum_{\mathcal{C}_{k} \in \Gamma \backslash\{\mathcal{C}\}}\left(W_{k}(L)+n_{k}(L)(m-1) \sum_{\forall j: \mathcal{G}\left(c_{k, j}\right) \in \theta_{k} \cap \theta} e_{k, j}\right)}{m}$ .
     \end{theorem}
@@ -239,18 +244,24 @@
 
 \begin{frame}{}
     \begin{itemize}
-        \item 直観的に, 定理 1 の境界は非常に悲観的である可能性がある．悲観論は, 主に 2 つの側面から生じます．まず, $J$ 内の各コールバック インスタンスへのサブ干渉シーケンスが重複しないようにする必要がある．したがって, $J$ の一部のコールバックと同じ相互に排他的なグループに属すすべてのコールバック インスタンスが $\sum_{i=1}^{|\mathcal{C}|} \mathcal{I}_{k, i}^{\mathcal{B}}$ に寄与できるわけではない．
+        \item 直観的に, 定理 1 の境界は非常に悲観的である可能性がある
+        \item 悲観論は, 主に 2 つの側面から生じる
+        \item まず, $J$ 内の各コールバックインスタンスへのサブ干渉シーケンスが重複しないようにする必要がある
+        \item したがって, $J$ の一部のコールバックと同じ相互に排他的なグループに属すすべてのコールバックインスタンスが $\sum_{i=1}^{|\mathcal{C}|} \mathcal{I}_{k, i}^{\mathcal{B}}$ に寄与できるわけではない．
     \end{itemize}
 \end{frame}
 
 \begin{frame}{}
     \begin{itemize}
-        \item たとえば, $\mathcal{C}_{k}$ の 3 つの連続するコールバック インスタンス $c_{k, j}^{p}, c_{k, j+1}^{p}, c_{k, j+2}^{p}$ を考える．ここで, $c_{k, j}$ と $c_{k, j+2}$ は $c_{i}$ と同じコールバック グループに属し, $c_{k, j+1}$ は $c_{i}$ とは異なる $c_{i+1}$ と同じコールバック グループに属す． $\left[r_{i}, s_{i}\right)$ 中に $c_{k, j}^{p}$ と $c_{k, j+2}^{p}$ の両方が実行される場合, $\left[r_{i+1}, s_{i+1}\right)$ 中に $c_{k, j+1}^{p}$ を実行することはできない
+        \item たとえば, $\mathcal{C}_{k}$ の 3 つの連続するコールバックインスタンス $c_{k, j}^{p}, c_{k, j+1}^{p}, c_{k, j+2}^{p}$ を考える
+        \item ここで, $c_{k, j}$ と $c_{k, j+2}$ は $c_{i}$ と同じコールバックグループに属し, $c_{k, j+1}$ は $c_{i}$ とは異なる $c_{i+1}$ と同じコールバックグループに属す
+        \item $\left[r_{i}, s_{i}\right)$ 中に $c_{k, j}^{p}$ と $c_{k, j+2}^{p}$ の両方が実行される場合, $\left[r_{i+1}, s_{i+1}\right)$ 中に $c_{k, j+1}^{p}$ を実行することはできない
     \end{itemize}
 \end{frame}
 
 \begin{frame}{}
     \begin{itemize}
-        \item 第 2 に, ROS 2 の特定のスケジューリング戦略では, 準備完了のコールバック インスタンスがすぐに $\Omega$ に追加されない可能性があるため, $J$ の問題期間中にリリースされた $\mathcal{C}_{k}$ からの一部のコールバック インスタンスが $J$ に干渉しない可能性がある．これらの観察に基づいて, 次に $\mathcal{Q}_{k}$ の上限をより正確に分析し, $R(J)$ のより厳密な上限を導き出す．
+        \item 第 2 に, ROS 2 の特定のスケジューリング戦略では, 準備完了のコールバックインスタンスがすぐに $\Omega$ に追加されない可能性があるため, $J$ の問題期間中にリリースされた $\mathcal{C}_{k}$ からの一部のコールバックインスタンスが $J$ に干渉しない可能性がある
+        \item これらの観察に基づいて, 次に $\mathcal{Q}_{k}$ の上限をより正確に分析し, $R(J)$ のより厳密な上限を導き出す．
     \end{itemize}
 \end{frame}
