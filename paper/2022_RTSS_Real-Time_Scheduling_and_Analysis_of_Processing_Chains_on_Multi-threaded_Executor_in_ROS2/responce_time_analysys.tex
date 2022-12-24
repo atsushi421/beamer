@@ -187,10 +187,70 @@
 \label{ssec: an_upper_bound_of_response_time}
 
 \begin{frame}{}
-\begin{itemize}
-    \item 補題 2 によると, $R(J)$ を上限にするには, $J$ の問題ウィンドウ内の各干渉チェーン $\mathcal{C}_{k}$ に関して $\mathcal{Q}_{k}$ を上限に制限する必要がある．
-    \item $\mathcal{Q}_{k}$ の単純な上限は, $\mathcal{I}_{k, i}^{\mathcal{E}}=0$ を考慮し, $\sum_{i=1}^{|\mathcal{C}|} \mathcal{I}_{k, i}$ と $\sum_{i=1}^{|\mathcal{C}|} \mathcal{I}_{k, i}^{\mathcal{B}}$ の上限を別々に検討することで取得できる．
-\end{itemize}
+    \begin{itemize}
+        \item 補題 2 によると, $R(J)$ を上限にするには, $J$ の問題ウィンドウ内の各干渉チェーン $\mathcal{C}_{k}$ に関して $\mathcal{Q}_{k}$ を上限に制限する必要がある．
+        \item $\mathcal{Q}_{k}$ の単純な上限は, $\mathcal{I}_{k, i}^{\mathcal{E}}=0$ を考慮し, $\sum_{i=1}^{|\mathcal{C}|} \mathcal{I}_{k, i}$ と $\sum_{i=1}^{|\mathcal{C}|} \mathcal{I}_{k, i}^{\mathcal{B}}$ の上限を別々に検討することで取得できる．
+    \end{itemize}
 \end{frame}
 
-\todo{}
+\begin{frame}{Lemma2}
+    まず, $\sum_{i=1}^{|\mathcal{C}|} \mathcal{I}_{k, i}$, つまり $\mathcal{I}_{k}$ をバインドするために, 各干渉チェーン $\mathcal{C}_{k}$ が $J$ の問題ウィンドウで実行できる最大合計時間を計算できる．
+
+    \begin{lemma}[]
+        長さ $L$ の $J$ の問題ウィンドウに入る時間ウィンドウで実行される可能性のある $\mathcal{C}_{k}$ のチェーン インスタンスの最大数 $n_{k}(L)$ は, $n_{k}(L)=$  $\left\lceil\frac{L-E_{k}}{T_{k}}\right\rceil+1$ によって上限が決まります．
+    \end{lemma}
+\end{frame}
+
+\begin{frame}{Lemma3 証明}
+    \begin{itemize}
+        \item 補題 3 の証明は, [21], 固定優先度スケジューリングの下での従来の順次タスク モデルの応答時間分析で一般的に使用されるため, ここでは省略する．直感的には, $\mathcal{C}_{k}$ のチェーン インスタンス全体を含めるための最小の長さは $E_{k}$ であり, 残りの長さの $L-E_{k}$ には最大で $\left\lceil\frac{L-E_{k}}{T_{k}}\right\rceil$ チェーン インスタンスを含めることができる．
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Lemma4}
+    \begin{lemma}[]
+        長さ $L$ の $J$ の問題ウィンドウに入る時間ウィンドウで $\mathcal{C}_{k}$ が実行される可能性のある合計時間は, $L \leq E_{k}$ の場合は $L$ によって上限が決まり, それ以外の場合は $W_{k}(L)$ によって上限が決まります．
+
+        \begin{equation*}
+            W_{k}(L)=\left(n_{k}(L)-1\right) E_{k}+\min \left\{\left(L-E_{k}\right) \bmod T_{k}, E_{k}\right\} .
+        \end{equation*}
+    \end{lemma}
+\end{frame}
+
+\begin{frame}{Lemma4 証明}
+    補題 3 の証明は [21] の定理 4 と同じ考え方に従うため, ここでは省略する
+\end{frame}
+
+\begin{frame}{}
+    \fitimage{図 4 は, 最悪のシナリオにおける $W_{k}(L)$ を示している．}{figure/w_k_l.png}
+\end{frame}
+
+\begin{frame}{Theorem 1}
+    \begin{theorem}[]
+        $L+e_{|\mathcal{C}|} \leq D$ の場合, $R(J)$ の上限は $L+e_{|\mathcal{C}|}$ である．ここで, $L$ は次の条件を満たす最小数である．
+
+        $L=E-e_{|\mathcal{C}|}+\frac{\sum_{\mathcal{C}_{k} \in \Gamma \backslash\{\mathcal{C}\}}\left(W_{k}(L)+n_{k}(L)(m-1) \sum_{\forall j: \mathcal{G}\left(c_{k, j}\right) \in \theta_{k} \cap \theta} e_{k, j}\right)}{m}$ .
+    \end{theorem}
+\end{frame}
+
+\begin{frame}{Theorem1 証明}
+    \todo{}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item 直観的に, 定理 1 の境界は非常に悲観的である可能性がある．悲観論は, 主に 2 つの側面から生じます．まず, $J$ 内の各コールバック インスタンスへのサブ干渉シーケンスが重複しないようにする必要がある．したがって, $J$ の一部のコールバックと同じ相互に排他的なグループに属すすべてのコールバック インスタンスが $\sum_{i=1}^{|\mathcal{C}|} \mathcal{I}_{k, i}^{\mathcal{B}}$ に寄与できるわけではない．
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item たとえば, $\mathcal{C}_{k}$ の 3 つの連続するコールバック インスタンス $c_{k, j}^{p}, c_{k, j+1}^{p}, c_{k, j+2}^{p}$ を考える．ここで, $c_{k, j}$ と $c_{k, j+2}$ は $c_{i}$ と同じコールバック グループに属し, $c_{k, j+1}$ は $c_{i}$ とは異なる $c_{i+1}$ と同じコールバック グループに属す． $\left[r_{i}, s_{i}\right)$ 中に $c_{k, j}^{p}$ と $c_{k, j+2}^{p}$ の両方が実行される場合, $\left[r_{i+1}, s_{i+1}\right)$ 中に $c_{k, j+1}^{p}$ を実行することはできない
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item 第 2 に, ROS 2 の特定のスケジューリング戦略では, 準備完了のコールバック インスタンスがすぐに $\Omega$ に追加されない可能性があるため, $J$ の問題期間中にリリースされた $\mathcal{C}_{k}$ からの一部のコールバック インスタンスが $J$ に干渉しない可能性がある．これらの観察に基づいて, 次に $\mathcal{Q}_{k}$ の上限をより正確に分析し, $R(J)$ のより厳密な上限を導き出す．
+    \end{itemize}
+\end{frame}
