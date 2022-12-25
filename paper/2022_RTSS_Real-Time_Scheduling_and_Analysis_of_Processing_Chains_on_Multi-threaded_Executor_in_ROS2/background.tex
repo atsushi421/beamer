@@ -152,7 +152,7 @@
             \end{itemize}
         \end{column}
         \begin{column}{0.4\linewidth}
-            \fullimage{figure/workflow1.jpg}
+            \fullimage{figure/workflow1.png}
         \end{column}
     \end{columns}
 \end{frame}
@@ -168,13 +168,13 @@
 \end{frame}
 
 \begin{frame}{can\_be\_taken\_fromによるワークフロー}
-    \fullimage{figure/workflow2.jpg}
+    \fullimage{figure/workflow2.png}
 \end{frame}
 
 \begin{frame}{コールバック選択後}
     \fitimage{
         コールバックが正常に選択されると, スレッドは low\_priority\_wait\_mutex をリリースし, wait\_set からコールバックを削除する
-    }{figure/workflow3.jpg}
+    }{figure/workflow3.png}
 \end{frame}
 
 \begin{frame}{yield\_before\_execute}
@@ -202,7 +202,7 @@
             \item すべてのカテゴリがチェックされ, 実行するコールバックを選択できない場合, スレッドは, wait\_set をリセットし, wait\_set を更新する
             \item can\_be\_taken\_from が true の場合にのみ, mutually exclusive コールバックグループからのコールバックを wait\_set に追加できる
         \end{itemize}
-    }{figure/workflow4.jpg}
+    }{figure/workflow4.png}
 \end{frame}
 
 \begin{frame}{コールバックをwait\_setに追加できない場合}
@@ -213,5 +213,5 @@
 \end{frame}
 
 \begin{frame}{コールバックをwait\_setに追加できない場合（ワークフロー）}
-    \fullimage{figure/workflow5.jpg}
+    \fullimage{figure/workflow5.png}
 \end{frame}

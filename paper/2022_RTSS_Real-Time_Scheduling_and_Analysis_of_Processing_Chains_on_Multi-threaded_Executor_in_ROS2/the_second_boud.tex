@@ -1,0 +1,152 @@
+% !TeX root = main.tex
+
+\section{THE SECOND BOUND}
+\label{sec: the_second_bound}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item 主なアイデアは, $J$ の個々のコールバックインスタンスに関してサブ干渉シーケンスのすべての可能な組み合わせを検索し, 最大の $\mathcal{Q}_{k}$ になるものを見つけることである
+        \item つまり, 干渉チェーン $\mathcal{C}_{k}$ ごとに, 干渉シーケンスを形成する $\mathcal{C}_{k}$ のコールバックインスタンスのコレクションを識別して, $\mathcal{Q}_{k}$ を最大化しようとする．
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item これは, 次の手順で実現される
+        \item まず,  $J$ の実行を妨げる可能性のあるコールバックインスタンスの実行シーケンスを特定する
+        \item 次に, $c_{i}$ をブロックできるかどうかに応じて, $J$ 内の個々のコールバックインスタンス $c_{i}$ に関して, $\Phi_{k, i}$ に寄与する可能性のあるシーケンス内のコールバックインスタンスを特定する手法を開発する
+        \item 次に, 探索空間を制限する制約を提示し, 最終的に $\mathcal{Q}_{k}$ の上限を取得する．
+    \end{itemize}
+\end{frame}
+
+\subsection{Super interfering sequence}
+\label{ssec: super_interfering_sequence}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item $L$ を $J$ の問題ウィンドウの長さとする
+        \item 補題 3 によると,  $J$ の問題期間中に実行できる $\mathcal{C}_{k}$ のチェーン インスタンスの最大数は $n_{k}(L)$ である
+        \item $\overrightarrow{\mathcal{M}}_{k}$ は, $\mathcal{C}_{k}$ の $n_{k}(L)$ チェーン インスタンスの実行シーケンスを表し, コールバックインスタンスを 1 つずつ順番に実行する
+        \item 一般性を失うことなく,  $\overrightarrow{\mathcal{M}}_{k}$ が時間 0 で開始すると仮定する
+        \item $\mathcal{C}_{k}$ から $J$ への超干渉シーケンスを $\overrightarrow{\mathcal{M}}_{k}$ と呼ぶ．
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item 直観的に, 各サブ干渉シーケンス $\mathcal{S}_{k, i}$ は, $\overrightarrow{\mathcal{M}}_{k}$ のコールバックインスタンスの一部に対応し, 時間ウィンドウ $\left(t_{i}, t_{i}^{\prime}\right)$に分類される．
+        \item 曖昧さを避けるため, $\overrightarrow{\mathcal{M}}_{k}$ と $\mathcal{S}_{k, i}$ の対応するコールバックインスタンスの実行時間は同じであると想定している．
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item $\mathcal{S}_{k, i}$ は, ウィンドウ $\left(t_{i}, t_{i}^{\prime}\right)$ の結果であると言う
+        \item したがって, 干渉シーケンス $\mathcal{S}_{k}$ は, 一連のウィンドウ $\mathcal{Y}=\left\{\left(t_{1}, t_{1}^{\prime}\right),\left(t_{2}, t_{2}^{\prime}\right), \cdots,\left(t_{|\mathcal{C}|}, t_{|\mathcal{C}|}^{\prime}\right)\right\}$ によって発生する
+        \item 一般性を失うことなく, $\mathcal{S}_{k, i}=\langle 0\rangle$ の場合は $\left(t_{i}, t_{i}^{\prime}\right)=n u l l$ とする．
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+    \fitimage{たとえば, 図 3 の $J_{3}^{1}$ の実行シーケンスは図 5 の下部に示されている．}{figure/interfering_sequence.png}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item $J_{3}^{1}$ の問題ウィンドウの長さは 8 で, その間に $\mathcal{C}_{2}$ の最大 2 つのチェーン インスタンスが実行される可能性がある (補題 3 による)
+        \item $\mathcal{C}_{2}$ から $J_{3}^{1}$ までの超干渉シーケンス $\overrightarrow{\mathcal{M}}_{2}$ は, 図5の上部に示されている
+        \item $\mathcal{C}_{2}$ から $J_{3}^{1}$ のサブ干渉シーケンスは, 図 5 の中央に示すように, それぞれ $\left\langle e_{2,2}^{\prime}\right\rangle$ と $\left\langle e_{2,1}^{\prime}\right\rangle$ であり, $(1,3)$ と $(3,4)$ のタイム ウィンドウに入る $\overrightarrow{\mathcal{M}}_{2}$ の部分に対応する
+        \item したがって, $\mathcal{C}_{2}$ から $J_{3}^{1}$ への干渉シーケンスは, 一連のウィンドウ $\mathcal{Y}=\{$ null, $(1,3)$, null, $(3,4)\}$ によって発生する．
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item ここでの目的は, $\mathcal{Y}$ の干渉シーケンスによって生じる $\mathcal{Q}_{k}$ が最大化されるように, タイム ウィンドウのセット $\mathcal{Y}$ を見つけることである
+        \item 直感的に, すべてのケースを列挙できる
+        \item ただし, そのようなウィンドウ セットの検索空間は, 組み合わせ爆発になる可能性がある
+        \item この問題を解決するために, 次に, サブ干渉シーケンスが $J$ のコールバックインスタンスに干渉するために満たさなければならない関連する制約を導き出す
+        \item より具体的には, 考慮されるコールバックインスタンスをブロックできるかどうかに応じて, 2 つのケースを区別する
+        \item 次に, 考えられるすべての干渉シーケンスの中で発生する可能性のある $\mathcal{Q}_{k}$ の上限を効率的に取得するアルゴリズムを開発する．
+    \end{itemize}
+\end{frame}
+
+
+\subsection{Callbacks that cannot be blocked}
+\label{ssec: callbacks_that_cannot_be_blocked}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item 以下では, 再入可能なコールバックグループに属すコールバックインスタンス $c_{i}$ または $\forall \mathcal{C}_{k} \in \Gamma \backslash\{\mathcal{C}\}: \mathcal{G}\left(c_{i}\right) \notin \theta_{k}$ へのサブ干渉シーケンス, つまり $c_{i}$ をブロックできないことを検討する
+        \item 一般に, 制約は 2 点に基づいて導出される
+        \item まず, マルチスレッド エグゼキューターはバッチ内の異なるチェーンからのコールバックをスケジュールするため, $c_{i}$ は限られた数のバッチからのコールバックインスタンスによってのみ干渉される可能性がある
+        \item 第 2 に, $c_{i}$ が $\Omega$ に追加されると, $\Omega$ 内のそれより優先度の高い他のコールバックインスタンスによってのみ遅延できる．
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Lemma5}
+    \begin{lemma}[]
+        $c_{i}$ が再入可能なコールバックグループまたは $\forall \mathcal{C}_{k} \in \Gamma \backslash\{\mathcal{C}\}: \mathcal{G}\left(c_{i}\right) \notin \theta_{k}$ に属している場合, $\left[r_{i}, s_{i}\right)$ の時間間隔中にポーリングポイントが 1 つだけ存在する．
+    \end{lemma}
+\end{frame}
+
+\begin{frame}{Lemma5 証明}
+    \todo{}
+\end{frame}
+
+\begin{frame}{Lemma6}
+    \begin{lemma}[]
+        $c_{i}$ が再入可能なコールバックグループまたは $\forall \mathcal{C}_{k} \in \Gamma \backslash\{\mathcal{C}\}: \mathcal{G}\left(c_{i}\right) \notin \theta_{k}$ に属している場合, $\overrightarrow{\mathcal{M}}_{k}$ の最大 2 つの連続するコールバックインスタンスは, 時間間隔 $\left[r_{i}, s_{i}\right)$ 中に実行できる
+    \end{lemma}
+\end{frame}
+
+\begin{frame}{Lemma6 証明}
+    \todo{}
+\end{frame}
+
+\begin{frame}{Lemma7}
+    \begin{lemma}[]
+        $c_{i}$ が再入可能なコールバックグループまたは $\forall \mathcal{C}_{k} \in \Gamma \backslash\{\mathcal{C}\}: \mathcal{G}\left(c_{i}\right) \notin \theta_{k}$ に属している場合, 干渉チェーン $\mathcal{C}_{k}$ からの 2 つのコールバックインスタンスが $\left[r_{i}, s_{i}\right)$ の時間間隔中に実行される場合, 2 番目のインスタンスは $c_{i}$ よりも高い優先度を持つ必要がある．
+    \end{lemma}
+\end{frame}
+
+\begin{frame}{Lemma7 証明}
+    \todo{}
+\end{frame}
+
+\begin{frame}{Lemma8}
+    最後に, $m \geq|\Gamma|$ のときに直感的な制約を与えることができる
+    \begin{lemma}[]
+        $m \geq|\Gamma|$ の場合, $c_{i}$ が再入可能なコールバックグループまたは $\forall \mathcal{C}_{k} \in \Gamma \backslash\{\mathcal{C}\}: \mathcal{G}\left(c_{i}\right) \notin \theta_{k}$ に属している場合, $\left[r_{i}, s_{i}\right)$ の時間間隔中に $\mathcal{C}_{k}$ からのコールバックインスタンスは実行できない．
+    \end{lemma}
+\end{frame}
+
+\begin{frame}{Lemma8 証明}
+    \todo{}
+\end{frame}
+
+
+\subsection{Callbacks that may be blocked}
+\label{ssec: callbacks_that_may_be_blocked}
+
+\begin{frame}{}
+\begin{itemize}
+    \item 以下では, $\mathcal{G}\left(c_{i}\right) \in \cup_{\forall \mathcal{C}_{k} \in \Gamma \backslash\{\mathcal{C}\}} \theta_{k}$, つまり $c_{i}$ がブロックされる可能性がある $c_{i}$ へのサブシーケンスの制約の導出に焦点を当てる． $c_{i}$ がブロックされている場合, $\Omega$ が何度も更新される可能性があることに注意．さらに, $c_{i}$ が $\Omega$ に追加された後, 優先度の低いコールバック インスタンスによって $c_{i}$ がブロックされる可能性があるため, 遅延することもある．そのため, 前のセクションで行ったように, $\left[r_{i}, s_{i}\right)$ 中のポーリング ポイントの数を制限することは困難である
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Lemma9}
+\begin{lemma}[]
+    $\mathcal{G}\left(c_{i}\right) \in \cup_{\forall \mathcal{C}_{k} \in \Gamma \backslash\{\mathcal{C}\}} \theta_{k}$ と, $\mathcal{C}_{k}$ からの 2 つ以上のコールバックが $\left[r_{i}, s_{i}\right)$ の間に実行される場合, 最初のコールバックを除くそれぞれのコールバックは, $c_{i}$ とは異なるコールバック グループに属しているか, $c_{i}$ よりも高い優先順位を持っている必要がある．
+\end{lemma}
+\end{frame}
+
+\begin{frame}{Lemma9 証明}
+\todo{}
+\end{frame}
+
+\begin{frame}{Lemma10}
+\begin{lemma}[]
+    上記の補題によると, $c_{i}$ と同じコールバック グループに属し, $c_{i}$ よりも優先度が低い $\mathcal{C}_{k}$ からのコールバック インスタンスは, $\left[r_{i}, s_{i}\right)$ 中に実行される $\mathcal{C}_{k}$ からの最初のコールバック インスタンスである場合にのみ, $\mathcal{I}_{i, k}^{\mathcal{B}}$ に貢献できる．
+\end{lemma}
+\end{frame}
