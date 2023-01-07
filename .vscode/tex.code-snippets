@@ -1,7 +1,9 @@
 {
-	"slide": {
+	"sec": {
 		"prefix": "section",
 		"body": [
+			"% !TeX root = main.tex",
+			"",
 			"\\section{$1}",
 			"\\label{sec: $2}",
 			"",
@@ -15,20 +17,23 @@
 			"\\end{frame}"
 		]
 	},
+	"fi": {
+		"prefix": "frame & itemize",
+		"body": [
+			"\\begin{frame}{}",
+			"\\begin{itemize}",
+			"\\item $1",
+			"\\end{itemize}",
+			"\\end{frame}",
+			"$2"
+		]
+	},
 	"block": {
 		"prefix": "block",
 		"body": [
 			"\\begin{block}{$1}",
 			"$2",
 			"\\end{block}"
-		]
-	},
-	"a-block": {
-		"prefix": "alert block",
-		"body": [
-			"\\begin{alertblock}{$1}",
-			"$2",
-			"\\end{alertblock}"
 		]
 	},
 	"2column": {
@@ -42,17 +47,6 @@
 			"$2",
 			"\\end{column}",
 			"\\end{columns}"
-		]
-	},
-	"only_image": {
-		"prefix": "only image",
-		"body": [
-			"\\onlyslide{",
-			"\\centering",
-			"\\adjustbox{max width=\\textwidth, max height=\\slideheight}{",
-			"\\includegraphics{figure/$2}",
-			"}",
-			"}"
 		]
 	},
 	"row": {
@@ -106,9 +100,5 @@
 			"$1",
 			"\\end{itemize}"
 		]
-	},
-	"root":{
-		"prefix": "root magic command",
-		"body": "% !TeX root = main.tex"
 	},
 }

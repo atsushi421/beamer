@@ -79,7 +79,7 @@
     \begin{itemize}
         \item 以下では, 再入可能なコールバックグループに属すコールバックインスタンス $c_{i}$ または $\forall \mathcal{C}_{k} \in \Gamma \backslash\{\mathcal{C}\}: \mathcal{G}\left(c_{i}\right) \notin \theta_{k}$ へのサブ干渉シーケンス, つまり $c_{i}$ をブロックできないことを検討する
         \item 一般に, 制約は 2 点に基づいて導出される
-        \item まず, マルチスレッド エグゼキューターはバッチ内の異なるチェーンからのコールバックをスケジュールするため, $c_{i}$ は限られた数のバッチからのコールバックインスタンスによってのみ干渉される可能性がある
+        \item まず, マルチスレッドエグゼキューターはバッチ内の異なるチェーンからのコールバックをスケジュールするため, $c_{i}$ は限られた数のバッチからのコールバックインスタンスによってのみ干渉される可能性がある
         \item 第 2 に, $c_{i}$ が $\Omega$ に追加されると, $\Omega$ 内のそれより優先度の高い他のコールバックインスタンスによってのみ遅延できる．
     \end{itemize}
 \end{frame}
@@ -152,4 +152,171 @@
     \begin{lemma}[]
         上記の補題によると, $c_{i}$ と同じコールバックグループに属し, $c_{i}$ よりも優先度が低い $\mathcal{C}_{k}$ からのコールバックインスタンスは, $\left[r_{i}, s_{i}\right)$ 中に実行される $\mathcal{C}_{k}$ からの最初のコールバックインスタンスである場合にのみ, $\mathcal{I}_{i, k}^{\mathcal{B}}$ に貢献できる．
     \end{lemma}
+\end{frame}
+
+
+\subsection{Bounding $\Phi_{k, i}$}
+\label{ssec: bounding_phi}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item $\mathcal{S}_{k, i}$ から $c_{i}$ へのサブ干渉シーケンスが与えられた場合, 以下で, $\mathcal{Q}_{k}$ への寄与の上限を計算する．
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item 式 (2) から, $c_{i}$ をブロックできない場合は $\Phi_{k, i}=\mathcal{I}_{k, i}$, それ以外の場合は $\Phi_{k, i}=\mathcal{I}_{k, i}+(m-1) \mathcal{I}_{k, i}^{\mathcal{B}}-\mathcal{I}_{k, i}^{\mathcal{E}}$
+        \item サブ干渉シーケンス $\mathcal{S}_{k, i}$ が与えられると, 定義により, $\mathcal{S}_{k, i}$ の各コールバックインスタンスの実行時間で $\mathcal{I}_{k, i}$ と $\mathcal{I}_{k, i}^{\mathcal{B}}$ を計算できる
+        \item したがって, $c_{i}$ が再入可能なコールバックグループまたは $\forall \mathcal{C}_{k} \in \Gamma \backslash\{\mathcal{C}\}: \mathcal{G}\left(c_{i}\right) \notin \theta_{k}$ に属している場合, つまり $c_{i}$ をブロックできない場合,  $\hat{\Phi}_{k, i}$ で示される $\Phi_{k, i}$ の上限を取得できる．
+    \end{itemize}
+
+    \begin{equation*}
+        \hat{\Phi}_{k, i}=\left\{\begin{array}{lr}
+            0,                  & m \geq \Gamma         \\
+            \mathcal{I}_{k, i}, & \text { otherwise } .
+        \end{array}\right.
+    \end{equation*}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item 特に, (3) の最初の項目は, 補題 8 に従って取得される
+        \item 同様に, $c_{i}$ がブロックされる可能性がある場合, つまり $\mathcal{G}\left(c_{i}\right) \in \cup_{\forall \mathcal{C}_{k} \in \Gamma \backslash\{\mathcal{C}\}} \theta_{k}$ の場合, $\hat{\Phi}_{k, i}$ を次のように定義する．
+    \end{itemize}
+
+    \begin{equation*}
+        \hat{\Phi}_{k, i}=\left\{\begin{array}{lr}
+            \mathcal{I}_{k, i}+(m-1) \mathcal{I}_{k, i}^{\mathcal{B}}-\mathcal{I}_{k, i}^{\mathcal{E}^{*}}, & m \geq \Gamma         \\
+            \mathcal{I}_{k, i}+(m-1) \mathcal{I}_{k, i},                                                    & \text { otherwise } .
+        \end{array}\right.
+    \end{equation*}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item $\mathcal{I}_{k, i}^{\mathcal{E}^{*}}$ は, $\mathcal{S}_{k, i}$ 内の $c_{i}$ とは異なるコールバックグループに属すコールバックインスタンスの合計実行時間である
+        \item 明らかに, Lemma $10, \Phi_{k, i} \leq \hat{\Phi}_{k, i}$ によると, 保持される
+        \item 要約すると, サブ干渉シーケンス $\mathcal{S}_{k, i}$ ごとに $\Phi_{k, i} \leq \hat{\Phi}_{k, i}$ が成立する
+        \item ここで, $\hat{\Phi}_{k, i}$ は, $c_{i}$ をブロックできるかどうかに関して, 次の (3) または (4) によって計算される．
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item $\mathcal{Y}$ によって生じた干渉シーケンス $\mathcal{S}_{k}$ が与えられた場合, $\mathcal{Q}_{k}(\mathcal{Y})$ を使用して, 各サブ干渉シーケンス $\mathcal{S}_{k, i}$ に関する $\hat{\Phi}_{k, i}$ の合計を示し, $\mathcal{Q}_{k}(\mathcal{Y})$ は $\mathcal{Y}$ によって引き起こされたと言う
+        \item 直感的に, ウィンドウのすべての可能な組み合わせを列挙できる
+        \item ここで, 結果として得られる各サブ干渉シーケンスは補題 6-10 を満たし, $\max _{\forall \mathcal{Y}}\left\{\mathcal{Q}_{k}(\mathcal{Y})\right\}$ を $\mathcal{Q}_{k}$ の安全な上限と見なする
+        \item ただし, これは計算量の爆発になる可能性がある
+        \item この問題を解決するために, 以下で最初に, ウィンドウの境界の検索スペースを $\overrightarrow{\mathcal{M}}_{k}$ のコールバックインスタンスの境界に制限できることを示す
+        \item 次に, 動的計画法 (DP) に基づくアルゴリズムを開発して, $\max _{\forall \mathcal{Y}}\left\{\mathcal{Q}_{k}(\mathcal{Y})\right\}$ の上限を計算する．
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item $\mathcal{C}_{k}$ の干渉シーケンスが $\mathcal{Y}=\left\{\left(t_{1}, t_{1}^{\prime}\right),\left(t_{2}, t_{2}^{\prime}\right), \cdots,\left(t_{|\mathcal{C}|}, t_{|\mathcal{C}|}^{\prime}\right)\right\}$ の結果であり, $\overrightarrow{\mathcal{M}}_{k}$ の開始時刻 $t_{x}$ と終了時刻 $t_{y}$ を持つコールバックインスタンス $c$ が $t_{x} \in\left[t_{a}, t_{a}^{\prime}\right)$ と $t_{y} \in\left[t_{b}, t_{b}^{\prime}\right)$ を満たすと仮定する
+        \item ここで, $a, b \in[1,|\mathcal{C}|]$ と $a<b$, つまり $c$ の実行時間は, 異なるサブ干渉シーケンスによって構成される
+        \item $\mathcal{Y}$ の $a^{t h}$ から $b^{t h}$ の要素を, 表 II の 2 番目の列のそれぞれで置き換え, $\mathcal{Y}_{a}$ から $\mathcal{Y}_{b}$ で示される新しいウィンドウ セット $b-a+1$ を取得する
+        \item $\mathcal{Y}$ に起因する干渉シーケンスと比較して, 異なるサブ干渉シーケンスでの $c$ の合計実行時間は, $\mathcal{Y}_{j}$ に起因する干渉シーケンスの $j^{t h}$ 項目によって完全に構成されると見なされるが, $c$ とは関係のない他のサブ干渉シーケンスはそのままである
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Lemma11}
+    $\mathcal{Q}_{k}(\mathcal{Y}) \leq \max _{\forall j \in[a, b]}\left\{\mathcal{Q}_{k}\left(\mathcal{Y}_{j}\right)\right\}$
+\end{frame}
+
+\begin{frame}{Lemma11 証明}
+    \todo{}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item 補題 11 は, $\max _{\forall \mathcal{Y}}\left\{\mathcal{Q}_{k}(\mathcal{Y})\right\}$ を見つけるには, 境界が $\overrightarrow{\mathcal{M}}_{k}$ のコールバックインスタンスの開始/終了時間と一致するウィンドウのみを考慮する必要があることを示している
+        \item ただし, すべての可能な組み合わせの数は依然として非常に多い場合がある
+        \item この問題をより効率的に解決するために, 動的計画法 (DP) に基づく方法を開発する．
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item 以下では, 最初にこの方法の重要な部分を紹介する
+        \item $p^{t h}$ の開始時間からの範囲内に境界を持つウィンドウによって生じる, すべての可能なサブ干渉シーケンスの中で, $\Phi_{k, i}$ から $c_{i}$ への上限を取得する方法コールバックインスタンスを $\overrightarrow{\mathcal{M}}_{k}$ の $q^{t h}$ コールバックインスタンスの開始時刻に合わせる．
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item 手順をアルゴリズム 1 に示す
+        \item $p=q$ の場合, $\left[r_{i}, s_{i}\right)$ 中に $\mathcal{C}_{k}$ からのコールバックインスタンスを実行できないため, $\Phi_{k, i}$ の上限は 0 である
+        \item $c_{i}$ をブロックできる場合, 補題 9 を満たす各サブ干渉シーケンスを列挙し, 3 行目から 13 行目に示すように, 次の式 (4) によって $\hat{\Phi}_{k, i}$ (アルゴリズム 1 の $\operatorname{sum}[j]$ で示される) を計算する
+        \item それ以外の場合, 14 行目から 21 行目に示すように, 補題 6 ～ 8 を満たす各サブ干渉シーケンスを列挙し, 式 (3) に従って $\hat{\Phi}_{k, i}$ を計算する
+        \item 最後に, $\Phi_{k, i}^{p, q}$ の上限は, 考えられるすべてのサブ干渉シーケンスの中で $\hat{\Phi}_{k, i}$ の最大値を取得することによって取得される．
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item 図 5 を例にとると, $\Phi_{2,1}^{1,5}$ と $\Phi_{2,2}^{1,5}$ の計算, つまり, 最初のコールバックインスタンスの開始時刻から $\overrightarrow{\mathcal{M}}_{2}$ の 5 番目のコールバックインスタンスの開始時刻は, 表 III の 2 列目と 3 列目にそれぞれ示されている．
+    \end{itemize}
+\end{frame}
+
+
+\subsection{Upper-bounding response time}
+\label{ssec: upper bounding response time}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item 次に, $J$ の各コールバックに関してウィンドウのすべての組み合わせを検索し, 最後に $\mathcal{Q}_{k}$ の上限を計算する
+        \item プロシージャの疑似コードをアルゴリズム 2 に示す
+        \item ここで, $\left|\overrightarrow{\mathcal{M}}_{k}\right|$ は $\overrightarrow{\mathcal{M}}_{k}$ のコールバックインスタンスの数である．
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item 各整数について, $i \in[1,|\mathcal{C}|], \Theta_{i, p}$ は, $p^{t h}$ コールバックインスタンスの開始時刻から $\overrightarrow{\mathcal{M}}_{k}$ の最後のコールバックインスタンスの終了時刻までの範囲に収まるすべての可能なウィンドウによって発生する可能性がある最大 $\sum_{j=i}^{|\mathcal{C}|} \hat{\Phi}_{k, j}$ を示す
+        \item 特に, $p=\left|\overrightarrow{\mathcal{M}}_{k}\right|+1$ の場合の $\Theta_{i, p}=0$ は, $\mathcal{C}_{k}$ からのコールバックインスタンスがないことを示し, $c_{|\mathcal{C}|}$ に干渉する可能性がある
+        \item 明らかに, $\Theta_{i, p}=\max _{\forall q \in\left[p,\left|\overrightarrow{\mathcal{M}}_{k}\right|+1\right]}\left\{\Phi_{k, i}^{p, q}+\Theta_{i+1, q}\right\}$ が成立する
+        \item ここで, $\Phi_{k, i}^{p, q}$ はアルゴリズム 1 によって計算され, $p^{t h}$ コールバックインスタンスの開始時刻から $\overrightarrow{\mathcal{M}}_{k}$ の $q^{t h}$ コールバックインスタンスの開始時刻までの範囲内にある任意のウィンドウによって発生する可能性がある最大 $\hat{\Phi}_{k, i}$ を表す．
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item $J$ の $(|\mathcal{C}|+1)^{t h}$ コールバックインスタンスが存在しないため, すべての $q$ に対して $\Theta_{|\mathcal{C}|+1, q}=0$ を初期化する
+        \item アルゴリズムは $i=|\mathcal{C}|$ で始まる
+        \item 次に, $c_{|\mathcal{C}|}$ へのサブ干渉シーケンスのみが考慮されるため, $\Theta_{|\mathcal{C}|, p}=\max _{\forall q \in\left[p,\left|\overrightarrow{\mathcal{M}}_{k}\right|+1\right]}\left\{\Phi_{k, i}^{p, q}\right\}$
+        \item この手順は, $\Theta_{1,1}$, つまり, $\overrightarrow{\mathcal{M}}_{k}$ の最初のコールバックインスタンスの開始時間から最後のコールバックインスタンスの終了時間までの範囲に収まるすべての可能なウィンドウによって発生する可能性のある最大 $\sum_{i=1}^{|\mathcal{C}|} \hat{\Phi}_{k, i}$ が取得されるまで繰り返される
+        \item つまり, $\Theta_{1,1}$ は $\mathcal{Q}_{k}$ の上限である．
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item 例えば，図5のC3のチェーンインスタンスに対して，-→M2のすべての可能な干渉配列によって引き起こされる可能性のあるQ2の上限は，表IVに示されている.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Theorem 2}
+    $L+e_{|\mathcal{C}|} \leq D$ の場合, $R(J)$ の上限は $L+e_{|\mathcal{C}|}$ である
+    ここで, $L$ は次の条件を満たす最小数である
+
+    \begin{equation*}
+        L=E-e_{|\mathcal{C}|}+\frac{\sum_{\mathcal{C}_{k} \in \Gamma \backslash\{\mathcal{C}\}} \mathcal{Q}_{k}}{m} .
+    \end{equation*}
+
+    ここで, $\mathcal{Q}_{k}$ は, $\mathcal{C}_{k}$ の $n_{k}(L)$ インスタンスを含む $\overrightarrow{\mathcal{M}}_{k}$ を使用してアルゴリズム 2 によって計算される．
+\end{frame}
+
+\begin{frame}{Theorem2 証明}
+    \todo{}
+\end{frame}
+
+\begin{frame}{Theorem3}
+    $L+e_{|\mathcal{C}|} \leq D$ が $\mathcal{C} \in \Gamma$ のチェーンごとに成立し, $L$ が定理 1 または 2 によって取得される場合, $\Gamma$ はスケジュール可能である．
+\end{frame}
+
+\begin{frame}{Theorem3 証明}
+    \todo{}
 \end{frame}
