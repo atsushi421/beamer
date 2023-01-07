@@ -25,8 +25,8 @@
 \begin{frame}{}
     \begin{itemize}
         \item $L$ を $J$ の問題ウィンドウの長さとする
-        \item 補題 3 によると,  $J$ の問題期間中に実行できる $\mathcal{C}_{k}$ のチェーン インスタンスの最大数は $n_{k}(L)$ である
-        \item $\overrightarrow{\mathcal{M}}_{k}$ は, $\mathcal{C}_{k}$ の $n_{k}(L)$ チェーン インスタンスの実行シーケンスを表し, コールバックインスタンスを 1 つずつ順番に実行する
+        \item 補題 3 によると,  $J$ の問題期間中に実行できる $\mathcal{C}_{k}$ のチェーンインスタンスの最大数は $n_{k}(L)$ である
+        \item $\overrightarrow{\mathcal{M}}_{k}$ は, $\mathcal{C}_{k}$ の $n_{k}(L)$ チェーンインスタンスの実行シーケンスを表し, コールバックインスタンスを 1 つずつ順番に実行する
         \item 一般性を失うことなく,  $\overrightarrow{\mathcal{M}}_{k}$ が時間 0 で開始すると仮定する
         \item $\mathcal{C}_{k}$ から $J$ への超干渉シーケンスを $\overrightarrow{\mathcal{M}}_{k}$ と呼ぶ．
     \end{itemize}
@@ -53,18 +53,18 @@
 
 \begin{frame}{}
     \begin{itemize}
-        \item $J_{3}^{1}$ の問題ウィンドウの長さは 8 で, その間に $\mathcal{C}_{2}$ の最大 2 つのチェーン インスタンスが実行される可能性がある (補題 3 による)
+        \item $J_{3}^{1}$ の問題ウィンドウの長さは 8 で, その間に $\mathcal{C}_{2}$ の最大 2 つのチェーンインスタンスが実行される可能性がある (補題 3 による)
         \item $\mathcal{C}_{2}$ から $J_{3}^{1}$ までの超干渉シーケンス $\overrightarrow{\mathcal{M}}_{2}$ は, 図5の上部に示されている
-        \item $\mathcal{C}_{2}$ から $J_{3}^{1}$ のサブ干渉シーケンスは, 図 5 の中央に示すように, それぞれ $\left\langle e_{2,2}^{\prime}\right\rangle$ と $\left\langle e_{2,1}^{\prime}\right\rangle$ であり, $(1,3)$ と $(3,4)$ のタイム ウィンドウに入る $\overrightarrow{\mathcal{M}}_{2}$ の部分に対応する
+        \item $\mathcal{C}_{2}$ から $J_{3}^{1}$ のサブ干渉シーケンスは, 図 5 の中央に示すように, それぞれ $\left\langle e_{2,2}^{\prime}\right\rangle$ と $\left\langle e_{2,1}^{\prime}\right\rangle$ であり, $(1,3)$ と $(3,4)$ のタイムウィンドウに入る $\overrightarrow{\mathcal{M}}_{2}$ の部分に対応する
         \item したがって, $\mathcal{C}_{2}$ から $J_{3}^{1}$ への干渉シーケンスは, 一連のウィンドウ $\mathcal{Y}=\{$ null, $(1,3)$, null, $(3,4)\}$ によって発生する．
     \end{itemize}
 \end{frame}
 
 \begin{frame}{}
     \begin{itemize}
-        \item ここでの目的は, $\mathcal{Y}$ の干渉シーケンスによって生じる $\mathcal{Q}_{k}$ が最大化されるように, タイム ウィンドウのセット $\mathcal{Y}$ を見つけることである
+        \item ここでの目的は, $\mathcal{Y}$ の干渉シーケンスによって生じる $\mathcal{Q}_{k}$ が最大化されるように, タイムウィンドウのセット $\mathcal{Y}$ を見つけることである
         \item 直感的に, すべてのケースを列挙できる
-        \item ただし, そのようなウィンドウ セットの検索空間は, 組み合わせ爆発になる可能性がある
+        \item ただし, そのようなウィンドウセットの検索空間は, 組み合わせ爆発になる可能性がある
         \item この問題を解決するために, 次に, サブ干渉シーケンスが $J$ のコールバックインスタンスに干渉するために満たさなければならない関連する制約を導き出す
         \item より具体的には, 考慮されるコールバックインスタンスをブロックできるかどうかに応じて, 2 つのケースを区別する
         \item 次に, 考えられるすべての干渉シーケンスの中で発生する可能性のある $\mathcal{Q}_{k}$ の上限を効率的に取得するアルゴリズムを開発する．
@@ -217,7 +217,7 @@
     \begin{itemize}
         \item $\mathcal{C}_{k}$ の干渉シーケンスが $\mathcal{Y}=\left\{\left(t_{1}, t_{1}^{\prime}\right),\left(t_{2}, t_{2}^{\prime}\right), \cdots,\left(t_{|\mathcal{C}|}, t_{|\mathcal{C}|}^{\prime}\right)\right\}$ の結果であり, $\overrightarrow{\mathcal{M}}_{k}$ の開始時刻 $t_{x}$ と終了時刻 $t_{y}$ を持つコールバックインスタンス $c$ が $t_{x} \in\left[t_{a}, t_{a}^{\prime}\right)$ と $t_{y} \in\left[t_{b}, t_{b}^{\prime}\right)$ を満たすと仮定する
         \item ここで, $a, b \in[1,|\mathcal{C}|]$ と $a<b$, つまり $c$ の実行時間は, 異なるサブ干渉シーケンスによって構成される
-        \item $\mathcal{Y}$ の $a^{t h}$ から $b^{t h}$ の要素を, 表 II の 2 番目の列のそれぞれで置き換え, $\mathcal{Y}_{a}$ から $\mathcal{Y}_{b}$ で示される新しいウィンドウ セット $b-a+1$ を取得する
+        \item $\mathcal{Y}$ の $a^{t h}$ から $b^{t h}$ の要素を, 表 II の 2 番目の列のそれぞれで置き換え, $\mathcal{Y}_{a}$ から $\mathcal{Y}_{b}$ で示される新しいウィンドウセット $b-a+1$ を取得する
         \item $\mathcal{Y}$ に起因する干渉シーケンスと比較して, 異なるサブ干渉シーケンスでの $c$ の合計実行時間は, $\mathcal{Y}_{j}$ に起因する干渉シーケンスの $j^{t h}$ 項目によって完全に構成されると見なされるが, $c$ とは関係のない他のサブ干渉シーケンスはそのままである
     \end{itemize}
 \end{frame}
