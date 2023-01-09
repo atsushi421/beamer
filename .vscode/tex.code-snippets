@@ -58,14 +58,16 @@
 	"notation": {
 		"prefix": "notation table",
 		"body": [
+			"\\full{",
 			"\\begin{table}[tb]",
-			"\\adjustbox{max width=\\textwidth}{",
+			"\\adjustbox{max width=\\textwidth, max height=\\slideheight}{",
 			"\\centering\\begin{tabular}{|c|l|} \\hline",
 			"\\textbf{Notations}      & \\textbf{Descriptions} \\\\\\\\\\hline",
 			"$1",
 			"\\end{tabular}",
 			"}",
-			"\\end{table}"
+			"\\end{table}",
+			"}"
 		]
 	},
 	"theorem": {

@@ -74,7 +74,7 @@
         },
     ],
     "terminal.integrated.shell.windows": "C:\\Program Files\\Git\\bin\\bash.exe",
-    "editor.minimap.enabled": true,
+    "editor.minimap.enabled": false,
     "editor.renderWhitespace": "all",
     "files.eol": "\r\n",
     "explorer.confirmDelete": false,

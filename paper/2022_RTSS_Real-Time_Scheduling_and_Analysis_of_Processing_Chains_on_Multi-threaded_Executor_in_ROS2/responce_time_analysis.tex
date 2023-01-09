@@ -61,8 +61,8 @@
 \begin{frame}{Sub-interfering sequence}
     \full{
         \begin{definition}[Sub-interfering sequence]
-            $\mathcal{C}_{k}$ から $c_{i}$ へのサブ干渉シーケンス「$\mathcal{S}_{k, i}=\left\langle e_{k, a}^{\prime}, e_{k, b}, \cdots\right\rangle$ は，が $\left[r_{i}, s_{i}\right)$ の間に実行された $\mathcal{C}_{k}$ のコールバックインスタンスの実行時間シーケンス
-            ここで，$e_{k, a}^{\prime}$ はコールバック・インスタンス $c_{k, a}$ が $\left[r_{i}, s_{i}\right)$ の間に実行された時間の長さを表す.
+            $\mathcal{C}_{k}$ から $c_{i}$ へのサブ干渉シーケンス「$\mathcal{S}_{k, i}=\left\langle e_{k, a}^{\prime}, e_{k, b}, \cdots\right\rangle$ は, が $\left[r_{i}, s_{i}\right)$ の間に実行された $\mathcal{C}_{k}$ のコールバックインスタンスの実行時間シーケンス
+            ここで, $e_{k, a}^{\prime}$ はコールバック・インスタンス $c_{k, a}$ が $\left[r_{i}, s_{i}\right)$ の間に実行された時間の長さを表す.
         \end{definition}
     }
 \end{frame}
@@ -79,7 +79,7 @@
 
 \begin{frame}[label=interfering_work]{Interfering work}
     \begin{definition}[Interfering work]
-        ある干渉鎖 $\mathcal{C}_{k}$ から $J$ への Interfering work $\mathcal{I}_{k}$ は，$J$ の問題ウィンドウの間，$J$ のコールバックインスタンスが実行されていないときに $\mathcal{C}_{k}$ が実行した時間の合計，すなわち $\mathcal{S}_{k}$ の全値の合計である.
+        ある干渉鎖 $\mathcal{C}_{k}$ から $J$ への Interfering work $\mathcal{I}_{k}$ は, $J$ の問題ウィンドウの間, $J$ のコールバックインスタンスが実行されていないときに $\mathcal{C}_{k}$ が実行した時間の合計, すなわち $\mathcal{S}_{k}$ の全値の合計である.
     \end{definition}
 \end{frame}
 
@@ -133,7 +133,7 @@
     \begin{itemize}
         \item 補題を矛盾によって証明する
         \item $c_{i}$ が $t$ でブロックされておらず, $t \in\left[r_{i}, s_{i}\right)$ で $t$ でアイドル状態のスレッドがあるとする
-        \item この場合，$t$ において $\Omega$ に他の eligible なコールバックインスタンスが存在してはならない（さもなければ，アイドルスレッドにスケジューリングされる）
+        \item この場合, $t$ において $\Omega$ に他の eligible なコールバックインスタンスが存在してはならない（さもなければ, アイドルスレッドにスケジューリングされる）
     \end{itemize}
 
     \repost{mutually exclusive コールバックグループに属す $\Omega$ 内のコールバックインスタンス $c_{i, j}$ は, $c_{i, j}$ と同じコールバックグループ内のコールバックのインスタンスが実行されていない場合に eligible であり, それ以外の場合は R-blocked される}
@@ -152,15 +152,15 @@
 \begin{frame}{Lemma1 証明3}
     \begin{itemize}
         \item セクションIII-B によると, $\Omega$ のコールバックインスタンスはブロックされているか, eligibleである
-        \item そして, $c_{i}$ は, 仮定によってブロックされないので，eligible でなければならず，アイドルスレッドにスケジュールされなければならない
+        \item そして, $c_{i}$ は, 仮定によってブロックされないので, eligible でなければならず, アイドルスレッドにスケジュールされなければならない
         \item これは仮定と矛盾する $\square$
     \end{itemize}
 \end{frame}
 
 \begin{frame}{Lemma2}
     \begin{lemma}[]
-        $\mathcal{Q}_{k}=\sum_{i=1}^{|\mathcal{C}|}\left(\mathcal{I}_{k, i}+(m-1) \mathcal{I}_{k, i}^{\mathcal{B}}-\mathcal{I}_{k, i}^{\mathcal{E}}\right)$ とすると，
-        $E+\frac{\sum_{\mathcal{C}_{k} \in \Gamma \backslash\{\mathcal{C}\}} \mathcal{Q}_{k}}{m} \leq D$ の場合，以下が成り立つ
+        $\mathcal{Q}_{k}=\sum_{i=1}^{|\mathcal{C}|}\left(\mathcal{I}_{k, i}+(m-1) \mathcal{I}_{k, i}^{\mathcal{B}}-\mathcal{I}_{k, i}^{\mathcal{E}}\right)$ とすると, 
+        $E+\frac{\sum_{\mathcal{C}_{k} \in \Gamma \backslash\{\mathcal{C}\}} \mathcal{Q}_{k}}{m} \leq D$ の場合, 以下が成り立つ
 
         \begin{equation*}
             R(J) \leq E+\frac{\sum_{\mathcal{C}_{k} \in \Gamma \backslash\{\mathcal{C}\}} \mathcal{Q}_{k}}{m},

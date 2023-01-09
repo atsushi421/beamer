@@ -50,7 +50,7 @@
 \end{frame}
 
 \begin{frame}{DDS (Data Distribution Service)}
-    ノードのpublisherとsubscriberの間のメッセージ交換は，抽象\al{DDS} (Data Distribution Service) 層によって実現される
+    ノードのpublisherとsubscriberの間のメッセージ交換は, 抽象\al{DDS} (Data Distribution Service) 層によって実現される
 
     \begin{block}{抽象DDS}
         DDS とクライアントライブラリ間の通信インタフェース
@@ -210,7 +210,7 @@
     \fitimage{
         \begin{itemize}
             \item 全てのコールバックがチェックされ, 実行するコールバックを選択できない場合, スレッドは wait\_set をリセットし, wait\_set を更新する
-            \item mutually exclusive コールバックグループのコールバックは，can\_be\_taken\_from が true の場合にのみ wait\_set に追加できる
+            \item mutually exclusive コールバックグループのコールバックは, can\_be\_taken\_from が true の場合にのみ wait\_set に追加できる
         \end{itemize}
     }{figure/workflow5.jpg}
 \end{frame}
