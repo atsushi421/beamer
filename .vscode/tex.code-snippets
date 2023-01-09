@@ -40,10 +40,10 @@
 		"prefix": "2column",
 		"body": [
 			"\\begin{columns}",
-			"\\begin{column}{0.5\\linewidth}",
+			"\\begin{column}{0.5\\textwidth}",
 			"$1",
 			"\\end{column}",
-			"\\begin{column}{0.5\\linewidth}",
+			"\\begin{column}{0.5\\textwidth}",
 			"$2",
 			"\\end{column}",
 			"\\end{columns}"
