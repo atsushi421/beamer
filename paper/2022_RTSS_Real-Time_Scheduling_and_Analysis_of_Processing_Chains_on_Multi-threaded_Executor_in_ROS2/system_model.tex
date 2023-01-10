@@ -134,16 +134,16 @@
         チェーンインスタンスの応答時間 $R\left(J_{i}^{k}\right)$ は,  $J_{i}^{k}$ のリリース時刻と終了時刻の間の時間間隔
     \end{definition}
     \begin{definition}[チェーンの最悪応答時間$\mathcal{R}_{i}^{w c}$]
-        チェーン $\mathcal{C}_{i}$ の最悪応答時間 $\mathcal{R}_{i}^{w c}$ は, そのすべてのインスタンスの中で最大の応答時間
+        チェーン $\mathcal{C}_{i}$ の最悪応答時間 $\mathcal{R}_{i}^{w c}$ は, その全てのインスタンスの中で最大の応答時間
     \end{definition}
 \end{frame}
 
 \begin{frame}{スケジュール可能の定義}
     \begin{definition}[チェーン$\mathcal{C}_{i}$がスケジュール可能]
-        チェーンのすべてのインスタンスがデッドラインを満たしている場合 (すなわち, $\mathcal{R}_{i}^{w c} \leq D_{i}$), チェーン $\mathcal{C}_{i}$はスケジュール可能である
+        チェーンの全てのインスタンスがデッドラインを満たしている場合 (すなわち, $\mathcal{R}_{i}^{w c} \leq D_{i}$), チェーン $\mathcal{C}_{i}$はスケジュール可能である
     \end{definition}
     \begin{definition}[チェーンセット$\Gamma$がスケジュール可能]
-        $\Gamma$ のすべてのチェーンがスケジュール可能である場合 (すなわち, $\forall i: \mathcal{R}_{i}^{w c} \leq D_{i}$), $\Gamma$はスケジュール可能である
+        $\Gamma$ の全てのチェーンがスケジュール可能である場合 (すなわち, $\forall i: \mathcal{R}_{i}^{w c} \leq D_{i}$), $\Gamma$はスケジュール可能である
     \end{definition}
 \end{frame}
 
@@ -170,7 +170,7 @@
 
 \begin{frame}{pending}
     \begin{definition}[pending]
-        コールバックインスタンス$c_{i, j}$がリリースされ, 自身の $j-1$ 以前のインスタンスがすべて実行中か終了しているとき, そのインスタンスは pending である
+        コールバックインスタンス$c_{i, j}$がリリースされ, 自身の $j-1$ 以前のインスタンスが全て実行中か終了しているとき, そのインスタンスは pending である
     \end{definition}
 \end{frame}
 
@@ -243,7 +243,7 @@
                   ポーリングポイントは $\Omega$ が更新される時点である
               \end{definition}
               \vspace{3mm}
-        \item $\Omega$ が更新されると, まず $\Omega$ が $\emptyset$ に設定され, その後, 現在すべての ready コールバックインスタンスが $\Omega$ に追加される
+        \item $\Omega$ が更新されると, まず $\Omega$ が $\emptyset$ に設定され, その後, 現在全ての ready コールバックインスタンスが $\Omega$ に追加される
     \end{itemize}
 \end{frame}
 
@@ -265,7 +265,7 @@
 \begin{frame}{コールバックインスタンスの優先度}
     \begin{itemize}
         \item eligibleなコールバックインスタンスを選択する順序はそれらの優先度によって決定される
-        \item 各コールバックには固定の固有の優先度があり, すべてのインスタンスがこの優先度を継承する
+        \item 各コールバックには固定の固有の優先度があり, 全てのインスタンスがこの優先度を継承する
         \item \db{$h p\left(c_{i, j}\right)$} を使用して, コールバック $c_{i, j}$ よりも優先度の高いコールバックのセットを示す
     \end{itemize}
 \end{frame}
@@ -294,7 +294,7 @@
 \begin{frame}{例の前提2}
     \fitimage{
         \begin{itemize}
-            \item 表はすべてのコールバックの優先度と WCET を示す
+            \item 表は全てのコールバックの優先度と WCET を示す
             \item 数字が小さいほど優先度が高くなる
         \end{itemize}
     }{figure/system_model_example_b.png}

@@ -14,7 +14,7 @@
                   \item $i\in[1,|\mathcal{C}|]$
                   \item \db{$|\mathcal{C}|$}: $\mathcal{C}$内のコールバックの数
               \end{itemize}
-        \item $\mathcal{C}$ 以外のすべてのチェーンは干渉チェーンと見なす
+        \item $\mathcal{C}$ 以外の全てのチェーンは干渉チェーンと見なす
     \end{itemize}
 \end{frame}
 
@@ -29,7 +29,7 @@
 \begin{frame}{仮定}
     \begin{itemize}
         \item 一般性を失うことなく, $s_{i}>r+D$ の場合は $s_{i}=r+D$ とし, $r_{i}>r+D$ の場合は $r_{i}=r+D$ とする
-        \item $J$ のデッドラインよりも早いデッドラインを持つすべてのチェーンインスタンスがスケジュール可能であるとする \notes{この仮定はセクション V の後半で削除される}
+        \item $J$ のデッドラインよりも早いデッドラインを持つ全てのチェーンインスタンスがスケジュール可能であるとする \notes{この仮定はセクション V の後半で削除される}
     \end{itemize}
 \end{frame}
 
@@ -57,8 +57,8 @@
 
 \begin{frame}{仮定から導かれること}
     \begin{itemize}
-        \item  $r+D$ より前のデッドラインを持つすべてのチェーンインスタンスはスケジュール可能であると仮定されるため, 明らかに, 同じ干渉チェーンの最大 1 つのコールバックインスタンスが $[r, r+D)$ でいつでも実行される
-        \item したがって, 干渉チェーン $\mathcal{C}_{k}$ のすべてのコールバックインスタンスは, $\left[r_{i}, s_{i}\right)$ 中に順次実行する必要がある
+        \item  $r+D$ より前のデッドラインを持つ全てのチェーンインスタンスはスケジュール可能であると仮定されるため, 明らかに, 同じ干渉チェーンの最大 1 つのコールバックインスタンスが $[r, r+D)$ でいつでも実行される
+        \item したがって, 干渉チェーン $\mathcal{C}_{k}$ の全てのコールバックインスタンスは, $\left[r_{i}, s_{i}\right)$ 中に順次実行する必要がある
     \end{itemize}
 \end{frame}
 
@@ -89,7 +89,7 @@
 
 \begin{frame}{コールバックインスタンスへの干渉作業}
     \begin{definition}[コールバックインスタンスへの干渉作業]
-        干渉チェーン $\mathcal{C}_{k}$ から$c_{i}$ への干渉作業 $\mathcal{I}_{k, i}$ は, $\mathcal{S}_{k, i}$ のすべての値の合計である
+        干渉チェーン $\mathcal{C}_{k}$ から$c_{i}$ への干渉作業 $\mathcal{I}_{k, i}$ は, $\mathcal{S}_{k, i}$ の全ての値の合計である
     \end{definition}
     \begin{itemize}
         \item 自明に, $\mathcal{I}_{k}=\sum_{i=1}^{|\mathcal{C}|} \mathcal{I}_{k, i}$ である
@@ -123,7 +123,7 @@
 
 \begin{frame}{Lemma1}
     \begin{lemma}[]
-        $c_{i}$ がブロックされていない場合, すべての $m$ スレッドは $\left[r_{i}, s_{i}\right)$ の任意の時点でビジーである
+        $c_{i}$ がブロックされていない場合, 全ての $m$ スレッドは $\left[r_{i}, s_{i}\right)$ の任意の時点でビジーである
     \end{lemma}
 \end{frame}
 
@@ -141,7 +141,7 @@
 
 % \begin{frame}{Lemma1 証明2}
 %     \begin{itemize}
-%         \item $c_{i}$ はブロックされていないため, $c_{i}$ の以前のインスタンスはすべて $r$ で終了し, $c_{i}$ は $t$ で ready である必要がある
+%         \item $c_{i}$ はブロックされていないため, $c_{i}$ の以前のインスタンスは全て $r$ で終了し, $c_{i}$ は $t$ で ready である必要がある
 %         \item したがって, $\Omega$ を更新しなければならず, $c_{i}$ は $\Omega$ に追加される必要がある
 
 %     \end{itemize}
@@ -167,7 +167,7 @@
     \end{lemma}
 \end{frame}
 
-\begin{frame}{寄与}
+\begin{frame}{寄与}[label=defPhi]
     \begin{itemize}
         \item Lemma 2 から, $J$ のスケジューリング可能性は, 各サブ干渉シーケンス $\mathcal{S}_{k, i}$ に関する $\mathcal{I}_{k, i}+(m-1) \mathcal{I}_{k, i}^{\mathcal{B}}-\mathcal{I}_{k, i}^{\mathcal{E}}$ の値によって決定される
         \item この値を $\mathcal{S}_{k, i}$ の $\mathcal{Q}_{k}$ への\al{寄与}と呼び, 次のように定義する
@@ -245,7 +245,7 @@
         \item Theorem 1 の境界は悲観的である可能性がある
         \item 理由は以下２つ
         \begin{itemize}
-            \item $J$ 内の各コールバックインスタンスへのサブ干渉シーケンスが重複しないようにする必要があるため, $J$ 内のコールバックと同じmutually exclusiveグループに属すすべてのコールバックインスタンスが $\sum_{i=1}^{|\mathcal{C}|} \mathcal{I}_{k, i}^{\mathcal{B}}$ に寄与できるわけではない
+            \item $J$ 内の各コールバックインスタンスへのサブ干渉シーケンスが重複しないようにする必要があるため, $J$ 内のコールバックと同じmutually exclusiveグループに属す全てのコールバックインスタンスが $\sum_{i=1}^{|\mathcal{C}|} \mathcal{I}_{k, i}^{\mathcal{B}}$ に寄与できるわけではない
             \item ROS 2 スケジューリングポリシーでは, ready のコールバックインスタンスがすぐに $\Omega$ に追加されない可能性があるため, $J$ の問題ウィンドウ中にリリースされた $\mathcal{C}_{k}$ からの一部のコールバックインスタンスが $J$ に干渉しない可能性がある
         \end{itemize}
     \end{itemize}
