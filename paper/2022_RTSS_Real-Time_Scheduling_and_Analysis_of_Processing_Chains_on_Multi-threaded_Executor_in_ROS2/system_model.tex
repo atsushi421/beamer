@@ -98,7 +98,13 @@
 
     \begin{itemize}
         \item \tu{本論文では, $m$ スレッド上のマルチスレッドエグゼキュータによって}\\\tu{スケジュールされる一連の独立したチェーン $\Gamma=\left\{\mathcal{C}_{1}, \mathcal{C}_{2}, \cdots, \mathcal{C}_{|\Gamma|}\right\}$ を検討}
+        \begin{itemize}
+            \item \db{$|\Gamma|$}: $\Gamma$内のチェインの数
+        \end{itemize}
         \item 各チェーン $\mathcal{C}_{i} \in \Gamma$ は, コールバックのシーケンス $\mathcal{C}_{i}=\left\{c_{i, 1}, c_{i, 2}, \cdots, c_{i,\left|\mathcal{C}_{i}\right|}\right\}$ で構成される
+        \begin{itemize}
+            \item \db{$\left|\mathcal{C}_{i}\right|$}: $\mathcal{C}_{i}$内のコールバックの数
+        \end{itemize}
     \end{itemize}
 \end{frame}
 
@@ -168,22 +174,22 @@
     \end{definition}
 \end{frame}
 
-\begin{frame}{ready, P-blocked}
-    \begin{definition}[P-blocked]
-        $c_{i, j}$ が mutually exclusive コールバックグループに属しており, $c_{i, j}$ が pending かつ, $c_{i, j}$ と同じグループ内のコールバックのインスタンス ($c_{i, j}$ 自体を含む) が実行されている場合, $c_{i, j}$ は P-blocked である
+\begin{frame}{ready, Pブロック}
+    \begin{definition}[Pブロック]
+        $c_{i, j}$ が mutually exclusive コールバックグループに属しており, $c_{i, j}$ が pending かつ, $c_{i, j}$ と同じグループ内のコールバックのインスタンス ($c_{i, j}$ 自体を含む) が実行されている場合, $c_{i, j}$ はPブロックされている
     \end{definition}
     \begin{definition}[ready]
-        コールバックインスタンスが pending であり, P-blockedでない場合, そのコールバックインスタンスは ready である
+        コールバックインスタンスが pending であり, Pブロックされていない場合, そのコールバックインスタンスは ready である
     \end{definition}
 \end{frame}
 
 \begin{frame}{pendingコールバックインスタンスの状態}
-    pendingコールバックインスタンス$c_{i, j}$は, ready または P-blocked のいずれか
+    pendingコールバックインスタンス$c_{i, j}$は, ready または Pブロックされている
     \begin{itemize}
         \item  $c_{i, j}$ が mutually exclusive コールバックグループに属している場合:
               \begin{itemize}
                   \item $c_{i, j}$ と同じコールバックグループ内のコールバックのインスタンスが実行されていない場合, $c_{i, j}$ はready
-                  \item それ以外の場合, $c_{i, j}$ は P-blocked
+                  \item それ以外の場合, $c_{i, j}$ はPブロックされている
               \end{itemize}
         \item  $c_{i, j}$ がreentrantコールバックグループに属している場合:
               \begin{itemize}
@@ -199,23 +205,23 @@
     \end{itemize}
 \end{frame}
 
-\begin{frame}{R-blocked, eligible}
+\begin{frame}{Rブロック, eligible}
     $\Omega$ 内の ready のコールバックインスタンス $c_{i, j}$ が実行のために選択される条件は eligible であること
-    \begin{definition}[R-blocked]
-        $c_{i, j}$ が mutually exclusive コールバックグループに属すかつ, $\Omega$ 内に存在し, $c_{i, j}$ と同じグループ内のコールバックのインスタンスが実行されている場合, $c_{i, j}$ は R-blocked である
+    \begin{definition}[Rブロック]
+        $c_{i, j}$ が mutually exclusive コールバックグループに属すかつ, $\Omega$ 内に存在し, $c_{i, j}$ と同じグループ内のコールバックのインスタンスが実行されている場合, $c_{i, j}$ は Rブロックされている
     \end{definition}
     \begin{definition}[eligible]
-        $c_{i, j}$ が $\Omega$ 内に存在し, R-blocked でない場合, eligible である
+        $c_{i, j}$ が $\Omega$ 内に存在し, Rブロックされていない場合, eligible である
     \end{definition}
 \end{frame}
 
 \begin{frame}{$\Omega$ 内のコールバックインスタンスの状態}
-    $\Omega$ 内のコールバックインスタンスは eligible であるか, R-blockedされている
+    $\Omega$ 内のコールバックインスタンスは eligible であるか, Rブロックされている
     \begin{itemize}
         \item $c_{i, j}$ が mutually exclusive コールバックグループに属す場合:
               \begin{itemize}
                   \item $c_{i, j}$ と同じコールバックグループ内のコールバックのインスタンスが実行されていない場合, $c_{i, j}$ は eligible
-                  \item それ以外の場合, $c_{i, j}$ は R-blocked
+                  \item それ以外の場合, $c_{i, j}$ はRブロックされている
               \end{itemize}
         \item $c_{i, j}$ が reentrant コールバックグループに属す場合:
               \begin{itemize}
@@ -260,16 +266,16 @@
     \begin{itemize}
         \item eligibleなコールバックインスタンスを選択する順序はそれらの優先度によって決定される
         \item 各コールバックには固定の固有の優先度があり, すべてのインスタンスがこの優先度を継承する
-        \item $h p\left(c_{i, j}\right)$ を使用して, コールバック $c_{i, j}$ よりも優先度の高いコールバックのセットを示す
+        \item \db{$h p\left(c_{i, j}\right)$} を使用して, コールバック $c_{i, j}$ よりも優先度の高いコールバックのセットを示す
     \end{itemize}
 \end{frame}
 
-\begin{frame}{blocked}
-    \begin{definition}[コールバックインスタンス $c_{i, j}$ が blocked]
-        $c_{i, j}$ が P-blockedまたは R-blockedのいずれかである場合, blocked である
+\begin{frame}{ブロック}
+    \begin{definition}[コールバックインスタンス $c_{i, j}$ がブロックされている]
+        $c_{i, j}$ が Pブロックまたは Rブロックされている場合, ブロックされている
     \end{definition}
-    \begin{definition}[チェーンインスタンス $J_{i}^{k}$ が blocked]
-        $J_{i}^{k}$ 内のコールバックインスタンスが blocked である場合, $J_{i}^{k}$ は blocked である
+    \begin{definition}[チェーンインスタンス $J_{i}^{k}$ がブロックされている]
+        $J_{i}^{k}$ 内のコールバックインスタンスがブロックされている場合, $J_{i}^{k}$ はブロックされている
     \end{definition}
     \begin{definition}[チェーンインスタンス $J_{i}^{k}$ が実行中]
         $J_{i}^{k}$内のコールバックインスタンスが実行中の場合, $J_{i}^{k}$ は実行中である
@@ -303,10 +309,10 @@
     }{figure/system_model_example_c_d.png}
 \end{frame}
 
-\begin{frame}{R-blocked 例}
+\begin{frame}{Rブロック例}
     \fullimage{figure/system_model_example_sup1.jpg}
 \end{frame}
 
-\begin{frame}{P-blocked 例}
+\begin{frame}{Pブロック例}
     \fullimage{figure/system_model_example_p_blocked.jpg}
 \end{frame}
