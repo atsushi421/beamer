@@ -35,7 +35,7 @@
     \begin{itemize}
         \item (3) 相互に排他的なグループの数 $\left|\bigcup_{\forall \mathcal{C}_{i} \in \Gamma} \theta_{i}\right|$ は, $g$ をパラメーターとして $[0, g]$ の範囲内でランダムに選択され, 相互に排他的なグループ内のコールバックの総数は, $\alpha$ が $[0.1,1]$ に収まる比率である $\alpha \sum_{i=1}^{|\Gamma|}\left|\mathcal{C}_{i}\right|$ によって決定される
 \item 相互コールバックグループのコールバックは, すべてのコールバックからランダムに選択され, 相互に排他的な各コールバックグループに分散される
-\item 残りのコールバックはすべて再入可能コールバックグループに割り当てられる
+\item 残りのコールバックはすべてreentrantコールバックグループに割り当てられる
 \item (4) 各コールバックの優先度は, セット $\left\{1,2, \cdots, \sum_{i=1}^{|\Gamma|}\left|\mathcal{C}_{i}\right|\right\}$ からランダムに選択された一意の ID に従う
 \item 数値が小さいほど, 優先度が高くなる
     \end{itemize}
