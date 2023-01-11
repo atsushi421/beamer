@@ -1,5 +1,5 @@
 %%%%% Please set the path to 'beamer' directory in your environment %%%%%
-\newcommand{\beamerDir}[0]{C:/Users/atsushi/Documents/workspace/env/Beamer/beamer/beamer/}
+\newcommand{\beamerDir}[0]{/mnt/c/Users/atsushi/Documents/workspace/env/Beamer/beamer/beamer/}
 
 
 %%%%% Load setting %%%%%
@@ -7,8 +7,8 @@
 
 
 %%%%% Front Cover %%%%%
-\title{Sample}
-\subtitle{XXX}
+\title{Title}
+\subtitle{year conference}
 \author{矢野 篤志}
 \date{\today}
 \institute[EMBIV]{EMBIV}
@@ -17,15 +17,26 @@
 
 %%%%% Document Start %%%%%
 \begin{document}
+
 \maketitle
+
+% \input{abstract.tex}
 
 \begin{frame}{Outline}
     \setbeamertemplate{section in toc}[sections numbered]
-    \tableofcontents
+    \scriptsize\tableofcontents[hideallsubsections]
 \end{frame}
 
 % \input{XXX.tex}
 
 \lastpage
+
+\section*{Appendix}
+% Reference
+% \begin{frame}[allowframebreaks]{Reference}
+%     \beamertemplatetextbibitems
+%     \bibliographystyle{unsrt}
+%     \bibliography{\beamerDir/bibtex/master_reference}
+% \end{frame}
 
 \end{document}
