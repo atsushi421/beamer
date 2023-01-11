@@ -11,7 +11,7 @@
 \begin{frame}{ROS 2}
     \fitimage{
         \al{ROS 2} は OS 上の複数の抽象化レイヤの統合実装
-    }{figure/ros2_system.png}
+    }{ros2_system.png}
 \end{frame}
 
 \begin{frame}{Publish/Subscribeパラダイム}
@@ -66,14 +66,14 @@
             \item \al{処理チェーン}は特定のイベントによってトリガされ, 複数のエグゼキュータにまたがる
             \item チェーンの各頂点はコールバックを表す
         \end{itemize}
-    }{figure/multi_threaded_executor.png}
+    }{multi_threaded_executor.png}
 \end{frame}
 
 \begin{frame}{本論文の分析の焦点}
     \fitimage{
         \tu{本論文では単一のエグゼキュータにおけるチェーンの応答時間に焦点を当てる}
         \notes{CPAアプローチ*によってチェーンが複数のエグゼキュータにまたがる場合に拡張できる}
-    }{figure/multi_threaded_executor.png}
+    }{multi_threaded_executor.png}
 
     \source{*D.Casini et al., “Response time analysis of ROS 2 processing chains under reservation-based scheduling,” in ECRTS, 2019.}
 \end{frame}
@@ -84,7 +84,7 @@
             \item コールバックは必ず1つの\al{コールバックグループ}に属す
             \item エグゼキュータ内のコールバックは, 異なるコールバックグループに属す可能性がある
         \end{itemize}
-    }{figure/multi_threaded_executor.png}
+    }{multi_threaded_executor.png}
 
 \end{frame}
 
@@ -178,7 +178,7 @@
 \end{frame}
 
 \begin{frame}{スレッドのワークフロー全体像}
-    \fullimage{figure/thread_workflow.png}
+    \fullimage{thread_workflow.png}
 \end{frame}
 
 \begin{frame}{[ワークフロー] low\_priority\_wait\_mutex}
@@ -188,21 +188,21 @@
             \item すなわち wait\_set を変更できるのは一度に 1 つのスレッドのみ
             \item それ以外の場合, スレッドはブロックされる
         \end{itemize}
-    }{figure/workflow1.jpg}
+    }{workflow1.jpg}
 \end{frame}
 
 \begin{frame}{[ワークフロー] mutually exclusiveコールバックグループの挙動1}
-    \fullimage{figure/workflow2.jpg}
+    \fullimage{workflow2.jpg}
 \end{frame}
 
 \begin{frame}{[ワークフロー] コールバック選択後}
     \fitimage{
         コールバックが選択されると, スレッドは wait\_set からコールバックを削除し, low\_priority\_wait\_mutex をリリースする
-    }{figure/workflow4.jpg}
+    }{workflow4.jpg}
 \end{frame}
 
 \begin{frame}{[ワークフロー] mutually exclusiveコールバックグループの挙動2}
-    \fullimage{figure/workflow3.jpg}
+    \fullimage{workflow3.jpg}
 \end{frame}
 
 
@@ -212,7 +212,7 @@
             \item 全てのコールバックがチェックされ, 実行するコールバックを選択できない場合, スレッドは wait\_set をリセットし, wait\_set を更新する
             \item mutually exclusive コールバックグループのコールバックは, can\_be\_taken\_from が true の場合にのみ wait\_set に追加できる
         \end{itemize}
-    }{figure/workflow5.jpg}
+    }{workflow5.jpg}
 \end{frame}
 
 \begin{frame}{[ワークフロー] コールバックを wait\_set に追加できない場合}
@@ -221,7 +221,7 @@
             コールバックを wait\_set に追加できない場合, スレッドは low\_priority\_wait\_mutex をリリースしてアイドル状態になる
         \end{column}
         \begin{column}{0.6\textwidth}
-            \fullimage{figure/workflow6.jpg}
+            \fullimage{workflow6.jpg}
         \end{column}
     \end{columns}
 \end{frame}

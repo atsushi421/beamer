@@ -83,34 +83,34 @@
 
 \begin{frame}{評価指標}
     \begin{itemize}
-        \item パフォーマンスは\al{受入}で評価する
-        \item 受入: スケジュール可能なタスクシステムの数とタスクシステム全体の数の比率
-        \item 各図の $y$ 軸は受入を示す
+        \item パフォーマンスは\al{受入率}で評価する
+        \item 受入率: スケジュール可能なタスクシステムの数とタスクシステム全体の数の比率
+        \item 各図の $y$ 軸は受入率を示す
     \end{itemize}
 \end{frame}
 
-\begin{frame}{異なる $U_{\text {norm }}$ における受入}
-    \fullimage{figure/exp_random_u.png}
+\begin{frame}{異なる $U_{\text {norm }}$ における受入率}
+    \fullimage{exp_random_u.png}
 \end{frame}
 
-\begin{frame}{異なる $n$ における受入}
-    \fullimage{figure/exp_random_n.png}
+\begin{frame}{異なる $n$ における受入率}
+    \fullimage{exp_random_n.png}
 \end{frame}
 
-\begin{frame}{異なる $b$ における受入}
-    \fullimage{figure/exp_random_b.png}
+\begin{frame}{異なる $b$ における受入率}
+    \fullimage{exp_random_b.png}
 \end{frame}
 
-\begin{frame}{異なる $g$ における受入}
-    \fullimage{figure/exp_random_n.png}
+\begin{frame}{異なる $g$ における受入率}
+    \fullimage{exp_random_n.png}
 \end{frame}
 
-\begin{frame}{異なる $\alpha$ における受入}
-    \fullimage{figure/exp_random_alpha.png}
+\begin{frame}{異なる $\alpha$ における受入率}
+    \fullimage{exp_random_alpha.png}
 \end{frame}
 
-\begin{frame}{異なるスレッド数 $m$ における受入}
-    \fullimage{figure/exp_random_m.png}
+\begin{frame}{異なるスレッド数 $m$ における受入率}
+    \fullimage{exp_random_m.png}
 \end{frame}
 
 \begin{frame}{結果の考察}
@@ -154,7 +154,7 @@
             \item ケーススタディの簡単な説明を表に示す
             \item これらは Choiら*が現実的な自律走行システムから開発したサブチェーンを引用
         \end{itemize}
-    }{figure/exp_case_study_desc.png}
+    }{exp_case_study_desc.png}
     \source{*H.Choi et al., “PiCas: New design of prioritydriven chain-aware scheduling for ros2,” in RTAS, 2021.}
 \end{frame}
 
@@ -173,7 +173,7 @@
             \item マルチスレッド実行系でスケジューリングされた各チェインの応答時間はシングルスレッド実行系よりはるかに小さいことがわかる
             \item さらに, 我々の方法は安全であり, 測定された下限値に近い
         \end{itemize}
-    }{figure/exp_case_study_1.png}
+    }{exp_case_study_1.png}
 \end{frame}
 
 \begin{frame}{ケーススタディ2による実験で示すこと}
@@ -186,13 +186,13 @@
 \begin{frame}{ケーススタディ2による実験結果}
     \fitimage{
         全てのコールバックが 同じmutually exclusiveグループに属すとして, 結果を表に示す
-    }{figure/exp_case_study_2.png}
+    }{exp_case_study_2.png}
 \end{frame}
 
 \begin{frame}{観測された問題}
     \fitimage{
         マルチスレッドスケジューラにおける $\mathcal{C}_3$ の応答時間は, シングルスレッドエグゼキュータでの応答時間よりもはるかに長い
-    }{figure/exp_case_study_2_sup.png}
+    }{exp_case_study_2_sup.png}
 \end{frame}
 
 \begin{frame}{観測された問題の原因考察1}
@@ -214,11 +214,11 @@
             \item トレースツール ROS2\_tracing で生成したケーススタディ2の結果のシーケンスの一部を図に示す
             \item 各チェーンのチェーンインスタンスは, 赤い矢印でマークされた時点で同時にリリースされる
         \end{itemize}
-    }{figure/exp_problem_ex.png}
+    }{exp_problem_ex.png}
 \end{frame}
 
 \begin{frame}{観測された問題の例補足}
-    \fullimage{figure/exp_problem_ex_sup.jpg}
+    \fullimage{exp_problem_ex_sup.jpg}
 \end{frame}
 
 \begin{frame}{観測された問題からの示唆}
