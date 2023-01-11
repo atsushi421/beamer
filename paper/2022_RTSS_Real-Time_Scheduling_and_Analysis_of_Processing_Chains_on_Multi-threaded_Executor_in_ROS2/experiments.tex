@@ -6,7 +6,7 @@
 
 \begin{frame}{}
     \begin{itemize}
-        \item まず, Theorem 1 とTheorem 2 の方法を合成ワークロードとケーススタディの両方で実験を行うことによって評価する
+        \item まず, \hlink{theorem1}{Theorem 1}  \hlink{theorem2}{Theorem 2} の方法を合成ワークロードとケーススタディの両方で実験を行うことによって評価する
         \item 次に, マルチスレッドエグゼキュータとシングルスレッドエグゼキュータのリアルタイムパフォーマンスを比較する
         \item 特に, マルチスレッドのエグゼキュータによってスケジュールされたチェーンの応答時間は, シングルスレッドのエグゼキュータよりもさらに悪い可能性があることを示す
     \end{itemize}
@@ -57,9 +57,9 @@
 
 \begin{frame}{パフォーマンス比較方法}
     \begin{itemize}
-        \item  \al{OUR-1}: Theorem 3 とTheorem 1 によって実行されるスケジュール可能性テスト
+        \item  \al{OUR-1}: \hlink{theorem3}{Theorem 3}  \hlink{theorem1}{Theorem 1} によって実行されるスケジュール可能性テスト
 
-        \item  \al{OUR-2}: Theorem 3 とTheorem 2 によって実行されるスケジュール可能性テスト
+        \item  \al{OUR-2}: \hlink{theorem3}{Theorem 3}  \hlink{theorem2}{Theorem 2} によって実行されるスケジュール可能性テスト
 
         \item  \al{SIMU}: 全てのチェーンが最初のインスタンスを同時にリリースし, 各チェーンができるだけ早くインスタンスをリリースし, 各コールバックインスタンスが WCET で実行されると仮定した場合の, シミュレーションでの各チェーンの観測された最大応答時間
               \begin{itemize}
@@ -161,7 +161,7 @@
 \begin{frame}{実験方法}
     \begin{itemize}
         \item 2スレッドのマルチスレッド実行系とシングルスレッド実行系でそれぞれ5分間実行し, 各チェーンの平均ケース応答時間（ACRT）と最悪ケース応答時間（WCRT）を測定する（これは安全境界ではない）
-        \item Theorem 2 により各鎖の応答時間境界を計算し, 観測された下限と比較する
+        \item \hlink{theorem2}{Theorem 2} により各鎖の応答時間境界を計算し, 観測された下限と比較する
     \end{itemize}
 \end{frame}
 

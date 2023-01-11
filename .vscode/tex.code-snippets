@@ -73,17 +73,21 @@
 	"theorem": {
 		"prefix": "theorem",
 		"body": [
-			"\\begin{theorem}[$1]",
-			"$2",
-			"\\end{theorem}"
+			"\\begin{frame}[label=theorem$1]{Theorem $2}",
+			"\\begin{theorem}[]",
+			"$3",
+			"\\end{theorem}",
+			"\\end{frame}"
 		]
 	},
 	"lemma": {
 		"prefix": "lemma",
 		"body": [
-			"\\begin{lemma}[$1]",
-			"$2",
-			"\\end{lemma}"
+			"\\begin{frame}[label=lemma$1]{Lemma $2}",
+			"\\begin{lemma}[]",
+			"$3",
+			"\\end{lemma}",
+			"\\end{frame}"
 		]
 	},
 	"definition": {

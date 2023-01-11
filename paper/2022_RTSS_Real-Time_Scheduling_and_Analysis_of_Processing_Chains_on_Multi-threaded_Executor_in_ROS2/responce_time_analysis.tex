@@ -18,7 +18,7 @@
     \end{itemize}
 \end{frame}
 
-\begin{frame}{分析対象の時間間隔}
+\begin{frame}{問題ウィンドウ}
     \begin{itemize}
         \item 本論文の意図は, 干渉チェーンからのワークロードによって遅延された $J$ 内のコールバックインスタンスがデッドラインに間に合わない可能性があるかを判断すること
         \item この観点から, \tb{時間間隔 $\left[r, \min \left\{s_{|\mathcal{C}|}, r+D\right\}\right)$ を $J$ の\al{問題ウィンドウ}とし,}\\ \tb{問題ウィンドウ中の $J$ のコールバックインスタンスの実行に焦点を当てる}
@@ -26,22 +26,15 @@
     \end{itemize}
 \end{frame}
 
-\begin{frame}{仮定}
-    \begin{itemize}
-        \item 一般性を失うことなく, $s_{i}>r+D$ の場合は $s_{i}=r+D$ とし, $r_{i}>r+D$ の場合は $r_{i}=r+D$ とする
-        \item $J$ のデッドラインよりも早いデッドラインを持つ全てのチェーンインスタンスがスケジュール可能であるとする \notes{この仮定はセクション V の後半で削除される}
-    \end{itemize}
-\end{frame}
-
 \begin{frame}{以降の流れ}
-    \begin{itemize}
-        \item 最初に, $R(J)$の境界問題を各干渉チェーン $\mathcal{C}_{k}$ に関連する $\mathcal{Q}_{k}$ の境界問題に帰着させる手法を開発する
+    \begin{enumerate}
+        \item $R(J)$の境界問題を各干渉チェーン $\mathcal{C}_{k}$ に関連する $\mathcal{Q}_{k}$ の境界問題に帰着させる手法を開発
               \begin{itemize}
                   \item $\mathcal{Q}_{k}$ は$\mathcal{C}_{k}$の実行が$J$の終了時間に与える影響を特徴付けるために開発した項
               \end{itemize}
-        \item 次に, 各 $\mathcal{C}_{k}$ の $\mathcal{Q}_{k}$ を制限する
-        \item 最後に, 上記の結果を組み合わせて, スケジューリング可能性と応答時間の分析を実行するアルゴリズムを開発する
-    \end{itemize}
+        \item 各 $\mathcal{C}_{k}$ の $\mathcal{Q}_{k}$ を制限
+        \item 上記の結果を組み合わせて, スケジューリング可能性と応答時間の分析を実行するアルゴリズムを開発
+    \end{enumerate}
 \end{frame}
 
 
@@ -52,6 +45,13 @@
     \begin{itemize}
         \item ROS 2 ではコールバックインスタンスはバッチでスケジュールされ, 各コールバックインスタンスはノンプリエンプティブに実行されるため, \al{干渉チェーン}が $J$ のコールバックインスタンスの実行に干渉する可能性がある
         \item 以下ではまず, $J$ のコールバックインスタンスの実行を遅らせる可能性のある干渉チェーンからのワークロードを特定する
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{以降で使用される仮定}
+    \begin{itemize}
+        \item 一般性を失うことなく, $s_{i}>r+D$ の場合は $s_{i}=r+D$ とし, $r_{i}>r+D$ の場合は $r_{i}=r+D$ とする
+        \item $J$ のデッドラインよりも早いデッドラインを持つ全てのチェーンインスタンスがスケジュール可能であるとする \notes{この仮定はセクション V の後半で削除される}
     \end{itemize}
 \end{frame}
 
@@ -66,9 +66,9 @@
     \begin{definition}[サブ干渉シーケンス]
         $\mathcal{C}_{k}$ から $c_{i}$ へのサブ干渉シーケンス $\mathcal{S}_{k, i}=\left\langle e_{k, a}^{\prime}, e_{k, b}^{\prime}, \cdots\right\rangle$ は, \\$\left[r_{i}, s_{i}\right)$ の間に実行された $\mathcal{C}_{k}$ のコールバックインスタンスの実行時間シーケンスである
             \notes{\db{$e_{k, a}^{\prime}$}: コールバックインスタンス $c_{k, a}$ が $\left[r_{i}, s_{i}\right)$ の間に実行された時間の長さ}
+            \notes{$r_{i}=s_{i}$ の場合は $\mathcal{S}_{k, i}=\langle 0\rangle$}
     \end{definition}
     \vspace{5mm}
-    $r_{i}=s_{i}$ の場合は $\mathcal{S}_{k, i}=\langle 0\rangle$ となる
 \end{frame}
 
 \begin{frame}{サブ干渉シーケンスの例}
@@ -91,13 +91,12 @@
     \begin{definition}[コールバックインスタンスへの干渉作業]
         干渉チェーン $\mathcal{C}_{k}$ から$c_{i}$ への干渉作業 $\mathcal{I}_{k, i}$ は, $\mathcal{S}_{k, i}$ の全ての値の合計である
     \end{definition}
-    \begin{itemize}
-        \item 自明に, $\mathcal{I}_{k}=\sum_{i=1}^{|\mathcal{C}|} \mathcal{I}_{k, i}$ である
-    \end{itemize}
+    \vspace{5mm}
+    自明に, $\mathcal{I}_{k}=\sum_{i=1}^{|\mathcal{C}|} \mathcal{I}_{k, i}$ である
 \end{frame}
 
 \begin{frame}{干渉作業の分割}
-    $c_{i}$ の状態に応じて, $\mathcal{I}_{k, i}$ を 3 つに分割する
+    $c_{i}$ の状態に応じて, $\mathcal{I}_{k, i}$ を以下 3 つに分割する
     \begin{itemize}
         \item \desc{$\mathcal{I}_{k, i}^{\mathcal{P}}$}{\\$c_{i}$ がブロックされている間に, $c_{i}$ と同じコールバックグループに属す $\mathcal{C}_{k}$ のコールバックインスタンスが実行された合計時間}
         \item \desc{$\mathcal{I}_{k, i}^{\mathcal{E}}$}{\\$c_{i}$ がブロックされている間に, $c_{i}$ と異なるコールバックグループに属す $\mathcal{C}_{k}$ のコールバックインスタンスが実行された合計時間}
@@ -107,7 +106,7 @@
 
 \begin{frame}{$\mathcal{I}_{k, i}^{\mathcal{B}}$}
     \begin{itemize}
-        \item \desc{$\mathcal{I}_{k, i}^{\mathcal{B}}$}{\\$c_{i}$ がブロックされているかどうかに関係なく, $c_{i}$ と同じmutually exclusive コールバックグループに属す $\mathcal{C}_{k}$ のコールバックインスタンスが $\left[r_{i}, s_{i}\right)$ に実行された合計時間}
+        \item \desc{$\mathcal{I}_{k, i}^{\mathcal{B}}$}{\\$c_{i}$ がブロックされているかどうかに関係なく, $c_{i}$ と同じmutually exclusive コールバックグループに属す $\mathcal{C}_{k}$ のコールバックインスタンスが $\left[r_{i}, s_{i}\right)$ に実行された時間の総和}
         \item 自明に, $\mathcal{I}_{k, i}^{\mathcal{P}} \leq$  $\mathcal{I}_{k, i}^{\mathcal{B}}$
     \end{itemize}
 \end{frame}
@@ -121,7 +120,7 @@
     \end{itemize}
 \end{frame}
 
-\begin{frame}{Lemma1}
+\begin{frame}{Lemma 1}
     \begin{lemma}[]
         $c_{i}$ がブロックされていない場合, 全ての $m$ スレッドは $\left[r_{i}, s_{i}\right)$ の任意の時点でビジーである
     \end{lemma}
@@ -156,7 +155,7 @@
 %     \end{itemize}
 % \end{frame}
 
-\begin{frame}{Lemma2}
+\begin{frame}[label=lemma2]{Lemma 2}
     \begin{lemma}[]
         $\mathcal{Q}_{k}=\sum_{i=1}^{|\mathcal{C}|}\left(\mathcal{I}_{k, i}+(m-1) \mathcal{I}_{k, i}^{\mathcal{B}}-\mathcal{I}_{k, i}^{\mathcal{E}}\right)$ とすると,
         $E+\frac{\sum_{\mathcal{C}_{k} \in \Gamma \backslash\{\mathcal{C}\}} \mathcal{Q}_{k}}{m} \leq D$ の場合, 以下が成り立つ
@@ -167,9 +166,9 @@
     \end{lemma}
 \end{frame}
 
-\begin{frame}{寄与}[label=defPhi]
+\begin{frame}[label=defPhi]{寄与}
     \begin{itemize}
-        \item Lemma 2 から, $J$ のスケジューリング可能性は, 各サブ干渉シーケンス $\mathcal{S}_{k, i}$ に関する $\mathcal{I}_{k, i}+(m-1) \mathcal{I}_{k, i}^{\mathcal{B}}-\mathcal{I}_{k, i}^{\mathcal{E}}$ の値によって決定される
+        \item \hlink{lemma2}{Lemma 2} から, $J$ のスケジューリング可能性は, 各サブ干渉シーケンス $\mathcal{S}_{k, i}$ に関する $\mathcal{I}_{k, i}+(m-1) \mathcal{I}_{k, i}^{\mathcal{B}}-\mathcal{I}_{k, i}^{\mathcal{E}}$ の値によって決定される
         \item この値を $\mathcal{S}_{k, i}$ の $\mathcal{Q}_{k}$ への\al{寄与}と呼び, 次のように定義する
               \begin{definition}[$\mathcal{S}_{k, i}$ の $\mathcal{Q}_{k}$ への寄与 $\Phi_{k, i}$]
                   $\Phi_{k, i}=\mathcal{I}_{k, i}+(m-1) \mathcal{I}_{k, i}^{\mathcal{B}}-\mathcal{I}_{k, i}^{\mathcal{E}}$
@@ -185,12 +184,12 @@
 
 \begin{frame}{}
     \begin{itemize}
-        \item Lemma 2 によると, $R(J)$ の上界のためには, $J$ の問題ウィンドウ内の各干渉チェーン $\mathcal{C}_{k}$ に関して $\mathcal{Q}_{k}$ の上界が必要
+        \item \hlink{lemma2}{Lemma 2} によると, $R(J)$ の上界のためには, $J$ の問題ウィンドウ内の各干渉チェーン $\mathcal{C}_{k}$ に関して $\mathcal{Q}_{k}$ の上界が必要
         \item $\mathcal{Q}_{k}$ の単純な上界は, $\mathcal{I}_{k, i}^{\mathcal{E}}=0$ を考慮し, $\sum_{i=1}^{|\mathcal{C}|} \mathcal{I}_{k, i}$ と $\sum_{i=1}^{|\mathcal{C}|} \mathcal{I}_{k, i}^{\mathcal{B}}$ の上界を別々に検討することで取得できる
     \end{itemize}
 \end{frame}
 
-\begin{frame}{Lemma2}
+\begin{frame}[label=lemma3]{Lemma 3}
     $\sum_{i=1}^{|\mathcal{C}|} \mathcal{I}_{k, i}$, つまり $\mathcal{I}_{k}$ を制限するために, 各干渉チェーン $\mathcal{C}_{k}$ が $J$ の問題ウィンドウで実行できる最大合計時間を計算する
 
     \begin{lemma}[]
@@ -200,12 +199,12 @@
 
 % \begin{frame}{Lemma3 証明}
 %     \begin{itemize}
-%         \item Lemma 3 の証明は, [21], 固定優先度スケジューリングの下での従来の順次タスクモデルの応答時間分析で一般的に使用されるため, ここでは省略する
+%         \item \hlink{lemma3}{Lemma 3} の証明は, [21], 固定優先度スケジューリングの下での従来の順次タスクモデルの応答時間分析で一般的に使用されるため, ここでは省略する
 %         \item 直感的には, $\mathcal{C}_{k}$ のチェーンインスタンス全体を含めるための最小の長さは $E_{k}$ であり, 残りの長さの $L-E_{k}$ には最大で $\left\lceil\frac{L-E_{k}}{T_{k}}\right\rceil$ チェーンインスタンスを含めることができる
 %     \end{itemize}
 % \end{frame}
 
-\begin{frame}{Lemma4}
+\begin{frame}[label=lemma4]{Lemma 4}
     \begin{lemma}[]
         \setlength{\linewidth}{0.98\columnwidth}
         \begin{itemize}
@@ -219,11 +218,11 @@
 \end{frame}
 
 % \begin{frame}{Lemma4 証明}
-%     Lemma 3 の証明は [21] のTheorem 4 と同じ考え方に従うため, ここでは省略する
+%     \hlink{lemma3}{Lemma 3} の証明は [21]  \hlink{theorem4}{Theorem 4} と同じ考え方に従うため, ここでは省略する
 % \end{frame}
 
-\begin{frame}{}
-    \fitimage{図 4 は, 最悪のシナリオにおける $W_{k}(L)$ を示している}{w_k_l.png}
+\begin{frame}{$W_{k}(L)$の例}
+    \fitimage{最悪のシナリオにおける $W_{k}(L)$ の例}{w_k_l.png}
 \end{frame}
 
 \begin{frame}[label=theorem1]{Theorem 1}
@@ -242,7 +241,7 @@
 
 \begin{frame}{Theorem 1の悲観性}
     \begin{itemize}
-        \item Theorem 1 の境界は悲観的である可能性がある
+        \item \hlink{theorem1}{Theorem 1} の境界は悲観的である可能性がある
         \item 理由は以下２つ
         \begin{itemize}
             \item $J$ 内の各コールバックインスタンスへのサブ干渉シーケンスが重複しないようにする必要があるため, $J$ 内のコールバックと同じmutually exclusiveグループに属す全てのコールバックインスタンスが $\sum_{i=1}^{|\mathcal{C}|} \mathcal{I}_{k, i}^{\mathcal{B}}$ に寄与できるわけではない
