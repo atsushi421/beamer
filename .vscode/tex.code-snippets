@@ -103,4 +103,8 @@
 			"\\end{itemize}"
 		]
 	},
+	"bv": {
+		"prefix": "vspace after block",
+		"body": "\\vspace{5mm}"
+	}
 }

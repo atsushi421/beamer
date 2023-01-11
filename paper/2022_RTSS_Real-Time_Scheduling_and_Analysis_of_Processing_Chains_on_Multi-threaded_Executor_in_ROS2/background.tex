@@ -15,14 +15,14 @@
 \end{frame}
 
 \begin{frame}{Publish/Subscribeパラダイム}
-    ROS 2 アプリケーションは, \al{publish/subscribeパラダイム}を使用して相互に通信する複数のノードで構成される
+    ROS 2 アプリケーションは, \al{publish/subscribeパラダイム}を使用して相互に通信するノード群で構成される
 
     \begin{block}{Publish/Subscribeパラダイム}
         \setlength{\linewidth}{0.98\columnwidth}
         \begin{itemize}
             \item ノードはトピックにメッセージをpublishし, そのトピックをsubscribeしているノードにメッセージをブロードキャストする
-            \item ノードはコールバックをアクティブにして各メッセージを処理することにより, publish メッセージに反応する
-            \item コールバックはメッセージ自体をpublishすることも可能で, 複雑な動作をトピックとコールバックのネットワークとして実装できる
+            \item ノードはコールバックをアクティブにして各メッセージを処理することで, publish メッセージに反応する
+            \item コールバックはメッセージ自体をpublishすることも可能で, 複雑な動作をトピックとコールバックのネットワークとして実装可能
         \end{itemize}
     \end{block}
 \end{frame}
@@ -36,7 +36,7 @@
 
 \begin{frame}{シングル/マルチスレッドエグゼキュータ}
     \begin{itemize}
-        \item ROS 2 には以下 \tu{2 つの組み込みエグゼキュータがある}
+        \item ROS 2 には以下 2 つの組み込みエグゼキュータがある
               \begin{block}{シングルスレッドエグゼキュータ}
                   1 つのスレッドでコールバックを実行するエグゼキュータ
               \end{block}
@@ -45,12 +45,12 @@
               \end{block}
               \vspace{5mm}
 
-        \item \textbf{\underline{本論文ではマルチスレッドエグゼキュータに焦点を当てる}}
+        \item \tb{本論文ではマルチスレッドエグゼキュータに焦点を当てる}
     \end{itemize}
 \end{frame}
 
 \begin{frame}{DDS (Data Distribution Service)}
-    ノードのpublisherとsubscriberの間のメッセージ交換は, 抽象\al{DDS} (Data Distribution Service) 層によって実現される
+    ノードのpublisherとsubscriberの間のメッセージ交換は, 抽象\al{DDS} (Data Distribution Service) 層によって実現
 
     \begin{block}{抽象DDS}
         DDS とクライアントライブラリ間の通信インタフェース
@@ -63,7 +63,7 @@
 \begin{frame}{処理チェーン}
     \fitimage{
         \begin{itemize}
-            \item \al{処理チェーン}は特定のイベントによってトリガされ, 複数のエグゼキュータにまたがる
+            \item \al{処理チェーン}は特定のイベントによってトリガされ, 複数のエグゼキュータにまたがる可能性がある
             \item チェーンの各頂点はコールバックを表す
         \end{itemize}
     }{multi_threaded_executor.png}
@@ -71,11 +71,9 @@
 
 \begin{frame}{本論文の分析の焦点}
     \fitimage{
-        \tu{本論文では単一のエグゼキュータにおけるチェーンの応答時間に焦点を当てる}
-        \notes{CPAアプローチ*によってチェーンが複数のエグゼキュータにまたがる場合に拡張できる}
+        \tb{本論文では単一のエグゼキュータにおけるチェーンの応答時間に焦点を当てる}
+        \notes{CPAアプローチ\cite{casini2019response}によってチェーンが複数のエグゼキュータにもまたがる場合に拡張できる}
     }{multi_threaded_executor.png}
-
-    \source{*D.Casini et al., “Response time analysis of ROS 2 processing chains under reservation-based scheduling,” in ECRTS, 2019.}
 \end{frame}
 
 \begin{frame}{コールバックグループ}
@@ -92,7 +90,7 @@
     \begin{itemize}
         \item コールバックは異なる\al{ノード}に属す場合もある
         \item ROS 2 では, 同じノード内のコールバックはデフォルトで同じコールバックグループとなる
-        \item これを除いて, ノードの概念は本論文とは無関係
+        \item これを除いてノードの概念は本論文とは無関係
     \end{itemize}
 
     \assume{簡単にするために, モデルにノードレベルの情報を含めない}
@@ -105,7 +103,7 @@
 \begin{frame}{}
     \begin{itemize}
         \item ROS 2 マルチスレッドエグゼキュータのスケジューリング動作を紹介する
-        \item \tu{本論文の内容は ROS 2 Foxy Fitzroy に基づいている}
+        \item \tb{本論文の内容は ROS 2 Foxy Fitzroy に基づいている}
     \end{itemize}
 
 \end{frame}
@@ -118,13 +116,13 @@
 \end{frame}
 
 \begin{frame}{コールバックの優先順位決定方法}
-    ROS 2 では, \tu{コールバックの優先度は 2 つのレベルで決定される}
+    ROS 2 では, \tb{コールバックの優先度は以下 2 つのレベルで決定される}
 
     \begin{block}{コールバックタイプ}
         \setlength{\linewidth}{0.98\columnwidth}
         \begin{itemize}
             \item コールバックはタイマ・サブスクライバ・サービス・クライアントの 4 つのタイプに分類される
-            \item 優先順位は, タイマ $\succ$ サブスクライバ $\succ$ サービス $\succ$ クライアント \notes{$\succ$: より高い優先度を持つ}
+            \item 優先順位は, タイマ $\succ$ サブスクライバ $\succ$ サービス $\succ$ クライアント \notes{\desc{$\succ$}{より高い優先度を持つ}}
         \end{itemize}
     \end{block}
 
@@ -143,12 +141,12 @@
     \begin{itemize}
         \item \al{yield\_before\_execute} が false に設定されている場合, スレッドは選択されたコールバックの実行をすぐに開始する
         \item yield\_before\_execute が true に設定されている場合, スレッドは再度スケジュールされるまでプロセッサを OS に譲る
-        \item \tu{本論文ではデフォルトの設定である yield\_before\_execute $=$ false とする}
+        \item \tb{本論文ではデフォルトの設定である yield\_before\_execute $=$ false とする}
     \end{itemize}
 \end{frame}
 
 \begin{frame}{メッセージキュー}
-    ROS 2 では, 各コールバックに到着したメッセージをバッファリングするためのキューがあり, その深さはユーザによって指定される
+    ROS 2 では, \tb{各コールバックに到着したメッセージをバッファリングするためのキュー}があり, その深さはユーザによって指定される
     \assume{
         \setlength{\linewidth}{0.98\columnwidth}
         \begin{itemize}
@@ -163,7 +161,7 @@
 \end{frame}
 
 \begin{frame}{reentrant/mutually exclusiveコールバックグループ}
-    \tu{コールバックグループには以下2つの種類がある}
+    \tb{コールバックグループには以下2つの種類がある}
     \begin{block}{Reentrantコールバックグループ}
         wait\_set内のコールバックはいつでも選択できる
     \end{block}
@@ -185,7 +183,7 @@
     \fitimage{
         \begin{itemize}
             \item スレッドは wait\_set にアクセスする前に, 排他制御ロック \al{low\_priority\_wait\_mutex} を獲得する必要がある
-            \item すなわち wait\_set を変更できるのは一度に 1 つのスレッドのみ
+            \item すなわち \tb{wait\_set を変更できるのは一度に 1 つのスレッドのみ}
             \item それ以外の場合, スレッドはブロックされる
         \end{itemize}
     }{workflow1.jpg}
@@ -208,10 +206,7 @@
 
 \begin{frame}{[ワークフロー] コールバックが選択できない場合}
     \fitimage{
-        \begin{itemize}
-            \item 全てのコールバックがチェックされ, 実行するコールバックを選択できない場合, スレッドは wait\_set をリセットし, wait\_set を更新する
-            \item mutually exclusive コールバックグループのコールバックは, can\_be\_taken\_from が true の場合にのみ wait\_set に追加できる
-        \end{itemize}
+        全てのコールバックがチェックされ, 実行するコールバックを選択できない場合, スレッドは wait\_set をリセットし, wait\_set を更新する
     }{workflow5.jpg}
 \end{frame}
 

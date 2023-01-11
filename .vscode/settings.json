@@ -32,19 +32,21 @@
     // ビルドのレシピ
     "latex-workshop.latex.recipes": [
         {
-            "name": "ptex2pdf (wsl)",
+            "name": "ptex2pdf*2",
             "tools": [
                 "ptex2pdf (wsl)",
                 "ptex2pdf (wsl)"
             ]
         },
         {
-            "name": "ptex2pdf (ja)",
+            "name": "ptex2pdf -> bibtex -> ptex2pdf*2",
             "tools": [
-                "ptex2pdf",
-                "ptex2pdf"
+                "ptex2pdf (wsl)",
+                "bibtex (wsl)",
+                "ptex2pdf (wsl)",
+                "ptex2pdf (wsl)"
             ]
-        }
+        },
     ],
     // ビルドのレシピに使われるパーツ
     "latex-workshop.latex.tools": [
@@ -72,6 +74,14 @@
                 "%DOCFILE%"
             ]
         },
+        {
+            "name": "bibtex (wsl)",
+            "command": "wsl.exe",
+            "args": [
+                "bibtex",
+                "%DOCFILE%"
+            ]
+        }
     ],
     "terminal.integrated.shell.windows": "C:\\Program Files\\Git\\bin\\bash.exe",
     "editor.minimap.enabled": false,
@@ -117,7 +127,7 @@
         "C:\\Users\\atsushi\\AppData\\Local\\Programs\\Python\\Python39\\lib\\site-packages\\"
     ],
     "diffEditor.renderSideBySide": false,
-    "window.zoomLevel": -1,
+    "window.zoomLevel": 0,
     "files.trimTrailingWhitespace": true,
     "files.trimFinalNewlines": true,
 }
