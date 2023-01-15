@@ -125,16 +125,34 @@
 			"\\end{frame}"
 		]
 	},
-	"note for system model":{
-		"prefix": "note for system model",
+	"system model header":{
+		"prefix": "system model header",
 		"body": [
 			"\\begin{frame}{}",
 			"\\begin{itemize}",
 			"\\item 始めに, 本論文で登場する表記法・用語の表を示す",
 			"\\item 基本的な表記法・用語は資料中で説明無しで使用する",
-			"\\item 暗記するのは困難なため, 別ファイルで開く・印刷するなどして, 常に参照できる状態にしておくことを推奨する",
+			"\\item 別ファイルで開く・印刷するなどして, 常に参照できる状態にしておくことを推奨する",
 			"\\end{itemize}",
 			"\\end{frame}",
+			"",
+			"\\input{symbols_terms.tex}"
+		]
+	},
+	"related work table":{
+		"prefix": "related work table",
+		"body": [
+			"\\begin{frame}{既存研究との比較表}",
+			"\\full{",
+			"\\begin{table}[tb]",
+			"\\adjustbox{max width=\\xtwidth, max height=\\slideheight}{",
+			"\\centering\begin{tabular}{|c|c|} \\\\\\\\\\hline",
+			"本論文 & \\ch \\\\\\\\\\hline",
+			"\\end{tabular}",
+			"}",
+			"\\end{table}",
+			"}",
+			"\\end{frame}"
 		]
 	}
 }
