@@ -3,15 +3,14 @@
 \section{EXPERIMENTS}
 \label{sec: experiments}
 
-
-\begin{frame}{}
-    \begin{itemize}
-        \item まず, \hlink{theorem1}{Theorem 1}  \hlink{theorem2}{Theorem 2} の方法を合成ワークロードとケーススタディの両方で実験を行うことによって評価する
-        \item 次に, マルチスレッドエグゼキュータとシングルスレッドエグゼキュータのリアルタイムパフォーマンスを比較する
-        \item 特に, マルチスレッドのエグゼキュータによってスケジュールされたチェーンの応答時間は, シングルスレッドのエグゼキュータよりもさらに悪い可能性があることを示す
-    \end{itemize}
+\begin{frame}{セクションサマリ}
+    \begin{itembox}[l]{\textbf{目的}}
+        \begin{itemize}
+            \item \hlink{theorem1}{Theorem 1}, \hlink{theorem2}{Theorem 2} の方法を合成ワークロードとケーススタディの両方で実験を行うことによって評価する
+            \item マルチスレッドエグゼキュータとシングルスレッドエグゼキュータのリアルタイムパフォーマンスを比較する
+        \end{itemize}
+    \end{itembox}
 \end{frame}
-
 
 \subsection{Synthetic workload}
 \label{ssec: synthetic workload}
@@ -28,14 +27,13 @@
 
 \begin{frame}{システム $\Gamma$ の生成方法2}
     \begin{itemize}
-        \item 各チェーンの利用率 $U_{i}$ は, UUniFast法*によって生成される
+        \item 各チェーンの利用率 $U_{i}$ は, UUniFast法\cite{emberson2010techniques}によって生成される
         \item 全てのチェーンの合計利用率は, 正規化された利用率 $U_{n o r m}$ に $m$ を掛けて決定される $(0, m]$ の範囲で選択され, システムの総利用率を各チェーンに分配する
               \begin{itemize}
                   \item 各 $\mathcal{C}_{i}$ の $U_{i}$ は 1 以下にする
               \end{itemize}
         \item 同様の方法で, 各チェーンの利用率を個々のコールバックに分配し, 各コールバックの WCET は, その利用率に周期 $T_{i}$を掛けることによって導き出される (最も近い整数に丸められる)
     \end{itemize}
-    \source{*P.Emberson et al., “Techniques for the synthesis of multiprocessor tasksets,” pp. 6–11, 2010.}
 \end{frame}
 
 \begin{frame}{システム $\Gamma$ の生成方法3}
@@ -56,17 +54,23 @@
 \end{frame}
 
 \begin{frame}{パフォーマンス比較方法}
-    \begin{itemize}
-        \item  \al{OUR-1}: \hlink{theorem3}{Theorem 3}  \hlink{theorem1}{Theorem 1} によって実行されるスケジュール可能性テスト
-
-        \item  \al{OUR-2}: \hlink{theorem3}{Theorem 3}  \hlink{theorem2}{Theorem 2} によって実行されるスケジュール可能性テスト
-
-        \item  \al{SIMU}: 全てのチェーンが最初のインスタンスを同時にリリースし, 各チェーンができるだけ早くインスタンスをリリースし, 各コールバックインスタンスが WCET で実行されると仮定した場合の, シミュレーションでの各チェーンの観測された最大応答時間
-              \begin{itemize}
-                  \item シミュレーションは 5000 時間単位続く
-                  \item 結果は, 実際の最悪の場合の応答時間の測定された下限に基づいている
-              \end{itemize}
-    \end{itemize}
+    \vspace{1mm}
+    \begin{block}{OUR-1}
+        \hlink{theorem3}{Theorem 3}, \hlink{theorem1}{Theorem 1} によって実行されるスケジュール可能性テスト
+    \end{block}
+    \begin{block}{OUR-2}
+        \hlink{theorem3}{Theorem 3}, \hlink{theorem2}{Theorem 2} によって実行されるスケジュール可能性テスト
+    \end{block}
+    \begin{block}{SIMU}
+        以下の条件のもとで行った5000 時間単位のシミュレーションにおける各チェーンの観測された最大応答時間
+        \setlength{\linewidth}{0.98\columnwidth}
+        \footnotesize
+        \begin{itemize}
+            \item 全てのチェーンが最初のインスタンスを同時にリリースする
+            \item 全てのチェーンができるだけ早くインスタンスをリリースする
+            \item 各コールバックインスタンスが WCET で実行される
+        \end{itemize}
+    \end{block}
 \end{frame}
 
 \begin{frame}{実験方法}
@@ -84,7 +88,10 @@
 \begin{frame}{評価指標}
     \begin{itemize}
         \item パフォーマンスは\al{受入率}で評価する
-        \item 受入率: スケジュール可能なタスクシステムの数とタスクシステム全体の数の比率
+              \begin{definition}[受入率]
+                  スケジュール可能なタスクシステムの数とタスクシステム全体の数の比率
+              \end{definition}
+              \vspace{5mm}
         \item 各図の $y$ 軸は受入率を示す
     \end{itemize}
 \end{frame}
@@ -123,23 +130,26 @@
 \end{frame}
 
 \begin{frame}{提案手法の改善余地}
-    \begin{itemize}
-        \item 単純な改善は, 各干渉チェーン $\mathcal{C}_{k}$ のより正確な $\overrightarrow{\mathcal{M}}_{k}$ を取得するために「キャリーイン」と「キャリーアウト」のコールバックインスタンスの全ての組み合わせを考慮することである (本論文では, これは最大数のチェーンインスタンス全体を含むと想定されている)
-        \item この改善はより厳密な応答時間の境界を取得する (スペースの制限のため, ここではアルゴリズムを提示しない)
-        \item また, より正確なテストを導出するために, より多くの制約を作成することもできる
-        \item これは, 本論文の方法で簡単に拡張できる
-    \end{itemize}
+    \begin{enumerate}
+        \item 各干渉チェーン $\mathcal{C}_{k}$ のより正確な $\overrightarrow{\mathcal{M}}_{k}$ を取得するために「キャリーイン」と「キャリーアウト」のコールバックインスタンスの全ての組み合わせを考慮
+              \begin{itemize}
+                  \item 本論文では, 最大数のチェーンインスタンス全体を含むと想定されている
+              \end{itemize}
+        \item より正確なテストを導出するために, より多くの制約を作成する
+    \end{enumerate}
 \end{frame}
 
 
 \subsection{Case studies}
 \label{ssec: case studies}
 
-\begin{frame}{}
-    \begin{itemize}
-        \item ケーススタディを使用して分析手法を評価する
-        \item また, シングルスレッドエグゼキュータとマルチスレッドエグゼキュータでのパフォーマンスの違いを実証するための経験的評価を示す
-    \end{itemize}
+\begin{frame}{セクションサマリ}
+    \begin{itembox}[l]{\textbf{目的}}
+        \begin{itemize}
+            \item ケーススタディを使用して分析手法を評価する
+            \item また, シングルスレッドエグゼキュータとマルチスレッドエグゼキュータでのパフォーマンスの違いを実証するための経験的評価を示す
+        \end{itemize}
+    \end{itembox}
 \end{frame}
 
 \begin{frame}{実行環境}
@@ -152,10 +162,9 @@
     \fitimage{
         \begin{itemize}
             \item ケーススタディの簡単な説明を表に示す
-            \item これらは Choiら*が現実的な自律走行システムから開発したサブチェーンを引用
+            \item これらは Choiら~\cite{choi2021picas}が現実的な自律走行システムから開発したサブチェーンを引用
         \end{itemize}
     }{exp_case_study_desc.png}
-    \source{*H.Choi et al., “PiCas: New design of prioritydriven chain-aware scheduling for ros2,” in RTAS, 2021.}
 \end{frame}
 
 \begin{frame}{実験方法}
@@ -176,13 +185,6 @@
     }{exp_case_study_1.png}
 \end{frame}
 
-\begin{frame}{ケーススタディ2による実験で示すこと}
-    \begin{itemize}
-        \item 本論文が観察した興味深い問題は, マルチスレッドのエグゼキュータによってスケジュールされたチェーンの応答時間が, シングルスレッドのエグゼキュータよりもはるかに遅くなる可能性があること
-        \item 特に, 全てのコールバックがmutually exclusive同じグループにある場合でも, 全てのコールバックが強制的に順次実行されるマルチスレッドエグゼキュータでのスケジューリングは, シングルスレッドエグゼキュータでのスケジューリングとは大きく異なる
-    \end{itemize}
-\end{frame}
-
 \begin{frame}{ケーススタディ2による実験結果}
     \fitimage{
         全てのコールバックが 同じmutually exclusiveグループに属すとして, 結果を表に示す
@@ -196,12 +198,12 @@
 \end{frame}
 
 \begin{frame}{観測された問題の原因考察1}
- \begin{itemize}
-    \item マルチスレッドエグゼキュータの下でコールバックインスタンスがブロックされ, wait\_set から削除される可能性があることが原因と考えられる
-    \item あるコールバックインスタンスを考えた場合, それより優先度の高い ready コールバックインスタンスと一緒に wait\_set に追加される可能性がある
-    \item このとき, 優先度の高いコールバックインスタンスが最初にスケジュールされるため, このコールバックインスタンスはブロックされ, wait\_set から削除される
-    \item この状況が数回繰り返され, このコールバックインスタンスが何度もブロックされる可能性がある
- \end{itemize}
+    \begin{itemize}
+        \item マルチスレッドエグゼキュータの下でコールバックインスタンスがブロックされ, wait\_set から削除される可能性があることが原因と考えられる
+        \item あるコールバックインスタンスを考えた場合, それより優先度の高い ready コールバックインスタンスと一緒に wait\_set に追加される可能性がある
+        \item このとき, 優先度の高いコールバックインスタンスが最初にスケジュールされるため, このコールバックインスタンスはブロックされ, wait\_set から削除される
+        \item この状況が数回繰り返され, このコールバックインスタンスが何度もブロックされる可能性がある
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{観測された問題の原因考察2}
