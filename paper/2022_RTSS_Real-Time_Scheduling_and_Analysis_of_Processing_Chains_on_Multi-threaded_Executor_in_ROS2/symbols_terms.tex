@@ -1,0 +1,143 @@
+% !TeX root = main.tex
+
+\begin{frame}{表記法・用語 1}
+    \full{
+        \begin{table}[tb]
+            \adjustbox{max width=\textwidth, max height=\slideheight}{
+                \centering\begin{tabular}{|c|l|} \hline
+                    $m$                                                                                             & スレッド数                                                                                        \\\hline
+                    $\Gamma=\left\{\mathcal{C}_{1}, \mathcal{C}_{2}, \cdots, \mathcal{C}_{|\Gamma|}\right\}$        & チェインのセット                                                                                  \\\hline
+                    $|\Gamma|$                                                                                      & $\Gamma$内のチェインの数                                                                          \\\hline
+                    $\mathcal{C}_{i}=\left\{c_{i, 1}, c_{i, 2}, \cdots, c_{i,\left|\mathcal{C}_{i}\right|}\right\}$ & チェイン                                                                                          \\\hline
+                    $c_{i,j}$                                                                                       & $\mathcal{C}_{i}$の$j$番目のコールバック                                                          \\\hline
+                    $\left|\mathcal{C}_{i}\right|$                                                                  & $\mathcal{C}_{i}$内のコールバックの数                                                             \\\hline
+                    先行要素                                                                                        & $J_{i}^{k}$ 内の連続する要素 $c_{i, j}^{k}$ と $c_{i, j+1}^{k}$ の各ペアにおける $c_{i, j}^{k}$   \\\hline
+                    後続要素                                                                                        & $J_{i}^{k}$ 内の連続する要素 $c_{i, j}^{k}$ と $c_{i, j+1}^{k}$ の各ペアにおける $c_{i, j+1}^{k}$ \\\hline
+                    ソースコールバック                                                                              & $\mathcal{C}_{i}$ の最初のコールバック                                                            \\\hline
+                    シンクコールバック                                                                              & $\mathcal{C}_{i}$ の最後のコールバック                                                            \\\hline
+                \end{tabular}
+            }
+        \end{table}
+    }
+\end{frame}
+
+\begin{frame}{表記法・用語 2}
+    \full{
+        \begin{table}[tb]
+            \adjustbox{max width=\textwidth, max height=\slideheight}{
+                \centering\begin{tabular}{|c|l|} \hline
+                    $T_i$                 & \tabml{$\mathcal{C}_{i}$の周期                \\\underline{周期}: 2 つの連続するチェーンインスタンスのリリース時刻の間の最小間隔}                       \\\hline
+                    $D_i$                 & \tabml{$\mathcal{C}_{i}$の相対デッドライン    \\\underline{相対デッドライン}: 時間 $r$ でリリースされた $\mathcal{C}_{i}$ の各チェーンインスタンスは, \\その絶対デッドライン $r+D_{i}$ までに終了する必要がある}           \\\hline
+                    $e_{i,j}$             & $c_{i,j}$の最悪実行時間 (WCET)                \\\hline
+                    $E_i$                 & $\mathcal{C}_{i}$内のコールバックのWCETの合計 \\\hline
+                    $U_{i}=E_{i} / T_{i}$ & $\mathcal{C}_{i}$の利用率                     \\\hline
+                \end{tabular}
+            }
+        \end{table}
+    }
+\end{frame}
+
+\begin{frame}{表記法・用語 3}
+    \full{
+        \begin{table}[tb]
+            \adjustbox{max width=\textwidth}{
+                \centering\begin{tabular}{|c|l|} \hline
+                    $J_{i}^{k}$                & $\mathcal{C}_{i}$ の $k$番目のチェーンインスタンス             \\\hline
+                    $c_{i, j}^{k}$             & $J_{i}^{k}$ に含まれる$c_{i, j}$ のコールバックインスタンス    \\\hline
+                    $R\left(J_{i}^{k}\right)$  & $J_{i}^{k}$の応答時間                                          \\\hline
+                    $\mathcal{R}_i^{wc}$       & $\mathcal{C}_{i}$の最悪応答時間                                \\\hline
+                    $\Omega$                   & ready セット                                                   \\\hline
+                    $h p\left(c_{i, j}\right)$ & コールバック $c_{i, j}$ よりも優先度の高いコールバックのセット \\\hline
+                \end{tabular}
+            }
+        \end{table}
+    }
+\end{frame}
+
+\begin{frame}{表記法・用語 4}
+    \full{
+        \begin{table}[tb]
+            \adjustbox{max width=\textwidth, max height=\slideheight}{
+                \centering\begin{tabular}{|c|l|} \hline
+                    updated  & $\Omega$ に新しい要素が追加されること                                                      \\\hline
+                    バッチ   & \tabml{複数のコールバックインスタンスが同じポーリングポイントで $\Omega$ に追加された場合, \\これらのインスタンスは同じバッチである} \\\hline
+                    ビジー   & スレッドがコールバックインスタンスが実行している状態                                       \\\hline
+                    アイドル & スレッドがコールバックインスタンスを実行していない状態                                     \\\hline
+                \end{tabular}
+            }
+        \end{table}
+    }
+\end{frame}
+
+\begin{frame}{表記法・用語 5}
+    \full{
+        \begin{table}[tb]
+            \adjustbox{max width=\textwidth, max height=\slideheight}{
+                \centering\begin{tabular}{|c|l|} \hline
+                    $J$   & 分析対象のチェーン                     \\\hline
+                    $r$   & $J$のリリース時刻                      \\\hline
+                    $f$   & $J$の終了時刻                          \\\hline
+                    $c_i$ & $J$の$i$番目のコールバックインスタンス \\\hline
+                    $r_i$ & $c_i$がリリースされる時刻              \\\hline
+                    $s_i$ & $c_i$が実行開始する時刻                \\\hline
+                    $|J|$ & $J$内のコールバックの数                \\\hline
+                \end{tabular}
+            }
+        \end{table}
+    }
+\end{frame}
+
+
+\begin{frame}{表記法・用語 6}
+    \full{
+        \begin{table}[tb]
+            \adjustbox{max width=\textwidth, max height=\slideheight}{
+                \centering\begin{tabular}{|c|l|} \hline
+                    $\mathcal{S}_{k, i}=\left\langle e_{k, a}^{\prime}, e_{k, b}^{\prime}, \cdots\right\rangle$                                                         & $c_i$に対する$\mathcal{C}_{k}$のサブ干渉シーケンス                                            \\\hline
+                    $e_{k, a}^{\prime}$                                                                                                                                 & コールバックインスタンス $c_{k, a}$ が $\left[r_{i}, s_{i}\right)$ の間に実行された時間の長さ \\\hline
+                    $\mathcal{S}_{k}=\left\{\mathcal{S}_{k, 1}, \mathcal{S}_{k, 2}, \cdots, \mathcal{S}_{k,|\mathcal{C}|}\right\}$                                      & $J$に対する$\mathcal{C}_{k}$の干渉シーケンス                                                  \\\hline
+                    $\mathcal{I}_{k,i}$                                                                                                                                 & $c_i$に対する$\mathcal{C}_{k}$の干渉作業                                                      \\\hline
+                    $\mathcal{I}_{k}$                                                                                                                                   & $J$に対する$\mathcal{C}_{k}$の干渉作業                                                        \\\hline
+                    $\mathcal{I}_{k,i}^\mathcal{P} $                                                                                                                    & \tabml{$c_i$がブロックされている間に, $c_i$と同じコールバックグループに属す                   \\$\mathcal{C}_k$のコールバックインスタンスが実行した時間の総和} \\\hline
+                    $\mathcal{I}_{k,i}^\mathcal{E} $                                                                                                                    & \tabml{$c_i$がブロックされている間に, $c_i$と異なるコールバックグループに属す                 \\$\mathcal{C}_k$のコールバックインスタンスが実行した時間の総和} \\\hline
+                    $\mathcal{I}_{k,i}^\mathcal{B}  $                                                                                                                   & \tabml{$[r_i, s_i)$の間に, $c_i$と同じmutually exclusiveコールバックグループに属す            \\$\mathcal{C}_k$のコールバックインスタンスが実行した時間の総和} \\\hline
+                    $\mathcal{Q}_{k}=\sum_{i=1}^{|\mathcal{C}|}\left(\mathcal{I}_{k, i}+(m-1) \mathcal{I}_{k, i}^{\mathcal{B}}-\mathcal{I}_{k, i}^{\mathcal{E}}\right)$ & $\mathcal{C}_{k}$の実行が$J$の終了時間に与える影響を特徴付けるために開発した項                \\\hline
+                    $\Phi_{k,i}$                                                                                                                                        & $\mathcal{Q}_k$に対する $\mathcal{S}_{k,i}$の寄与                                             \\\hline
+                \end{tabular}
+            }
+        \end{table}
+    }
+\end{frame}
+
+\begin{frame}{表記法・用語 7}
+    \full{
+        \begin{table}[tb]
+            \adjustbox{max width=\textwidth, max height=\slideheight}{
+                \centering\begin{tabular}{|c|l|} \hline
+                    $L$                                    & 問題ウィンドウの長さ                                                                                         \\\hline
+                    $n_{k}(L)$                             & $J$ の問題ウィンドウ中に実行できる $\mathcal{C}_{k}$ のチェーンインスタンスの最大数                          \\\hline
+                    $\overrightarrow{\mathcal{M}}_{k}$     & $J$に対する$\mathcal{C}_{k}$の超干渉シーケンス                                                               \\\hline
+                    $ \hat{\Phi} $                         & $\Phi_{k,i}$の上界                                                                                           \\\hline
+                    $\mathcal{G}(c_{i,j}) $                & \tabml{$c_{i,j}$が属すmutually exclusiveコールバックグループのインデックス}                                  \\\hline
+                    $\theta_i$                             & \tabml{$\mathcal{C}_{i}$ の各コールバックが属すmutually exclusiveコールバックグループの集合                  \\ $\theta_{i}=\cup_{\forall c_{i, j} \in \mathcal{C}_{i}}\left\{\mathcal{G}\left(c_{i, j}\right)\right\}$} \\\hline
+                    $\mathcal{I}_{k, i}^{\mathcal{E}^{*}}$ & $\mathcal{S}_{k, i}$ 内の $c_{i}$ とは異なるコールバックグループに属すコールバックインスタンスの合計実行時間 \\\hline
+                    $\mathcal{Q}_{k}(\mathcal{Y})$         & 各サブ干渉シーケンス $\mathcal{S}_{k, i}$ に関する $\hat{\Phi}_{k, i}$ の合計                                \\\hline
+                \end{tabular}
+            }
+        \end{table}
+    }
+\end{frame}
+
+\begin{frame}{表記法・用語 8}
+    \full{
+        \begin{table}[tb]
+            \adjustbox{max width=\textwidth, max height=\slideheight}{
+                \centering\begin{tabular}{|c|l|} \hline
+                    $\Phi_{k, i}^{p, q}$                            & \tabml{$\overrightarrow{\mathcal{M}}_{k}$ の$ p $番目のコールバックインスタンスの開始時刻から \\$ q $番目のコールバックインスタンスの開始時刻までの \\範囲内にある任意のウィンドウによって発生しうる最大の $\hat{\Phi}_{k, i}$} \\\hline
+                    $\left|\overrightarrow{\mathcal{M}}_{k}\right|$ & $\overrightarrow{\mathcal{M}}_{k}$ のコールバックインスタンスの数                             \\\hline
+                    $\Theta_{i, p}$ ($i \in[1,|\mathcal{C}|])$      & \tabml{$ p $番目のコールバックインスタンスの開始時刻から                                      \\$\overrightarrow{\mathcal{M}}_{k}$ の最後のコールバックインスタンスの終了時刻までの \\範囲に収まる任意のウィンドウによって発生しうる最大の $\sum_{j=i}^{|\mathcal{C}|} \hat{\Phi}_{k, j}$} \\\hline
+                \end{tabular}
+            }
+        \end{table}
+    }
+\end{frame}

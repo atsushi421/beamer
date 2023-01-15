@@ -127,7 +127,13 @@
         "C:\\Users\\atsushi\\AppData\\Local\\Programs\\Python\\Python39\\lib\\site-packages\\"
     ],
     "diffEditor.renderSideBySide": false,
-    "window.zoomLevel": 0,
+    "window.zoomLevel": -1,
     "files.trimTrailingWhitespace": true,
     "files.trimFinalNewlines": true,
+    "grammarly.selectors": [
+        {
+            "language": "markdown",
+            "scheme": "file"
+        }
+    ],
 }

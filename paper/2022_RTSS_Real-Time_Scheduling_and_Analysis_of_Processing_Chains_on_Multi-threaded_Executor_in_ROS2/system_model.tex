@@ -3,89 +3,21 @@
 \section{SYSTEM MODEL}
 \label{sec: system_model}
 
+\begin{frame}{セクションサマリ}
+    \begin{itembox}[l]{\textbf{目的}}
+        実装から抽出したマルチスレッドエグゼキュータのリアルタイム関連の動作をカバーするスケジューリングモデルを定義
+    \end{itembox}
+\end{frame}
 
 \begin{frame}{}
-    実装から抽出したマルチスレッドエグゼキュータのリアルタイム関連の動作をカバーするスケジューリングモデルを紹介する
-    \assume{スレッドが wait\_set にアクセスする際に発生するオーバヘッドはゼロであるとする}
+    \begin{itemize}
+        \item 始めに, 本論文で登場する表記法・用語の表を示す
+        \item 基本的な表記法・用語は資料中で説明無しで使用する
+        \item 暗記するのは困難なため, 別ファイルで開く・印刷するなどして, 常に参照できる状態にしておくことを推奨する
+    \end{itemize}
 \end{frame}
 
-\begin{frame}{表記法1}
-    \full{
-        \begin{table}[tb]
-            \adjustbox{max width=\textwidth, max height=\slideheight}{
-                \centering\begin{tabular}{|c|l|} \hline
-                    \textbf{Notations} & \textbf{Descriptions}                         \\\hline
-                    $m$                & スレッド数                                    \\\hline
-                    $\Gamma $          & チェインのセット                              \\\hline
-                    $\mathcal{C}_{i}$  & チェイン                                      \\\hline
-                    $c_{i,j}$          & $\mathcal{C}_{i}$の$j$番目のコールバック      \\\hline
-                    $e_{i,j}$          & $c_{i,j}$のWCET                               \\\hline
-                    $E_i$              & $\mathcal{C}_{i}$内のコールバックのWCETの合計 \\\hline
-                    $D_i$              & $\mathcal{C}_{i}$のデッドライン               \\\hline
-                    $T_i$              & $\mathcal{C}_{i}$の周期                       \\\hline
-                    $U_i$              & $\mathcal{C}_{i}$の利用率                     \\\hline
-                \end{tabular}
-            }
-        \end{table}
-    }
-\end{frame}
-
-\begin{frame}{表記法2}
-    \full{
-        \begin{table}[tb]
-            \adjustbox{max width=\textwidth}{
-                \centering\begin{tabular}{|c|l|} \hline
-                    \textbf{Notations}      & \textbf{Descriptions}                                                                       \\\hline
-                    $J_{i}^{k}$             & $\mathcal{C}_{i}$ の $k$番目のインスタンス                                                  \\\hline
-                    $c_{i, j}^{k}$          & $J_{i}^{k}$ に含まれる$c_{i, j}$ のコールバックインスタンス                                 \\\hline
-                    $\mathcal{G}(c_{i,j}) $ & \tabml{$c_{i,j}$が属すmutually exclusiveコールバックグループのインデックス}                 \\\hline
-                    $\theta_i$              & \tabml{$\mathcal{C}_{i}$ の各コールバックが属すmutually exclusiveコールバックグループの集合 \\ $\theta_{i}=\cup_{\forall c_{i, j} \in \mathcal{C}_{i}}\left\{\mathcal{G}\left(c_{i, j}\right)\right\}$} \\\hline
-                    $\Omega$                & ready セット                                                                                \\\hline
-                    $\mathcal{R}_i^{wc}$    & $\mathcal{C}_{i}$の最悪応答時間                                                             \\\hline
-                    $J$                     & 任意のチェーンインスタンス                                                                  \\\hline
-                    $c_i$                   & $J$の$i$番目のコールバックインスタンス                                                      \\\hline
-                \end{tabular}
-            }
-        \end{table}
-    }
-\end{frame}
-
-\begin{frame}{表記法3}
-    \full{
-        \begin{table}[tb]
-            \adjustbox{max width=\textwidth, max height=\slideheight}{
-                \centering\begin{tabular}{|c|l|} \hline
-                    \textbf{Notations}  & \textbf{Descriptions}                              \\\hline
-                    $r_i$               & $c_i$がリリースされる時刻                          \\\hline
-                    $s_i$               & $c_i$が実行開始する時刻                            \\\hline
-                    $\mathcal{S}_{k,i}$ & $c_i$に対する$\mathcal{C}_{k}$のサブ干渉シーケンス \\\hline
-                    $\mathcal{I}_{k,i}$ & $c_i$に対する$\mathcal{C}_{k}$の干渉作業           \\\hline
-                    $\mathcal{S}_k$     & $J$に対する$\mathcal{C}_{k}$の干渉シーケンス       \\\hline
-                    $\mathcal{I}_{k}$   & $J$に対する$\mathcal{C}_{k}$の干渉作業             \\\hline
-                \end{tabular}
-            }
-        \end{table}
-    }
-\end{frame}
-
-\begin{frame}{表記法4}
-    \full{
-        \begin{table}[tb]
-            \adjustbox{max width=\textwidth, max height=\slideheight}{
-                \centering\begin{tabular}{|c|l|} \hline
-                    \textbf{Notations}                 & \textbf{Descriptions}                                                                                                                               \\\hline
-                    $\mathcal{I}_{k,i}^\mathcal{P} $   & \tabml{$c_i$がブロックされている間に, $c_i$と同じコールバックグループに属す                                                                         \\$\mathcal{C}_k$のコールバックインスタンスが実行した時間の総和} \\\hline
-                    $\mathcal{I}_{k,i}^\mathcal{E} $   & \tabml{$c_i$がブロックされている間に, $c_i$と異なるコールバックグループに属す                                                                       \\$\mathcal{C}_k$のコールバックインスタンスが実行した時間の総和} \\\hline
-                    $\mathcal{I}_{k,i}^\mathcal{B}  $  & \tabml{$[r_i, s_i)$の間に, $c_i$と同じmutually exclusiveコールバックグループに属す                                                                  \\$\mathcal{C}_k$のコールバックインスタンスが実行した時間の総和} \\\hline
-                    $\overrightarrow{\mathcal{M}}_{k}$ & $J$に対する$\mathcal{C}_{k}$の超干渉シーケンス                                                                                                      \\\hline
-                    $\mathcal{Q}_k$                    & $\mathcal{Q}_{k}=\sum_{i=1}^{|\mathcal{C}|}\left(\mathcal{I}_{k, i}+(m-1) \mathcal{I}_{k, i}^{\mathcal{B}}-\mathcal{I}_{k, i}^{\mathcal{E}}\right)$ \\\hline
-                    $\Phi_{k,i}$                       & $\mathcal{Q}_k$に対する $\mathcal{S}_{k,i}$の寄与                                                                                                   \\\hline
-                    $ \hat{\Phi} $                     & $\Phi_{k,i}$の上界                                                                                                                                  \\\hline
-                \end{tabular}
-            }
-        \end{table}
-    }
-\end{frame}
+\input{symbols_terms.tex}
 
 \subsection{Workload Model}
 \label{ssec: workload_model}
@@ -95,37 +27,12 @@
 \end{frame}
 
 \begin{frame}{チェーンモデル}
-
     \begin{itemize}
-        \item \tb{本論文では, $m$ スレッド上のマルチスレッドエグゼキュータによって}\\\tb{スケジュールされる一連の独立したチェーン $\Gamma=\left\{\mathcal{C}_{1}, \mathcal{C}_{2}, \cdots, \mathcal{C}_{|\Gamma|}\right\}$ を検討}
-              \begin{itemize}
-                  \item \db{$|\Gamma|$}: $\Gamma$内のチェインの数
-              \end{itemize}
+        \item 本論文では, $m$ スレッド上のマルチスレッドエグゼキュータによってスケジュールされる一連の独立したチェーン $\Gamma=\left\{\mathcal{C}_{1}, \mathcal{C}_{2}, \cdots, \mathcal{C}_{|\Gamma|}\right\}$ を検討する
         \item 各チェーン $\mathcal{C}_{i} \in \Gamma$ は, コールバックのシーケンス $\mathcal{C}_{i}=\left\{c_{i, 1}, c_{i, 2}, \cdots, c_{i,\left|\mathcal{C}_{i}\right|}\right\}$ で構成される
-              \begin{itemize}
-                  \item \db{$\left|\mathcal{C}_{i}\right|$}: $\mathcal{C}_{i}$内のコールバックの数
-              \end{itemize}
-    \end{itemize}
-\end{frame}
-
-\begin{frame}{基本の定義1}
-    \begin{itemize}
-        \item チェーン $\mathcal{C}_{i}$ は, \al{チェーンインスタンス}の無限シーケンスをリリースする
-        \item \al{周期} $T_{i}$は, 2 つの連続するチェーンインスタンスのリリース時刻の間の最小間隔
-        \item 各チェーンインスタンスは \al{相対デッドライン} $D_{i}$ を持つ, すなわち, 時間 $r$ でリリースされた $\mathcal{C}_{i}$ の各チェーンインスタンスは, その絶対デッドライン $r+D_{i}$ までに終了する必要がある
-              \begin{itemize}
-                  \item 制約付きデッドライン, すなわち $D_{i} \leq T_{i}$を想定
-              \end{itemize}
-        \item 各コールバック $c_{i, j}$ は最悪実行時間 (\al{WCET}) $e_{i, j}$ によって特徴付けられる
-        \item $\mathcal{C}_{i}$ の\al{利用率}は $U_{i}=E_{i} / T_{i}$
-    \end{itemize}
-\end{frame}
-
-\begin{frame}{基本の定義2}
-    \begin{itemize}
-        \item $J_{i}^{k}$ 内の連続する要素 $c_{i, j}^{k}$ と $c_{i, j+1}^{k}$ の各ペアについて, $c_{i, j}^{k}$ を $c_{i, j+1}^{k}$ の\al{先行要素}, $c_{i, j+1}^{k}$ を $c_{i, j}^{k}$ の\al{後続要素}と呼ぶ
-        \item $\mathcal{C}_{i}$ の最初・最後のコールバックを, それぞれ$\mathcal{C}_{i}$ の\al{ソース・シンクコールバック}と呼ぶ
-        \item \tb{非シンクコールバックインスタンス $c_{i, j}^{k}$ が実行を終了すると, 後続のインスタンスを呼び出すメッセージを生成する}
+        \item 非シンクコールバックインスタンス $c_{i, j}^{k}$ が実行を終了すると, 後続のインスタンスを呼び出すメッセージを生成する
+        \item チェーン $\mathcal{C}_{i}$ は, チェーンインスタンスの無限シーケンスをリリースする
+        \item 各チェーンは制約付きデッドラインを持つ, すなわち $D_{i} \leq T_{i}$
     \end{itemize}
 \end{frame}
 
@@ -150,8 +57,8 @@
 \begin{frame}{本論文の目的}
     本論文の目的は, 以下2つ
     \begin{itemize}
-        \item \tb{システム $\Gamma$ がマルチスレッドエグゼキュータでスケジュール可能かを判断}
-        \item \tb{$\Gamma$ がスケジュール可能である場合,} \\\tb{各チェーン $\mathcal{C}_{i} \in \Gamma$ の $\mathcal{R}_{i}^{w c}$ の安全な上界を計算}
+        \item システム $\Gamma$ がマルチスレッドエグゼキュータでスケジュール可能かを判断
+        \item $\Gamma$ がスケジュール可能である場合, 各チェーン $\mathcal{C}_{i} \in \Gamma$ の $\mathcal{R}_{i}^{w c}$ の安全な上界を計算
     \end{itemize}
 \end{frame}
 
@@ -163,10 +70,13 @@
 \begin{frame}{コールバックインスタンスのリリースタイミング}
     \begin{itemize}
         \item \tb{コールバックインスタンスのリリースタイミングは以下2パターン}
-        \begin{itemize}
-            \item $J_{i}^{k}$ 内のソースコールバックインスタンス $c_{i, 1}^{k}$ は, $J_{i}^{k}$ のリリースと同時にリリースされる
-            \item $J_{i}^{k}$ 内の非ソースコールバックインスタンスは, その先行の終了時, すなわち, 先行からの入力メッセージが利用可能になった時にリリースされる
-        \end{itemize}
+              \begin{block}{ソースコールバックインスタンス}
+                  $J_{i}^{k}$ 内のソースコールバックインスタンス $c_{i, 1}^{k}$ は, $J_{i}^{k}$ のリリースと同時にリリースされる
+              \end{block}
+              \begin{block}{非ソースコールバックインスタンス}
+                  $J_{i}^{k}$ 内の非ソースコールバックインスタンスは, その先行の終了時, すなわち, 先行からの入力メッセージが利用可能になった時にリリースされる
+              \end{block}
+              \vspace{5mm}
         \item 同じコールバックの複数のインスタンスがリリースされた場合, リリース時刻を基準にFIFOにエンキューされる
     \end{itemize}
 \end{frame}
@@ -188,28 +98,27 @@
 
 \begin{frame}{pendingコールバックインスタンスの状態}
     \tb{pendingコールバックインスタンス$c_{i, j}$は, ready または Pブロックされている}
-    \begin{itemize}
-        \item  $c_{i, j}$ が mutually exclusive コールバックグループに属している場合:
-              \begin{itemize}
-                  \item $c_{i, j}$ と同じコールバックグループ内のコールバックのインスタンスが実行されていない場合, $c_{i, j}$ はready
-                  \item それ以外の場合, $c_{i, j}$ はPブロックされている
-              \end{itemize}
-        \item  $c_{i, j}$ がreentrantコールバックグループに属している場合:
-              \begin{itemize}
-                  \item $c_{i, j}$ は常に ready
-              \end{itemize}
-    \end{itemize}
+    \begin{block}{$c_{i, j}$ が mutually exclusive コールバックグループに属している場合}
+        \setlength{\linewidth}{0.98\columnwidth}
+        \begin{itemize}
+            \item $c_{i, j}$ と同じコールバックグループ内のコールバックのインスタンスが実行されていない場合, $c_{i, j}$ はready
+            \item それ以外の場合, $c_{i, j}$ はPブロックされている
+        \end{itemize}
+    \end{block}
+    \begin{block}{$c_{i, j}$ がreentrantコールバックグループに属している場合}
+        $c_{i, j}$ は常に ready
+    \end{block}
 \end{frame}
 
 \begin{frame}{$\Omega$}
     \begin{itemize}
-        \item エグゼキュータは readyコールバックインスタンスを保持する共通のreadyセット \al{$\Omega$} を持つ
+        \item エグゼキュータは readyコールバックインスタンスを保持する共通のreadyセット $\Omega$ を持つ
         \item \tb{コールバックインスタンスが実行のために選択されると, $\Omega$ から削除される}
     \end{itemize}
 \end{frame}
 
 \begin{frame}{Rブロック, eligible}
-    \tb{$\Omega$ 内の ready のコールバックインスタンス $c_{i, j}$ が実行のために選択される条件は \al{eligible} であること}
+    \tb{$\Omega$ 内の ready のコールバックインスタンス $c_{i, j}$ が実行のために選択される条件は eligible であること}
     \begin{definition}[Rブロック]
         $c_{i, j}$ が mutually exclusive コールバックグループに属すかつ, $\Omega$ 内に存在し, $c_{i, j}$ と同じグループ内のコールバックのインスタンスが実行されている場合, $c_{i, j}$ は Rブロックされている
     \end{definition}
@@ -220,17 +129,16 @@
 
 \begin{frame}{$\Omega$ 内のコールバックインスタンスの状態}
     \tb{$\Omega$ 内のコールバックインスタンスは eligible であるか, Rブロックされている}
-    \begin{itemize}
-        \item $c_{i, j}$ が mutually exclusive コールバックグループに属す場合:
-              \begin{itemize}
-                  \item $c_{i, j}$ と同じコールバックグループ内のコールバックのインスタンスが実行されていない場合, $c_{i, j}$ は eligible
-                  \item それ以外の場合, $c_{i, j}$ はRブロックされている
-              \end{itemize}
-        \item $c_{i, j}$ が reentrant コールバックグループに属す場合:
-              \begin{itemize}
-                  \item $c_{i, j}$ は 常に eligible
-              \end{itemize}
-    \end{itemize}
+    \begin{block}{$c_{i, j}$ が mutually exclusive コールバックグループに属す場合}
+        \setlength{\linewidth}{0.98\columnwidth}
+        \begin{itemize}
+            \item $c_{i, j}$ と同じコールバックグループ内のコールバックのインスタンスが実行されていない場合, $c_{i, j}$ は eligible
+            \item それ以外の場合, $c_{i, j}$ はRブロックされている
+        \end{itemize}
+    \end{block}
+    \begin{block}{$c_{i, j}$ が reentrant コールバックグループに属す場合}
+        $c_{i, j}$ は 常に eligible
+    \end{block}
 \end{frame}
 
 \begin{frame}{mutually exclusiveコールバックグループの特徴}
@@ -239,29 +147,16 @@
 
 
 \begin{frame}{ポーリングポイント}
-    \begin{itemize}
-        \item コールバックインスタンスは, ready でもすぐには $\Omega$ に追加されない
-        \item \tb{$\Omega$ に eligible なコールバックが無く, スレッドがアイドル状態の場合にのみ, ready のコールバックインスタンスを $\Omega$ に追加できる}
-              \begin{definition}[ポーリングポイント]
-                  ポーリングポイントは $\Omega$ が更新される時点である
-              \end{definition}
-              \vspace{3mm}
-        \item $\Omega$ が更新されると, まず $\Omega$ が $\emptyset$ に設定され, その後, 現在全ての ready コールバックインスタンスが $\Omega$ に追加される
-    \end{itemize}
-\end{frame}
-
-\begin{frame}{updated, バッチ}
-    \begin{itemize}
-        \item $\Omega$ に新しい要素が追加されることを \al{updated} と呼ぶ
-        \item 複数のコールバックインスタンスが同じポーリングポイントで $\Omega$ に追加された場合, これらのインスタンスは同じ\al{バッチ}であると呼ぶ
-    \end{itemize}
+    コールバックインスタンスは ready でもすぐには $\Omega$ に追加されず, ポーリングポイントのみで $\Omega$ に追加される
+    \begin{definition}[ポーリングポイント]
+        $\Omega$ に eligible なコールバックが無く, スレッドがアイドル状態の場合に, ready のコールバックインスタンスを $\Omega$ に追加する時点
+    \end{definition}
 \end{frame}
 
 \begin{frame}{スレッド}
     \begin{itemize}
         \item \tb{$\Omega$ 内のeligibleなコールバックインスタンスは, $m$ 個のスレッドによって1つずつ選択され, ノンプリエンプティブに実行される}
         \item スレッドとは, 処理リソースの観点から, 対応するプロセッサを表すもの
-        \item スレッドがコールバックインスタンスが実行しているとき\al{ビジーである}と呼び, コールバックインスタンスを実行していないときは\al{アイドル状態}と呼ぶ
     \end{itemize}
 \end{frame}
 
@@ -269,7 +164,6 @@
     \begin{itemize}
         \item \tb{eligibleなコールバックインスタンスを選択する順序はそれらの優先度によって決定される}
         \item 各コールバックには固定の固有の優先度があり, 全てのインスタンスがこの優先度を継承する
-        \item \desc{$h p\left(c_{i, j}\right)$}{コールバック $c_{i, j}$ よりも優先度の高いコールバックのセット}
     \end{itemize}
 \end{frame}
 

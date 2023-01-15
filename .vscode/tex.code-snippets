@@ -55,19 +55,20 @@
 			"$$1$ & $2 \\\\\\\\\\hline"
 		]
 	},
-	"notation": {
-		"prefix": "notation table",
+	"notation and terms": {
+		"prefix": "notations and terms table",
 		"body": [
+			"\\begin{frame}{表記法・用語 $1}",
 			"\\full{",
 			"\\begin{table}[tb]",
 			"\\adjustbox{max width=\\textwidth, max height=\\slideheight}{",
 			"\\centering\\begin{tabular}{|c|l|} \\hline",
-			"\\textbf{Notations}      & \\textbf{Descriptions} \\\\\\\\\\hline",
-			"$1",
+			"$2",
 			"\\end{tabular}",
 			"}",
 			"\\end{table}",
-			"}"
+			"}",
+			"\\end{frame}"
 		]
 	},
 	"theorem": {
@@ -110,5 +111,30 @@
 	"bv": {
 		"prefix": "vspace after block",
 		"body": "\\vspace{5mm}"
+	},
+	"ss": {
+		"prefix": "section summary",
+		"body": [
+			"\\begin{frame}{セクションサマリ}",
+			"\\begin{itembox}[l]{\\textbf{目的}}",
+			"$1",
+			"\\end{itembox}",
+			"\\begin{itembox}[l]{\\textbf{流れ}}",
+			"$2",
+			"\\end{itembox}",
+			"\\end{frame}"
+		]
+	},
+	"note for system model":{
+		"prefix": "note for system model",
+		"body": [
+			"\\begin{frame}{}",
+			"\\begin{itemize}",
+			"\\item 始めに, 本論文で登場する表記法・用語の表を示す",
+			"\\item 基本的な表記法・用語は資料中で説明無しで使用する",
+			"\\item 暗記するのは困難なため, 別ファイルで開く・印刷するなどして, 常に参照できる状態にしておくことを推奨する",
+			"\\end{itemize}",
+			"\\end{frame}",
+		]
 	}
 }

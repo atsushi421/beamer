@@ -100,12 +100,11 @@
 \subsection{Scheduling of multi-threaded executor}
 \label{ssec: scheduling_of_multi_threaded_executor}
 
-\begin{frame}{}
-    \begin{itemize}
-        \item ROS 2 マルチスレッドエグゼキュータのスケジューリング動作を紹介する
-        \item 本論文の内容は ROS 2 Foxy Fitzroy に基づいている
-    \end{itemize}
-
+\begin{frame}{セクションサマリ}
+\begin{itembox}[l]{\textbf{目的}}
+    ROS 2 マルチスレッドエグゼキュータのスケジューリング動作を説明
+    \notes{本論文の内容は ROS 2 Foxy Fitzroy に基づいている}
+\end{itembox}
 \end{frame}
 
 \begin{frame}{コールバック}
@@ -158,6 +157,7 @@
 
 \begin{frame}{wait\_set}
     エグゼキュータ内のスレッドは共通のセット \al{wait\_set} によって, 利用可能なメッセージを持つコールバックを保持する
+    \assume{スレッドが wait\_set にアクセスする際に発生するオーバヘッドはゼロであるとする}
 \end{frame}
 
 \begin{frame}{reentrant/mutually exclusiveコールバックグループ}
