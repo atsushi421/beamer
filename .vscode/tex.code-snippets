@@ -147,6 +147,7 @@
 			"\\begin{table}[tb]",
 			"\\adjustbox{max width=\\xtwidth, max height=\\slideheight}{",
 			"\\centering\begin{tabular}{|c|c|} \\\\\\\\\\hline",
+			"& XXX \\\\\\\\\\hline",
 			"本論文 & \\ch \\\\\\\\\\hline",
 			"\\end{tabular}",
 			"}",
