@@ -50,7 +50,7 @@
 \end{frame}
 
 \begin{frame}{DDS (Data Distribution Service)}
-    ノードのpublisherとsubscriberの間のメッセージ交換は, 抽象\al{DDS} (Data Distribution Service) 層によって実現
+    ノードのpublisherとsubscriberの間のメッセージ交換は, \\抽象\al{DDS} (Data Distribution Service) 層によって実現
 
     \begin{block}{抽象DDS}
         DDS とクライアントライブラリ間の通信インタフェース
@@ -63,8 +63,8 @@
 \begin{frame}{処理チェーン}
     \fitimage{
         \begin{itemize}
-            \item \al{処理チェーン}は特定のイベントによってトリガされ, 複数のエグゼキュータにまたがる可能性がある
-            \item チェーンの各頂点はコールバックを表す
+            \item \al{処理チェーン}はコールバックの列
+            \item 処理チェーンは特定のイベントによってトリガされ, 複数のエグゼキュータにまたがる可能性がある
         \end{itemize}
     }{multi_threaded_executor.png}
 \end{frame}
@@ -115,7 +115,7 @@
 \end{frame}
 
 \begin{frame}{コールバックの優先順位決定方法}
-    ROS 2 では, コールバックの優先度は以下 2 つの基準で決定される
+    コールバックの優先度は以下 2 つの基準で決定される
 
     \begin{block}{コールバックタイプ}
         \setlength{\linewidth}{0.98\columnwidth}
@@ -145,7 +145,7 @@
 \end{frame}
 
 \begin{frame}{メッセージキュー}
-    ROS 2 では, 各コールバックに到着したメッセージをバッファリングするためのキューがあり, その深さはユーザによって指定される
+    各コールバックに到着したメッセージをバッファリングするためのキューがあり, その深さはユーザによって指定される
     \assume{
         \setlength{\linewidth}{0.98\columnwidth}
         \begin{itemize}
