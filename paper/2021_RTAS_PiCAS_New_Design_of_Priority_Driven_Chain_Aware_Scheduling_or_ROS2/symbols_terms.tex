@@ -1,1 +1,39 @@
 % !TeX root = main.tex
+
+\begin{frame}{表記法・用語 1}
+    \full{
+        \begin{table}[tb]
+            \adjustbox{max width=\textwidth, max height=\slideheight}{
+                \centering\begin{tabular}{|c|l|} \hline
+                    $M$                                                                                & システム内のコールバックの数                         \\\hline
+                    $\tau_{i}:=\left(C_{i}, D_{i}, T_{i}, \pi_{i}\right)$                              & コールバック                                         \\\hline
+                    $C_{i}$                                                                            & $\tau_{i}$ のジョブの最悪実行時間                    \\\hline
+                    $D_{i}$                                                                            & コールバック $\tau_{i}$ の相対的なデッドライン       \\\hline
+                    $T_{i}$                                                                            & コールバック $\tau_{i}$ の周期                       \\\hline
+                    $\pi_{i}$                                                                          & エグゼキュータ内でのコールバック $\tau_{i}$ の優先度 \\\hline
+                    $\mathcal{N}=:\left\{n_{1}, \ldots, n_{j}, \ldots, n_{N}\right\}$                  & ノードセット                                         \\\hline
+                    $U\left(n_{j}\right)=\sum_{\forall t_{i}: \tau_{i} \in n_{j}} \frac{C_{i}}{T_{i}}$ & ノードの利用率                                       \\\hline
+                    $\mathcal{E}=:\left\{e_{1}, \ldots, e_{j}, \ldots, e_{E}\right\}$                  & エグゼキュータセット                                 \\\hline
+                    $\pi_{e_{j}}$                                                                      & $j$ 番目のエグゼキュータの優先度                     \\\hline
+                \end{tabular}
+            }
+        \end{table}
+    }
+\end{frame}
+
+\begin{frame}{表記法・用語 2}
+    \full{
+        \begin{table}[tb]
+            \adjustbox{max width=\textwidth, max height=\slideheight}{
+                \centering\begin{tabular}{|c|l|} \hline
+                    $\Gamma^{c}:=\left[\tau_{s}, \tau_{m 1}, \tau_{m 2}, \ldots, \tau_{e}\right]$ & チェーン                                 \\\hline
+                    $\tau_{s}$                                                                    & チェーン $\Gamma^{c}$ の開始コールバック \\\hline
+                    $\tau_{m *}$                                                                  & チェーン $\Gamma^{c}$ の中間コールバック \\\hline
+                    $\tau_{e}$                                                                    & チェーン $\Gamma^{c}$ の終了コールバック \\\hline
+                    $\pi_{\Gamma^{c}}$                                                            & チェーン $\Gamma^{c}$ の優先度           \\\hline
+                    $\mathcal{C}_{\Gamma^{c}}=\sum_{\forall i: \tau_{i} \in \Gamma^{c}} C_{i}$    & チェーン $\Gamma^{c}$ の合計 WCET        \\\hline
+                \end{tabular}
+            }
+        \end{table}
+    }
+\end{frame}

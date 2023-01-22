@@ -13,7 +13,7 @@
 
 \begin{frame}{分析対象の時間間隔}
     \begin{itemize}
-        \item 本論文の意図は, 干渉チェーンからのワークロードによって遅延された $J$ 内のコールバックインスタンスがデッドラインに間に合わない可能性があるかを判断すること
+        \item 本論文の意図は, 干渉チェーンからのワークロードによってレイテンシされた $J$ 内のコールバックインスタンスがデッドラインに間に合わない可能性があるかを判断すること
         \item この観点から, \tb{時間間隔 $\left[r, \min \left\{s_{|J|}, r+D\right\}\right)$ を $J$ の\al{問題ウィンドウ}とし,}\\ \tb{問題ウィンドウ中の $J$ のコールバックインスタンスの実行に焦点を当てる}
     \end{itemize}
 \end{frame}
@@ -154,7 +154,7 @@
 
 \begin{frame}[label=defPhi]{寄与}
     \begin{itemize}
-        \item \hlink{lemma2}{Lemma 2} から, $J$ のスケジューリング可能性は, 各サブ干渉シーケンス $\mathcal{S}_{k, i}$ に関する $\mathcal{I}_{k, i}+(m-1) \mathcal{I}_{k, i}^{\mathcal{B}}-\mathcal{I}_{k, i}^{\mathcal{E}}$ の値によって決定される
+        \item \hlink{lemma2}{Lemma 2} から, $J$ のスケジューラビリティは, 各サブ干渉シーケンス $\mathcal{S}_{k, i}$ に関する $\mathcal{I}_{k, i}+(m-1) \mathcal{I}_{k, i}^{\mathcal{B}}-\mathcal{I}_{k, i}^{\mathcal{E}}$ の値によって決定される
         \item この値を $\mathcal{S}_{k, i}$ の $\mathcal{Q}_{k}$ への\al{寄与}と呼び, 次のように定義する
               \begin{definition}[$\mathcal{S}_{k, i}$ の $\mathcal{Q}_{k}$ への寄与 $\Phi_{k, i}$]
                   $\Phi_{k, i}=\mathcal{I}_{k, i}+(m-1) \mathcal{I}_{k, i}^{\mathcal{B}}-\mathcal{I}_{k, i}^{\mathcal{E}}$

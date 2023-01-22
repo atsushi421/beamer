@@ -22,7 +22,7 @@
     \begin{itemize}
         \item 透過的な CPU／GPU 連携メカニズムに基づくリアルタイム拡張を提案 \cite{suzuki2018real}
         \item 分散システムにおける ROS 2 のエンドツーエンドのレイテンシを研究 \cite{kronauer2021latency}
-        \item ROS 2 の標準的な rclcpp Executor を Callback-group-level Executor と呼ばれるリアルタイムエクゼキュータに置き換え, その結果得られる性能を調査 \cite{yang2020exploring}
+        \item ROS 2 の標準的な rclcpp エグゼキュータ を Callback-group-level エグゼキュータ と呼ばれるリアルタイムエクゼキュータに置き換え, その結果得られる性能を調査 \cite{yang2020exploring}
     \end{itemize}
 \end{frame}
 
@@ -36,8 +36,8 @@
 
 \begin{frame}{ROS 2 エグゼキュータの分析の既存研究2}
     \begin{itemize}
-        \item ROS 2フレームワークのための新しい優先順位駆動型チェーンアウェアスケジューラを提案し, 提案スケジューラのエンドツーエンドレイテンシ分析を実施 \cite{choi2021picas}
-        \item ROSLlama を導入し, エンドツーエンド遅延を制御するために既存のリアルタイムメカニズムを使用し, ランタイムに必要な全てのスケジューリングパラメータを自動的に推定 \cite{blass2021automatic}
+        \item ROS 2フレームワークのための新しい優先度駆動型チェーンアウェアスケジューラを提案し, 提案スケジューラのエンドツーエンドレイテンシ分析を実施 \cite{choi2021picas}
+        \item ROSLlama を導入し, エンドツーエンドレイテンシを制御するために既存のリアルタイムメカニズムを使用し, ランタイムに必要な全てのスケジューリングパラメータを自動的に推定 \cite{blass2021automatic}
     \end{itemize}
 \end{frame}
 
@@ -67,7 +67,7 @@
 \begin{frame}{スケジューリングアルゴリズムの既存研究}
     マルチプロセッサ上のシーケンシャルリアルタイムタスクの従来のノンプリエンプティブスケジューリングについて以下の研究がある
     \begin{itemize}
-        \item EDF でスケジュールされた周期的タスクに対して, 十分ではあるが必須ではない多項式時間のスケジューリング可能性テスト条件を提案した \cite{baruah2006non}
+        \item EDF でスケジュールされた周期的タスクに対して, 十分ではあるが必須ではない多項式時間のスケジューラビリティテスト条件を提案した \cite{baruah2006non}
         \item EDF の下で線形時間の複雑さを備えた新しい十分なテストを提案し, EDF と FP スケジューリングの疑似多項式の時間複雑性の改善されたテスト条件を提示 \cite{guan2008new}
     \end{itemize}
 \end{frame}

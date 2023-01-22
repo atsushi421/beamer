@@ -146,13 +146,31 @@
 			"\\full{",
 			"\\begin{table}[tb]",
 			"\\adjustbox{max width=\\textwidth, max height=\\slideheight}{",
-			"\\centering\\begin{tabular}{|c|c|} \\\\\\\\\\hline",
+			"\\centering\\begin{tabular}{|c|c|} \\hline",
 			"& XXX \\\\\\\\\\hline",
 			"本論文 & \\ch \\\\\\\\\\hline",
 			"\\end{tabular}",
 			"}",
 			"\\end{table}",
 			"}",
+			"\\end{frame}"
+		]
+	},
+	"fit image frame":{
+		"prefix": "fit image frame",
+		"body": [
+			"\\begin{frame}{$1}",
+			"\\fitimage{",
+			"$2",
+			"}{$2}",
+			"\\end{frame}"
+		]
+	},
+	"full image frame":{
+		"prefix": "full image frame",
+		"body": [
+			"\\begin{frame}{$1}",
+			"\\fullimage{$2}",
 			"\\end{frame}"
 		]
 	}

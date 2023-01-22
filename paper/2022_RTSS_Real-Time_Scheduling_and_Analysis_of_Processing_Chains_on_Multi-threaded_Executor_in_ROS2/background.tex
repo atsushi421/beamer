@@ -66,14 +66,14 @@
             \item \al{処理チェーン}はコールバックの列
             \item 処理チェーンは特定のイベントによってトリガされ, 複数のエグゼキュータにまたがる可能性がある
         \end{itemize}
-    }{multi_threaded_executor.png}
+    }{multi_threaded_エグゼキュータ.png}
 \end{frame}
 
 \begin{frame}{本論文の分析の焦点}
     \fitimage{
         本論文では単一のエグゼキュータにおけるチェーンの応答時間に焦点を当てる
         \notes{CPAアプローチ\cite{casini2019response}によってチェーンが複数のエグゼキュータにもまたがる場合に拡張できる}
-    }{multi_threaded_executor.png}
+    }{multi_threaded_エグゼキュータ.png}
 \end{frame}
 
 \begin{frame}{コールバックグループ}
@@ -82,7 +82,7 @@
             \item コールバックは必ず1つの\al{コールバックグループ}に属す
             \item エグゼキュータ内のコールバックは, 異なるコールバックグループに属す可能性がある
         \end{itemize}
-    }{multi_threaded_executor.png}
+    }{multi_threaded_エグゼキュータ.png}
 
 \end{frame}
 
@@ -97,8 +97,8 @@
 \end{frame}
 
 
-\subsection{Scheduling of multi-threaded executor}
-\label{ssec: scheduling_of_multi_threaded_executor}
+\subsection{Scheduling of multi-threaded エグゼキュータ}
+\label{ssec: scheduling_of_multi_threaded_エグゼキュータ}
 
 \begin{frame}{セクションサマリ}
 \begin{itembox}[l]{\textbf{目的}}
@@ -114,14 +114,14 @@
     \end{itemize}
 \end{frame}
 
-\begin{frame}{コールバックの優先順位決定方法}
+\begin{frame}{コールバックの優先度決定方法}
     コールバックの優先度は以下 2 つの基準で決定される
 
     \begin{block}{コールバックタイプ}
         \setlength{\linewidth}{0.98\columnwidth}
         \begin{itemize}
             \item コールバックはタイマ・サブスクライバ・サービス・クライアントの 4 つのタイプに分類される
-            \item 優先順位は, タイマ $\succ$ サブスクライバ $\succ$ サービス $\succ$ クライアント \notes{\desc{$\succ$}{より高い優先度を持つ}}
+            \item 優先度は, タイマ $\succ$ サブスクライバ $\succ$ サービス $\succ$ クライアント \notes{\desc{$\succ$}{より高い優先度を持つ}}
         \end{itemize}
     \end{block}
 

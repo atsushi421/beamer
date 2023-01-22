@@ -17,6 +17,7 @@
 \usepackage{hyperref}
 \usepackage{fancybox}
 \usepackage{ascmac}
+\usepackage{amsmath}
 
 
 %%%%% Settings %%%%%
@@ -183,7 +184,6 @@
     \centering
     \begin{columns}
         \begin{column}{\textwidth}
-            \hspace{-3.5mm}
             \begin{minipage}[t][\textheight][c]{\columnwidth}
                 #1
             \end{minipage}
@@ -220,7 +220,7 @@
     \addtolength\fitimageht{-\fitotherht-\headerheight-\footerheight-1\baselineskip}%
     #1\par
     \centering
-    \fbox{\includegraphics[width=\textwidth,height=\fitimageht,keepaspectratio]{#2}}
+    \hspace{5.0mm}\fbox{\includegraphics[width=\textwidth,height=\fitimageht,keepaspectratio]{#2}}
 }
 % Simplification
 \newcommand{\assume}[1]{

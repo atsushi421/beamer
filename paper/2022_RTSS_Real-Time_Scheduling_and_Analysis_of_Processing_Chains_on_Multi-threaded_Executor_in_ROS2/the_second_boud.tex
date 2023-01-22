@@ -78,7 +78,7 @@
     境界は 2 点に基づいて導出される
     \begin{itemize}
         \item マルチスレッドエグゼキュータはバッチ内の異なるチェーンからのコールバックをスケジュールするため, $c_{i}$ はバッチからのコールバックインスタンスによってのみ干渉される可能性がある
-        \item $c_{i}$ が $\Omega$ に追加されると, $\Omega$ 内のそれより優先度の高い他のコールバックインスタンスによってのみ遅延できる
+        \item $c_{i}$ が $\Omega$ に追加されると, $\Omega$ 内のそれより優先度の高い他のコールバックインスタンスによってのみレイテンシできる
     \end{itemize}
 \end{frame}
 
@@ -120,14 +120,14 @@
 \begin{frame}{分析の視点}
     \begin{itemize}
         \item $c_{i}$ がブロックされている場合, $\Omega$ が何度も更新される可能性がある
-        \item $c_{i}$ が $\Omega$ に追加された後, 優先度の低いコールバックインスタンスによって $c_{i}$ がブロックされる可能性があるため, 遅延することもある
+        \item $c_{i}$ が $\Omega$ に追加された後, 優先度の低いコールバックインスタンスによって $c_{i}$ がブロックされる可能性があるため, レイテンシすることもある
         \item そのため, 前のセクションで行ったように, $\left[r_{i}, s_{i}\right)$ 中のポーリングポイントの数を制限することは困難
     \end{itemize}
 \end{frame}
 
 \begin{frame}[label=lemma9]{Lemma 9}
     \begin{lemma}[]
-        $\mathcal{G}\left(c_{i}\right) \in \cup_{\forall \mathcal{C}_{k} \in \Gamma \backslash\{\mathcal{C}\}} \theta_{k}$ であり, $\mathcal{C}_{k}$ の 2 つ以上のコールバックが $\left[r_{i}, s_{i}\right)$ の間に実行される場合, 最初のコールバックを除くそれぞれのコールバックは, $c_{i}$ とは異なるコールバックグループに属しているか, $c_{i}$ よりも高い優先順位を持っている
+        $\mathcal{G}\left(c_{i}\right) \in \cup_{\forall \mathcal{C}_{k} \in \Gamma \backslash\{\mathcal{C}\}} \theta_{k}$ であり, $\mathcal{C}_{k}$ の 2 つ以上のコールバックが $\left[r_{i}, s_{i}\right)$ の間に実行される場合, 最初のコールバックを除くそれぞれのコールバックは, $c_{i}$ とは異なるコールバックグループに属しているか, $c_{i}$ よりも高い優先度を持っている
     \end{lemma}
 \end{frame}
 
