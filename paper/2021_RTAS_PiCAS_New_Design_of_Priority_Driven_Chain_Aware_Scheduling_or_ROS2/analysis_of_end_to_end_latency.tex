@@ -5,7 +5,7 @@
 
 \begin{frame}{セクションサマリ}
     \begin{itembox}[l]{\textbf{目的}}
-        ROS2 用に提案されたチェーン考慮スケジューリングの下でのチェーンのエンドツーエンドのレイテンシ分析を示す
+        PiCASの下でのチェーンのエンドツーエンドのレイテンシ分析を示す
     \end{itembox}
 \end{frame}
 
@@ -20,26 +20,27 @@
     \begin{block}{セグメント $\Phi_i$}
         \begin{itemize}
             \item 1つのCPUコア上のチェーン $\Gamma^{c}$ の連続したサブセット
+            \item チェーンが複数のCPUコア上で実行される場合, 複数のセグメントに分解される
             \item セグメント $\Phi_{i}$ は, $\Phi_{i}$ 内の最低優先度のコールバックから優先度が継承される単一のコールバックと見なされる
             \item $\Phi_{i}$ の WCET は$\Phi_{i}$内の全てのコールバックの WCET の合計
         \end{itemize}
     \end{block}
-    \begin{itemize}
-        \item セグメントを単一のコールバックと見なせる理由は, $\Gamma^{c}$ のタイマコールバックがその周期に基づいて到着すると, 残りのコールバックはその前のコールバックの完了によって直接トリガーされるため
-        \item チェーンが複数のCPUコア上で実行される場合, 複数のセグメントに分解される
-    \end{itemize}
+    \forme{セグメントを単一のコールバックと見なせる理由は, $\Gamma^{c}$ のタイマコールバックがその周期に基づいて到着すると, 残りのコールバックはその前のコールバックの完了によって直接トリガーされるため}
 \end{frame}
 
 \begin{frame}{$\eta_{i}\left(t, \tau_{k}\right)$}
-    $\eta_{i}\left(t, \tau_{k}\right)$ は, 任意の時間間隔 $t$ の間にターゲットセグメント $\Phi_{i} \subset \Gamma^{c}$ に干渉を引き起こすコールバック $\tau_{k} \in \Gamma^{c^{\prime}}$ の到着の最大数
+    \vspace{-1mm}
+    $\eta_{i}\left(t, \tau_{k}\right)$ は, 任意の時間間隔 $t$ の間に, セグメント $\Phi_{i} \subset \Gamma^{c}$ に干渉するコールバック $\tau_{k} \in \Gamma^{c^{\prime}}$ の到着の最大数
+    \vspace{-1mm}
     \begin{block}{$\eta_{i}\left(t, \tau_{k}\right)$}
+        \vspace{-2mm}
         \begin{equation*}
             \eta_{i}\left(t, \tau_{k}\right)= \begin{cases}{\left[\frac{t}{\mathcal{T}_{\Gamma^{c^{\prime}}}}\right]} & \text {, if } \pi_{\Gamma^{c^{\prime}}}>\pi_{\Gamma^{c}} \wedge P\left(\Phi_{i}\right)=P\left(\tau_{k}\right) \\ 0 &, \text { otherwise }\end{cases}
         \end{equation*}
-
+        \vspace{-2mm}
         \setlength{\linewidth}{0.98\columnwidth}
         \begin{itemize}
-            \item $\Gamma^{c^{\prime}}$ の全てのコールバックが同じ CPU 上にある場合は $\mathcal{T}_{\Gamma^{c^{\prime}}}=\max \left(T_{\Gamma^{c^{\prime}}}, \sum_{\tau_{j} \in \Gamma^{c^{\prime}}} C_{j}\right)$, それ以外の場合は $\mathcal{T}_{\Gamma^{c^{\prime}}}=T_{\Gamma^{c^{\prime}}}$
+            \item $\Gamma^{c^{\prime}}$ の全てのコールバックが同じ CPU 上にある場合 $\mathcal{T}_{\Gamma^{c^{\prime}}}=\max \left(T_{\Gamma^{c^{\prime}}}, \sum_{\tau_{j} \in \Gamma^{c^{\prime}}} C_{j}\right)$, それ以外の場合 $\mathcal{T}_{\Gamma^{c^{\prime}}}=T_{\Gamma^{c^{\prime}}}$
             \item \desc{$T_{\Gamma^{c^{\prime}}}$}{$\Gamma^{c^{\prime}}$ の周期}
             \item \desc{$P\left(\tau_{k}\right)$}{$\tau_{k}$ の CPU コア}
         \end{itemize}
@@ -61,7 +62,7 @@
 \end{frame}
 
 \begin{frame}{$R_{c, i}^{n}$}
-    $R_{c, i}^{n}$ は, セグメント $\Phi_{i} \subset$  $\Gamma^{c}$ の最悪の場合の応答時間
+    $R_{c, i}^{n}$ は, セグメント $\Phi_{i} \subset$  $\Gamma^{c}$ の最悪応答時間
     \begin{block}{$R_{c, i}^{n}$}
         \begin{equation*}
             R_{c, i}^{0}=B_{i}+ \sum_{\forall j: \tau_{j} \in \Phi_{i}} C_{j}
@@ -72,7 +73,7 @@
 
         \setlength{\linewidth}{0.98\columnwidth}
         \begin{itemize}
-            \item \desc{$e_{H P}$}{$\Phi_{i}$ のエグゼキュータよりも優先度の高い一連のエグゼキュータ}
+            \item \desc{$e_{H P}$}{$\Phi_{i}$ のエグゼキュータより優先度の高いエグゼキュータセット}
         \end{itemize}
     \end{block}
 \end{frame}
