@@ -3,19 +3,19 @@
 \section{PRIORITY-DRIVEN CHAIN-AWARE SCHEDULING}
 \label{sec: priority-driven chain-aware scheduling}
 
-\begin{frame}{セクションサマリ}
-    \begin{itembox}[l]{\textbf{目的}}
-        PiCAS と呼ばれる, ROS2 用の優先度駆動型のチェーン考慮スケジューリングフレームワークを紹介する
-    \end{itembox}
-\end{frame}
+% \begin{frame}{セクションサマリ}
+%     \begin{itembox}[l]{\textbf{目的}}
+%         PiCAS と呼ばれる, ROS2 用の優先度駆動型のチェーン考慮スケジューリングフレームワークを紹介する
+%     \end{itembox}
+% \end{frame}
 
-\begin{frame}{ROS2 スケジューリングアーキテクチャ再設計の観点}
-    チェーンのエンドツーエンドのレイテンシを改善するために, 現在の ROS2 スケジューリングアーキテクチャは, 以下2つを考慮して再設計できる
-    \begin{enumerate}
-        \item 優先度の高いチェーンは, 優先度の低いチェーンより早く実行されること
-        \item 各チェーンにおいて, 新しくリリースされたインスタンスが先行インスタンスと同じCPUにスケジューリングされた場合, 新しいインスタンスが実行を開始する前に先行インスタンスの実行を完了する必要がある
-    \end{enumerate}
-\end{frame}
+% \begin{frame}{ROS2 スケジューリングアーキテクチャ再設計の観点}
+%     チェーンのエンドツーエンドのレイテンシを改善するために, 現在の ROS2 スケジューリングアーキテクチャは, 以下2つを考慮して再設計できる
+%     \begin{enumerate}
+%         \item 優先度の高いチェーンは, 優先度の低いチェーンより早く実行されること
+%         \item 各チェーンにおいて, 新しくリリースされたインスタンスが先行インスタンスと同じCPUにスケジューリングされた場合, 新しいインスタンスが実行を開始する前に先行インスタンスの実行を完了する必要がある
+%     \end{enumerate}
+% \end{frame}
 
 \begin{frame}[label=lemma1]{Lemma 1}
     Lemma 1 はスケジューラに必要なプロパティを示す
@@ -23,15 +23,71 @@
         チェーン $\Gamma^{c}:=\left[\tau_{1}, \ldots \tau_{i}, \ldots, \tau_{j}, \ldots, \tau_{N}\right]$ について, コールバックが同じ CPU 上にある時, 以下2つの条件が満たされれば, 新しいインスタンスが実行を開始する前に, 前のチェーンインスタンスがその実行を完了することが保証される
         \begin{enumerate}
             \item $\tau_{j}$が$\tau_{i}$より高いコールバック優先度を持つ
-            \item $\tau_{j}$が$\tau_{i}$のエグゼキュータと同じか高い優先度を持つエグゼキュータで実行される
+            \item $\tau_{j}$が$\tau_{i}$のエグゼキュータ以上の優先度を持つエグゼキュータで実行される
         \end{enumerate}
     \end{lemma}
-    ※証明略
 \end{frame}
 
-\begin{frame}{Lemma 1が示すこと}
-    Lemma 1 の2つの条件を満たすスケジューラでは，自己干渉が発生しない
+\begin{frame}{Lemma 1 証明１}
+    \fitimage{
+        \begin{itemize}
+            \item 矛盾によって証明する
+            \item 同じCPU上に, 同一チェーンに含まれる $\tau_{i}$, $\tau_{j}$ ($i < j \le N$) が割り当てられているとする
+        \end{itemize}
+    }{lemma1_proof_sup1}
 \end{frame}
+
+\begin{frame}{Lemma 1 証明2}
+    \begin{itemize}
+        \item 新しいチェーンインスタンスが, その前のインスタンスが完了する前に実行を開始するケースは以下3つ:
+              \begin{enumerate}
+                  \item $\tau_{i}$ の優先度が $\tau_{j}$ の優先度より高く, $\tau_{i}$ と $\tau_{j}$ が同じエグゼキュータ上に属す
+                  \item $\tau_{i}$ は $\tau_{j}$ より優先度が低いが, $\tau_{j}$ より優先度の高いエグゼキュータに属す
+                  \item $\tau_{i}$ は $\tau_{j}$ より優先度が高く,  $\tau_{j}$ より優先度の高いエグゼキュータに属す
+              \end{enumerate}
+        \item これらは, Lemma 1 の少なくとも1つの条件に矛盾する
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Lemma 1 証明補足 [ケース1の自己干渉例]}
+    \fitimage{
+        $\tau_{i}$ の優先度が $\tau_{j}$ の優先度より高く, $\tau_{i}$ と $\tau_{j}$ が同じエグゼキュータ上に属す
+    }{lemma1_proof_sup2}
+\end{frame}
+
+\begin{frame}{Lemma 1 証明補足 [ケース1の矛盾]}
+    \fitimage{
+        $\tau_{i}$ の優先度が $\tau_{j}$ の優先度より高く, $\tau_{i}$ と $\tau_{j}$ が同じエグゼキュータ上に属す
+    }{lemma1_proof_sup3}
+\end{frame}
+
+\begin{frame}{Lemma 1 証明補足 [ケース2の自己干渉例]}
+    \fitimage{
+        $\tau_{i}$ は $\tau_{j}$ より優先度が低いが, $\tau_{j}$ より優先度の高いエグゼキュータに属す
+    }{lemma1_proof_sup4}
+\end{frame}
+
+\begin{frame}{Lemma 1 証明補足 [ケース2の矛盾]}
+    \fitimage{
+        $\tau_{i}$ は $\tau_{j}$ より優先度が低いが, $\tau_{j}$ より優先度の高いエグゼキュータに属す
+    }{lemma1_proof_sup5}
+\end{frame}
+
+\begin{frame}{Lemma 1 証明補足 [ケース3の自己干渉例]}
+    \fitimage{
+        $\tau_{i}$ は $\tau_{j}$ より優先度が高く,  $\tau_{j}$ より優先度の高いエグゼキュータに属す
+    }{lemma1_proof_sup6}
+\end{frame}
+
+\begin{frame}{Lemma 1 証明補足 [ケース3の矛盾]}
+    \fitimage{
+        $\tau_{i}$ は $\tau_{j}$ より優先度が高く,  $\tau_{j}$ より優先度の高いエグゼキュータに属す
+    }{lemma1_proof_sup7}
+\end{frame}
+
+% \begin{frame}{Lemma 1が示すこと}
+%     Lemma 1 の2つの条件を満たすスケジューラでは, 自己干渉が発生しない
+% \end{frame}
 
 % \begin{frame}{Lemma 1が示すこと}
 %     \begin{itemize}
@@ -49,247 +105,247 @@
 % \end{frame}
 
 
-\subsection{Strategies for chains running within an executor}
-\label{ssec: strategies for chains running within an executor}
+% \subsection{Strategies for chains running within an executor}
+% \label{ssec: strategies for chains running within an executor}
 
-\begin{frame}{セクションサマリ}
-    \begin{itembox}[l]{\textbf{目的}}
-        1つのエグゼキュータ内で実行されるチェーンの戦略について説明する
-    \end{itembox}
-\end{frame}
-
-\begin{frame}{}
-    \fitimage{
-        スケジューリング戦略を図に示すチェーンとコールバックの分類から導き出す
-    }{strategies_classification.png}
-\end{frame}
-
-\begin{frame}[label=strategy1]{[戦略 I] 単一チェーンからのレギュラーコールバック}
-    戦略 I は $\tau_{j}$ に $\tau_{i}$ よりも高い優先度を与えることで, Lemma 1 の最初の条件を満たすようにする
-    \begin{block}{戦略 I}
-        エグゼキュータが単一のチェーン $\Gamma^{c}=:\left[\tau_{1}, \ldots, \tau_{i}, \ldots, \tau_{j}, \ldots, \tau_{N}\right]$ からのレギュラーコールバックのみを持っている場合, これらのコールバックの優先度は, チェーン内の順序とは逆の順序で割り当てる
-    \end{block}
-\end{frame}
-
-\begin{frame}[label=strategy2]{[戦略 II] 1 つのチェーンからのタイマ/レギュラーコールバック}
-    あるチェーンにおいてレギュラーコールバックはタイマコールバックよりも後ろに存在するため, 戦略 II は Lemma 1 の最初の条件を満たすようにする
-    \begin{block}{戦略 II}
-        エグゼキュータに単一チェーン $\Gamma^{c}$ のタイマ・レギュラーコールバックの両方が含まれる場合, レギュラーコールバックにタイマコールバックよりも高い優先度を与える
-        \notes{レギュラーコールバックのスケジューリングは, 戦略 I に従う}
-    \end{block}
-\end{frame}
-
-\begin{frame}[label=strategy3]{[戦略 III] 複数のチェーンからのレギュラーコールバック}
-    \begin{itemize}
-        \item 戦略 III は Lemma 1 の2番目の条件を満たすようにする
-        \item $\pi_{\Gamma^{c}}<\pi_{\Gamma^{c^{\prime}}}$ である2つのチェーン $\Gamma^{c}$, $\Gamma^{c^{\prime}}$ を考える
-    \end{itemize}
-    \begin{block}{戦略 III}
-        エグゼキュータに $\Gamma^{c}$ と $\Gamma^{c^{\prime}}$ の両方からのレギュラーコールバックが含まれている場合, $\Gamma^{c^{\prime}}$ の全てのコールバックには, $\Gamma^{c}$ のコールバックよりも高い優先度を割り当てる
-        \notes{各チェーンのコールバックの優先度の割り当ては, 戦略 I に従う}
-    \end{block}
-\end{frame}
-
-\begin{frame}[label=strategy4]{[戦略 IV] 複数のチェーンからのタイマ/レギュラーコールバック}
-    戦略 IV は重要度の高いチェーンインスタンスが重要度の低いインスタンスよりも優先されるようにする
-    \begin{block}{戦略 IV}
-        優先度の高いチェーンからのタイマコールバックは, 優先度の低いチェーンからのタイマコールバックよりも高い優先度を割り当てる
-        \notes{各チェーンは, Lemma 1 に準拠するために個別に戦略 II に従う}
-    \end{block}
-\end{frame}
-
-
-\subsection{Strategies for chains running across executor}
-\label{ssec: strategies for chains running across executor}
-
-\begin{frame}{セクションサマリ}
-    \begin{itembox}[l]{\textbf{目的}}
-        複数のエグゼキュータ間で実行されるチェーンのスケジューリング戦略について説明する
-    \end{itembox}
-\end{frame}
+% \begin{frame}{セクションサマリ}
+%     \begin{itembox}[l]{\textbf{目的}}
+%         1つのエグゼキュータ内で実行されるチェーンの戦略について説明する
+%     \end{itembox}
+% \end{frame}
 
 % \begin{frame}{}
+%     \fitimage{
+%         スケジューリングポリシーを図に示すチェーンとコールバックの分類から導き出す
+%     }{strategies_classification.png}
+% \end{frame}
+
+% \begin{frame}[label=strategy1]{[戦略 I] 単一チェーンからのレギュラーコールバック}
+%     戦略 I は $\tau_{j}$ に $\tau_{i}$ よりも高い優先度を与えることで, Lemma 1 の最初の条件を満たすようにする
+%     \begin{block}{戦略 I}
+%         エグゼキュータが単一のチェーン $\Gamma^{c}=:\left[\tau_{1}, \ldots, \tau_{i}, \ldots, \tau_{j}, \ldots, \tau_{N}\right]$ からのレギュラーコールバックのみを持っている場合, これらのコールバックの優先度は, チェーン内の順序とは逆の順序で割り当てる
+%     \end{block}
+% \end{frame}
+
+% \begin{frame}[label=strategy2]{[戦略 II] 1 つのチェーンからのタイマ/レギュラーコールバック}
+%     あるチェーンにおいてレギュラーコールバックはタイマコールバックよりも後ろに存在するため, 戦略 II は Lemma 1 の最初の条件を満たすようにする
+%     \begin{block}{戦略 II}
+%         エグゼキュータに単一チェーン $\Gamma^{c}$ のタイマ・レギュラーコールバックの両方が含まれる場合, レギュラーコールバックにタイマコールバックよりも高い優先度を与える
+%         \notes{レギュラーコールバックのスケジューリングは, 戦略 I に従う}
+%     \end{block}
+% \end{frame}
+
+% \begin{frame}[label=strategy3]{[戦略 III] 複数のチェーンからのレギュラーコールバック}
 %     \begin{itemize}
-%         \item 各エグゼキュータは 1 つの CPU コアに割り当てられ, OS のプリエンプティブな固定優先度スケジューラによってスケジュールされるため, 複数のエグゼキュータが割り当てられている可能性がある各 CPU でチェーンスケジューリングを考慮する必要がある
-%         \item エグゼキュータは 戦略 I から IV に従うとする
+%         \item 戦略 III は Lemma 1 の2番目の条件を満たすようにする
+%         \item $\pi_{\Gamma^{c}}<\pi_{\Gamma^{c^{\prime}}}$ である2つのチェーン $\Gamma^{c}$, $\Gamma^{c^{\prime}}$ を考える
+%     \end{itemize}
+%     \begin{block}{戦略 III}
+%         エグゼキュータに $\Gamma^{c}$ と $\Gamma^{c^{\prime}}$ の両方からのレギュラーコールバックが含まれている場合, $\Gamma^{c^{\prime}}$ の全てのコールバックには, $\Gamma^{c}$ のコールバックよりも高い優先度を割り当てる
+%         \notes{各チェーンのコールバックの優先度の割り当ては, 戦略 I に従う}
+%     \end{block}
+% \end{frame}
+
+% \begin{frame}[label=strategy4]{[戦略 IV] 複数のチェーンからのタイマ/レギュラーコールバック}
+%     戦略 IV は重要度の高いチェーンインスタンスが重要度の低いインスタンスよりも優先されるようにする
+%     \begin{block}{戦略 IV}
+%         優先度の高いチェーンからのタイマコールバックは, 優先度の低いチェーンからのタイマコールバックよりも高い優先度を割り当てる
+%         \notes{各チェーンは, Lemma 1 に準拠するために個別に戦略 II に従う}
+%     \end{block}
+% \end{frame}
+
+
+% \subsection{Strategies for chains running across executor}
+% \label{ssec: strategies for chains running across executor}
+
+% \begin{frame}{セクションサマリ}
+%     \begin{itembox}[l]{\textbf{目的}}
+%         複数のエグゼキュータ間で実行されるチェーンのスケジューリングポリシーについて説明する
+%     \end{itembox}
+% \end{frame}
+
+% % \begin{frame}{}
+% %     \begin{itemize}
+% %         \item 各エグゼキュータは 1 つの CPU コアに割り当てられ, OS のプリエンプティブな固定優先度スケジューラによってスケジュールされるため, 複数のエグゼキュータが割り当てられている可能性がある各 CPU でチェーンスケジューリングを考慮する必要がある
+% %         \item エグゼキュータは 戦略 I から IV に従うとする
+% %     \end{itemize}
+% % \end{frame}
+
+% \begin{frame}{[戦略 V] 1 つの CPU に 1 つのチェーン}
+%     戦略 V は Lemma 1 の 2 番目の条件を満たすようにする
+%     \begin{block}{戦略 V}
+%         CPU が 1 つのチェーン $\Gamma^{c}$ からのコールバックのみを持っている場合, $\Gamma^{c}$ の低インデックスコールバック $\tau_{i}$ を含むエグゼキュータは, $\Gamma^{c}$ の高インデックスコールバック $\tau_{j}$ を実行する同じ CPU 上の他のエグゼキュータと同じか, それより低い優先度を割り当てる
+%     \end{block}
+% \end{frame}
+
+% \begin{frame}{[戦略 VI]  1 つの CPU に複数のチェーン}
+%     \begin{itemize}
+%         \item 戦略 VI はチェーンの優先度を守らせる
+%         \item $\pi_{\Gamma^{c}}<\pi_{\Gamma^{c^{\prime}}}$ である同じ CPU 上の2つのチェーン $\Gamma^{c}$, $\Gamma^{c^{\prime}}$ を考える
+%     \end{itemize}
+%     \begin{block}{戦略 VI}
+%         CPU に複数のチェーンからのコールバックがある場合, $\Gamma^{c^{\prime}}$ のコールバックを含むエグゼキュータは, 少なくとも $\Gamma^{c}$ のコールバックを含むエグゼキュータと同じかそれ以上の優先度を割り当てる
+%     \end{block}
+% \end{frame}
+
+
+% \subsection{Priority assignment of callbacks}
+% \label{ssec: priority assignment of callbacks}
+
+% \begin{frame}{セクションサマリ}
+%     \begin{itembox}[l]{\textbf{目的}}
+%         前述のスケジューリングポリシーを実現するために, コールバック優先度割り当てアルゴリズムを提案する
+%     \end{itembox}
+% \end{frame}
+
+% \begin{frame}{コールバック優先度割り当ての方針}
+%     提案アルゴリズムは, まずチェーンの優先度を考慮し, 次に各チェーン内のコールバックの割り当てる
+% \end{frame}
+
+% \begin{frame}{コールバック優先度割り当てアルゴリズム全体像}
+%     \fullimage{alg1}
+% \end{frame}
+
+% \begin{frame}{コールバック優先度割り当てアルゴリズム補足}
+%     \fullimage{alg1_sup.jpg}
+% \end{frame}
+
+
+% \subsection{Chain-aware node allocation scheme}
+% \label{ssec: chain-aware node allocation scheme}
+
+% \begin{frame}{セクションサマリ}
+%     \begin{itembox}[l]{\textbf{目的}}
+%         ROS2 のチェーン考慮ノード割り当てスキームを提案する
+%     \end{itembox}
+% \end{frame}
+
+% \begin{frame}{提案スキームの方針}
+%     \begin{itemize}
+%         \item 提案されたスキームは, 指定されたノードをエグゼキュータに割り当て, 前述のスケジューリングポリシーに従いながら, エグゼキュータを使用可能な CPU コアに割り当てる
+%         \item この方式では, 1つのチェーンに関連する全てのノードを可能な限り同じCPUコアに割り当てることで, チェーン間の干渉を最小化しようとする
 %     \end{itemize}
 % \end{frame}
 
-\begin{frame}{[戦略 V] 1 つの CPU に 1 つのチェーン}
-    戦略 V は Lemma 1 の 2 番目の条件を満たすようにする
-    \begin{block}{戦略 V}
-        CPU が 1 つのチェーン $\Gamma^{c}$ からのコールバックのみを持っている場合, $\Gamma^{c}$ の低インデックスコールバック $\tau_{i}$ を含むエグゼキュータは, $\Gamma^{c}$ の高インデックスコールバック $\tau_{j}$ を実行する同じ CPU 上の他のエグゼキュータと同じか, それより低い優先度を割り当てる
-    \end{block}
-\end{frame}
+% % \begin{frame}{提案スキームにおける注意点}
+% %     \begin{itemize}
+% %         \item この割り当て方式はオフラインで実行されるため, 実行時のオーバヘッドは発生しない
+% %         \item また, ノード間の通信はメッセージによって明示的に行われ, どのエグゼキュータを使用しても変わらないため, ノード間のデータ依存関係はノード割り当てに影響されない
+% %     \end{itemize}
+% % \end{frame}
 
-\begin{frame}{[戦略 VI]  1 つの CPU に複数のチェーン}
-    \begin{itemize}
-        \item 戦略 VI はチェーンの優先度を守らせる
-        \item $\pi_{\Gamma^{c}}<\pi_{\Gamma^{c^{\prime}}}$ である同じ CPU 上の2つのチェーン $\Gamma^{c}$, $\Gamma^{c^{\prime}}$ を考える
-    \end{itemize}
-    \begin{block}{戦略 VI}
-        CPU に複数のチェーンからのコールバックがある場合, $\Gamma^{c^{\prime}}$ のコールバックを含むエグゼキュータは, 少なくとも $\Gamma^{c}$ のコールバックを含むエグゼキュータと同じかそれ以上の優先度を割り当てる
-    \end{block}
-\end{frame}
-
-
-\subsection{Priority assignment of callbacks}
-\label{ssec: priority assignment of callbacks}
-
-\begin{frame}{セクションサマリ}
-    \begin{itembox}[l]{\textbf{目的}}
-        前述のスケジューリング戦略を実現するために, コールバック優先度割り当てアルゴリズムを提案する
-    \end{itembox}
-\end{frame}
-
-\begin{frame}{コールバック優先度割り当ての方針}
-    提案アルゴリズムは, まずチェーンの優先度を考慮し, 次に各チェーン内のコールバックの割り当てる
-\end{frame}
-
-\begin{frame}{コールバック優先度割り当てアルゴリズム全体像}
-    \fullimage{alg1}
-\end{frame}
-
-\begin{frame}{コールバック優先度割り当てアルゴリズム補足}
-    \fullimage{alg1_sup.jpg}
-\end{frame}
+% \begin{frame}{フローで使用する表記法}
+%     \full{
+%         \begin{table}[tb]
+%             \adjustbox{max width=\textwidth, max height=\slideheight}{
+%                 \centering\begin{tabular}{|c|l|} \hline
+%                     $\mathcal{N} $                        & ノードセット                                          \\\hline
+%                     $\Gamma^{c}$                          & まだ割り当てられていない最高優先度のチェーン          \\\hline
+%                     $\mathbb{N}$ $(U_{\mathbb{N}} \ge 1)$ & チェーン $\Gamma^c$ のコールバックを含むノードセット  \\\hline
+%                     $n$ $(n \in \mathbb{N})$              & $\Gamma^c$ の最も低い優先度のコールバックを含むノード \\\hline
+%                     $e_e$                                 & 空のエグゼキュータ                                    \\\hline
+%                     $e_m$                                 & 空でないエグゼキュータ                                \\\hline
+%                     $M$                                   & $e_m$の数                                             \\\hline
+%                     $P_k$                                 & CPU コア                                              \\\hline
+%                     $U_{P_k}$                             & CPU コア $P_k$ の利用率                               \\\hline
+%                     $P$                                   & $P_k$の数                                             \\\hline
+%                 \end{tabular}
+%             }
+%         \end{table}
+%     }
+% \end{frame}
 
 
-\subsection{Chain-aware node allocation scheme}
-\label{ssec: chain-aware node allocation scheme}
-
-\begin{frame}{セクションサマリ}
-    \begin{itembox}[l]{\textbf{目的}}
-        ROS2 のチェーン考慮ノード割り当てスキームを提案する
-    \end{itembox}
-\end{frame}
-
-\begin{frame}{提案スキームの方針}
-    \begin{itemize}
-        \item 提案されたスキームは, 指定されたノードをエグゼキュータに割り当て, 前述のスケジューリング戦略に従いながら, エグゼキュータを使用可能な CPU コアに割り当てる
-        \item この方式では, 1つのチェーンに関連する全てのノードを可能な限り同じCPUコアに割り当てることで, チェーン間の干渉を最小化しようとする
-    \end{itemize}
-\end{frame}
-
-% \begin{frame}{提案スキームにおける注意点}
+% \begin{frame}{提案スキームの入力}
+%     提案スキームは以下を入力として受け取る
 %     \begin{itemize}
-%         \item この割り当て方式はオフラインで実行されるため, 実行時のオーバヘッドは発生しない
-%         \item また, ノード間の通信はメッセージによって明示的に行われ, どのエグゼキュータを使用しても変わらないため, ノード間のデータ依存関係はノード割り当てに影響されない
+%         \item $\mathrm{M}$: 使用するエグゼキュータの最大数,
+%         \item $\mathrm{P}$: 使用可能な CPU コアの数
+%         \item $\mathcal{N}$: 割り当てられるノードのセット
 %     \end{itemize}
 % \end{frame}
 
-\begin{frame}{フローで使用する表記法}
-    \full{
-        \begin{table}[tb]
-            \adjustbox{max width=\textwidth, max height=\slideheight}{
-                \centering\begin{tabular}{|c|l|} \hline
-                    $\mathcal{N} $                        & ノードセット                                          \\\hline
-                    $\Gamma^{c}$                          & まだ割り当てられていない最高優先度のチェーン          \\\hline
-                    $\mathbb{N}$ $(U_{\mathbb{N}} \ge 1)$ & チェーン $\Gamma^c$ のコールバックを含むノードセット  \\\hline
-                    $n$ $(n \in \mathbb{N})$              & $\Gamma^c$ の最も低い優先度のコールバックを含むノード \\\hline
-                    $e_e$                                 & 空のエグゼキュータ                                    \\\hline
-                    $e_m$                                 & 空でないエグゼキュータ                                \\\hline
-                    $M$                                   & $e_m$の数                                             \\\hline
-                    $P_k$                                 & CPU コア                                              \\\hline
-                    $U_{P_k}$                             & CPU コア $P_k$ の利用率                               \\\hline
-                    $P$                                   & $P_k$の数                                             \\\hline
-                \end{tabular}
-            }
-        \end{table}
-    }
-\end{frame}
+% \begin{frame}{提案スキームの前処理}
+%     \begin{itemize}
+%         \item 最初に, $\mathcal{N}$ 内のノードを, 各ノードに含まれるコールバックの優先度の降順で並べ替える
+%         \item これは, 優先度の高いチェーンに関連付けられたノードが最初に割り当てられるようにするため
+%     \end{itemize}
+% \end{frame}
+
+% \begin{frame}{提案スキーム概要}
+%     提案スキームは, $\Gamma^{c}$ に関連付けられた全てのノードがフェッチされるか, $\mathbb{N}$ の利用率が 1 を超えるまで, $\mathcal{N}$ からノードを１つずつフェッチして, ノードのサブセット $\mathbb{N}$ を選択する
+% \end{frame}
+
+% \begin{frame}{提案スキームを構成する3パート概要}
+%     \begin{block}{パート A}
+%         $\mathbb{N}$ を $e_{e}$ に, $e_{e}$ を実行可能な CPU コアに割り当てる
+%     \end{block}
+%     \begin{block}{パート B}
+%         $e_{e}$ が存在しない場合に, $\mathbb{N}$ に対して実行可能な空でないエグゼキュータ $e_{m}$ を見つける
+%     \end{block}
+%     \begin{block}{パート C}
+%         最初の 2 つのパートでエグゼキュータに割り当てられなかった全ての残りのノードを処理する
+%     \end{block}
+% \end{frame}
+
+% \begin{frame}{提案スキームのフロー全体像}
+%     \fullimage{proposed_schema.png}
+% \end{frame}
+
+% \begin{frame}{提案スキームフロー}
+%     \fullimage{schema_sup1}
+% \end{frame}
+
+% \begin{frame}{パートAフロー [CPUコアに割り当てられるケース]}
+%     \fullimage{partA_sup1}
+% \end{frame}
+
+% \begin{frame}{パートAフロー [利用率が1以下のCPUコアが見つからないケース]}
+%     \fullimage{partA_sup2}
+% \end{frame}
+
+% \begin{frame}{パートAフロー [戦略V, VIを満たすCPUコアが見つからないケース]}
+%     \fitimage{
+%         戦略V, VIを満たすCPUコアが見つからない場合, パートCに移行する
+%     }{partA_sup3}
+% \end{frame}
+
+% \begin{frame}{パートBフロー}
+%     \fullimage{partB_sup}
+% \end{frame}
+
+% \begin{frame}{パートCフロー}
+%     \fullimage{partC_sup}
+% \end{frame}
 
 
-\begin{frame}{提案スキームの入力}
-    提案スキームは以下を入力として受け取る
-    \begin{itemize}
-        \item $\mathrm{M}$: 使用するエグゼキュータの最大数,
-        \item $\mathrm{P}$: 使用可能な CPU コアの数
-        \item $\mathcal{N}$: 割り当てられるノードのセット
-    \end{itemize}
-\end{frame}
+% \subsection{Example of priority-driven chain-aware scheduling}
+% \label{ssec: example of priority-driven chain-aware scheduling}
 
-\begin{frame}{提案スキームの前処理}
-    \begin{itemize}
-        \item 最初に, $\mathcal{N}$ 内のノードを, 各ノードに含まれるコールバックの優先順位の降順で並べ替える
-        \item これは, 優先度の高いチェーンに関連付けられたノードが最初に割り当てられるようにするため
-    \end{itemize}
-\end{frame}
+% \begin{frame}{セクションサマリ}
+%     \begin{itembox}[l]{\textbf{目的}}
+%         提案するPiCASフレームワークの下で \hlink{exampleChain}{例のチェーンセット} を再実行する
+%     \end{itembox}
+% \end{frame}
 
-\begin{frame}{提案スキーム概要}
-    提案スキームは, $\Gamma^{c}$ に関連付けられた全てのノードがフェッチされるか, $\mathbb{N}$ の利用率が 1 を超えるまで, $\mathcal{N}$ からノードを１つずつフェッチして, ノードのサブセット $\mathbb{N}$ を選択する
-\end{frame}
+% \begin{frame}{PiCASスケジュール結果比較 [単一エグゼキュータ]}
+%     \fullimage{example_comparison_sched_single}
+% \end{frame}
 
-\begin{frame}{提案スキームを構成する3パート概要}
-    \begin{block}{パート A}
-        $\mathbb{N}$ を $e_{e}$ に, $e_{e}$ を実行可能な CPU コアに割り当てる
-    \end{block}
-    \begin{block}{パート B}
-        $e_{e}$ が存在しない場合に, $\mathbb{N}$ に対して実行可能な空でないエグゼキュータ $e_{m}$ を見つける
-    \end{block}
-    \begin{block}{パート C}
-        最初の 2 つのパートでエグゼキュータに割り当てられなかった全ての残りのノードを処理する
-    \end{block}
-\end{frame}
+% \begin{frame}{PiCASスケジュール結果比較 [エグゼキュータ2つ]}
+%     \fullimage{example_comparison_sched_two}
+% \end{frame}
 
-\begin{frame}{提案スキームのフロー全体像}
-    \fullimage{proposed_schema.png}
-\end{frame}
+% \begin{frame}{PiCASスケジュール結果比較結論}
+%     PiCASは以下の挙動をする
+%     \begin{itemize}
+%         \item 優先度の高いチェーンのコールバックを最初に実行する
+%         \item 各チェーンの前のチェーンインスタンスは, 新しいチェーンインスタンスの実行開始前に実行を完了する
+%     \end{itemize}
+% \end{frame}
 
-\begin{frame}{提案スキームフロー}
-    \fullimage{schema_sup1}
-\end{frame}
-
-\begin{frame}{パートAフロー [CPUコアに割り当てられるケース]}
-    \fullimage{partA_sup1}
-\end{frame}
-
-\begin{frame}{パートAフロー [利用率が1以下のCPUコアが見つからないケース]}
-    \fullimage{partA_sup2}
-\end{frame}
-
-\begin{frame}{パートAフロー [戦略V, VIを満たすCPUコアが見つからないケース]}
-    \fitimage{
-        戦略V, VIを満たすCPUコアが見つからない場合, パートCに移行する
-    }{partA_sup3}
-\end{frame}
-
-\begin{frame}{パートBフロー}
-    \fullimage{partB_sup}
-\end{frame}
-
-\begin{frame}{パートCフロー}
-    \fullimage{partC_sup}
-\end{frame}
-
-
-\subsection{Example of priority-driven chain-aware scheduling}
-\label{ssec: example of priority-driven chain-aware scheduling}
-
-\begin{frame}{セクションサマリ}
-    \begin{itembox}[l]{\textbf{目的}}
-        提案するPiCASフレームワークの下で \hlink{exampleChain}{例のチェーンセット} を再実行する
-    \end{itembox}
-\end{frame}
-
-\begin{frame}{PiCASスケジュール結果比較 [単一エグゼキュータ]}
-    \fullimage{example_comparison_sched_single}
-\end{frame}
-
-\begin{frame}{PiCASスケジュール結果比較 [エグゼキュータ2つ]}
-    \fullimage{example_comparison_sched_two}
-\end{frame}
-
-\begin{frame}{PiCASスケジュール結果比較結論}
-    PiCASは以下の挙動をする
-    \begin{itemize}
-        \item 優先度の高いチェーンのコールバックを最初に実行する
-        \item 各チェーンの前のチェーンインスタンスは, 新しいチェーンインスタンスの実行開始前に実行を完了する
-    \end{itemize}
-\end{frame}
-
-\begin{frame}{PiCASレイテンシ結果比較}
-    \fitimage{
-        PiCAS によって両方のチェーンのレイテンシが大幅に改善される
-    }{example_picas_latency}
-\end{frame}
+% \begin{frame}{PiCASレイテンシ結果比較}
+%     \fitimage{
+%         PiCAS によって両方のチェーンのレイテンシが大幅に改善される
+%     }{example_picas_latency}
+% \end{frame}
