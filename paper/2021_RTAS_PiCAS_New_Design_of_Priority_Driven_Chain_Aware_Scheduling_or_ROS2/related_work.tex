@@ -8,64 +8,67 @@
         \begin{table}[tb]
             \adjustbox{max width=\textwidth, max height=\slideheight}{
                 \centering\begin{tabular}{|c|c|c|c|c|}      \hline
-                                                                                                                                                                                & ROS & ROS2 & リアルタイム保証 & 優先度決定 \\\hline
-                    \cite{saito2016priority, wei2016rt, saito2018rosch}                                                                                                         & \ch &      &                  &            \\\hline
-                    \cite{maruyama2016exploring, gutierrez2018towards}                                                                                                          & \ch & \ch  &                  &            \\\hline
-                    \cite{palencia1998schedulability, palencia1999exploiting, davare2007period, schlatow2016response, koren1995skip, abdullah2019worst, becker2016synthesizing} &     &      & \ch              &            \\\hline
-                    \cite{casini2019response}                                                                                                                                   & \ch & \ch  & \ch              &            \\\hline
-                    本論文                                                                                                                                                      & \ch & \ch  & \ch              & \ch        \\\hline
+                                                                                                                                                                                & ROS & ROS2 & リアルタイム保証 & \tabmlc{優先度決定による \\エンドツーエンドレイテンシの改善} \\\hline
+                    \cite{saito2016priority, wei2016rt, saito2018rosch}                                                                                                         & \ch &      &                  &                          \\\hline
+                    \cite{maruyama2016exploring, gutierrez2018towards}                                                                                                          & \ch & \ch  &                  &                          \\\hline
+                    \cite{palencia1998schedulability, palencia1999exploiting, davare2007period, schlatow2016response, koren1995skip, abdullah2019worst, becker2016synthesizing} &     &      & \ch              &                          \\\hline
+                    \cite{casini2019response}                                                                                                                                   & \ch & \ch  & \ch              &                          \\\hline
+                    本論文                                                                                                                                                      & \ch & \ch  & \ch              & \ch                      \\\hline
                 \end{tabular}
             }
         \end{table}
     }
 \end{frame}
 
-\begin{frame}{ROS のリアルタイム機能の改善}
-    以下の研究は ROS のリアルタイム機能の改善に焦点を当てているが, リアルタイムのタイミング制約を保証する分析方法を提供していないか, ROS の第 1 世代にのみ適用されている
-    \begin{itemize}
-        \item publisherが優先度に基づいてデータを送信できるようにすることで, 優先度に基づくメッセージ送信メカニズムを提案 \cite{saito2016priority}
-        \item 2 つのオペレーティングシステムを実行することによって, リアルタイム ROS ノードと非リアルタイム ROS ノードを別々に実行するハイブリッド OS プラットフォームを提案 \cite{wei2016rt}
-        \item CPU/GPU 調整メカニズムを備えた ROS のリアルタイム拡張で, ロード可能なカーネルフレームワークである ROSCH-G の提案 \cite{saito2018rosch}
-    \end{itemize}
-\end{frame}
 
-\begin{frame}{ROS2 のパフォーマンス評価}
-    以下の研究は測定ベースのアプローチを使用して ROS2 のパフォーマンスを評価したが, 正式なモデリングや分析は提供していない
-    \begin{itemize}
-        \item さまざまなベンダー固有の DDS 実装の下でさまざまな QoS 構成を使用して経験的評価を実施 \cite{maruyama2016exploring}
-        \item 2 つのノード間の最悪の場合のレイテンシが測定され, PREEMPT-RT パッチが適用された Linux カーネルシステムでデッドラインミスの動作を観察 \cite{gutierrez2018towards}
-    \end{itemize}
-\end{frame}
-
-\begin{frame}{エンドツーエンドチェーンのレイテンシ分析}
-    publisher/subscriber モデルまたは read-execute-write セマンティクスでのエンドツーエンドチェーンレイテンシの分析が行われてきたが, スケジューリングモデルの違いにより, ROS2 に直接適用することはできない
-    \setlength{\wideitemsep}{0.8\itemsep}
-    {\footnotesize
+\forme{
+    \begin{frame}{ROS のリアルタイム機能の改善}
+        以下の研究は ROS のリアルタイム機能の改善に焦点を当てているが, リアルタイムのタイミング制約を保証する分析方法を提供していないか, ROS の第 1 世代にのみ適用されている
         \begin{itemize}
-            \item マルチコアシステムで優先度の制約があるタスクを分析するためのアプローチ \cite{palencia1998schedulability, palencia1999exploiting}
-            \item 最悪の場合の応答時間に基づいて, タスクのエンドツーエンドレイテンシの上界を把握 \cite{davare2007period, schlatow2016response}
-            \item 固定優先度スケジューリングの下でチェーンのエンドツーエンドのレイテンシを制限するための分析方法を提示 \cite{koren1995skip, abdullah2019worst, becker2016synthesizing}
-            \item チェーンのエンドツーエンドのレイテンシを改善するために, チェーンベースの固定優先度スケジューリングを提案  \cite{choi2020chain}
+            \item publisherが優先度に基づいてデータを送信できるようにすることで, 優先度に基づくメッセージ送信メカニズムを提案 \cite{saito2016priority}
+            \item 2 つのオペレーティングシステムを実行することによって, リアルタイム ROS ノードと非リアルタイム ROS ノードを別々に実行するハイブリッド OS プラットフォームを提案 \cite{wei2016rt}
+            \item CPU/GPU 調整メカニズムを備えた ROS のリアルタイム拡張で, ロード可能なカーネルフレームワークである ROSCH-G の提案 \cite{saito2018rosch}
         \end{itemize}
-    }
-\end{frame}
+    \end{frame}
 
-\begin{frame}{ROS2 処理チェーンのレイテンシ分析}
-    \cite{casini2019response} は ROS2 スケジューラのモデル化とチェーンの応答時間分析の提供に関する唯一の研究だが, リソースを割り当てて, クリティカルチェーンのエンドツーエンドのレイテンシを改善する方法については未検討
-    \begin{block}{先行研究 \cite{casini2019response}}
-        \setlength{\linewidth}{0.98\columnwidth}
+    \begin{frame}{ROS2 のパフォーマンス評価}
+        以下の研究は測定ベースのアプローチを使用して ROS2 のパフォーマンスを評価したが, 正式なモデリングや分析は提供していない
+        \begin{itemize}
+            \item さまざまなベンダー固有の DDS 実装の下でさまざまな QoS 構成を使用して経験的評価を実施 \cite{maruyama2016exploring}
+            \item 2 つのノード間の最悪の場合のレイテンシが測定され, PREEMPT-RT パッチが適用された Linux カーネルシステムでデッドラインミスの動作を観察 \cite{gutierrez2018towards}
+        \end{itemize}
+    \end{frame}
+
+    \begin{frame}{エンドツーエンドチェーンのレイテンシ分析}
+        publisher/subscriber モデルまたは read-execute-write セマンティクスでのエンドツーエンドチェーンレイテンシの分析が行われてきたが, スケジューリングモデルの違いにより, ROS2 に直接適用することはできない
         \setlength{\wideitemsep}{0.8\itemsep}
         {\footnotesize
             \begin{itemize}
-                \item エグゼキュータ内のコールバックスケジューリング動作を調査し, リソース予約を使用して, 特定のエグゼキュータのリソースの可用性をモデル化
-                \item チェーンのエンドツーエンドのレイテンシは以下の手順で分析される
-                      \begin{itemize}
-                          {\footnotesize
-                          \item エグゼキュータ内の各サブチェーンの応答時間を計算
-                          \item CPA~\cite{henia2005system}に基づいてエグゼキュータ全体にまたがるサブチェーンの応答時間を追加
-                                }
-                      \end{itemize}
+                \item マルチコアシステムで優先度の制約があるタスクを分析するためのアプローチ \cite{palencia1998schedulability, palencia1999exploiting}
+                \item 最悪の場合の応答時間に基づいて, タスクのエンドツーエンドレイテンシの上界を把握 \cite{davare2007period, schlatow2016response}
+                \item 固定優先度スケジューリングの下でチェーンのエンドツーエンドのレイテンシを制限するための分析方法を提示 \cite{koren1995skip, abdullah2019worst, becker2016synthesizing}
+                \item チェーンのエンドツーエンドのレイテンシを改善するために, チェーンベースの固定優先度スケジューリングを提案  \cite{choi2020chain}
             \end{itemize}
         }
-    \end{block}
-\end{frame}
+    \end{frame}
+
+    \begin{frame}{ROS2 処理チェーンのレイテンシ分析}
+        \cite{casini2019response} は ROS2 スケジューラのモデル化とチェーンの応答時間分析の提供に関する唯一の研究だが, リソースを割り当てて, クリティカルチェーンのエンドツーエンドのレイテンシを改善する方法については未検討
+        \begin{block}{先行研究 \cite{casini2019response}}
+            \setlength{\linewidth}{0.98\columnwidth}
+            \setlength{\wideitemsep}{0.8\itemsep}
+            {\footnotesize
+                \begin{itemize}
+                    \item エグゼキュータ内のコールバックスケジューリング動作を調査し, リソース予約を使用して, 特定のエグゼキュータのリソースの可用性をモデル化
+                    \item チェーンのエンドツーエンドのレイテンシは以下の手順で分析される
+                          \begin{itemize}
+                              {\footnotesize
+                              \item エグゼキュータ内の各サブチェーンの応答時間を計算
+                              \item CPA~\cite{henia2005system}に基づいてエグゼキュータ全体にまたがるサブチェーンの応答時間を追加
+                                    }
+                          \end{itemize}
+                \end{itemize}
+            }
+        \end{block}
+    \end{frame}
+}
