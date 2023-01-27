@@ -166,12 +166,16 @@
 			"\\end{frame}"
 		]
 	},
-	"full image frame":{
-		"prefix": "full image frame",
+	"analysis note":{
+		"prefix": "analysis note",
 		"body": [
-			"\\begin{frame}{$1}",
-			"\\fullimage{$2}",
+			"\\begin{frame}{}",
+			"\\begin{itemize}",
+			"\\item 本資料では, 分析方法のみを示す",
+			"\\item 証明は論文を参照",
+			"\\end{itemize}",
 			"\\end{frame}"
 		]
-	}
+	},
+	""
 }

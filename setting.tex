@@ -73,7 +73,7 @@
 \definecolor{lightgray}{rgb}{0.83, 0.83, 0.83}
 \setbeamercolor{progress bar}{bg=lightgray, fg=coolblack}
 % -- text margin --
-\setbeamersize{text margin left=15pt, text margin right=25pt}
+\setbeamersize{text margin left=15pt, text margin right=15pt}
 % -- equation font --
 \usefonttheme{professionalfonts}
 % -- block border --
@@ -176,7 +176,6 @@
 % \newcommand{\tb}[1]{\textbf{#1}} Don't use
 \newcommand{\tb}[1]{#1}
 \newcommand{\notes}[1]{{\footnotesize\\※#1}}
-\newcommand{\db}[1]{\doublebox{#1}}
 \newcommand{\hlink}[2]{\hyperlink{#1}{\underline{#2}}}
 \setlength{\fboxsep}{0.4mm}
 \newcommand{\desc}[2]{\textbf{\doublebox{#1}: }#2}
@@ -220,7 +219,7 @@
     \addtolength\fitimageht{-\fitotherht-\headerheight-\footerheight-1\baselineskip}%
     #1\par
     \centering
-    \hspace{5.0mm}\fbox{\includegraphics[width=\textwidth,height=\fitimageht,keepaspectratio]{#2}}
+    \fbox{\includegraphics[width=\textwidth,height=\fitimageht,keepaspectratio]{#2}}
 }
 % Simplification
 \newcommand{\assume}[1]{
