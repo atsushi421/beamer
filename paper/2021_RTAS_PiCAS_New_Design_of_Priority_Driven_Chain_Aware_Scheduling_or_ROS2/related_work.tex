@@ -46,21 +46,21 @@
             \begin{itemize}
                 \item マルチコアシステムで優先度の制約があるタスクを分析するためのアプローチ \cite{palencia1998schedulability, palencia1999exploiting}
                 \item 最悪応答時間に基づいて, タスクのエンドツーエンドレイテンシの上界を把握 \cite{davare2007period, schlatow2016response}
-                \item 固定優先度スケジューリングの下でチェーンのエンドツーエンドのレイテンシを制限するための分析方法を提示 \cite{koren1995skip, abdullah2019worst, becker2016synthesizing}
-                \item チェーンのエンドツーエンドのレイテンシを改善するために, チェーンベースの固定優先度スケジューリングを提案  \cite{choi2020chain}
+                \item 固定優先度スケジューリングの下でチェーンのエンドツーエンドレイテンシを制限するための分析方法を提示 \cite{koren1995skip, abdullah2019worst, becker2016synthesizing}
+                \item チェーンのエンドツーエンドレイテンシを改善するために, チェーンベースの固定優先度スケジューリングを提案  \cite{choi2020chain}
             \end{itemize}
         }
     \end{frame}
 
     \begin{frame}{ROS2 処理チェーンのレイテンシ分析}
-        \cite{casini2019response} は ROS2 スケジューラのモデル化とチェーンの応答時間分析の提供に関する唯一の研究だが, リソースを割り当てて, クリティカルチェーンのエンドツーエンドのレイテンシを改善する方法については未検討
+        \cite{casini2019response} は ROS2 スケジューラのモデル化とチェーンの応答時間分析の提供に関する唯一の研究だが, リソースを割り当てて, クリティカルチェーンのエンドツーエンドレイテンシを改善する方法については未検討
         \begin{block}{先行研究 \cite{casini2019response}}
             \setlength{\linewidth}{0.98\columnwidth}
             \setlength{\wideitemsep}{0.8\itemsep}
             {\footnotesize
                 \begin{itemize}
                     \item エグゼキュータ内のコールバックスケジューリング動作を調査し, リソース予約を使用して, 特定のエグゼキュータのリソースの可用性をモデル化
-                    \item チェーンのエンドツーエンドのレイテンシは以下の手順で分析される
+                    \item チェーンのエンドツーエンドレイテンシは以下の手順で分析される
                           \begin{itemize}
                               {\footnotesize
                               \item エグゼキュータ内の各サブチェーンの応答時間を計算
