@@ -20,11 +20,11 @@
         \begin{table}[tb]
             \adjustbox{max width=\textwidth, max height=\slideheight}{
                 \centering\begin{tabular}{|c|l|} \hline
-                    $\mathcal{C}$               & エグゼキュータに割り当てられたすべてのコールバックのセット     \\\hline
-                    $\mathcal{C}^{\text {tmr}}$ & タイマーコールバックのセット                                   \\\hline
+                    $\mathcal{C}$               & エグゼキュータに割り当てられた全てのコールバックのセット     \\\hline
+                    $\mathcal{C}^{\text {tmr}}$ & タイマコールバックのセット                                   \\\hline
                     $\mathcal{C}^{\text {srv}}$ & サービスコールバックのセット                                   \\\hline
                     $\mathcal{C}^{\text {clt}}$ & クライアントコールバックのセット                               \\\hline
-                    $PP_{n}$                    & $n$ 番目のポーリング ポイント                                  \\\hline
+                    $PP_{n}$                    & $n$ 番目のポーリングポイント                                  \\\hline
                     $PW_{n}$                    & $n$ 番目の処理ウィンドウ ($PP_{n}$ から $PP_{n+1}$ までの範囲) \\\hline
                 \end{tabular}
             }
@@ -82,7 +82,7 @@
                 \centering\begin{tabular}{|c|l|} \hline
                    $lp_{k}\left(c_{i}\right)$ & $\pi_{i}$より低い優先度を持つ$\mathcal{C}_{k}$内のコールバックのセット \\\hline
                    $hp_{k}\left(c_{i}\right)$ & $\pi_{i}$より高い優先度を持つ$\mathcal{C}_{k}$内のコールバックのセット \\\hline
-                    $\delta_(i,j)$ & $c_i$から$c_j$への伝搬遅延                           \\\hline
+                    $\delta_(i,j)$ & $c_i$から$c_j$への伝搬レイテンシ                           \\\hline
                     $A$            & ビジーウィンドウへのオフセット                       \\\hline
                     $R_i^{*}(A)$   & $A$に対する$c_i$の応答時間計算式における最小の正の解 \\\hline
                 \end{tabular}
