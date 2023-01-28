@@ -5,7 +5,7 @@
 
 \begin{frame}{セクションサマリ}
     \begin{itembox}[l]{\textbf{目的}}
-        一般的な ROS 処理チェーンのエンドツーエンドレイテンシ (すなわち, 最大応答時間) の分析を示す
+        一般的な ROS 処理チェーンのエンドツーエンドレイテンシの分析を示す
     \end{itembox}
     \begin{itembox}[l]{\textbf{流れ}}
         \begin{itemize}
@@ -43,7 +43,7 @@
 
 \begin{frame}{サブチェーン}
     \begin{definition}[$\gamma^{x}$ の $y$ 番目のサブチェーン $\gamma^{x, y}$]
-        予約 $r_{k}$ に割り当てられた, 元のチェーンの連続したコールバック $c_{i} \in \gamma^{x}$ のシーケンス, すなわち $c_{i} \in \gamma^{x, y} \Rightarrow c_{i} \in \mathcal{C}_{k}$
+        予約 $r_{k}$ に割り当てられた, 元のチェーンの連続したコールバック $c_{i} \in \gamma^{x}$ のシーケンス
     \end{definition}
 \end{frame}
 
@@ -53,11 +53,11 @@
 
 \begin{frame}{複数の予約にまたがるコールバックチェーンの例}
     \fitimage{
-        最初のサブチェーンのアクティベーションは外部イベント到着曲線によって境界が定まり, それ以降のサブチェーンは前のサブチェーンにおける応答時間と通信レイテンシに依存するアクティベーション曲線によって特徴づけられる
+        最初のサブチェーンのアクティベーションは外部イベント到着曲線によって境界が定まり, それ以降のサブチェーンは前のサブチェーンの最悪応答時間と通信レイテンシに依存するアクティベーション曲線によって特徴づけられる
     }{sub_chain_example}
 \end{frame}
 
-\begin{frame}{応答時間の求め方の概要}
+\begin{frame}{最悪応答時間の求め方の例}
     \fitimage{
         \begin{itemize}
             \item $\eta_{x, 2}^{a}(\Delta)=\eta_{x}^{e}\left(\Delta+R_{x, 1}+\delta_{2,3}\right), \eta_{x, 3}^{a}(\Delta)=\eta_{x, 2}^{a}(\Delta+$  $\left.R_{x, 2}+\delta_{4,5}\right), \eta_{x, 4}^{a}(\Delta)=\eta_{x, 3}^{e}\left(\Delta+R_{x, 3}+\delta_{5,6}\right)$
@@ -94,7 +94,7 @@
 
 \begin{frame}{コールバックの最悪応答時間}
     \begin{definition}[コールバック $c_{i}$ の最悪応答時間 $R_{i}$]
-        特定のインスタンスの終了時間とリリース時刻の間の任意のインスタンスにわたる最大差
+        すべてインスタンスの中で, 終了時間とリリース時間の間の最大の差
     \end{definition}
 \end{frame}
 
@@ -221,15 +221,4 @@
                   \end{equation*}
         \end{itemize}
     \end{lemma}
-\end{frame}
-
-
-\subsection{Analysis Summary}
-\label{ssec: analysis summary}
-
-\begin{frame}{チェーンのエンドツーエンドレイテンシを求める方法}
-    \begin{itemize}
-        \item セクション 5.2 では単一のコールバックの応答時間分析を提案し, セクション 5.4 はそれを単一の予約に割り当てられたサブチェーンに拡張した
-        \item セクション 5.1 で説明したように, どちらのアプローチでも, 到着曲線を伝搬し, 個々の最悪応答時間を合計することにより, 処理チェーンの安全なエンドツーエンドレイテンシを計算できる
-    \end{itemize}
 \end{frame}
