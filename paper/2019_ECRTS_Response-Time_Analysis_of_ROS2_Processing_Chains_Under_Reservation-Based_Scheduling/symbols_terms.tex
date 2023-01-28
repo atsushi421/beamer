@@ -20,12 +20,12 @@
         \begin{table}[tb]
             \adjustbox{max width=\textwidth, max height=\slideheight}{
                 \centering\begin{tabular}{|c|l|} \hline
-                    $\mathcal{C}$               & エグゼキュータに割り当てられた全てのコールバックのセット     \\\hline
-                    $\mathcal{C}^{\text {tmr}}$ & タイマコールバックのセット                                   \\\hline
-                    $\mathcal{C}^{\text {srv}}$ & サービスコールバックのセット                                   \\\hline
-                    $\mathcal{C}^{\text {clt}}$ & クライアントコールバックのセット                               \\\hline
-                    $PP_{n}$                    & $n$ 番目のポーリングポイント                                  \\\hline
-                    $PW_{n}$                    & $n$ 番目の処理ウィンドウ ($PP_{n}$ から $PP_{n+1}$ までの範囲) \\\hline
+                    $\mathcal{D}=\{\mathcal{C}, \mathcal{E}\}$             & ROSシステムのDAG                 \\\hline
+                    $\mathcal{C}=\left\{c_{1}, \ldots, c_{n}\right\}$      & コールバックセット               \\\hline
+                    $\mathcal{E} \subseteq \mathcal{C} \times \mathcal{C}$ & エッジセット                     \\\hline
+                    $\mathcal{C}^{\text {tmr}}$                            & タイマコールバックのセット       \\\hline
+                    $\mathcal{C}^{\text {srv}}$                            & サービスコールバックのセット     \\\hline
+                    $\mathcal{C}^{\text {clt}}$                            & クライアントコールバックのセット \\\hline
                 \end{tabular}
             }
         \end{table}
@@ -37,16 +37,17 @@
         \begin{table}[tb]
             \adjustbox{max width=\textwidth, max height=\slideheight}{
                 \centering\begin{tabular}{|c|l|} \hline
-                    $\mathcal{D}=\{\mathcal{C}, \mathcal{E}\}$                                                                                     & ROSシステムのDAG                       \\\hline
-                    $\mathcal{C}=\left\{c_{1}, \ldots, c_{n}\right\}$                                                                              & コールバックセット                     \\\hline
-                    $\mathcal{E} \subseteq \mathcal{C} \times \mathcal{C}$                                                                         & エッジセット                           \\\hline
-                    $c_i$                                                                                                                          & コールバック                           \\\hline
-                    $e_i$                                                                                                                          & $c_i$のWCET                            \\\hline
-                    $\pi_i$                                                                                                                        & $c_i$の優先度                          \\\hline
-                    $\operatorname{pred}\left(c_{i}\right)=\left\{c_{j} \in \mathcal{C}: \exists\left(c_{j}, c_{i}\right) \in \mathcal{E}\right\}$ & $c_i$の先行コールバックのセット        \\\hline
-                    $\operatorname{succ}\left(c_{i}\right)=\left\{c_{j} \in \mathcal{C}: \exists\left(c_{i}, c_{j}\right) \in \mathcal{E}\right\}$ & $c_i$の後続コールバックのセット        \\\hline
-                    $c_s$                                                                                                                          & \tabml{ソースコールバック              \\\desc{ソースコールバック}{先行コールバックを持たないコールバック}} \\\hline
-                    シンクコールバック                                                                                                             & 後続コールバックを持たないコールバック \\\hline
+                    $\operatorname{pred}\left(c_{i}\right)=\left\{c_{j} \in \mathcal{C}: \exists\left(c_{j}, c_{i}\right) \in \mathcal{E}\right\}$ & $c_i$の先行コールバックのセット                                           \\\hline
+                    $\operatorname{succ}\left(c_{i}\right)=\left\{c_{j} \in \mathcal{C}: \exists\left(c_{i}, c_{j}\right) \in \mathcal{E}\right\}$ & $c_i$の後続コールバックのセット                                           \\\hline
+                    $c_i$                                                                                                                          & コールバック                                                              \\\hline
+                    $e_i$                                                                                                                          & $c_i$のWCET                                                               \\\hline
+                    $\pi_i$                                                                                                                        & $c_i$の優先度                                                             \\\hline
+                    ソースコールバック                                                                                                             & 先行コールバックを持たないコールバック                                    \\\hline
+                    シンクコールバック                                                                                                             & 後続コールバックを持たないコールバック                                    \\\hline
+                    $c_s$                                                                                                                          & ソースコールバック                                                        \\\hline
+                    $\eta_{s}^{e}(\Delta)$                                                                                                         & 長さ $\Delta$ の任意の間隔でリリースできる $c_{s}$ のインスタンスの最大数 \\\hline
+                    $\gamma^{x}=\left(c_{s}, \ldots, c_{e}\right)$                                                                                 & コールバックチェーン                                                      \\\hline
+                    $\operatorname{chains}(\mathcal{D})=\left\{\gamma^{1}, \ldots, \gamma^{s}\right\}$                                             & チェーンセット                                                            \\\hline
                 \end{tabular}
             }
         \end{table}
@@ -58,17 +59,17 @@
         \begin{table}[tb]
             \adjustbox{max width=\textwidth, max height=\slideheight}{
                 \centering\begin{tabular}{|c|l|} \hline
-                    $\eta_{s}^{e}(\Delta)$                                                             & 長さ $\Delta$ の任意の間隔でリリースできる $c_{s}$ のインスタンスの最大数 \\\hline
-                    $\gamma^{x}=\left(c_{s}, \ldots, c_{e}\right)$                                     & コールバックチェーン                                                      \\\hline
-                    $\operatorname{chains}(\mathcal{D})=\left\{\gamma^{1}, \ldots, \gamma^{s}\right\}$ & チェーンセット                                                            \\\hline
-                    $\mathcal{R}=\left\{r_{1}, \ldots, r_{w}\right\}$                                  & 予約のセット                                                              \\\hline
-                    $\mathcal{C}_k$                                                                    & $r_k$ 内のコールバックのセット                                            \\\hline
-                    $r_k$                                                                              & 予約サーバ                                                                \\\hline
-                    $\mathcal{C}_{k}^{\mathrm{tmr}}$                                                   & $r_k$に割り当てられたタイマコールバックのセット                           \\\hline
-                    $\mathcal{C}_{k}^{\mathrm{sub}}$                                                   & $r_k$に割り当てられたサブスクリプションコールバックのセット               \\\hline
-                    $\mathcal{C}_{k}^{\mathrm{clt}}$                                                   & $r_k$に割り当てられたクライアントコールバックのセット                     \\\hline
-                    $\mathcal{C}_{k}^{\mathrm{srv}}$                                                   & $r_k$に割り当てられたサービスコールバックのセット                         \\\hline
-                   $\mathcal{C}^{\text {evt }}$ & イベントソースのセット \\\hline
+                    $r_k$                                             & 予約サーバ                                                  \\\hline
+                    $\mathcal{C}_k$                                   & $r_k$ 内のコールバックのセット                              \\\hline
+                    $\mathcal{R}=\left\{r_{1}, \ldots, r_{w}\right\}$ & 予約のセット                                                \\\hline
+                    $w$                                               & システム内の予約の数                                        \\\hline
+                    $\mathcal{C}_{k}^{\mathrm{tmr}}$                  & $r_k$に割り当てられたタイマコールバックのセット             \\\hline
+                    $\mathcal{C}_{k}^{\mathrm{sub}}$                  & $r_k$に割り当てられたサブスクリプションコールバックのセット \\\hline
+                    $\mathcal{C}_{k}^{\mathrm{clt}}$                  & $r_k$に割り当てられたクライアントコールバックのセット       \\\hline
+                    $\mathcal{C}_{k}^{\mathrm{srv}}$                  & $r_k$に割り当てられたサービスコールバックのセット           \\\hline
+                    $\mathcal{C}^{\text {evt }}$                      & イベントソースのセット                                      \\\hline
+                    $\mathcal{P}=\left\{p_{1}, \ldots, p_{m}\right\}$ & プロセッサセット                                            \\\hline
+                    $m$                                               & プロセッサの個数                                            \\\hline
                 \end{tabular}
             }
         \end{table}
@@ -80,11 +81,14 @@
         \begin{table}[tb]
             \adjustbox{max width=\textwidth, max height=\slideheight}{
                 \centering\begin{tabular}{|c|l|} \hline
-                   $lp_{k}\left(c_{i}\right)$ & $\pi_{i}$より低い優先度を持つ$\mathcal{C}_{k}$内のコールバックのセット \\\hline
-                   $hp_{k}\left(c_{i}\right)$ & $\pi_{i}$より高い優先度を持つ$\mathcal{C}_{k}$内のコールバックのセット \\\hline
-                    $\delta_(i,j)$ & $c_i$から$c_j$への伝搬レイテンシ                           \\\hline
-                    $A$            & ビジーウィンドウへのオフセット                       \\\hline
-                    $R_i^{*}(A)$   & $A$に対する$c_i$の応答時間計算式における最小の正の解 \\\hline
+                    $PP_{n}$                   & $n$ 番目のポーリングポイント                                            \\\hline
+                    $PW_{n}$                   & $n$ 番目の処理ウィンドウ ($PP_{n}$ から $PP_{n+1}$ までの範囲)          \\\hline
+                    $lp_{k}\left(c_{i}\right)$ & $\pi_{i}$より低い優先度を持つ$\mathcal{C}_{k}$内のコールバックのセット  \\\hline
+                    $hp_{k}\left(c_{i}\right)$ & $\pi_{i}$より高い優先度を持つ$\mathcal{C}_{k}$内のコールバックのセット  \\\hline
+                    $sbf_{k}(\Delta)$          & 長さ $\Delta$ の任意の間隔で予約 $r_{k}$ によって提供される最小サービス \\\hline
+                    $\delta_{i,j}$             & $c_i$から$c_j$への最悪通信レイテンシ                                          \\\hline
+                    $A$                        & ビジーウィンドウへのオフセット                                          \\\hline
+                    $R_i^{*}(A)$               & $A$に対する$c_i$の応答時間計算式における最小の正の解                    \\\hline
                 \end{tabular}
             }
         \end{table}
