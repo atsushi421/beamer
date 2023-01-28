@@ -1,64 +1,19 @@
 % !TeX root = main.tex
 
+
 \section{Related Work}
 \label{sec: related work}
 
-\begin{frame}{}
-    \begin{itemize}
-        \item ROS 2 処理チェーンのリアルタイムの側面に関する文献は非常に限られている
-\item 本論文の知る限りでは, これはリアルタイムの観点から ROS システムをモデル化し, ROS 処理チェーンの応答時間分析を提案した最初の論文である
-    \end{itemize}
-\end{frame}
-
-\begin{frame}{}
-    \begin{itemize}
-        \item ROS に関する既存の作業のほとんどは ROS 1 システムを対象としており, 主に経験的なパフォーマンス測定を実施し, 可能な改善を提案している
-\item 例えば, 斉藤ら
-\item [53] は, publisherが優先度に従って複数のsubscriberにデータを送信できるようにする ROS 1 の優先度ベースのメッセージ送信アルゴリズムと, 異なる周波数で動作する複数のノード間で通信を同期させるメカニズムを提案した
-\item 鈴木ら
-\item [61] は, ROS 1 ノードの CPU と GPU の実行を調整するためのメカニズムと, ノードの緩和度に応じてノードに優先度を割り当てるオフラインスケジューリングアルゴリズムを提示した
-\item 丸山ら
-\item [36] は, さまざまな DDS 実装の下で ROS 1 と ROS 2 の予備バージョンのパフォーマンスを比較することを目的とした実験的研究を実施した
-\item Gutirrezら [25] は, PREEMPT-RT パッチを適用した Linux で ROS 2 "Ardent Apalone" の同様の評価を実行した
-\item より一般的なロボットシステムに関して, Lotz 等
-\item [34, 35] は, CPA アプローチ $[29,46,48,49,65]$ に基づく SymTA/S タイミング解析ツール [27] で結果のモデルを解析できるように, ロボティクスシステムの非機能面を設計するためのメタモデルを提示した
-    \end{itemize}
-\end{frame}
-
-\begin{frame}{}
-    \begin{itemize}
-        \item 分散システムにおける処理チェーンの分析に関して, エンドツーエンドのタイミング制約を検証する最初の提案の 1 つは, Fohler と Ramamritham [20] によるもので, 優先度制約のあるタスクで構成される静的スケジュールを取得するためのアプローチを提案した
-\item 非静的スケジューリングのコンテキストでは, 以前の作業は 2 つの主なカテゴリに分類できる
-\item CPA に基づくもの [27] と, 全体論的アプローチを採用するもの [42, 63] である
-\item 最初の方法は, 任意の到着曲線 [47] を採用し, 分散システムの異なるノードを横切るチェーンを個別に分析し (ローカルコンポーネント分析によって), 収束が達成されるまでイベントモデル (すなわち, アクティベーション曲線) を伝播する [50]
-\item さまざまな局所分析が何年にもわたって設計されてきた
-    \end{itemize}
-\end{frame}
-
-\begin{frame}{}
-    \begin{itemize}
-        \item 例えば, Schlatow と Ernst [54, 55] は, プリエンプティブスケジューリングの下で, チェーンに沿ったタスクが任意の優先度を持つことができる単一のリソース (処理ノードなど) に完全に含まれるチェーンのローカル分析を提案した
-\item 他の著者 [26, 28, 52, 56, 64] は, さまざまなコンポーネントのイベント間の相関関係を説明することにより, 分析精度を向上させました
-\item 以前, Thiele 等
-\item [62] は, ワークロードのサービス需要が到着曲線でモデル化され, サービス曲線がローカルコンポーネントの処理能力をモデル化する, CPA に似たアプローチであるリアルタイム計算を提案した
-\item Network Calculus [30] の場合と同様に, 到着曲線とサービス曲線が最大プラス代数によって結合され, それによってコンポーネントのタイミング動作が得られる
-\item 全体論的アプローチに関して, 独創的な研究はTindellとClark [63]によるものであり, トランザクションのスケジューラビリティ分析, すなわち, 固定優先度のプリエンプティブスケジューリングの下でスケジュールされた, 散発的にトリガされる一連のイベントを提案した
-\item 彼らの分析は, パレンシアらによって洗練された
-\item オフセット [42] と優先関係 [41] を考慮する
-\item トランザクションタスクモデルの詳細については, Rahni らによる調査を参照してください
-\item [44]
-    \end{itemize}
-\end{frame}
-
-\begin{frame}{}
-    \begin{itemize}
-        \item 特定のフレームワークが最悪応答時間にどのように影響するかについては, これまでほとんど注目されてきませんでした
-\item 本論文の知る限り, それらは全て, グローバルにスケジュールされた並列タスクに通常使用される OpenMP フレームワーク [40] をターゲットにしている
-\item 例えば, セラーノら
-\item [57] は, OpenMP で関連付けられたサブタスクと関連付けられていないサブタスクを区別し, 関連付けられていないサブタスクで構成される並列タスクの応答時間分析を提案した
-\item 関連付けられていないノードには特定のスケジューリング制限はないが, 関連付けられたサブタスクは OpenMP 固有であり, 全てのノードが単一のスレッドで実行される必要があるサブグラフで構成される
-\item その後, Sun 等
-\item [60] は, OpenMP スケジューリングポリシーの改善を提案した
-\item 本論文の知る限りでは, 本論文はROSの時間的挙動を体系的に研究した最初の論文である
-    \end{itemize}
+\begin{frame}{既存研究との比較表}
+    知る限りでは, 本論文はリアルタイムの観点から ROS システムをモデル化し, ROS 処理チェーンの応答時間分析を提案した最初の論文
+        \begin{table}[tb]
+            \adjustbox{max width=\textwidth, max height=\slideheight}{
+                \centering\begin{tabular}{|c|c|c|c|} \hline
+                                                                                                          & ROS & ROS2 & 処理チェーンの分析 \\\hline
+                    \cite{saito2016priority, suzuki2018real, maruyama2016exploring, gutierrez2018towards} & \ch &    &   \\\hline
+                    \cite{fohler1997static, henia2005system, palencia1998schedulability, tindell1994holistic, richter2002event, richter2002model, schlatow2016response, schlatow2017response, thiele2000real, palencia1999exploiting, rahni2012feasibility} & & & \ch \\\hline
+                    本論文                                                                                & \ch & \ch & \ch \\\hline
+                \end{tabular}
+            }
+        \end{table}
 \end{frame}
