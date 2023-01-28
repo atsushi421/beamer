@@ -21,8 +21,8 @@
 
 \begin{frame}{DAGへのモデル化}
     \begin{itemize}
-        \item ROS システムを, 一連のコールバック $\mathcal{C}=\left\{c_{1}, \ldots, c_{n}\right\}$ と一連の有向辺 $\mathcal{E} \subseteq \mathcal{C} \times \mathcal{C}$ で構成される直接非巡回グラフ (DAG) $\mathcal{D}=\{\mathcal{C}, \mathcal{E}\}$ としてモデル化する
-        \item 各コールバック $c_{i} \in \mathcal{C}$ には, 最悪実行時間 $e_{i}$, 一意の優先度 $\pi_{i}$ があり, 無限のインスタンスシーケンスをリリースする
+        \item ROS システムを, 一連のコールバック $\mathcal{C}=\left\{c_{1}, \ldots, c_{n}\right\}$ と一連の有向辺 $\mathcal{E} \subseteq \mathcal{C} \times \mathcal{C}$ で構成される直接非巡回グラフ (DAG) $\mathcal{D}=\{\mathcal{C}, \mathcal{E}\}$ としてモデル化
+        \item 各コールバックは無限のインスタンスシーケンスをリリースする
     \end{itemize}
     \assume{$\mathcal{D}$ は固定されている, すなわち, コールバックは実行時にシステムに参加したりシステムから離れたりしない}
 \end{frame}
@@ -46,8 +46,12 @@
 
 \begin{frame}{エッジ}
     \begin{itemize}
-        \item 各エッジ $\left(c_{i}, c_{j}\right) \in \mathcal{E}$ は, コールバック $c_{i}$ からコールバック $c_{j}$ へのアクティベーション関係を示す
-        \item すなわち, $c_{i}$ のインスタンスの実行中に, $c_{j}$ のインスタンスを 1 つまでアクティベーションする
+        \item 各エッジ $\left(c_{i}, c_{j}\right) \in \mathcal{E}$ は, $c_{i}$ から $c_{j}$ へのアクティベーション関係を示す
+        \item $c_{i}$ のインスタンスの実行中に, $c_{j}$ のインスタンスを 1 つまでアクティベーションする
+        \item コールバックは, 複数のpublisherを持つトピックにsubscribeする場合にのみ, 複数のエッジを持つことができる
+        \begin{itemize}
+            \item この場合, 全てのsubscriberは, トピックにpublishされたメッセージごとに 1 回トリガされる
+        \end{itemize}
     \end{itemize}
 \end{frame}
 
@@ -55,7 +59,7 @@
     \fitimage{
         \begin{itemize}
             \item ROS グラフ $\mathcal{D}$ は, 複数のソースコールバックとシンクコールバックを持つことができる
-            \item 各ソースは, 1 つまたは複数のコールバックチェーン $\gamma^{x}=\left(c_{s}, \ldots, c_{e}\right)$, すなわちグラフ内のパスを生成する
+            \item 各ソースは, 1 つまたは複数のコールバックチェーン $\gamma^{x}=\left(c_{s}, \ldots, c_{e}\right)$ を生成する
             \item コールバックは複数のチェーンで共有される可能性がある
             \item 複数のチェーンを持つ ROS グラフの例を図に示す
         \end{itemize}
@@ -64,10 +68,8 @@
 
 \begin{frame}{アクティベーションモデル}
     \begin{itemize}
-        \item 各ソースコールバック $c_{s}$ は, 特定の外部イベント到着曲線 $\eta_{s}^{e}(\Delta)$ \cite{henia2005system, leboudec2001theory, thiele2000real}に関連付けられている
-        \item 一般性を失わず, $\Delta>0$ かつ $\eta_{s}^{e}(\Delta)>0$ を想定している
-        \item コールバックは, 複数のpublisherを持つトピックにsubscribeする場合にのみ, 複数の着信エッジを持つことができる
-        \item この場合, 全てのsubscriberは, トピックにpublishされたメッセージごとに 1 回トリガされる
+        \item 各ソースコールバック $c_{s}$ は, アクティベーション曲線 $\eta_{s}^{e}(\Delta)$ \cite{henia2005system, leboudec2001theory, thiele2000real}に関連付けられている
+        \item 本論文では一般性を失わず, $\Delta>0$ かつ $\eta_{s}^{e}(\Delta)>0$ を想定する
     \end{itemize}
 \end{frame}
 
@@ -89,7 +91,7 @@
 
 \begin{frame}{供給境界関数}
     \begin{itemize}
-        \item 本論文は, 長さ $\Delta$ の任意の間隔で予約 $r_{k}$ によって提供される最小サービスを示す供給境界関数 $sbf_{k}(\Delta)$ \cite{lipari2003resource, shin2003periodic}の可用性に依存する
+        \item 本論文は, 長さ $\Delta$ の任意の間隔で予約 $r_{k}$ によって提供される最小サービスを示す供給境界関数 $sbf_{k}(\Delta)$ \cite{lipari2003resource, shin2003periodic} に依存する
         \item 複数の予約が同じプロセッサに割り当てられる場合は, 全ての予約がスケジュール可能である場合にのみ, 供給境界関数によって記述されるリソースの割り当てが保証される
     \end{itemize}
     \assume{予約はスケジュール可能であると想定する}
@@ -104,9 +106,9 @@
 \end{frame}
 
 \begin{frame}{イベントソース}
-    \begin{itemize}
-        \item イベントソースは, 散発的にアクティベーションされる OS レベルのスレッドであり, 1 つまたは複数のトピックにpublishすることで ROS と対話し, 外部イベントのインターフェイスまたは入口ポイントとして機能する
-        \item このようなイベントソースを疑似コールバック $c_{i} \in \mathcal{C}^{\text {evt}}$としてモデル化する
-    \end{itemize}
+    イベントソースを疑似コールバック $c_{i} \in \mathcal{C}^{\text {evt}}$としてモデル化する
+    \begin{block}{イベントソース}
+        散発的にアクティベーションされる OS レベルのスレッドであり, 1 つまたは複数のトピックにpublishすることで ROS と対話し, 外部イベントのインターフェイスまたは入口ポイントとして機能する
+    \end{block}
     \assume{各イベントソースは専用の予約に排他的に割り当てられると想定する}
 \end{frame}
