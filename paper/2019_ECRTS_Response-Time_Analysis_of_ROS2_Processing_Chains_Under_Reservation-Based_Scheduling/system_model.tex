@@ -64,7 +64,7 @@
 
 \begin{frame}{アクティベーションモデル}
     \begin{itemize}
-        \item 各ソースコールバック $c_{s}$ は, 特定の外部イベント到着曲線 $\eta_{s}^{e}(\Delta)$ に関連付けられている
+        \item 各ソースコールバック $c_{s}$ は, 特定の外部イベント到着曲線 $\eta_{s}^{e}(\Delta)$ \cite{henia2005system, leboudec2001theory, thiele2000real}に関連付けられている
         \item 一般性を失わず, $\Delta>0$ かつ $\eta_{s}^{e}(\Delta)>0$ を想定している
         \item コールバックは, 複数のpublisherを持つトピックにsubscribeする場合にのみ, 複数の着信エッジを持つことができる
         \item この場合, 全てのsubscriberは, トピックにpublishされたメッセージごとに 1 回トリガされる
@@ -89,7 +89,7 @@
 
 \begin{frame}{供給境界関数}
     \begin{itemize}
-        \item 本論文は, 長さ $\Delta$ の任意の間隔で予約 $r_{k}$ によって提供される最小サービスを示す供給境界関数 $s b f_{k}(\Delta)$ の可用性に依存する
+        \item 本論文は, 長さ $\Delta$ の任意の間隔で予約 $r_{k}$ によって提供される最小サービスを示す供給境界関数 $sbf_{k}(\Delta)$ \cite{lipari2003resource, shin2003periodic}の可用性に依存する
         \item 複数の予約が同じプロセッサに割り当てられる場合は, 全ての予約がスケジュール可能である場合にのみ, 供給境界関数によって記述されるリソースの割り当てが保証される
     \end{itemize}
     \assume{予約はスケジュール可能であると想定する}

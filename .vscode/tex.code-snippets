@@ -74,9 +74,9 @@
 	"theorem": {
 		"prefix": "theorem",
 		"body": [
-			"\\begin{frame}[label=theorem$1]{Theorem $2}",
+			"\\begin{frame}[label=theorem$1]{Theorem $1}",
 			"\\begin{theorem}[]",
-			"$3",
+			"$2",
 			"\\end{theorem}",
 			"\\end{frame}"
 		]
@@ -84,9 +84,9 @@
 	"lemma": {
 		"prefix": "lemma",
 		"body": [
-			"\\begin{frame}[label=lemma$1]{Lemma $2}",
+			"\\begin{frame}[label=lemma$1]{Lemma $1}",
 			"\\begin{lemma}[]",
-			"$3",
+			"$2",
 			"\\end{lemma}",
 			"\\end{frame}"
 		]
@@ -162,7 +162,7 @@
 			"\\begin{frame}{$1}",
 			"\\fitimage{",
 			"$2",
-			"}{$2}",
+			"}{$3}",
 			"\\end{frame}"
 		]
 	},

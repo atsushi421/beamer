@@ -37,17 +37,13 @@
         \begin{table}[tb]
             \adjustbox{max width=\textwidth, max height=\slideheight}{
                 \centering\begin{tabular}{|c|l|} \hline
-                    $\operatorname{pred}\left(c_{i}\right)=\left\{c_{j} \in \mathcal{C}: \exists\left(c_{j}, c_{i}\right) \in \mathcal{E}\right\}$ & $c_i$の先行コールバックのセット                                           \\\hline
-                    $\operatorname{succ}\left(c_{i}\right)=\left\{c_{j} \in \mathcal{C}: \exists\left(c_{i}, c_{j}\right) \in \mathcal{E}\right\}$ & $c_i$の後続コールバックのセット                                           \\\hline
-                    $c_i$                                                                                                                          & コールバック                                                              \\\hline
-                    $e_i$                                                                                                                          & $c_i$のWCET                                                               \\\hline
-                    $\pi_i$                                                                                                                        & $c_i$の優先度                                                             \\\hline
-                    ソースコールバック                                                                                                             & 先行コールバックを持たないコールバック                                    \\\hline
-                    シンクコールバック                                                                                                             & 後続コールバックを持たないコールバック                                    \\\hline
-                    $c_s$                                                                                                                          & ソースコールバック                                                        \\\hline
-                    $\eta_{s}^{e}(\Delta)$                                                                                                         & 長さ $\Delta$ の任意の間隔でリリースできる $c_{s}$ のインスタンスの最大数 \\\hline
-                    $\gamma^{x}=\left(c_{s}, \ldots, c_{e}\right)$                                                                                 & コールバックチェーン                                                      \\\hline
-                    $\operatorname{chains}(\mathcal{D})=\left\{\gamma^{1}, \ldots, \gamma^{s}\right\}$                                             & チェーンセット                                                            \\\hline
+                    $\operatorname{pred}\left(c_{i}\right)=\left\{c_{j} \in \mathcal{C}: \exists\left(c_{j}, c_{i}\right) \in \mathcal{E}\right\}$ & $c_i$の先行コールバックのセット        \\\hline
+                    $\operatorname{succ}\left(c_{i}\right)=\left\{c_{j} \in \mathcal{C}: \exists\left(c_{i}, c_{j}\right) \in \mathcal{E}\right\}$ & $c_i$の後続コールバックのセット        \\\hline
+                    $c_i$                                                                                                                          & コールバック                           \\\hline
+                    $e_i$                                                                                                                          & $c_i$のWCET                            \\\hline
+                    $\pi_i$                                                                                                                        & $c_i$の優先度                          \\\hline
+                    ソースコールバック                                                                                                             & 先行コールバックを持たないコールバック \\\hline
+                    シンクコールバック                                                                                                             & 後続コールバックを持たないコールバック \\\hline
                 \end{tabular}
             }
         \end{table}
@@ -55,6 +51,24 @@
 \end{frame}
 
 \begin{frame}{表記法・用語 3}
+    \full{
+        \begin{table}[tb]
+            \adjustbox{max width=\textwidth, max height=\slideheight}{
+                \centering\begin{tabular}{|c|l|} \hline
+                    $c_s$                                                                              & ソースコールバック                                                        \\\hline
+                    $\eta_{s}^{e}(\Delta)$                                                             & 長さ $\Delta$ の任意の間隔でリリースできる $c_{s}$ のインスタンスの最大数 \\\hline
+                    $\gamma^{x}=\left(c_{s}, \ldots, c_{e}\right)$                                     & コールバックチェーン                                                      \\\hline
+                    $\operatorname{chains}(\mathcal{D})=\left\{\gamma^{1}, \ldots, \gamma^{s}\right\}$ & チェーンセット                                                            \\\hline
+                    $\gamma^{x, y}$                                                                    & $\gamma^{x}$ の $y$ 番目のサブチェーン                                    \\\hline
+                    $R_{x, y}$                                                                         & $\gamma^{x, y}$ の最悪応答時間                                            \\\hline
+                    $R_{j}$                                                                            & $c_{j}$ の最悪応答時間                                                    \\\hline
+                \end{tabular}
+            }
+        \end{table}
+    }
+\end{frame}
+
+\begin{frame}{表記法・用語 4}
     \full{
         \begin{table}[tb]
             \adjustbox{max width=\textwidth, max height=\slideheight}{
@@ -67,28 +81,47 @@
                     $\mathcal{C}_{k}^{\mathrm{sub}}$                  & $r_k$に割り当てられたサブスクリプションコールバックのセット \\\hline
                     $\mathcal{C}_{k}^{\mathrm{clt}}$                  & $r_k$に割り当てられたクライアントコールバックのセット       \\\hline
                     $\mathcal{C}_{k}^{\mathrm{srv}}$                  & $r_k$に割り当てられたサービスコールバックのセット           \\\hline
-                    $\mathcal{C}^{\text {evt }}$                      & イベントソースのセット                                      \\\hline
-                    $\mathcal{P}=\left\{p_{1}, \ldots, p_{m}\right\}$ & プロセッサセット                                            \\\hline
-                    $m$                                               & プロセッサの個数                                            \\\hline
+                    $\mathcal{C}^{\text {evt}}$                       & イベントソースのセット                                      \\\hline
+                    $\mathcal{C}_{k}^{\mathrm{pp}}$                   & $r_{k}$ に割り当てられた pp ベースのコールバックのセット    \\\hline
                 \end{tabular}
             }
         \end{table}
     }
 \end{frame}
 
-\begin{frame}{表記法・用語 4}
+\begin{frame}{表記法・用語 5}
     \full{
         \begin{table}[tb]
             \adjustbox{max width=\textwidth, max height=\slideheight}{
                 \centering\begin{tabular}{|c|l|} \hline
-                    $PP_{n}$                   & $n$ 番目のポーリングポイント                                            \\\hline
-                    $PW_{n}$                   & $n$ 番目の処理ウィンドウ ($PP_{n}$ から $PP_{n+1}$ までの範囲)          \\\hline
-                    $lp_{k}\left(c_{i}\right)$ & $\pi_{i}$より低い優先度を持つ$\mathcal{C}_{k}$内のコールバックのセット  \\\hline
-                    $hp_{k}\left(c_{i}\right)$ & $\pi_{i}$より高い優先度を持つ$\mathcal{C}_{k}$内のコールバックのセット  \\\hline
-                    $sbf_{k}(\Delta)$          & 長さ $\Delta$ の任意の間隔で予約 $r_{k}$ によって提供される最小サービス \\\hline
-                    $\delta_{i,j}$             & $c_i$から$c_j$への最悪通信レイテンシ                                          \\\hline
-                    $A$                        & ビジーウィンドウへのオフセット                                          \\\hline
-                    $R_i^{*}(A)$               & $A$に対する$c_i$の応答時間計算式における最小の正の解                    \\\hline
+                    $\mathcal{P}=\left\{p_{1}, \ldots, p_{m}\right\}$ & プロセッサセット                                                                   \\\hline
+                    $m$                                               & プロセッサの個数                                                                   \\\hline
+                    $PP_{n}$                                          & $n$ 番目のポーリングポイント                                                       \\\hline
+                    $PW_{n}$                                          & $n$ 番目の処理ウィンドウ ($PP_{n}$ から $PP_{n+1}$ までの範囲)                     \\\hline
+                    $lp_{k}\left(c_{i}\right)$                        & $\pi_{i}$より低い優先度を持つ$\mathcal{C}_{k}$内のコールバックのセット             \\\hline
+                    $hp_{k}\left(c_{i}\right)$                        & $\pi_{i}$より高い優先度を持つ$\mathcal{C}_{k}$内のコールバックのセット             \\\hline
+                    $sbf_{k}(\Delta)$                                 & 長さ $\Delta$ の任意の間隔で予約 $r_{k}$ によって提供される最小サービス            \\\hline
+                    $rbf_{i}(\Delta)$                                 & 長さ $\Delta$ の間隔でリリースされたコールバックインスタンスが要求する最大サービス \\\hline
+                    $RBF\left(\mathcal{C}^{*}, \Delta\right)$         & コールバックセット $\mathcal{C}^{*}$ の要求境界関数の合計                          \\\hline
+                    $\delta_{i,j}$                                    & $c_i$から$c_j$への最悪通信レイテンシ                                               \\\hline
+                \end{tabular}
+            }
+        \end{table}
+    }
+\end{frame}
+
+\begin{frame}{表記法・用語 6}
+    \full{
+        \begin{table}[tb]
+            \adjustbox{max width=\textwidth, max height=\slideheight}{
+                \centering\begin{tabular}{|c|l|} \hline
+                    $A$                                                      & ビジーウィンドウのオフセット                          \\\hline
+                    $R_i^{*}(A)$                                             & $A$に対する$c_i$の応答時間計算式における最小の正の解  \\\hline
+                    $L^{*}$                                                  & 最長のビジーウィンドウ                                \\\hline
+                    $A_i$                                                    & $c_i$に関する制限された$A$の探索空間                  \\\hline
+                    $rbf^{x, y}(\Delta)=\eta_{s}^{a}(\Delta) \cdot e^{x, y}$ & サブチェーン $\gamma^{x, y}$ に拡張された要求境界関数 \\\hline
+                    $e^{x, y}$                                               & サブチェーンの最悪累積実行時間                        \\\hline
+                    $\Gamma_{k}$                                             & $r_{k}$ に割り当てられたサブチェーンのセット          \\\hline
                 \end{tabular}
             }
         \end{table}
