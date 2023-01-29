@@ -12,8 +12,9 @@
 
 
 %%%%% Front Cover %%%%%
-\title{Title}
-\subtitle{conference, year}
+\title{Priority-Driven Real-Time Scheduling in ROS 2: Potential and
+Challenges}
+\subtitle{Real-time And intelliGent Edge computing workshop (RAGE), 2022}
 \author{矢野 篤志}
 \date{\today}
 \institute[EMBIV]{EMBIV}
@@ -26,23 +27,27 @@
 \maketitle
 
 % \summary{0}{0}
-% \input{abstract.tex}
+\input{abstract.tex}
 
 \begin{frame}{Outline}
     \setbeamertemplate{section in toc}[sections numbered]
     \scriptsize\tableofcontents[hideallsubsections]
 \end{frame}
 
-\input{prior_knowledge.tex}
-% \input{XXX.tex}
+% \input{prior_knowledge.tex}
+% \input{introduction.tex}
+\input{priority_driven_chain_aware_scheduling.tex}
+% \input{real_time_support_for_multi_threaded_executors.tex}
+\input{challenges_with_real_time_gpu_acceleration.tex}
+\input{conclusion.tex}
 
 \lastpage
 
-% \section*{Reference}
-% \begin{frame}[allowframebreaks]{Reference}
-%     \beamertemplatetextbibitems
-%     \bibliographystyle{unsrt}
-%     \bibliography{\beamerDir/bibtex/master_reference}
-% \end{frame}
+\section*{Reference}
+\begin{frame}[allowframebreaks]{Reference}
+    \beamertemplatetextbibitems
+    \bibliographystyle{unsrt}
+    \bibliography{\beamerDir/bibtex/master_reference}
+\end{frame}
 
 \end{document}

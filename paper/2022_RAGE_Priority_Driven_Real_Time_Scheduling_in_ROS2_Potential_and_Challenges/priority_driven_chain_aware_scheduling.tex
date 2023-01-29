@@ -1,0 +1,108 @@
+% !TeX root = main.tex
+
+\section{PRIORITY-DRIVEN CHAIN-AWARE SCHEDULING}
+\label{sec: priority-driven chain-aware scheduling}
+
+\subsection{Background}
+\label{ssec: background}
+
+\begin{frame}{}
+    \LARGE\centering\hlink{}{PiCASの詳細}
+\end{frame}
+
+
+\subsection{Evaluation of Priority-Driven Scheduling}
+\label{ssec: evaluation of priority-driven scheduling}
+
+\begin{frame}{評価方法}
+    \begin{itemize}
+        \item 現実的なシナリオでの優先度ベースのスケジューリングアプローチの利点を理解するために, Apex.AI が開発したリファレンスシステムを使用して PiCAS を評価する
+        \item PiCAS を, Raspberry Pi 4 プラットフォームの ROS 2 の Galactic バージョンで実行されるリファレンスシステムに実装した
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{リファレンスシステムの構成}
+    \fitimage{
+        リファレンスシステムは Autoware.Auto の LIDAR ベースの認識パイプラインに似ている
+    }{reference_system}
+\end{frame}
+
+\begin{frame}{評価に使用する KPI [ホットトピックパスのレイテンシ]}
+    \fitimage{
+        \begin{itemize}
+            \item 現実世界のシナリオでは, リファレンスシステムは障害物をできるだけ早く認識して衝突を回避する必要がある
+            \item したがって, ホットトピックパスのレイテンシは短いほど良い
+        \end{itemize}
+        \begin{block}{ホットトピックパスのレイテンシ}
+            Front Lidar から Object Collision Estimator までのレイテンシ
+        \end{block}
+    }{reference_system}
+\end{frame}
+
+\begin{frame}{評価に使用する KPI [破棄されたメッセージの数]}
+    \begin{itemize}
+        \item 古いセンサデータがある状態で最新のデータが到着すると, 古いセンサデータは破棄される
+        \item 破棄によって情報が失われるため, 破棄されるメッセージの数は少ないほど良い
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{評価に使用する KPI [Behavior Planner のジッタ]}
+    \begin{itemize}
+        \item Behavior Planner ノードは, 設定された周期 $(100 \mathrm{msec})$ に従って, 正確に定期的に実行する必要がある
+        \item したがって, Behavior Planner ノードのジッターは低いほど良い
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{アプローチの比較}
+    \vspace{-1mm}
+    優先度駆動型スケジューリングアプローチ (ROS2-PiCAS) と既定の ROS 2 スケジューリングスキーム (ROS2-default) を以下2つの方法で比較
+    \vspace{-1mm}
+    \begin{block}{シングルスレッド}
+        ROS2-default と ROS2-PiCAS をそれぞれシングルスレッドエグゼキュータで実行し, 比較
+    \end{block}
+    \begin{block}{マルチスレッド}
+        \begin{itemize}
+            \item ROS2-default はマルチスレッドエグゼキュータで実行
+            \item PiCAS はマルチスレッドエグゼキュータをサポートしていないため, Raspberry Pi 4 の 4 つのコアで 4 つのシングルスレッドエグゼキュータを使用する
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}{評価結果 [ホットトピックパスのエンドツーエンドレイテンシ]}
+    \fitimage{
+        さまざまなケースで観測されたホットトピックパスの平均レイテンシ
+    }{average_latency}
+\end{frame}
+
+\begin{frame}{評価結果考察1 [ホットトピックパスのエンドツーエンドレイテンシ]}
+    \begin{itemize}
+        \item シングルスレッドエグゼキュータにおける ROS2-PiCAS は, シングルスレッドの ROS2-default と比較して最大 $86 \%$ まで平均レイテンシを削減し, マルチスレッドの ROS2-default に匹敵するパフォーマンスを示す
+        \item この結果は, PiCAS を搭載した自動運転車が障害物を迅速に認識し, 同じ量のリソースを使用しながら適時的に障害物を回避できることを示す
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{評価結果考察2 [ホットトピックパスのエンドツーエンドレイテンシ]}
+    \begin{itemize}
+        \item マルチスレッドエグゼキュータの場合, ROS2-default は, 複数のエグゼキュータを使用した ROS2-PiCAS よりパフォーマンスが悪い
+        \item デフォルトのマルチスレッドエグゼキュータは, ROS2-PiCAS の複数のシングルスレッドエグゼキュータが従う分割スケジューリングよりも, 未使用のリソースの再利用において優れているグローバルスケジューリングアプローチに従うため, この結果は興味深い
+        \item これは, 適切な優先度付けのサポートの欠如によるものと思われる
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{評価結果 [破棄されたメッセージの数]}
+    \fitimage{
+        \begin{itemize}
+            \item 表は破棄されたメッセージの数を示す
+            \item ROS2-PiCAS は ROS2-default よりも優れている
+        \end{itemize}
+    }{drop_message}
+\end{frame}
+
+\begin{frame}{評価結果 [Behavior Planner のジッタ]}
+    \fitimage{
+        \begin{itemize}
+            \item 100 msec からのずれはジッターを示しているため, 観測値の範囲が小さいほど良い
+            \item ROS2-PiCAS は全ての構成で ROS2-default よりも優れている
+        \end{itemize}
+    }{planner_jitter}
+\end{frame}

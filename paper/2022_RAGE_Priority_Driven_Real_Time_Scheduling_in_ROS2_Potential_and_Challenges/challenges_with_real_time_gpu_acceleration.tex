@@ -1,0 +1,64 @@
+% !TeX root = main.tex
+
+\section{CHALLENGES WITH REAL-TIME GPUACCELERATION}
+\label{sec: challenges with real-time gpuacceleration}
+
+\begin{frame}{セクションサマリ}
+    \begin{itembox}[l]{\textbf{目的}}
+        GPU アクセラレーションカーネルに依存するアプリケーションの問題に対処する
+    \end{itembox}
+\end{frame}
+
+\forme{
+    \begin{frame}{}
+        \begin{itemize}
+            \item ROS2 で設計された多くのアプリケーションは, GPU アクセラレータでのカーネル実行に非同期モデルと非構造化モデルを利用している
+            \item これにより, 個々の ROS2 ノードからの直接的なリソース割り当てとアクセラレータカーネルの呼び出しが促進されるが, これにより, 特に多くのノードが同じアクセラレータリソースを要求する場合に, 予測できないリアルタイムの動作が発生する可能性がある
+            \item 自動運転車を含む複雑なソフトウェアスタックに共有アクセラレーターリソースを利用することは, 最新のコンピュータおよびアクセラレーターアーキテクチャでは避けられない
+            \item 本論文の進行中の作業は, リソースに制約のあるシステムでリアルタイムの GPU カーネル実行管理を提供することに重点を置いている
+        \end{itemize}
+    \end{frame}
+}
+
+
+\subsection{Problems with Shared Accelerators}
+\label{ssec: problems with shared accelerators}
+
+\begin{frame}{共有アクセラレータの問題点}
+    \begin{itemize}
+        \item 自動運転スタックの場合, Perception, Localization, Mapping など多くの処理チェーンで GPU ベースのアクセラレータが必要になる
+        \item リソースに制約のあるシステムの場合, 優先度の低いチェーンが共有アクセラレーターリソースを既に利用している場合, 優先度の高いチェーンは優先度の逆転により深刻なレイテンシやデッドラインミスが発生する
+    \end{itemize}
+\end{frame}
+
+
+\subsection{Maintaining Real-time Support with Accelerators}
+\label{ssec: maintaining real-time support with accelerators}
+
+\begin{frame}{従来}
+    従来の自動運転車のソフトウェア設計では, 各ノードのコールバックが GPU を直接呼び出してカーネルを実行していた
+\end{frame}
+
+\begin{frame}{検討中のアプローチ}
+    \begin{block}{検討中のアプローチ}
+        \setlength{\linewidth}{0.98\columnwidth}
+        \begin{itemize}
+            \item 全てのノードからの GPU アクセス要求を処理する GPU サーバとして機能する ROS2 ノードを利用
+            \item GPU サーバアーキテクチャは, リクエストレベルのプリエンプションをサポートする優先度ベースのスケジューリングを採用
+            \item リアルタイム空間 GPU マルチタスキング \cite{saha2019stgm, wang2021balancing} と優先度付けされた CUDA ストリーム \cite{xiang2019pipelined} を使用した同時カーネル実行を使用して, リソースの利用率を向上させ, 応答時間を短縮する
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}{提案アーキテクチャ全体像}
+    \fullimage{proposed_arch}
+\end{frame}
+
+\begin{frame}{提案アーキテクチャ補足}
+    \begin{itemize}
+        \item ROS ノードは GPU カーネルスケジューリングノードに, GPU カーネルを特定のデータセットに対して実行するよう要求する
+        \item 効率的なゼロコピー IPC メソッドである \ourl{https://github.com/eclipse-iceoryx/iceoryx}{Iceoryx} を使用してデータコピーのレイテンシを最小限に抑える
+        \item GPU カーネルスケジューリングノードは, 全ての GPU カーネルの構造を維持し, 対応するチェーンの優先度に従ってカーネルの実行をスケジュールする
+        \item OS や GPU ドライバーに任せるのではなく, ソフトウェアスタックで GPU カーネルスケジューリングを処理することで, 特定のチェーンの GPU へのアクセスを細かく制御できる
+    \end{itemize}
+\end{frame}
