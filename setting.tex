@@ -159,11 +159,11 @@
 
 %%%%% Original Command %%%%%
 \newcommand{\lastpage}[0]{\begin{frame}\begin{textblock*}{1.0\linewidth}(0pt, 50pt)\includegraphics[scale=0.512]{\beamerDir/master_figure/last.pdf}\end{textblock*}\end{frame}}
-\newcommand{\summary}[0]{
+\newcommand{\summary}[2]{
     \begin{frame}{}
-        \vspace{-5mm}
+        \vspace{#1mm}
         \centering
-        \hspace{3mm}\includegraphics[scale=0.1]{one_page_summary.jpg}
+        \hspace{#2mm}\includegraphics[scale=0.1]{one_page_summary.jpg}
     \end{frame}
 }
 \newcommand{\todo}[1]{\al{\LARGE\textbf{TODO:} #1}}
@@ -178,6 +178,7 @@
 \newcommand{\tb}[1]{#1}
 \newcommand{\notes}[1]{{\footnotesize\\※#1}}
 \newcommand{\hlink}[2]{\hyperlink{#1}{\underline{#2}}}
+\newcommand{\ourl}[2]{\href{#1}{\textcolor{blue}{\underline{#2}}}}
 \setlength{\fboxsep}{0.4mm}
 \newcommand{\desc}[2]{\textbf{\doublebox{#1}: }#2}
 \newcommand{\full}[1]{
