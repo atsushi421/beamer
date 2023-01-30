@@ -106,7 +106,7 @@
 \begin{frame}[label=strategy1]{[戦略 I] 単一チェーンからのレギュラーコールバック}
     戦略 I は $\tau_{j}$ に $\tau_{i}$ よりも高い優先度を与えることで, Lemma 1 の最初の条件を満たすようにする
     \begin{block}{戦略 I}
-        エグゼキュータが単一のチェーン $\Gamma^{c}=:\left[\tau_{1}, \ldots, \tau_{i}, \ldots, \tau_{j}, \ldots, \tau_{N}\right]$ からのレギュラーコールバックのみを持っている場合, これらのコールバックの優先度は, チェーン内の順序とは逆の順序で割り当てる
+        エグゼキュータが単一のチェーン $\Gamma^{c}=:\left[\tau_{1}, \ldots, \tau_{i}, \ldots, \tau_{j}, \ldots, \tau_{N}\right]$ からのレギュラーコールバックのみが含まれる場合, これらのコールバックの優先度は, チェーン内の順序とは逆の順序で割り当てる
     \end{block}
 \end{frame}
 
@@ -160,7 +160,7 @@
 \begin{frame}{[戦略 V] 1 つの CPU に 1 つのチェーン}
     戦略 V は Lemma 1 の 2 番目の条件を満たすようにする
     \begin{block}{戦略 V}
-        CPU が 1 つのチェーン $\Gamma^{c}$ からのコールバックのみを持っている場合, $\Gamma^{c}$ の低インデックスコールバック $\tau_{i}$ を含むエグゼキュータは, $\Gamma^{c}$ の高インデックスコールバック $\tau_{j}$ を実行する同じ CPU 上の他のエグゼキュータと同じか, それより低い優先度を割り当てる
+        CPU が 1 つのチェーン $\Gamma^{c}$ からのコールバックのみを持っている場合, $\Gamma^{c}$ の低インデックスコールバック $\tau_{i}$ を含むエグゼキュータは, $\Gamma^{c}$ の高インデックスコールバック $\tau_{j}$ を実行するエグゼキュータ以下の優先度を割り当てる
     \end{block}
 \end{frame}
 
@@ -170,7 +170,7 @@
         \item $\pi_{\Gamma^{c}}<\pi_{\Gamma^{c^{\prime}}}$ である同じ CPU 上の2つのチェーン $\Gamma^{c}$, $\Gamma^{c^{\prime}}$ を考える
     \end{itemize}
     \begin{block}{戦略 VI}
-        CPU に複数のチェーンからのコールバックがある場合, $\Gamma^{c^{\prime}}$ のコールバックを含むエグゼキュータは, 少なくとも $\Gamma^{c}$ のコールバックを含むエグゼキュータと同じかそれ以上の優先度を割り当てる
+        CPU に複数のチェーンからのコールバックがある場合, $\Gamma^{c^{\prime}}$ のコールバックを含むエグゼキュータは, $\Gamma^{c}$ のコールバックを含むエグゼキュータ以上の優先度を割り当てる
     \end{block}
 \end{frame}
 
@@ -260,8 +260,15 @@
     \end{itemize}
 \end{frame}
 
+\begin{frame}{提案スキームのフロー全体像}
+    \fullimage{proposed_schema.png}
+\end{frame}
+
 \begin{frame}{提案スキーム概要}
-    提案スキームは, $\Gamma^{c}$ に関連付けられた全てのノードがフェッチされるか, $\mathbb{N}$ の利用率が 1 を超えるまで, $\mathcal{N}$ からノードを１つずつフェッチして, ノードのサブセット $\mathbb{N}$ を選択する
+    \fitimage{
+        提案スキームはまず, $\mathbb{N}$ の利用率が 1 を超えるまで, $\mathcal{N}$ からノードを１つずつフェッチして, ノードのサブセット $\mathbb{N}$ を選択する
+    }
+    {schema_sup1}
 \end{frame}
 
 \begin{frame}{提案スキームを構成する3パート概要}
@@ -274,14 +281,6 @@
     \begin{block}{パート C}
         パートA, Bでエグゼキュータに割り当てられなかった全ての残りのノードを処理する
     \end{block}
-\end{frame}
-
-\begin{frame}{提案スキームのフロー全体像}
-    \fullimage{proposed_schema.png}
-\end{frame}
-
-\begin{frame}{提案スキームフロー}
-    \fullimage{schema_sup1}
 \end{frame}
 
 \begin{frame}{パートAフロー [CPUコアに割り当てられるケース]}
