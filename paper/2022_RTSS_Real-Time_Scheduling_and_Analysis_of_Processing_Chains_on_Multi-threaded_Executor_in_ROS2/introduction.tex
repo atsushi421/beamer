@@ -3,53 +3,12 @@
 \section{INTRODUCTION}
 \label{sec: introduction}
 
-\begin{frame}{ROS (Robot Operating System)}
-    \full{
-        \begin{block}{ROS (Robot Operating System)}
-            \begin{itemize}
-                \item ロボット工学アプリケーションで最も人気のあるオープンソースソフトウェアフレームワークの 1 つ
-                \item ソフトウェアのモジュール性と構成可能性を促進し, ロボットソフトウェア開発の生産性を向上
-            \end{itemize}
-        \end{block}
-    }
-\end{frame}
-
-\begin{frame}{ROS 2}
-    ROS にはリアルタイム機能がないため, \al{ROS 2}への移行が進んでいる
-    \begin{block}{ROS 2}
-        \begin{itemize}
-            \item 2017 年にリリースされた第 2 世代の ROS
-            \item ROS から肯定的な側面を継承し, ロボットソフトウェアをサポートする強力なリアルタイム機能を提供
-        \end{itemize}
-    \end{block}
-\end{frame}
-
-\begin{frame}{ハードリアルタイム制約}
-    セーフクリティカルなロボットソフトウェアは\al{ハードリアルタイム制約}があるため, 設計者はタイミング動作を正確にモデル化して分析を行い, リアルタイム制約を実行時に常に保証する必要がある
-\end{frame}
-
-\begin{frame}{ROS 2 エグゼキュータ}
+\begin{frame}{背景}
     \begin{itemize}
-        \item ROS 2 のリアルタイム性能を左右するコアコンポーネントは\al{エグゼキュータ}
-        \begin{block}{エグゼキュータ}
-            OS のスレッドでワークロードの実行を調整
-        \end{block}
-        \vspace{5mm}
-        \item \tb{ROS 2 エグゼキュータのスケジューリング動作は過去の研究とは全く異なり, 新しい分析手法が必要}
-    \end{itemize}
-\end{frame}
-
-\begin{frame}{シングル/マルチスレッドエグゼキュータ}
-    \begin{itemize}
-        \item ROS 2 には以下2つの組み込みエグゼキュータが存在
-            \begin{block}{シングルスレッドエグゼキュータ}
-                ワークロードをシーケンシャルに実行するエグゼキュータ
-            \end{block}
-            \begin{block}{マルチスレッドエグゼキュータ}
-                ワークロードの実行を複数のスレッドに分散するエグゼキュータ
-            \end{block}
-        \vspace{5mm}
-        \item 最近の研究でシングルスレッドエグゼキュータのモデリングと分析が行われたが, \tb{マルチスレッドエグゼキュータは未研究}
+        \item ROS2 フレームワークにおけるリアルタイムアプリケーションを想定
+        \item ROS 2 のリアルタイム性能を左右するコンポーネントはエグゼキュータ
+        \item ROS 2 エグゼキュータのスケジューリング動作は過去の研究とは全く異なり, 新しい分析手法が必要
+        \item 最近の研究でシングルスレッドエグゼキュータのモデリングと分析が行われたが, マルチスレッドエグゼキュータは未研究
     \end{itemize}
 \end{frame}
 

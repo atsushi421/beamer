@@ -8,24 +8,12 @@
 \subsection{ROS2}
 \label{ssec: ros2}
 
-\begin{frame}{ROS 2}
-    \fitimage{
-        \al{ROS 2} は OS 上の複数の抽象化レイヤの統合実装
-    }{ros2_system.png}
+\begin{frame}{}
+    \begin{itemize}
+        \item 本論文ではマルチスレッドエグゼキュータに焦点を当てる
+    \end{itemize}
 \end{frame}
 
-\begin{frame}{Publish/Subscribeパラダイム}
-    ROS 2 アプリケーションは, \al{publish/subscribeパラダイム}を使用して相互に通信するノード群で構成される
-
-    \begin{block}{Publish/Subscribeパラダイム}
-        \setlength{\linewidth}{0.98\columnwidth}
-        \begin{itemize}
-            \item ノードはトピックにメッセージをpublishし, そのトピックをsubscribeしているノードにメッセージをブロードキャストする
-            \item ノードはコールバックをアクティブにして各メッセージを処理することで, publish メッセージに反応する
-            \item コールバックはメッセージ自体をpublishすることも可能で, 複雑な動作をトピックとコールバックのネットワークとして実装可能
-        \end{itemize}
-    \end{block}
-\end{frame}
 
 \begin{frame}{エグゼキュータ}
     \begin{itemize}
@@ -34,31 +22,6 @@
     \end{itemize}
 \end{frame}
 
-\begin{frame}{シングル/マルチスレッドエグゼキュータ}
-    \begin{itemize}
-        \item ROS 2 には以下 2 つの組み込みエグゼキュータがある
-              \begin{block}{シングルスレッドエグゼキュータ}
-                  1 つのスレッドでコールバックを実行するエグゼキュータ
-              \end{block}
-              \begin{block}{マルチスレッドエグゼキュータ}
-                  コールバックの処理を複数のスレッドに分散するエグゼキュータ
-              \end{block}
-              \vspace{5mm}
-
-        \item 本論文ではマルチスレッドエグゼキュータに焦点を当てる
-    \end{itemize}
-\end{frame}
-
-\begin{frame}{DDS (Data Distribution Service)}
-    ノードのpublisherとsubscriberの間のメッセージ交換は, \\抽象\al{DDS} (Data Distribution Service) 層によって実現
-
-    \begin{block}{抽象DDS}
-        DDS とクライアントライブラリ間の通信インタフェース
-    \end{block}
-    \begin{block}{DDS}
-        publisherとsubscriber間でメッセージを交換するための業界標準の分散通信システム
-    \end{block}
-\end{frame}
 
 \begin{frame}{処理チェーン}
     \fitimage{
@@ -66,25 +29,17 @@
             \item \al{処理チェーン}はコールバックの列
             \item 処理チェーンは特定のイベントによってトリガされ, 複数のエグゼキュータにまたがる可能性がある
         \end{itemize}
-    }{multi_threaded_エグゼキュータ.png}
+    }{multi_threaded_executor.png}
 \end{frame}
+
 
 \begin{frame}{本論文の分析の焦点}
     \fitimage{
         本論文では単一のエグゼキュータにおけるチェーンの応答時間に焦点を当てる
         \notes{CPAアプローチ\cite{casini2019response}によってチェーンが複数のエグゼキュータにもまたがる場合に拡張できる}
-    }{multi_threaded_エグゼキュータ.png}
+    }{multi_threaded_executor.png}
 \end{frame}
 
-\begin{frame}{コールバックグループ}
-    \fitimage{
-        \begin{itemize}
-            \item コールバックは必ず1つの\al{コールバックグループ}に属す
-            \item エグゼキュータ内のコールバックは, 異なるコールバックグループに属す可能性がある
-        \end{itemize}
-    }{multi_threaded_エグゼキュータ.png}
-
-\end{frame}
 
 \begin{frame}{ノード}
     \begin{itemize}
@@ -97,14 +52,14 @@
 \end{frame}
 
 
-\subsection{Scheduling of multi-threaded エグゼキュータ}
-\label{ssec: scheduling_of_multi_threaded_エグゼキュータ}
+\subsection{Scheduling of multi-threaded executor}
+\label{ssec: scheduling_of_multi_threaded_executor}
 
 \begin{frame}{セクションサマリ}
-\begin{itembox}[l]{\textbf{目的}}
-    ROS 2 マルチスレッドエグゼキュータのスケジューリング動作を説明
-    \notes{本論文の内容は ROS 2 Foxy Fitzroy に基づいている}
-\end{itembox}
+    \begin{itembox}[l]{\textbf{目的}}
+        ROS 2 マルチスレッドエグゼキュータのスケジューリング動作を説明
+        \notes{本論文の内容は ROS 2 Foxy Fitzroy に基づいている}
+    \end{itembox}
 \end{frame}
 
 \begin{frame}{コールバック}
