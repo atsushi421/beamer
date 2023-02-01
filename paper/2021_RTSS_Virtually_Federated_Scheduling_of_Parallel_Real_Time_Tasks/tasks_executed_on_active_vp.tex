@@ -1,0 +1,83 @@
+% !TeX root = main.tex
+
+\section{TASKS EXECUTED ON ACTIVE-VP}
+\label{sec: tasks executed on active-vp}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item アクティブ VP グループは, 異なるプロセッサ上の複数のアクティブ VP で構成され, 並行して実行できる．アクティブ VP グループは $\Theta=\left\{\theta_{1}, \cdots, \theta_{|\Theta|}\right\}$ で表される．ここで, $\theta_{z}$ は $\Theta$ 内の $z^{\text {th }}$ アクティブ VP の初期予算である．少し乱用した表記であるが, コンテキストから明白な場合は, アクティブ VP グループ内の $z^{\text {th }}$ アクティブ VP を参照するために $\theta_{z}$ も使用する．
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item 各アクティブ VP グループは, 正確に 1 つのタスクを処理する．アクティブ VP グループ $\Theta$ がタスク $\tau_{i}$ を処理する場合, $\tau_{i}$ がジョブ $J_{i}$ をリリースするたびに, $\Theta$ 内のすべてのアクティブ VP が同時に補充され, 残りの予算が初期予算にリセットされる．その後, $J_{i}$ は $\Theta$ のアクティブな VP で実行され, それらのバジェットを消費できる．ユニット $J_{i}$ がアクティブな $\mathrm{VP}$ で実行されるたびに, アクティブな VP の残りのバジェットは $1 . J_{i}$ だけ減少する．残りのバジェットが 0 の場合, アクティブな VP では実行できない．アクティブ VP の残りの予算がゼロでなく, そのサービス対象タスクのワークロードを実行している場合, アクティブ VP はビジーであると言う．アクティブ VP の残りの予算がゼロ以外であるが, ワークロードを実行していない場合, アクティブ VP はアイドル状態である．アクティブ VP は, 残りの予算が 0 になるとデッドライン切れになる．
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item タスクは, 作業保存型方法で, サービスを提供しているアクティブ VP グループでワークロードを実行する．つまり, アイドル状態のアクティブ VP がある場合は, 適格な頂点を実行する必要がある．特に, 異なるアクティブ VP 間のプリエンプションと移行の両方が許可される．つまり, 頂点が実行されているアクティブ VP の有効デッドラインが切れている場合, 頂点は他のアクティブ VP に移行できる．一般性を失うことなく, 同じタスク内の頂点間にタスク内優先順位がないと仮定し, スケジューラーが適格な頂点を選択する順序を制限しない．実行時に, スケジューラは適格な頂点を任意に選択し, アイドル状態のアクティブ VP でスケジュールできる．
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item 各アクティブ VP グループには主要なアクティブ VP があり, そのアクティブ VP は, そのサービス対象タスクのワークロードを実行する特権を持っている．一般性を失うことなく, $\Theta$ の最初のアクティブ VP をその先頭のアクティブ VP にする．つまり, $\theta_{1}$ は $\Theta$ の先頭のアクティブ VP の初期予算である． $\tau_{i}$ の現在のジョブに実行可能な頂点がある場合, $\Theta$ の先頭のアクティブ VP を使用する必要がある． $\Theta$ 内の他のアクティブ VP, つまり先頭以外のアクティブ VP は, 先頭のアクティブ VP がビジーの場合にのみ, $\tau_{i}$ のワークロードを実行できる．
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item 各物理プロセッサは, そのプロセッサ上で最高の優先度で実行されるアクティブ VP を最大 1 つホストする．このようにして, タスクは, サービスを提供しているアクティブ VP グループをホストするプロセッサ上で最高の優先度で効果的に実行される．
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item $\Theta=\left\{\theta_{1}=8, \theta_{2}=3\right\}$ を, 図 1 に示すタスク $\tau_{i}$ にサービスを提供するアクティブ VP グループとする． $\tau_{i}$ のジョブがこのアクティブ VP グループで実行される場合の可能な実行シーケンスを図 3 に示す．時間間隔 $[0,1)$ では, $v_{1}$ のみが適格である．実行するには, 先頭のアクティブ VP で実行する必要がある． $4, \theta_{2}$ の有効デッドラインが切れた時点で, $v_{3}$ は $\theta_{2}$ をホストしているプロセッサで実行を継続できなくなり, その後, 主要なアクティブ VP $\theta_{1}$ をホストしているプロセッサで時間 5 に再開される．
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item ジョブ $J_{i}$ の残りのグラフは, これまで実行されていないワークロードを表している．現時点でのジョブの残りのグラフは, 完成した頂点とそれらに接続するエッジを削除し, 未完成の各頂点の WCET を現在の残りのワークロードで置き換えることにより, $G\left(J_{i}\right)$ から導き出すことができる．例えば, 図 1 のジョブの実行シーケンスを図 3 とすると, 時間 3 と時間 5 でのジョブの残りグラフは, 図 4-(a) と (b) のようになる．
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[label=lemma1]{Lemma 1}
+    \begin{lemma}[]
+        \begin{itemize}
+            \item タスク $\tau_{i}$ のジョブ $J_{i}$ がアクティブ VP グループ $\Theta$ によって処理されるとする． $\Theta$ の一部のアクティブ VP がアイドル状態で, $J_{i}$ が完了していない任意の時間単位で,  $J_{i}$ の残りのグラフの最長パス長が 1 減ります．
+        \end{itemize}
+    \end{lemma}
+\end{frame}
+
+\begin{frame}[label=lemma2]{Lemma 2}
+    \begin{lemma}[]
+        \begin{itemize}
+            \item タスク $\tau_{i}$ がアクティブ VP グループ $\Theta=$  $\left\{\theta_{1}, \cdots, \theta_{|\Theta|}\right\}$ によって処理されると仮定する．
+                  \begin{equation*}
+                      \begin{gathered}
+                          \theta_{1} \leq D_{i} \\
+                          \forall \theta_{z} \in \Theta \backslash\left\{\theta_{1}\right\}: \theta_{z} \leq D_{i}-L_{i}
+                      \end{gathered}
+                  \end{equation*}
+            \item $r$ でリリースされた $\tau_{i}$ のジョブ $J_{i}$ が $r+D_{i}$ でのデッドラインに間に合わない場合, $\Theta$ のアクティブな VP の残りの予算は $r+D_{i}$ で 0 でなければならない．
+        \end{itemize}
+    \end{lemma}
+\end{frame}
+
+\begin{frame}[label=theorem1]{Theorem 1}
+    \begin{theorem}[]
+        次のすべての条件が満たされる場合, タスク $\tau_{i}$ はアクティブ VP グループ $\Theta=$  $\left\{\theta_{1}, \cdots, \theta_{|\Theta|}\right\}$ でスケジュール可能である．
+
+        \begin{equation*}
+            \begin{gathered}
+                \sum_{\theta_{z} \in \Theta} \theta_{z}=C_{i} \\
+                \theta_{1} \leq D_{i} \\
+                \forall \theta_{z} \in \Theta \backslash\left\{\theta_{1}\right\}: \theta_{z} \leq D_{i}-L_{i},
+            \end{gathered}
+        \end{equation*}
+    \end{theorem}
+\end{frame}

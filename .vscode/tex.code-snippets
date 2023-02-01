@@ -76,7 +76,9 @@
 		"body": [
 			"\\begin{frame}[label=theorem$1]{Theorem $1}",
 			"\\begin{theorem}[]",
-			"$2",
+			"\\begin{itemize}",
+			"\\item $2",
+			"\\end{itemize}",
 			"\\end{theorem}",
 			"\\end{frame}"
 		]
@@ -86,7 +88,9 @@
 		"body": [
 			"\\begin{frame}[label=lemma$1]{Lemma $1}",
 			"\\begin{lemma}[]",
-			"$2",
+			"\\begin{itemize}",
+			"\\item $2",
+			"\\end{itemize}",
 			"\\end{lemma}",
 			"\\end{frame}"
 		]

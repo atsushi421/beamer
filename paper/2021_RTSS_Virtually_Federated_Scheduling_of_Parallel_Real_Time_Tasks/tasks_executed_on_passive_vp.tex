@@ -1,0 +1,84 @@
+% !TeX root = main.tex
+
+\section{TASKS EXECUTED ON PASSIVE-VP}
+\label{sec: tasks executed on passive-vp}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item プロセッサ上のアクティブ VP によって残された未使用の処理能力は, パッシブ $V P$ として他のタスクに割り当てられる．このパッシブ VP は, そのアクティブ VP を補完するものである．パッシブ VP グループ $\Pi=\left\{\pi_{1}, \cdots, \pi_{|\Pi|}\right\}$ をタスク $\tau_{i}$ に割り当て, $\tau_{i}$ のジョブを $\Pi$ で実行する場合, $\Pi$ が $\tau_{i}$ にサービスを提供していると言えます．パッシブ VP は, 何らかのワークロードを実行している場合はビジーであり, そのプロセッサ上のアクティブ VP が実行されている場合は利用できず, そのプロセッサ上のアクティブ VP が実行されておらず, パッシブ VP も実行されていない場合はアイドル状態である． $\tau_{i}$ は作業保存型方法で $\Pi$ で実行される．つまり, $\tau_{i}$ の現在のジョブに適格な頂点があるが現在実行されていない場合, $\Pi$ のパッシブ VP はアイドル状態になることはない．アクティブ VP でのスケジューリングと同様に, プリエンプションと移行の両方が許可される． $\tau_{i}$ が実行のために $\Pi$ でパッシブ VP を選択するための優先順位はない．つまり, 現在のジョブの適格な頂点を実行するために, 利用可能な任意のパッシブ VP を使用できる．パッシブ VP は優先度の低いプロセッサで実行される．つまり, そのプロセッサでアクティブ VP が実行されていない場合にのみ実行できる．
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item 図 5 では, ジョブ $J_{i}$ はアクティブ VP グループ $\Theta=\left\{\theta_{1}=\right.$  $\left.6, \theta_{2}=2\right\}$ によって処理され, これら 2 つのプロセッサの未使用の処理能力は, $J_{k}$ を処理するパッシブ VP グループを形成する．図 5-(b) は実行シーケンスを示しており, $J_{k}$ は, その相補的なアクティブ VP がビジーでない場合にのみパッシブ VP で実行される．一般に, パッシブ VP グループ内のパッシブ VP は, アクティブ VP グループ内のすべてのアクティブ VP に対して必ずしも補完的ではないことに注意．つまり, パッシブ VP グループ内のパッシブ VP は, 異なるアクティブ VP グループのアクティブ VP を補完することができ, その逆も可能である．
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item 各パッシブ VP $\pi_{x}$ について, $s b f_{\pi_{x}}(\Delta)$ で示されるその供給限界関数 [13] を導き出すことができる．これは, サイズ $\Delta$ の任意の時間間隔で $\pi_{x}$ によって提供される処理能力の最小量を特徴付ける．
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[label=lemma3]{Lemma 3}
+    \begin{lemma}[]
+        $\pi_{x}$ がアクティブ VP を補完するパッシブ VP であり, 初期予算 $\theta_{z}$ がタスク $\tau_{i}$ に割り当てられ, タスク $\tau_{i}$ は常にそのデッドラインに間に合うと仮定すると, $\pi_{x}$ の供給限界関数は次のように計算される．
+
+        \begin{equation*}
+            s b f_{\pi_{x}}(\Delta)= \begin{cases}0, & \Delta<\theta_{z} \\ \alpha(\Delta)+\gamma(\Delta), & \Delta \geq \theta_{z}\end{cases}
+        \end{equation*}
+
+        ここで $\alpha(\Delta)=\left\lfloor\frac{\Delta-\theta_{z}}{T_{i}}\right\rfloor\left(T_{i}-\theta_{z}\right), \beta(\Delta)=\left(\Delta-\theta_{z}\right) \bmod T_{i}$
+
+        \begin{equation*}
+            \gamma(\Delta)=\left\{\begin{array}{lr}
+                \beta(\Delta),            & \beta(\Delta) \leq T_{i}-D_{i}                        \\
+                T_{i}-D_{i},              & T_{i}-D_{i}<\beta(\Delta) \leq T_{i}-D_{i}+\theta_{z} \\
+                \beta(\Delta)-\theta_{z}, & \beta(\Delta)>T_{i}-D_{i}+\theta_{z}
+            \end{array}\right.
+        \end{equation*}
+    \end{lemma}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item たとえば, 補題 3 によると, 図 5 の 2 つのプロセッサ上のパッシブ VP の sbf を図 7 に示す．
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item 次に, 重要な概念キー パスを紹介する．
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+    \begin{definition}[キーパス]
+        タスク $\tau_{i}$ のジョブ $J_{i}$ のキー パスは, $G\left(J_{i}\right)$ 内の完全なパス $\lambda=\left\{v_{1}, \cdots, v_{|\lambda|}\right\}$ であり, $\forall k: 1<k \leq|\lambda|$, $v_{k-1}$ は $v_{k}$ の先行であり, $v_{k}$ のすべての先行の中で最も遅い終了時刻を持ち, 最後の頂点 $v_{|\lambda|}$ は最新である $G\left(J_{i}\right)$ のすべての頂点の終了時間．
+    \end{definition}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item ジョブ $J_{i}$ のキー パスは, $G\left(J_{i}\right)$ の最長パスとは異なる可能性があることに注意． $J_{i}$ のキー パスは, そのスケジューリング シーケンスがわかっている場合にのみ決定されるが, $G\left(J_{i}\right)$ の最長パスは, ジョブの実際の実行シーケンスとは無関係の静的情報である．たとえば, 図 5-(b) に示す実行シーケンスの $J_{k}$ のキー パスは $\left\{u_{1}, u_{3}\right\}$ であり ($u_{3}$ は終了する最後の頂点であるため), これは $\left\{u_{1}, u_{2}\right\}$ の最長パスとは異なる．
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[label=lemma4]{Lemma 4}
+    \begin{lemma}[]
+        \begin{itemize}
+            \item タスク $\tau_{i}$ がパッシブ VP グループ $\Pi$ によってサービスされ, $J_{i}$ が $r$ の時点でリリースされ, $f$ の時点で終了した $\tau_{i}$ のジョブであるとする． $\lambda$ を $J_{i}$ のキー パスとする． $\lambda$ が実行されていない $[r, f)$ の任意の時点で, $\Pi$ のパッシブ VP がアイドル状態になることはない．
+        \end{itemize}
+    \end{lemma}
+\end{frame}
+
+\begin{frame}[label=theorem2]{Theorem 2}
+    \begin{theorem}[]
+        次の場合, タスク $\tau_{i}$ はパッシブ VP グループ $\Pi=$  $\left\{\pi_{1}, \cdots, \pi_{|\Pi|}\right\}$ でスケジュール可能である．
+
+        \begin{equation*}
+            C_{i} \leq L_{i}+\sum_{\pi_{x} \in \Pi} \max \left(s b f_{\pi_{x}}\left(D_{i}\right)-L_{i}, 0\right)
+        \end{equation*}
+    \end{theorem}
+\end{frame}
