@@ -1,1 +1,68 @@
 % !TeX root = main.tex
+
+\begin{frame}{表記法・用語 1}
+    \full{
+        \begin{table}[tb]
+            \adjustbox{max width=\textwidth, max height=\slideheight}{
+                \centering\begin{tabular}{|c|l|} \hline
+                    $N$      & タスクの数                 \\\hline
+                    $M$      & プロセッサの個数           \\\hline
+                    $\tau_i$ & タスク                     \\\hline
+                    $T_i$    & $\tau_i$の周期             \\\hline
+                    $D_i$    & $\tau_i$の相対デッドライン \\\hline
+                    $J_{i}$  & $\tau_i$のジョブ           \\\hline
+                \end{tabular}
+            }
+        \end{table}
+    }
+\end{frame}
+
+\begin{frame}{表記法・用語 2}
+    \full{
+        \begin{table}[tb]
+            \adjustbox{max width=\textwidth, max height=\slideheight}{
+                \centering\begin{tabular}{|c|l|} \hline
+                    $G\left(J_{i}\right)=\langle V, E\rangle$ & $J_{i}$のDAG                                 \\\hline
+                    $V$                                       & 頂点のセット                                 \\\hline
+                    $E$                                       & エッジのセット                               \\\hline
+                    $v$                                       & ワークロードの一部                           \\\hline
+                    $c(v)$                                    & $v$のWCET                                    \\\hline
+                    $(u, v) \in E$                            & $u$ と $v$ の間の優先関係                    \\\hline
+                    先行頂点                                  & エッジ$(u, v)$があるとき, $u$は$v$の先行頂点 \\\hline
+                    後続頂点                                  & エッジ$(u, v)$があるとき, $v$は$u$の後続頂点 \\\hline
+                    ソース頂点                                & 先行頂点を持たない頂点                       \\\hline
+                    シンク頂点                                & 後続頂点を持たない頂点                       \\\hline
+                \end{tabular}
+            }
+        \end{table}
+    }
+\end{frame}
+
+\begin{frame}{表記法・用語 3}
+    \full{
+        \begin{table}[tb]
+            \adjustbox{max width=\textwidth, max height=\slideheight}{
+                \centering\begin{tabular}{|c|l|} \hline
+                    適格     & 頂点は, その先行頂点が全て終了している場合に適格である \\\hline
+                    完全パス & ソース頂点で始まり, シンク頂点で終わるパス             \\\hline
+                    $C_i$    & $G(J_i)$内の全ての頂点の合計WCET                       \\\hline
+                    $L_i$    & $G(J_i)$内のクリティカルパス上の全ての頂点の合計 WCET  \\\hline
+                \end{tabular}
+            }
+        \end{table}
+    }
+\end{frame}
+
+\begin{frame}{表記法・用語 4}
+\full{
+\begin{table}[tb]
+\adjustbox{max width=\textwidth, max height=\slideheight}{
+\centering\begin{tabular}{|c|l|} \hline
+    $\Theta=\left\{\theta_{1}, \cdots, \theta_{|\Theta|}\right\}$ & アクティブVPのセット \\\hline
+   $\theta_{z}$ & \tabml{$\Theta$ 内の $z$番目のアクティブVPの初期バジェット \\コンテキストから明白な場合は$\Theta$ 内の $z$番目のアクティブVPも示す} \\\hline
+
+\end{tabular}
+}
+\end{table}
+}
+\end{frame}
