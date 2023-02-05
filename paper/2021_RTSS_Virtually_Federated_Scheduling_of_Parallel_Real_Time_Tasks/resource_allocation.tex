@@ -3,86 +3,118 @@
 \section{RESOURCE ALLOCATION}
 \label{sec: resource allocation}
 
-\begin{frame}{}
-    \begin{itemize}
-        \item このセクションでは, アクティブ VP グループとパッシブ VP グループを作成してタスクに割り当てる方法について説明する
-\item これはビンパッキング問題の分散であるため, 最適な割り当て戦略を目指しているわけではない
-\item 代わりに, 効率的なヒューリスティックアルゴリズムを開発する
-\item これは, 最適なソリューションを見つけることを保証するものではないが, 一般的に, タスクセットを正常にスケジュールする優れた機能を備えている
-\item 次に, 前のセクションで開発されたスケジューリング条件のいくつかのプロパティと, これらのプロパティに基づくヒューリスティックアルゴリズムの設計上の選択について説明する
-    \end{itemize}
+\begin{frame}{セクションサマリ}
+    \begin{itembox}[l]{\textbf{目的}}
+        アクティブ VP グループとパッシブ VP グループを作成してタスクに割り当てるヒューリスティックアルゴリズムを開発する
+    \end{itembox}
 \end{frame}
 
 \subsection{Design Choices}
 \label{ssec: design choices}
 
-\begin{frame}{}
+\forme{
+    \begin{frame}{セクションサマリ}
+        \begin{itembox}[l]{\textbf{目的}}
+            スケジューリング条件のいくつかのプロパティと, これらのプロパティに基づくヒューリスティックアルゴリズムの設計上の選択について説明する
+        \end{itembox}
+    \end{frame}
+
+    \begin{frame}{タスクのアクティブ VP グループを構築する方針}
+        \begin{itemize}
+            \item タスクのアクティブ VP グループを構築する方針は以下2つが考えられる
+                  \begin{enumerate}
+                      \item 初期バジェットが小さいアクティブ VP を増やしてアクティブ VP グループを構成する
+                      \item 初期バジェットができるだけ大きいアクティブ VP をできるだけ少なく構成する
+                  \end{enumerate}
+            \item 本論文の割り当てヒューリスティックは, 2を選択する
+        \end{itemize}
+    \end{frame}
+
+    \begin{frame}{2の選択理由}
+        \begin{itemize}
+            \item Theorem 1 により, タスク $\tau_{i}$ は, サービスを提供するアクティブ VP グループによって提供される処理能力を完全に利用する
+            \item パッシブ VP の処理能力は以下の2つの理由で十分に活用されていない
+                  \begin{itemize}
+                      \item 時間間隔で保証されている最小使用可能処理能力が, 一般に, 時間間隔で提供される実際の処理能力よりも小さい
+                      \item  パッシブ VP $\pi_{x}$ から $\tau_{i}$ に提供される処理能力は, $s b f_{\pi_{x}}\left(D_{i}\right)$ から $L_{i}$ を差し引く必要がある
+                  \end{itemize}
+                  \forme{
+            \item したがって, 一般的には, パッシブ VP よりもアクティブ VP を介して処理能力を提供する方が適切である
+            \item 多くの「小さな」アクティブ VP を構築すると, これらのプロセッサに残っている大量の処理能力をパッシブ VP として非効率的に使用する必要がある
+                  }
+            \item したがって, Theorem 1 の条件が満たされる限り, 可能な限り大きなアクティブ VP を作成し, アクティブ VP グループ内のアクティブ VP の数を最小限に抑えることを選択する
+        \end{itemize}
+    \end{frame}
+
+    \begin{frame}{}
+        \begin{itemize}
+            \item アクティブ VP グループの合計初期バジェットが正確に $C_{i}$ である場合, 全てのアクティブ VP が条件 (5) および (6) で指定された最大許容初期バジェットに到達できるわけではない
+            \item これは, $C_{i}-D_{i}$ を $D_{i}-L_{i}$ で正確に割り切れない場合に発生する
+            \item この場合, 最初のバジェットを, 主要なアクティブ VP に対して $D_{i}$ に設定し, 最後のアクティブ VP を除く非主要アクティブ VP に対して $D_{i}-L_{i}$ に設定し,
+
+                  \begin{equation*}
+                      C_{i}-D_{i}-\left\lfloor\frac{C_{i}-D_{i}}{D_{i}-L_{i}}\right\rfloor\left(D_{i}-L_{i}\right)
+                  \end{equation*}
+        \end{itemize}
+    \end{frame}
+}
+
+\forme{
+    \begin{frame}{}
+        \begin{itemize}
+            \item 最後の非主要アクティブ VP の場合
+            \item いずれの場合も, $\Theta$ の先頭以外のアクティブ VP の数は $\left\lceil\frac{C_{i}-D_{i}}{D_{i}-L_{i}}\right\rceil$ であるため, $\Theta$ のアクティブ VP の数は $\left\lceil\frac{C_{i}-D_{i}}{D_{i}-L_{i}}\right]+1=\left[\frac{C_{i}-D_{i}}{D_{i}-L_{i}}+1\right]=\left\lceil\frac{C_{i}-L_{i}}{D_{i}-L_{i}}\right\rceil$ である
+            \item 要約すると, タスク $\tau_{i}$ に割り当てられたアクティブ VP グループ内のアクティブ VP の数は, 次のように計算される
+
+                  \begin{equation*}
+                      m_{i}=\left\lceil\frac{C_{i}-L_{i}}{D_{i}-L_{i}}\right\rceil
+                  \end{equation*}
+
+            \item $m_{i}$ は, フェデレートスケジューリングで $\tau_{i}$ をスケジュールするプロセッサの最小数 ((1) で計算) と同じであることに注意
+        \end{itemize}
+    \end{frame}
+}
+
+\begin{frame}{初期バジェットの決め方}
+    以下のように初期バジェットを設定
     \begin{itemize}
-        \item Theorem 1 の条件 (4)- (6) が満たされている限り, タスクのアクティブ VP グループをさまざまな方法で構築できる
-\item 初期バジェットが小さいアクティブ VP を増やしてアクティブ VP グループを構成するか, 初期バジェットができるだけ大きいアクティブ VP をできるだけ少なく構成するか
-\item 本論文の割り当てヒューリスティックは, 次の理由により後者を選択する
+        \item リーディングアクティブVP: $D_i$
+        \item 最後以外の非リーディングアクティブVP: $D_i - L_i$
+        \item 最後の非リーディングアクティブVP: $C_{i}-D_{i}-\left\lfloor\frac{C_{i}-D_{i}}{D_{i}-L_{i}}\right\rfloor\left(D_{i}-L_{i}\right)$
     \end{itemize}
 \end{frame}
 
-\begin{frame}{}
-    \begin{itemize}
-        \item Theorem 1 により, タスク $\tau_{i}$ は, サービスを提供するアクティブ VP グループによって提供される処理能力を完全に利用することが分かる (各期間でアクティブ VP グループによって提供される合計処理能力は, 正確に $C_{i}$ である)
-\item しかし, パッシブ VP の処理能力は一般的に十分に活用されていない
-\item これは, まず, 時間間隔で保証されている最小使用可能処理能力 ( $s b f$ で特徴付けられる) が, 一般に, 時間間隔で提供される実際の処理能力よりも小さいためである
-\item さらに重要なことに, (8) と (10) から, パッシブ VP $\pi_{x}$ から $\tau_{i}$ に提供される処理能力は, $s b f_{\pi_{x}}\left(D_{i}\right)$ から $L_{i}$ を差し引く必要があることが分かる
-\item したがって, 一般的には, パッシブ VP よりもアクティブ VP を介して処理能力を提供する方が適切である
-\item 多くの「小さな」アクティブ VP を構築すると, これらのプロセッサに残っている大量の処理能力をパッシブ VP として非効率的に使用する必要がある
-\item したがって, (4)- (6) が満たされる限り, 可能な限り大きなアクティブ VP を作成し, アクティブ VP グループ内のアクティブ VP の数を最小限に抑えることを選択する
-    \end{itemize}
+\begin{frame}{アクティブVPの数の求め方}
+    タスク $\tau_{i}$ に割り当てるアクティブ VP グループ内のアクティブ VP の数は, 次のように計算する
+    \begin{equation*}
+        m_{i}=\left\lceil\frac{C_{i}-L_{i}}{D_{i}-L_{i}}\right\rceil
+    \end{equation*}
 \end{frame}
 
-\begin{frame}{}
-    \begin{itemize}
-        \item アクティブ VP グループの合計初期バジェットが正確に $C_{i}$ である場合, 全てのアクティブ VP が条件 (5) および (6) で指定された最大許容初期バジェットに到達できるわけではない
-\item これは, $C_{i}-D_{i}$ を $D_{i}-L_{i}$ で正確に割り切れない場合に発生する
-\item この場合, 最初のバジェットを, 主要なアクティブ VP に対して $D_{i}$ に設定し, 最後のアクティブ VP を除く非主要アクティブ VP に対して $D_{i}-L_{i}$ に設定し,
+\forme{
+    \begin{frame}{}
+        \begin{itemize}
+            \item 次に, アクティブ VP で実行するタスクとパッシブ VP で実行するタスクを決定する戦略について説明する
+            \item Theorem 2 の条件 (8) とTheorem 3 の条件 (10) により, パッシブ VP $\pi_{x}$ によって提供される処理能力がタスク $\tau_{j}$ にとって有用であることがわかるのは, 次の場合のみである
 
-              \begin{equation*}
-                  C_{i}-D_{i}-\left\lfloor\frac{C_{i}-D_{i}}{D_{i}-L_{i}}\right\rfloor\left(D_{i}-L_{i}\right)
-              \end{equation*}
-    \end{itemize}
-\end{frame}
+                  \begin{equation*}
+                      \operatorname{sbf}_{\pi_{x}}\left(D_{j}\right)>L_{j}
+                  \end{equation*}
+        \end{itemize}
+    \end{frame}
 
-\begin{frame}{}
-    \begin{itemize}
-        \item 最後の非主要アクティブ VP の場合
-\item いずれの場合も, $\Theta$ の先頭以外のアクティブ VP の数は $\left\lceil\frac{C_{i}-D_{i}}{D_{i}-L_{i}}\right\rceil$ であるため, $\Theta$ のアクティブ VP の数は $\left\lceil\frac{C_{i}-D_{i}}{D_{i}-L_{i}}\right]+1=\left[\frac{C_{i}-D_{i}}{D_{i}-L_{i}}+1\right]=\left\lceil\frac{C_{i}-L_{i}}{D_{i}-L_{i}}\right\rceil$ である
-\item 要約すると, タスク $\tau_{i}$ に割り当てられたアクティブ VP グループ内のアクティブ VP の数は, 次のように計算される
-
-              \begin{equation*}
-                  m_{i}=\left\lceil\frac{C_{i}-L_{i}}{D_{i}-L_{i}}\right\rceil
-              \end{equation*}
-
-        \item $m_{i}$ は, フェデレートスケジューリングで $\tau_{i}$ をスケジュールするプロセッサの最小数 ((1) で計算) と同じであることに注意
-    \end{itemize}
-\end{frame}
-
-\begin{frame}{}
-    \begin{itemize}
-        \item 次に, アクティブ VP で実行するタスクとパッシブ VP で実行するタスクを決定する戦略について説明する
-\item Theorem 2 の条件 (8) とTheorem 3 の条件 (10) により, パッシブ VP $\pi_{x}$ によって提供される処理能力がタスク $\tau_{j}$ にとって有用であることがわかるのは, 次の場合のみである
-
-              \begin{equation*}
-                  \operatorname{sbf}_{\pi_{x}}\left(D_{j}\right)>L_{j}
-              \end{equation*}
-    \end{itemize}
-\end{frame}
-
-\begin{frame}{}
-    \begin{itemize}
-        \item したがって, パッシブ VP をタスク $\tau_{i}$ に割り当てる場合, (17) を満たすものだけを割り当てる必要があることは明らかである
-\item 次のLemmaは, (17) を満たすための必要条件を与える
-    \end{itemize}
-\end{frame}
+    \begin{frame}{}
+        \begin{itemize}
+            \item したがって, パッシブ VP をタスク $\tau_{i}$ に割り当てる場合, (17) を満たすものだけを割り当てる必要があることは明らかである
+            \item 次のLemmaは, (17) を満たすための必要条件を与える
+        \end{itemize}
+    \end{frame}
+}
 
 \begin{frame}[label=lemma6]{Lemma 6}
+    2つのタスク $\tau_{i}$ と $\tau_{j}$が与えられたとき, $\tau_i$ に対して初期バジェット $D_{i}-L_{i}$ でアクティブVPを構成すると, 対のパッシブVPが $\tau_j$ に有用であるための必要条件は $D_{i}-L_{i}<D_{j}-L_{j}$ であることを示す
     \begin{lemma}[]
-        $\pi_{x}$ が, 初期バジェット $\theta_{z}=D_{i}-L_{i}$ で $\tau_{i}$ に割り当てられたアクティブ $V P$ を補完するパッシブ VP である場合,
+        $\pi_{x}$ が, 初期バジェット $\theta_{z}=D_{i}-L_{i}$ で $\tau_{i}$ に割り当てられたアクティブ VP の対のパッシブ VP である場合,
 
         \begin{equation*}
             s b f_{\pi_{x}}\left(D_{j}\right)>L_{j} \Rightarrow D_{i}-L_{i}<D_{j}-L_{j}
@@ -90,83 +122,66 @@
     \end{lemma}
 \end{frame}
 
-\begin{frame}{}
-    \begin{itemize}
-        \item Lemma 6 は, 2 つのタスク $\tau_{i}$ と $\tau_{j}$ が与えられた場合, $\tau_{i}$ の初期バジェット $D_{i}-L_{i}$ でアクティブ VP を構築する場合, 結果として得られる補完的なパッシブ VP が $\tau_{j}$ にとって有用であるために必要な条件は $D_{i}-L_{i}<D_{j}-L_{j}$ であることを示している
-\item したがって, 割り当てヒューリスティックは, 小さい $D_{i}-L_{i}$ を持つタスクを選択してアクティブ VP で実行し, 大きい $D_{i}-L_{i}$ を持つタスクをパッシブ VP で実行するようにする
-\item 条件 $D_{i}-L_{i}<$  $D_{j}-L_{j}$ は必要なだけであり, 結果のパッシブ VP が $\tau_{j}$ にとって有用であるために十分ではないことに注意
-\item それにもかかわらず, アクティブ VP で実行するために小さい $D_{i}-L_{i}$ を使用するタスクを選択することは, 逆の方法で実行するよりもパッシブ VP が役立つ可能性がはるかに高いため, 一般的には依然として良い戦略である
-    \end{itemize}
+\begin{frame}{アクティブ/パッシブVPの選択戦略}
+    Lemma 6 より, 割り当てヒューリスティックは, 小さい $D_{i}-L_{i}$ を持つタスクを選択してアクティブ VP で実行し, 大きい $D_{i}-L_{i}$ を持つタスクをパッシブ VP で実行するようにする
 \end{frame}
+
+\forme{
+    \begin{frame}{}
+        \begin{itemize}
+            \item 条件 $D_{i}-L_{i}<$  $D_{j}-L_{j}$ は必要なだけであり, 結果のパッシブ VP が $\tau_{j}$ にとって有用であるために十分ではないことに注意
+            \item それにもかかわらず, アクティブ VP で実行するために小さい $D_{i}-L_{i}$ を使用するタスクを選択することは, 逆の方法で実行するよりもパッシブ VP が役立つ可能性がはるかに高いため, 一般的には依然として良い戦略である
+        \end{itemize}
+    \end{frame}
+}
 
 
 \subsection{Allocation Algorithm}
 \label{ssec: allocation algorithm}
 
-\begin{frame}{}
-    \begin{itemize}
-        \item 上記の議論に基づいて, アルゴリズム 1 のリソース割り当てアルゴリズムを提案する
-\item 最初は, 全てのタスクがキュー $Q$ に $D_{i}-L_{i}$ の昇順で格納されるため, 後で $Q$ から $D_{i}-L_{i}$ が小さいタスクを取得し, アクティブ VP を割り当てる
-\item 彼ら全てのプロセッサは $P$ に格納される
-\item $V$ を使用して, 生成されたパッシブ VP を保存する
-\item これは最初は空である
-    \end{itemize}
+\begin{frame}{セクションサマリ}
+    \begin{itembox}[l]{\textbf{目的}}
+        リソース割り当てヒューリスティックアルゴリズムを提案する
+    \end{itembox}
 \end{frame}
 
-\begin{frame}{}
-    \begin{itemize}
-        \item 4 行目と 18 行目の while ループでは, $D_{i}-L_{i}$ が小さいタスクにアクティブ VP グループを割り当てる
-\item 各反復で, $Q$ で最小の $D_{i}-L_{i}$ を持つタスク $\tau_{i}$ を取得し, それを $Q$ から削除する
-\item 次に, (16) に従って $\tau_{i}$ に割り当てられるアクティブ VP の数である $m_{i}$ を計算する
-    \end{itemize}
+\begin{frame}{アルゴリズムで登場する表記}
+    \full{
+        \begin{table}[tb]
+            \adjustbox{max width=\textwidth, max height=\slideheight}{
+                \centering\begin{tabular}{|c|l|} \hline
+                    $Q$ & $D_{i}-L_{i}$ の昇順で全てのタスクが格納されるキュー \\\hline
+                    $P$ & 全てのプロセッサ                                     \\\hline
+                    $V$ & 生成されたパッシブVPのセット                         \\\hline
+                \end{tabular}
+            }
+        \end{table}
+    }
 \end{frame}
 
-\begin{frame}{}
-    \begin{itemize}
-        \item $P$ に十分なプロセッサがある場合 (7 行目), $P$ から $m_{i}$ プロセッサを取り出し, それらを使用して $\tau_{i}$ のアクティブ VP グループを構築する
-\item 前述のように, 最初のバジェットは, 主要なアクティブ VP の $D_{i}$, 最後の非主要アクティブ VP の $C_{i}-D_{i}-\left\lfloor\frac{C_{i}-D_{i}}{D_{i}-L_{i}}\right\rfloor\left(D_{i}-L_{i}\right)$, および他の非主要アクティブ VP の $D_{i}-L_{i}$ に設定する
-\item その後, これらのアクティブ VP を補完するパッシブ VP を生成し, $V$ に配置する
-    \end{itemize}
+\begin{frame}{割り当てアルゴリズム全体像}
+    \fullimage{alg1}
 \end{frame}
 
-\begin{frame}{}
-    \begin{itemize}
-        \item $P$ の残りのプロセッサが $m_{i}$ より少ない場合 (行 10), これら全ての残りのプロセッサを使用して $\tau_{i}$ のアクティブ VP グループを構築し, $D_{i}$ を主要なアクティブ VP の初期バジェットに設定し, $D_{i}-L_{i}$ を先頭のアクティブ VP の初期バジェットに設定する
-\item 各非主要アクティブ VP
-\item 次に, これらのアクティブ VP を補完するパッシブ VP を生成し, さらに使用するために $V$ に配置する
-\item その後, パッシブ VP を $\tau_{i}$ に割り当てて, スケジュール可能にする必要がある
-\item $\Pi$ を使用して, パッシブ VP を既に保存している
-    \end{itemize}
-\end{frame}
-
-\begin{frame}{}
-    \begin{itemize}
-        \item 空に初期化される $\tau_{i}$ に割り当てられる
-\item 行 14 と行 17 の間の do-while ループの各反復で, $\tau_{i}$ に役立つ, すなわち (17) を満たすパッシブ VP $\pi_{x}$ を $V$ で見つけようとする
-\item (17) を満たす限り, パッシブ VP の選択方法を制限しない
-\item 次のセクションの評価では, 単純にプロセッサインデックスの順序でパッシブ VP を選択し, 各 VP について (17) の満足度をテストする
-\item $V$ のパッシブ VP が (17) を満たす場合, これは $\tau_{i}$ にさらにパッシブ VP を割り当てることによってスケジュール可能にすることができないことを意味し, したがってアルゴリズムが終了し, タスクセット全体がスケジュール不可能であると見なされる
-\item $V$ で (17) を満たすパッシブ VP を見つけることができれば, それを $V$ から削除して $\Pi$ に追加し, 条件 (10) を使用して, この新しいパッシブ VP を に追加した後に $\tau_{i}$ がスケジュール可能になるかどうかをテストする
-\item そうでない場合, $\tau_{i}$ がスケジュール可能になるか, (17) を満たすパッシブ VP が $V$ に存在しないため, タスクセットがスケジュール不可能であると見なされるまで, 同じ手順を繰り返す
-    \end{itemize}
+\begin{frame}{割り当てアルゴリズム補足1}
+    \fullimage{alg1_sup1}
 \end{frame}
 
 \begin{frame}{}
     \begin{itemize}
         \item 次のステップは, パッシブ VP を残りのタスクに割り当てることである
-\item $\tau_{i}$ に残っているタスクごとに, (17) を満たすパッシブ VP をそのパッシブ VP グループ $\Pi$ に繰り返し追加し, 条件 (8) を使用して, $\tau_{i}$ がスケジュール可能になるか, $\tau_{i}$ に役立つパッシブ VP がなくなるまで, $\tau_{i}$ がスケジュール可能かどうかを確認する
-\item したがって, アルゴリズムは失敗する
-\item 残りの全てのタスクにパッシブ VP を割り当てた後, アルゴリズムは正常に終了する 4 行目と 19 行目の while ループの合計反復回数は $N$ ( $N$ はタスクの数) である
-\item 行 14 と行 17 の間の do-while ループの反復回数は, 最大で $M$ ( $M$ はプロセッサの数) である
-\item したがって, アルゴリズム 1 の時間計算量は最大で $O(M \cdot N)$ である
+        \item $\tau_{i}$ に残っているタスクごとに, (17) を満たすパッシブ VP をそのパッシブ VP グループ $\Pi$ に繰り返し追加し, 条件 (8) を使用して, $\tau_{i}$ がスケジュール可能になるか, $\tau_{i}$ に役立つパッシブ VP がなくなるまで, $\tau_{i}$ がスケジュール可能かどうかを確認する
+        \item したがって, アルゴリズムは失敗する
     \end{itemize}
 \end{frame}
 
-\begin{frame}{}
-    \begin{itemize}
-        \item 繰り返しになるが, アルゴリズム 1 の割り当て戦略は, 最適というよりは単なるヒューリスティックである
-\item セクション VIII で示されるように, アルゴリズム 1 を使用すると, 仮想連合アプローチはすでに既存の方法よりも大幅に優れている
-\item それにもかかわらず, より洗練されたリソース割り当て戦略を使用して, 仮想フェデレーションスケジューリングアプローチのパフォーマンスをさらに改善する余地がある可能性がある
-\item これについては, 今後の作業で調査する
-    \end{itemize}
-\end{frame}
+\forme{
+    \begin{frame}{}
+        \begin{itemize}
+            \item 繰り返しになるが, アルゴリズム 1 の割り当て戦略は, 最適というよりは単なるヒューリスティックである
+            \item セクション VIII で示されるように, アルゴリズム 1 を使用すると, 仮想連合アプローチはすでに既存の方法よりも大幅に優れている
+            \item それにもかかわらず, より洗練されたリソース割り当て戦略を使用して, 仮想フェデレーションスケジューリングアプローチのパフォーマンスをさらに改善する余地がある可能性がある
+            \item これについては, 今後の作業で調査する
+        \end{itemize}
+    \end{frame}
+}

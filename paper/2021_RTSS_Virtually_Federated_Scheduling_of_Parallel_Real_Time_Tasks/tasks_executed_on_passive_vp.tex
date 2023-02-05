@@ -3,97 +3,111 @@
 \section{TASKS EXECUTED ON PASSIVE-VP}
 \label{sec: tasks executed on passive-vp}
 
-\begin{frame}{}
+\begin{frame}{パッシブ VP}
     \begin{itemize}
-        \item プロセッサ上のアクティブ VP によって残された未使用の処理能力は, パッシブ $V P$ として他のタスクに割り当てられる
-\item このパッシブ VP は, そのアクティブ VP を補完するものである
-\item パッシブ VP グループ $\Pi=\left\{\pi_{1}, \cdots, \pi_{|\Pi|}\right\}$ をタスク $\tau_{i}$ に割り当て, $\tau_{i}$ のジョブを $\Pi$ で実行する場合, $\Pi$ が $\tau_{i}$ にサービスを提供していると言えます
-\item パッシブ VP は, 何らかのワークロードを実行している場合はビジーであり, そのプロセッサ上のアクティブ VP が実行されている場合は利用できず, そのプロセッサ上のアクティブ VP が実行されておらず, パッシブ VP も実行されていない場合はアイドル状態である
-\item $\tau_{i}$ は作業保存型方法で $\Pi$ で実行される
-\item すなわち, $\tau_{i}$ の現在のジョブに適格な頂点があるが現在実行されていない場合, $\Pi$ のパッシブ VP はアイドル状態になることはない
-\item アクティブ VP でのスケジューリングと同様に, プリエンプションと移行の両方が許可される
-\item $\tau_{i}$ が実行のために $\Pi$ でパッシブ VP を選択するための優先度はない
-\item すなわち, 現在のジョブの適格な頂点を実行するために, 利用可能な任意のパッシブ VP を使用できる
-\item パッシブ VP は優先度の低いプロセッサで実行される
-\item すなわち, そのプロセッサでアクティブ VP が実行されていない場合にのみ実行できる
+        \item プロセッサ上のアクティブ VP によって残された未使用の処理能力は, パッシブ VP として他のタスクに割り当てられる
+        \item $\tau_{i}$ は作業保存型方法で実行され, プリエンプションとマイグレーションの両方が許可される
+        \item $\tau_{i}$ の現在のジョブの実行可能な頂点を実行するために, 任意のパッシブ VP を使用できる
+        \item パッシブ VP はそのプロセッサでアクティブ VP が実行されていない場合にのみ実行できる
     \end{itemize}
 \end{frame}
 
-\begin{frame}{}
-    \begin{itemize}
-        \item 図 5 では, ジョブ $J_{i}$ はアクティブ VP グループ $\Theta=\left\{\theta_{1}=\right.$  $\left.6, \theta_{2}=2\right\}$ によって処理され, これら 2 つのプロセッサの未使用の処理能力は, $J_{k}$ を処理するパッシブ VP グループを形成する
-\item 図 5-(b) は実行シーケンスを示しており, $J_{k}$ は, その相補的なアクティブ VP がビジーでない場合にのみパッシブ VP で実行される
-\item 一般に, パッシブ VP グループ内のパッシブ VP は, アクティブ VP グループ内の全てのアクティブ VP に対して必ずしも補完的ではないことに注意
-\item すなわち, パッシブ VP グループ内のパッシブ VP は, 異なるアクティブ VP グループのアクティブ VP を補完することができ, その逆も可能である
-    \end{itemize}
+\begin{frame}{ビジー/使用不可/アイドル}
+    \begin{block}{ビジー}
+        パッシブ VP が何らかのワークロードを実行している場合はビジー
+    \end{block}
+    \begin{block}{使用不可}
+        パッシブ VPはそのプロセッサ上のアクティブ VP が実行されている場合は使用不可
+    \end{block}
+    \begin{block}{アイドル}
+        パッシブ VPは, 使用不可でなく, 何のワークロードも実行していない場合はアイドル
+    \end{block}
 \end{frame}
 
-\begin{frame}{}
+\begin{frame}{パッシブVPの例}
+    \fitimage{
+        \begin{itemize}
+            \item ジョブ $J_{i}$ はアクティブ VP グループ $\Theta=\left\{\theta_{1}=\right.$  $\left.6, \theta_{2}=2\right\}$ によって処理され, 未使用の処理能力は, $J_{k}$ を処理するパッシブ VP グループを形成する
+            \item $J_{k}$ はアクティブ VP がビジーでない場合にパッシブ VP で実行される
+
+        \end{itemize}
+    }{passive_vp}
+\end{frame}
+
+\forme{
     \begin{itemize}
-        \item 各パッシブ VP $\pi_{x}$ について, $s b f_{\pi_{x}}(\Delta)$ で示されるその供給境界関数 [13] を導き出すことができる
-\item これは, サイズ $\Delta$ の任意の時間間隔で $\pi_{x}$ によって提供される処理能力の最小量を特徴付ける
+        \item 一般に, パッシブ VP グループ内のパッシブ VP は, アクティブ VP グループ内の全てのアクティブ VP に対して必ずしも補完的ではないことに注意
+        \item すなわち, パッシブ VP グループ内のパッシブ VP は, 異なるアクティブ VP グループのアクティブ VP を補完することができ, その逆も可能である
     \end{itemize}
+}
+
+\begin{frame}{供給境界関数}
+    各パッシブ VP $\pi_{x}$ について, 供給境界関数 $s b f_{\pi_{x}}(\Delta)$ を導き出すことができる
+    \begin{block}{供給境界関数 $s b f_{\pi_{x}}(\Delta)$}
+        長さ $\Delta$ の任意の時間間隔で $\pi_{x}$ によって提供される処理能力の最小量を示す
+    \end{block}
 \end{frame}
 
 \begin{frame}[label=lemma3]{Lemma 3}
     \begin{lemma}[]
-        $\pi_{x}$ がアクティブ VP を補完するパッシブ VP であり, 初期バジェット $\theta_{z}$ がタスク $\tau_{i}$ に割り当てられ, タスク $\tau_{i}$ は常にそのデッドラインに間に合うと仮定すると, $\pi_{x}$ の供給境界関数は次のように計算される
+        $\pi_{x}$ がアクティブ VP と対になるパッシブ VP であり, 初期バジェット $\theta_{z}$ がタスク $\tau_{i}$ に割り当てられ, タスク $\tau_{i}$ がデッドラインに間に合う場合, $\pi_{x}$ の供給境界関数は次のように計算される
 
         \begin{equation*}
             s b f_{\pi_{x}}(\Delta)= \begin{cases}0, & \Delta<\theta_{z} \\ \alpha(\Delta)+\gamma(\Delta), & \Delta \geq \theta_{z}\end{cases}
         \end{equation*}
-
-        ここで $\alpha(\Delta)=\left\lfloor\frac{\Delta-\theta_{z}}{T_{i}}\right\rfloor\left(T_{i}-\theta_{z}\right), \beta(\Delta)=\left(\Delta-\theta_{z}\right) \bmod T_{i}$
-
-        \begin{equation*}
-            \gamma(\Delta)=\left\{\begin{array}{lr}
-                \beta(\Delta),            & \beta(\Delta) \leq T_{i}-D_{i}                        \\
-                T_{i}-D_{i},              & T_{i}-D_{i}<\beta(\Delta) \leq T_{i}-D_{i}+\theta_{z} \\
-                \beta(\Delta)-\theta_{z}, & \beta(\Delta)>T_{i}-D_{i}+\theta_{z}
-            \end{array}\right.
-        \end{equation*}
     \end{lemma}
 \end{frame}
 
-\begin{frame}{}
-    \begin{itemize}
-        \item 例えば, Lemma 3 によると, 図 5 の 2 つのプロセッサ上のパッシブ VP の sbf を図 7 に示す
-    \end{itemize}
+\begin{frame}{Lemma 3 続き}
+    $\alpha(\Delta)=\left\lfloor\frac{\Delta-\theta_{z}}{T_{i}}\right\rfloor\left(T_{i}-\theta_{z}\right)$,\\
+    $\beta(\Delta)=\left(\Delta-\theta_{z}\right) \bmod T_{i}$,
+    \begin{equation*}
+        \gamma(\Delta)=\left\{\begin{array}{lr}
+            \beta(\Delta),            & \beta(\Delta) \leq T_{i}-D_{i}                        \\
+            T_{i}-D_{i},              & T_{i}-D_{i}<\beta(\Delta) \leq T_{i}-D_{i}+\theta_{z} \\
+            \beta(\Delta)-\theta_{z}, & \beta(\Delta)>T_{i}-D_{i}+\theta_{z}
+        \end{array}\right.
+    \end{equation*}
 \end{frame}
 
-\begin{frame}{}
-    \begin{itemize}
-        \item 次に, 重要な概念キーパスを紹介する
-    \end{itemize}
+\begin{frame}{Lemma 3 例}
+    \fullimage{lemma3_example}
 \end{frame}
 
-\begin{frame}{}
+\begin{frame}{キーパス}
     \begin{definition}[キーパス]
-        タスク $\tau_{i}$ のジョブ $J_{i}$ のキーパスは, $G\left(J_{i}\right)$ 内の完全なパス $\lambda=\left\{v_{1}, \cdots, v_{|\lambda|}\right\}$ であり, $\forall k: 1<k \leq|\lambda|$, $v_{k-1}$ は $v_{k}$ の先行であり, $v_{k}$ の全ての先行の中で最も遅い終了時刻を持ち, 最後の頂点 $v_{|\lambda|}$ は最新である $G\left(J_{i}\right)$ の全ての頂点の終了時間
+        \setlength{\linewidth}{0.98\columnwidth}
+        \begin{itemize}
+            \item タスク $\tau_{i}$ のジョブ $J_{i}$のキーパスを $\lambda=\left\{v_{1}, \cdots, v_{|\lambda|}\right\}$ と表記する
+            \item キーパスは以下の条件を満たす
+            \begin{itemize}
+                \item $\forall k: 1<k \leq|\lambda|$, $v_{k-1}$ は $v_{k}$ の先行頂点であり, $v_{k}$ の全ての先行頂点の中で最も遅い終了時刻を持つ
+                \item 最後の頂点 $v_{|\lambda|}$ は $G\left(J_{i}\right)$ の全ての頂点の中で最も遅い終了時間を持つ
+            \end{itemize}
+        \end{itemize}
     \end{definition}
 \end{frame}
 
-\begin{frame}{}
-    \begin{itemize}
-        \item ジョブ $J_{i}$ のキーパスは, $G\left(J_{i}\right)$ のクリティカルパスとは異なる可能性があることに注意
-\item $J_{i}$ のキーパスは, そのスケジューリングシーケンスがわかっている場合にのみ決定されるが, $G\left(J_{i}\right)$ のクリティカルパスは, ジョブの実際の実行シーケンスとは無関係の静的情報である
-\item 例えば, 図 5-(b) に示す実行シーケンスの $J_{k}$ のキーパスは $\left\{u_{1}, u_{3}\right\}$ であり ($u_{3}$ は終了する最後の頂点であるため), これは $\left\{u_{1}, u_{2}\right\}$ のクリティカルパスとは異なる
-    \end{itemize}
+\begin{frame}{キーパスの例}
+    \fitimage{
+        $J_{k}$ のキーパスは $\left\{u_{1}, u_{3}\right\}$ であり, これは $\left\{u_{1}, u_{2}\right\}$ のクリティカルパスとは異なる
+    }{key_path_example}
 \end{frame}
 
 \begin{frame}[label=lemma4]{Lemma 4}
     \begin{lemma}[]
         \begin{itemize}
-            \item タスク $\tau_{i}$ がパッシブ VP グループ $\Pi$ によってサービスされ, $J_{i}$ が $r$ の時点でリリースされ, $f$ の時点で終了した $\tau_{i}$ のジョブであるとする
-\item $\lambda$ を $J_{i}$ のキーパスとする
-\item $\lambda$ が実行されていない $[r, f)$ の任意の時点で, $\Pi$ のパッシブ VP がアイドル状態になることはない
+            \item タスク $\tau_{i}$ がパッシブ VP グループ $\Pi$ によって処理されるとする
+            \item $J_{i}$ が $r$ の時点でリリースされ, $f$ の時点で終了した $\tau_{i}$ のジョブであるとする
+            \item $\lambda$ を $J_{i}$ のキーパスとする
+            \item $\lambda$ が実行されていない $[r, f)$ の任意の時点で, $\Pi$ のパッシブ VP がアイドル状態になることはない
         \end{itemize}
     \end{lemma}
 \end{frame}
 
 \begin{frame}[label=theorem2]{Theorem 2}
     \begin{theorem}[]
-        次の場合, タスク $\tau_{i}$ はパッシブ VP グループ $\Pi=$  $\left\{\pi_{1}, \cdots, \pi_{|\Pi|}\right\}$ でスケジュール可能である
+        次の場合, タスク $\tau_{i}$ はパッシブ VP グループ $\Pi=$  $\left\{\pi_{1}, \cdots, \pi_{|\Pi|}\right\}$ でスケジュール可能
 
         \begin{equation*}
             C_{i} \leq L_{i}+\sum_{\pi_{x} \in \Pi} \max \left(s b f_{\pi_{x}}\left(D_{i}\right)-L_{i}, 0\right)

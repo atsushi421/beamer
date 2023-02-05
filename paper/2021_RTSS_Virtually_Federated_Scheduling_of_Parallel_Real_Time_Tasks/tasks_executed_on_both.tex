@@ -3,64 +3,49 @@
 \section{TASKS EXECUTED ON BOTH}
 \label{sec: tasks executed on both}
 
-\begin{frame}{}
+\begin{frame}{アクティブ/パッシブ VP両方で処理するケース}
     \begin{itemize}
-        \item また, タスク $\tau_{i}$ をアクティブ VP グループ $\Theta$ で部分的に実行し, パッシブ VP グループで部分的に実行することもできる
-        \item これは, アクティブ VP グループを構築してタスクをスケジュール可能にするのに十分なプロセッサがないと同時に, 他のプロセッサに使用可能な未使用の処理能力が残っている場合に, リソース利用率をさらに改善するのに役立つ
-        \item アクティブ VP はそのプロセッサ上で高い優先度で実行され, パッシブ VP はそのプロセッサ上で低い優先度で実行されるため, $\tau_{i}$ のワークロードの一部は (アクティブ VP を介して) 高い優先度で効率的に実行され, 残りの部分は実行される
-        \item 低優先度 (パッシブ VP 経由)
+        \item タスク $\tau_{i}$ をアクティブ VP グループ $\Theta$ で部分的に実行し, パッシブ VP グループで部分的に実行することも可能
+        \item タスクが実行可能なアクティブ VP とパッシブ VP を選択する順序は以下
+        \begin{enumerate}
+            \item リーディングアクティブ VP
+            \item 非リーディングアクティブ VP
+            \item パッシブ VP
+        \end{enumerate}
     \end{itemize}
 \end{frame}
 
-\begin{frame}{}
-    \begin{itemize}
-        \item 利用可能なアクティブ VP と利用可能なパッシブ VP の両方がある場合, アクティブ VP は, パッシブ VP を介してタスクのワークロードを実行する特権を与えられる
-        \item さらに, セクション IV と同様に, アクティブ VP グループ $\Theta$ には先頭のアクティブ VP があり, これは $\Theta$ 内の先頭以外のアクティブ VP に対する実行権限を与えられている
-        \item 要約すると, タスクが実行のために利用可能なアクティブ VP とパッシブ VP を選択する順序は, 最初に先頭のアクティブ VP, 次に非先頭のアクティブ VP, 最後にパッシブ VP である
-    \end{itemize}
-\end{frame}
-
-\begin{frame}{}
-    \begin{itemize}
-        \item 例えば, 図 8-(a) に示す 2 つのジョブが両方とも, $0, J_{i}$ が初期バジェット 5 と 2 の 2 つのアクティブ VP で実行され, $J_{k}$ が初期バジェット 6 で 1 つのアクティブ VP で実行されるときに両方ともリリースされるとする
-        \item $J_{i}$ にサービスを提供する 2 つのアクティブ VP を補完する 2 つのパッシブ VP
-        \item 残りのバジェットが $0, J_{k}$ よりも大きい限り, ジョブは常に先頭のアクティブ VP で実行されるため, 時刻 0 からアクティブ VP で実行される
-        \item 時間 4 で,  $J_{i}$ のアクティブ VP の 1 つがデッドライン切れになり, $J_{k}$ で使用できるようになるため, $J_{k}$ はこのパッシブ VP で実行を開始する
-        \item その時点で, $5, u_{3}$ は $J_{k}$ の唯一の適格な頂点であるため, アクティブ VP はパッシブ VP に対する実行権限を持っているため, アクティブ VP に移行する
-    \end{itemize}
-\end{frame}
-
-\begin{frame}{}
-    \begin{itemize}
-        \item 以下に, タスク $\tau_{i}$ がアクティブ VP グループとパッシブ VP グループの両方で実行されたときにスケジュール可能になる条件を示す
-        \item Theoremの証明では, セクション IV で導入されたLemma 2 を再利用する
-        \item Lemma 2 は, タスクがアクティブ VP グループで完全に実行される場合について提示され, 証明されたが, タスクが部分的にアクティブ VP グループで実行され, 部分的にパッシブ VP グループで実行される場合にも成り立つ
-        \item 先頭のアクティブ VP が常に $\tau_{i}$ を実行する最初の選択肢であり, デッドライン切れになるかジョブが終了するまで常にビジーである限り, アクティブ VP グループで $\tau_{i}$ を完全に実行する必要はない
-    \end{itemize}
+\begin{frame}{両方での処理例}
+    \fitimage{
+        $J_{i}$ は初期バジェット 5 と 2 の 2 つのアクティブ VPで実行され, $J_{k}$ は初期バジェット 6 の 1 つのアクティブ VP と $J_{i}$ を処理する 2 つのアクティブ VP の対の 2 つのパッシブ VP で実行されるとする
+    }{both_executed}
 \end{frame}
 
 \begin{frame}[label=theorem3]{Theorem 3}
     \begin{theorem}[]
+        \setlength{\linewidth}{0.98\columnwidth}
         \begin{itemize}
             \item タスク $\tau_{i}$ が $\langle\Theta, \Pi\rangle$ で実行されると仮定する
-            \item ここで, $\Theta$ は $C_{i}$ より厳密に小さい総初期バジェットを持つアクティブ VP グループであり, $\Pi$ はパッシブ VP グループである
-            \item 次の条件が全て満たされている場合, $\tau_{i}$ はスケジュール可能である
+            \begin{itemize}
+                \item \desc{$\Theta$}{$C_{i}$ より小さい総初期バジェットを持つアクティブ VP グループ}
+                \item \desc{$\Pi$}{パッシブ VP グループ}
+            \end{itemize}
         \end{itemize}
-        \begin{equation*}
-            \begin{gathered}
-                C_{i} \leq \sum_{\theta_{z} \in \Theta} \theta_{z}+\sum_{\pi_{x} \in \Pi} \max \left(s b f_{\pi_{x}}\left(D_{i}\right)-L_{i}, 0\right) \\
-                \theta_{1} \leq D_{i} \\
-                \forall \theta_{z} \in \Theta \backslash\left\{\theta_{1}\right\}: \theta_{z} \leq D_{i}-L_{i}
-            \end{gathered}
-        \end{equation*}
+        \begin{itemize}
+            \item 次の条件が全て満たされている場合, $\tau_{i}$ はスケジュール可能
+            \begin{itemize}
+                \item $C_{i} \leq \sum_{\theta_{z} \in \Theta} \theta_{z}+\sum_{\pi_{x} \in \Pi} \max \left(s b f_{\pi_{x}}\left(D_{i}\right)-L_{i}, 0\right)$
+                \item $\theta_{1} \leq D_{i}$
+                \item $\forall \theta_{z} \in \Theta \backslash\left\{\theta_{1}\right\}: \theta_{z} \leq D_{i}-L_{i}$
+            \end{itemize}
+        \end{itemize}
     \end{theorem}
 \end{frame}
 
-\begin{frame}{}
-    \begin{itemize}
-        \item 最後に, ジョブの $C_{i}$ および/または $L_{i}$ が小さくなった場合 (またはジョブが実行時に最悪の $C_{i}$ および/または $L_{i}$ に実行されない), これらのTheoremの条件は依然として有効であり, タスクのスケジューラビリティを保証する
-        \item 一般に, DAG タスクをスケジュールすると, タイミングの異常が発生する可能性がある
-        \item すなわち, 実際の最悪の応答時間は, タスクが最悪ワークロードで実行されたときに必ずしも発生するとは限りませんが, 持続可能なタスクを使用する場合, タイミングの異常について心配する必要はない
-        \item Theorem 1, 2, および 3 のスケジューラビリティテスト条件
-    \end{itemize}
-\end{frame}
+\forme{
+    \begin{frame}{}
+        \begin{itemize}
+            \item 最後に、定理1、2、3のスケジューラビリティテスト条件は、CiとLiに関して持続可能であることを指摘したい。つまり、あるジョブのCiと／またはLiが小さくなっても（またはあるジョブが実行時に最悪のCiと／またはLiまで実行しなくても）これらの定理の条件は、タスクのスケジューラビリティを保証するために有効であるということである。一般にDAGタスクのスケジューリングはタイミング異常、すなわちタスクが最悪負荷まで実行されたときに実際の最悪応答時間が発生するとは限らないが、定理1、2、3の持続的スケジューラビリティ試験条件を用いる場合はタイミング異常を気にする必要はない。
+        \end{itemize}
+    \end{frame}
+}
