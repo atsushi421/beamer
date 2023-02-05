@@ -18,7 +18,7 @@
 \end{frame}
 
 \begin{frame}[label=lemma1]{Lemma 1}
-    Lemma 1 の2つの条件を満たすスケジューラでは自己干渉が発生しない
+    \hlink{lemma1}{Lemma 1} の2つの条件を満たすスケジューラでは自己干渉が発生しない
     \begin{lemma}[]
         チェーン $\Gamma^{c}:=\left[\tau_{1}, \ldots \tau_{i}, \ldots, \tau_{j}, \ldots, \tau_{N}\right]$ について, $\tau_{i}$, $\tau_{j}$ が同じ CPU 上にある時, 以下2つの条件が満たされれば, 新しいインスタンスが実行を開始する前に, 前のチェーンインスタンスが実行完了する
         \begin{enumerate}
@@ -46,7 +46,7 @@
                       \item $\tau_{i}$ は $\tau_{j}$ より優先度が低いが, $\tau_{j}$ より優先度の高いエグゼキュータに属す
                       \item $\tau_{i}$ は $\tau_{j}$ より優先度が高く,  $\tau_{j}$ より優先度の高いエグゼキュータに属す
                   \end{enumerate}
-            \item これらは, Lemma 1 の少なくとも1つの条件に矛盾する
+            \item これらは, \hlink{lemma1}{Lemma 1} の少なくとも1つの条件に矛盾する
         \end{itemize}
     \end{frame}
 
@@ -104,14 +104,14 @@
 \end{frame}
 
 \begin{frame}[label=strategy1]{[戦略 I] 単一チェーンからのレギュラーコールバック}
-    戦略 I は $\tau_{j}$ に $\tau_{i}$ よりも高い優先度を与えることで, Lemma 1 の最初の条件を満たすようにする
+    戦略 I は $\tau_{j}$ に $\tau_{i}$ よりも高い優先度を与えることで, \hlink{lemma1}{Lemma 1} の最初の条件を満たすようにする
     \begin{block}{戦略 I}
         エグゼキュータが単一のチェーン $\Gamma^{c}=:\left[\tau_{1}, \ldots, \tau_{i}, \ldots, \tau_{j}, \ldots, \tau_{N}\right]$ からのレギュラーコールバックのみが含まれる場合, これらのコールバックの優先度は, チェーン内の順序とは逆の順序で割り当てる
     \end{block}
 \end{frame}
 
 \begin{frame}[label=strategy2]{[戦略 II] 1 つのチェーンからのタイマ/レギュラーコールバック}
-    あるチェーンにおいてレギュラーコールバックはタイマコールバックよりも後ろに存在するため, 戦略 II は Lemma 1 の最初の条件を満たすようにする
+    あるチェーンにおいてレギュラーコールバックはタイマコールバックよりも後ろに存在するため, 戦略 II は \hlink{lemma1}{Lemma 1} の最初の条件を満たすようにする
     \begin{block}{戦略 II}
         エグゼキュータに単一チェーン $\Gamma^{c}$ のタイマ・レギュラーコールバックの両方が含まれる場合, レギュラーコールバックにタイマコールバックよりも高い優先度を与える
         \notes{レギュラーコールバックのスケジューリングは, 戦略 I に従う}
@@ -120,7 +120,7 @@
 
 \begin{frame}[label=strategy3]{[戦略 III] 複数のチェーンからのレギュラーコールバック}
     \begin{itemize}
-        \item 戦略 III は Lemma 1 の2番目の条件を満たすようにする
+        \item 戦略 III は \hlink{lemma1}{Lemma 1} の2番目の条件を満たすようにする
         \item $\pi_{\Gamma^{c}}<\pi_{\Gamma^{c^{\prime}}}$ である2つのチェーン $\Gamma^{c}$, $\Gamma^{c^{\prime}}$ を考える
     \end{itemize}
     \begin{block}{戦略 III}
@@ -133,7 +133,7 @@
     戦略 IV は重要度の高いチェーンインスタンスが重要度の低いインスタンスよりも優先されるようにする
     \begin{block}{戦略 IV}
         優先度の高いチェーンからのタイマコールバックは, 優先度の低いチェーンからのタイマコールバックよりも高い優先度を割り当てる
-        \notes{各チェーンは, Lemma 1 に準拠するために個別に戦略 II に従う}
+        \notes{各チェーンは, \hlink{lemma1}{Lemma 1} に準拠するために個別に戦略 II に従う}
     \end{block}
 \end{frame}
 
@@ -158,7 +158,7 @@
 }
 
 \begin{frame}{[戦略 V] 1 つの CPU に 1 つのチェーン}
-    戦略 V は Lemma 1 の 2 番目の条件を満たすようにする
+    戦略 V は \hlink{lemma1}{Lemma 1} の 2 番目の条件を満たすようにする
     \begin{block}{戦略 V}
         CPU が 1 つのチェーン $\Gamma^{c}$ からのコールバックのみを持っている場合, $\Gamma^{c}$ の低インデックスコールバック $\tau_{i}$ を含むエグゼキュータは, $\Gamma^{c}$ の高インデックスコールバック $\tau_{j}$ を実行するエグゼキュータ以下の優先度を割り当てる
     \end{block}

@@ -5,30 +5,34 @@
 
 \begin{frame}{アクティブ VP グループ}
     \begin{itemize}
-        \item アクティブ VP グループは, 異なるプロセッサ上の複数のアクティブ VP で構成され, 並行して実行できる
+        \item アクティブ VP グループは, 異なるプロセッサ上の複数のアクティブ VP で構成される
         \item 各アクティブ VP グループはただ 1 つのタスクを処理する
+        \item 各物理プロセッサはアクティブ VP を最大 1 つホストする
+        \item アクティブVPはそのプロセッサ上で最高の優先度で実行される
     \end{itemize}
 \end{frame}
 
 \begin{frame}{アクティブ VP 上でのジョブの実行}
-    \begin{itemize}
-        \item アクティブ VP グループ $\Theta$ がタスク $\tau_{i}$ を処理する場合, $\tau_{i}$ がジョブ $J_{i}$ をリリースするたびに, $\Theta$ 内の全てのアクティブ VP が同時に補充され, 残りのバジェットが初期バジェットにリセットされる
-        \item その後, $J_{i}$ は $\Theta$ のアクティブ VP で実行され, それらのバジェットを消費する
-        \item $J_{i}$ がアクティブ VP で実行されるたびに, アクティブ VP の残りのバジェットは 1 だけ減少する
-        \item アクティブVPの残予算が0になると、$J_{i}$はアクティブVP上で実行できなくなる
-    \end{itemize}
+    \begin{block}{アクティブ VP グループ $\Theta$ がタスク $\tau_{i}$ を処理する場合のフロー}
+        \setlength{\linewidth}{0.98\columnwidth}
+        \begin{enumerate}
+            \item $\tau_{i}$ がジョブ $J_{i}$ をリリースするたびに, $\Theta$ 内の全てのアクティブ VP の残りのバジェットが初期バジェットにリセットされる
+            \item $J_{i}$ が $\Theta$ のアクティブ VP で実行されるたびに, それらのバジェットを1消費する
+            \item アクティブVPの残バジェットが0になると, $J_{i}$はアクティブVP上で実行できなくなる
+        \end{enumerate}
+    \end{block}
 \end{frame}
 
 \begin{frame}{ビジー/アイドル/失効}
-    \begin{block}{ビジー}
+    \begin{definition}[ビジー]
         アクティブ VP の残りのバジェットがゼロでなく, 対象タスクのワークロードを実行している場合, アクティブ VP はビジー
-    \end{block}
-    \begin{block}{アイドル}
+    \end{definition}
+    \begin{definition}[アイドル]
         アクティブ VP の残りのバジェットがゼロ以外であるが, ワークロードを実行していない場合, アクティブ VP はアイドル
-    \end{block}
-    \begin{block}{失効}
+    \end{definition}
+    \begin{definition}[失効]
         アクティブ VP は, 残りのバジェットが 0 になると失効
-    \end{block}
+    \end{definition}
 \end{frame}
 
 \begin{frame}{タスクの実行方法}
@@ -46,19 +50,15 @@
 \begin{frame}{リーディングアクティブVP}
     \begin{itemize}
         \item $\Theta$ の最初のアクティブ VP をリーディングアクティブVPとする
-              \begin{block}{リーディングアクティブ VP}
+              \begin{definition}[リーディングアクティブ VP]
                   \begin{itemize}
                       \item 対象タスクのワークロードを実行する特権を持つアクティブVP
                       \item $\tau_{i}$ の現在のジョブに実行可能な頂点がある場合, $\Theta$ のリーディングアクティブアクティブ VP を使用する必要がある
                   \end{itemize}
-              \end{block}
+              \end{definition}
               \vspace{5mm}
         \item 非リーディングアクティブ VP は, リーディングアクティブ VP がビジーの場合にのみ, $\tau_{i}$ のワークロードを実行できる
     \end{itemize}
-\end{frame}
-
-\begin{frame}{物理プロセッサとアクティブVPの関係}
-    各物理プロセッサは, そのプロセッサ上で最高の優先度で実行されるアクティブ VP を最大 1 つホストする
 \end{frame}
 
 \begin{frame}{実行シーケンス例}
@@ -70,41 +70,43 @@
     }{active_vp_executed}
 \end{frame}
 
-\begin{frame}{残りのグラフ}
-    \begin{block}{残りのグラフ}
-       \setlength{\linewidth}{0.98\columnwidth}
-        \begin{itemize}
-            \item ジョブ $J_{i}$ の残りのグラフは, これまで実行されていないワークロード
-            \item 現残りのグラフは, 完了した頂点とそれらに接続するエッジを削除し, 未完成の各頂点の WCET を現在の残りのワークロードで置き換えることにより, $G\left(J_{i}\right)$ から導き出すことができる
-        \end{itemize}
-    \end{block}
-\end{frame}
-
-\begin{frame}{残りのグラフ例}
-    \fullimage{remanning_graph}
-\end{frame}
-
-\begin{frame}[label=lemma1]{Lemma 1}
-    \begin{lemma}[]
-        \begin{itemize}
-            \item タスク $\tau_{i}$ のジョブ $J_{i}$ がアクティブ VP グループ $\Theta$ によって処理されるとする
-            \item $\Theta$ の一部のアクティブ VP がアイドル状態かつ, $J_{i}$ が完了していない任意の時間単位で,  $J_{i}$ の残りのグラフのクリティカルパス長が 1 減る
-        \end{itemize}
-    \end{lemma}
-\end{frame}
-
-\begin{frame}[label=lemma2]{Lemma 2}
-    \begin{lemma}[]
-        \begin{itemize}
-            \item タスク $\tau_{i}$ がアクティブ VP グループ $\Theta=$  $\left\{\theta_{1}, \cdots, \theta_{|\Theta|}\right\}$ によって処理されると仮定する
+\forme{
+    \begin{frame}{残りのグラフ}
+        \begin{definition}[残りのグラフ]
+            \setlength{\linewidth}{0.98\columnwidth}
             \begin{itemize}
-                \item $\theta_{1} \leq D_{i}$
-                \item $\forall \theta_{z} \in \Theta \backslash\left\{\theta_{1}\right\}: \theta_{z} \leq D_{i}-L_{i}$
+                \item ジョブ $J_{i}$ の残りのグラフは, まだ実行されていないワークロード
+                \item 残りのグラフは, 完了した頂点とそれらに接続するエッジを削除し, 未完了の各頂点の WCET を現在の残りのワークロードで置き換えることにより, $G\left(J_{i}\right)$ から導き出せる
             \end{itemize}
-            \item $r$ でリリースされた $\tau_{i}$ のジョブ $J_{i}$ が $r+D_{i}$ のデッドラインに間に合わない場合, $r+D_{i}$ で $\Theta$ のアクティブ VP の残りバジェットは 0
-        \end{itemize}
-    \end{lemma}
-\end{frame}
+        \end{definition}
+    \end{frame}
+
+    \begin{frame}{残りのグラフ例}
+        \fullimage{remanning_graph}
+    \end{frame}
+
+    \begin{frame}[label=lemma1]{Lemma 1}
+        \begin{lemma}[]
+            \begin{itemize}
+                \item タスク $\tau_{i}$ のジョブ $J_{i}$ がアクティブ VP グループ $\Theta$ によって処理されるとする
+                \item $\Theta$ の一部のアクティブ VP がアイドル状態かつ, $J_{i}$ が完了していない任意の時間単位で,  $J_{i}$ の残りのグラフのクリティカルパス長が 1 減る
+            \end{itemize}
+        \end{lemma}
+    \end{frame}
+
+    \begin{frame}[label=lemma2]{Lemma 2}
+        \begin{lemma}[]
+            \begin{itemize}
+                \item タスク $\tau_{i}$ がアクティブ VP グループ $\Theta=$  $\left\{\theta_{1}, \cdots, \theta_{|\Theta|}\right\}$ によって処理されると仮定する
+                      \begin{itemize}
+                          \item $\theta_{1} \leq D_{i}$
+                          \item $\forall \theta_{z} \in \Theta \backslash\left\{\theta_{1}\right\}: \theta_{z} \leq D_{i}-L_{i}$
+                      \end{itemize}
+                \item $r$ でリリースされた $\tau_{i}$ のジョブ $J_{i}$ が $r+D_{i}$ のデッドラインに間に合わない場合, $r+D_{i}$ で $\Theta$ のアクティブ VP の残りバジェットは 0
+            \end{itemize}
+        \end{lemma}
+    \end{frame}
+}
 
 \begin{frame}[label=theorem1]{Theorem 1}
     \begin{theorem}[]

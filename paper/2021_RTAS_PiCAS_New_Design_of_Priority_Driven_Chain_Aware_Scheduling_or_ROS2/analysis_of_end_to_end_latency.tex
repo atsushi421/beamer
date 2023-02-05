@@ -155,7 +155,7 @@
 %     \begin{itemize}
 %         \item 2 番目のケースには, 最初のケースでは考慮されない他の全ての条件が含まれる
 %         \item (i) $\pi_{\Gamma^{c^{\prime}}}>\pi_{\Gamma^{c}}$ と $\tau_{k}$ が異なるコア上にある場合, $\tau_{k}$ は自明に $\Phi_{i}$ に干渉を引き起こしない
-%         \item (ii) $\pi_{\Gamma^{c^{\prime}}}=\pi_{\Gamma^{c}}$ の場合, $\tau_{k}$ と $\Phi_{i}$ は同じチェーンからのものであり, Lemma 1 によって互いに干渉しないことを意味する (iii) $\pi_{\Gamma^{c^{\prime}}}<\pi_{\Gamma^{c}}$ の場合, $\tau_{k}$ が優先度の高いエグゼキュータに存在できるかどうかを考慮する必要がある
+%         \item (ii) $\pi_{\Gamma^{c^{\prime}}}=\pi_{\Gamma^{c}}$ の場合, $\tau_{k}$ と $\Phi_{i}$ は同じチェーンからのものであり, \hlink{lemma1}{Lemma 1} によって互いに干渉しないことを意味する (iii) $\pi_{\Gamma^{c^{\prime}}}<\pi_{\Gamma^{c}}$ の場合, $\tau_{k}$ が優先度の高いエグゼキュータに存在できるかどうかを考慮する必要がある
 %         \item $\Phi_{i}$ のエグゼキュータよりも
 %     \end{itemize}
 % \end{frame}
@@ -178,7 +178,7 @@
 %     \end{itemize}
 
 %     ここで, $e\left(\Phi_{i}\right)$ は $\Phi_{i}$ のエグゼキュータである
-%     Lemma 1 と式 (1) に基づきます
+%     \hlink{lemma1}{Lemma 1} と式 (1) に基づきます
 % \end{frame}
 
 % \begin{frame}[label=lemma3]{Lemma 3}
@@ -198,7 +198,7 @@
 
 % \begin{frame}{}
 %     \begin{itemize}
-%         \item Lemma 3 は, チェーン $\Gamma^{c}$ のサブセットであるセグメント $\Phi_{i}$ の WCRT をキャプチャすることに注意
+%         \item \hlink{lemma3}{Lemma 3} は, チェーン $\Gamma^{c}$ のサブセットであるセグメント $\Phi_{i}$ の WCRT をキャプチャすることに注意
 %         \item したがって, $\Phi_{i}=\left\{\tau_{j}\right\}$ を設定することにより, 単一のコールバック $\tau_{j}$ の WCRT を計算するためにも使用できる
 %         \item この場合, 計算された $\tau_{j}$ の WCRT は, $\tau_{j}$ がトリガされてから実行が完了するまでの時間を表す
 %     \end{itemize}
@@ -217,7 +217,7 @@
 % \begin{frame}{}
 %     \begin{itemize}
 %         \item 前のチェーンインスタンスからのレイテンシ
-%         \item Lemma 1 の条件が満たされたときのチェーンインスタンスのスケジューリング動作を思い出してください
+%         \item \hlink{lemma1}{Lemma 1} の条件が満たされたときのチェーンインスタンスのスケジューリング動作を思い出してください
 %         \item 次にリリースされたチェーンインスタンスは, 前のチェーンインスタンスの完了後にのみ実行を開始できるため, 次のインスタンスでは, 前のチェーンインスタンスからの追加のブロッキングレイテンシが発生する可能性がある
 %     \end{itemize}
 % \end{frame}

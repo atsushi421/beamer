@@ -6,22 +6,30 @@
 \begin{frame}{パッシブ VP}
     \begin{itemize}
         \item プロセッサ上のアクティブ VP によって残された未使用の処理能力は, パッシブ VP として他のタスクに割り当てられる
-        \item $\tau_{i}$ は作業保存型方法で実行され, プリエンプションとマイグレーションの両方が許可される
-        \item $\tau_{i}$ の現在のジョブの実行可能な頂点を実行するために, 任意のパッシブ VP を使用できる
+              \begin{itemize}
+                  \item このとき, パッシブVPはアクティブVPの対であると言う
+              \end{itemize}
         \item パッシブ VP はそのプロセッサでアクティブ VP が実行されていない場合にのみ実行できる
     \end{itemize}
 \end{frame}
 
+\begin{frame}{タスクの実行方法}
+    \begin{itemize}
+        \item $\tau_{i}$ は作業保存型方法で実行され, プリエンプションとマイグレーションの両方が許可される
+        \item $\tau_{i}$ が実行のために $\Pi$ でパッシブ VP を選択するための優先順位はない, すなわち現在のジョブの適格な頂点を実行するために, 利用可能な任意のパッシブ VP を使用できる
+    \end{itemize}
+\end{frame}
+
 \begin{frame}{ビジー/使用不可/アイドル}
-    \begin{block}{ビジー}
+    \begin{definition}[ビジー]
         パッシブ VP が何らかのワークロードを実行している場合はビジー
-    \end{block}
-    \begin{block}{使用不可}
+    \end{definition}
+    \begin{definition}[使用不可]
         パッシブ VPはそのプロセッサ上のアクティブ VP が実行されている場合は使用不可
-    \end{block}
-    \begin{block}{アイドル}
+    \end{definition}
+    \begin{definition}[アイドル]
         パッシブ VPは, 使用不可でなく, 何のワークロードも実行していない場合はアイドル
-    \end{block}
+    \end{definition}
 \end{frame}
 
 \begin{frame}{パッシブVPの例}
@@ -59,8 +67,8 @@
 \end{frame}
 
 \begin{frame}{Lemma 3 続き}
-    $\alpha(\Delta)=\left\lfloor\frac{\Delta-\theta_{z}}{T_{i}}\right\rfloor\left(T_{i}-\theta_{z}\right)$,\\
-    $\beta(\Delta)=\left(\Delta-\theta_{z}\right) \bmod T_{i}$,
+    \centering$\alpha(\Delta)=\left\lfloor\frac{\Delta-\theta_{z}}{T_{i}}\right\rfloor\left(T_{i}-\theta_{z}\right)$,\\
+    \centering$\beta(\Delta)=\left(\Delta-\theta_{z}\right) \bmod T_{i}$,
     \begin{equation*}
         \gamma(\Delta)=\left\{\begin{array}{lr}
             \beta(\Delta),            & \beta(\Delta) \leq T_{i}-D_{i}                        \\
@@ -70,44 +78,48 @@
     \end{equation*}
 \end{frame}
 
-\begin{frame}{Lemma 3 例}
-    \fullimage{lemma3_example}
-\end{frame}
+\forme{
+    \begin{frame}{Lemma 3 例}
+        \fullimage{lemma3_example}
+    \end{frame}
+}
 
-\begin{frame}{キーパス}
-    \begin{definition}[キーパス]
-        \setlength{\linewidth}{0.98\columnwidth}
-        \begin{itemize}
-            \item タスク $\tau_{i}$ のジョブ $J_{i}$のキーパスを $\lambda=\left\{v_{1}, \cdots, v_{|\lambda|}\right\}$ と表記する
-            \item キーパスは以下の条件を満たす
+\forme{
+    \begin{frame}{キーパス}
+        \begin{definition}[キーパス]
+            \setlength{\linewidth}{0.98\columnwidth}
             \begin{itemize}
-                \item $\forall k: 1<k \leq|\lambda|$, $v_{k-1}$ は $v_{k}$ の先行頂点であり, $v_{k}$ の全ての先行頂点の中で最も遅い終了時刻を持つ
-                \item 最後の頂点 $v_{|\lambda|}$ は $G\left(J_{i}\right)$ の全ての頂点の中で最も遅い終了時間を持つ
+                \item タスク $\tau_{i}$ のジョブ $J_{i}$のキーパスを $\lambda=\left\{v_{1}, \cdots, v_{|\lambda|}\right\}$ と表記する
+                \item キーパスは以下の条件を満たす
+                      \begin{itemize}
+                          \item $\forall k: 1<k \leq|\lambda|$, $v_{k-1}$ は $v_{k}$ の先行頂点であり, $v_{k}$ の全ての先行頂点の中で最も遅い終了時刻を持つ
+                          \item 最後の頂点 $v_{|\lambda|}$ は $G\left(J_{i}\right)$ の全ての頂点の中で最も遅い終了時間を持つ
+                      \end{itemize}
             \end{itemize}
-        \end{itemize}
-    \end{definition}
-\end{frame}
+        \end{definition}
+    \end{frame}
 
-\begin{frame}{キーパスの例}
-    \fitimage{
-        $J_{k}$ のキーパスは $\left\{u_{1}, u_{3}\right\}$ であり, これは $\left\{u_{1}, u_{2}\right\}$ のクリティカルパスとは異なる
-    }{key_path_example}
-\end{frame}
+    \begin{frame}{キーパスの例}
+        \fitimage{
+            $J_{k}$ のキーパスは $\left\{u_{1}, u_{3}\right\}$ であり, これは $\left\{u_{1}, u_{2}\right\}$ のクリティカルパスとは異なる
+        }{key_path_example}
+    \end{frame}
 
-\begin{frame}[label=lemma4]{Lemma 4}
-    \begin{lemma}[]
-        \begin{itemize}
-            \item タスク $\tau_{i}$ がパッシブ VP グループ $\Pi$ によって処理されるとする
-            \item $J_{i}$ が $r$ の時点でリリースされ, $f$ の時点で終了した $\tau_{i}$ のジョブであるとする
-            \item $\lambda$ を $J_{i}$ のキーパスとする
-            \item $\lambda$ が実行されていない $[r, f)$ の任意の時点で, $\Pi$ のパッシブ VP がアイドル状態になることはない
-        \end{itemize}
-    \end{lemma}
-\end{frame}
+    \begin{frame}[label=lemma4]{Lemma 4}
+        \begin{lemma}[]
+            \begin{itemize}
+                \item タスク $\tau_{i}$ がパッシブ VP グループ $\Pi$ によって処理されるとする
+                \item $J_{i}$ が $r$ の時点でリリースされ, $f$ の時点で終了した $\tau_{i}$ のジョブであるとする
+                \item $\lambda$ を $J_{i}$ のキーパスとする
+                \item $\lambda$ が実行されていない $[r, f)$ の任意の時点で, $\Pi$ のパッシブ VP がアイドル状態になることはない
+            \end{itemize}
+        \end{lemma}
+    \end{frame}
+}
 
 \begin{frame}[label=theorem2]{Theorem 2}
     \begin{theorem}[]
-        次の場合, タスク $\tau_{i}$ はパッシブ VP グループ $\Pi=$  $\left\{\pi_{1}, \cdots, \pi_{|\Pi|}\right\}$ でスケジュール可能
+        以下の条件が成り立つ場合, タスク $\tau_{i}$ はパッシブ VP グループ $\Pi=$  $\left\{\pi_{1}, \cdots, \pi_{|\Pi|}\right\}$ でスケジュール可能
 
         \begin{equation*}
             C_{i} \leq L_{i}+\sum_{\pi_{x} \in \Pi} \max \left(s b f_{\pi_{x}}\left(D_{i}\right)-L_{i}, 0\right)

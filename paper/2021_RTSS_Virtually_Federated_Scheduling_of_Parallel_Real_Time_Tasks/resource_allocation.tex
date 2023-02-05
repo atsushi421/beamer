@@ -32,7 +32,7 @@
 
     \begin{frame}{2の選択理由}
         \begin{itemize}
-            \item Theorem 1 により, タスク $\tau_{i}$ は, サービスを提供するアクティブ VP グループによって提供される処理能力を完全に利用する
+            \item \hlink{thorem1}{Theorem 1} により, タスク $\tau_{i}$ は, サービスを提供するアクティブ VP グループによって提供される処理能力を完全に利用する
             \item パッシブ VP の処理能力は以下の2つの理由で十分に活用されていない
                   \begin{itemize}
                       \item 時間間隔で保証されている最小使用可能処理能力が, 一般に, 時間間隔で提供される実際の処理能力よりも小さい
@@ -42,7 +42,7 @@
             \item したがって, 一般的には, パッシブ VP よりもアクティブ VP を介して処理能力を提供する方が適切である
             \item 多くの「小さな」アクティブ VP を構築すると, これらのプロセッサに残っている大量の処理能力をパッシブ VP として非効率的に使用する必要がある
                   }
-            \item したがって, Theorem 1 の条件が満たされる限り, 可能な限り大きなアクティブ VP を作成し, アクティブ VP グループ内のアクティブ VP の数を最小限に抑えることを選択する
+            \item したがって, \hlink{thorem1}{Theorem 1} の条件が満たされる限り, 可能な限り大きなアクティブ VP を作成し, アクティブ VP グループ内のアクティブ VP の数を最小限に抑えることを選択する
         \end{itemize}
     \end{frame}
 
@@ -77,45 +77,39 @@
 
 \begin{frame}{初期バジェットの決め方}
     以下のように初期バジェットを設定
-    \begin{itemize}
-        \item リーディングアクティブVP: $D_i$
-        \item 最後以外の非リーディングアクティブVP: $D_i - L_i$
-        \item 最後の非リーディングアクティブVP: $C_{i}-D_{i}-\left\lfloor\frac{C_{i}-D_{i}}{D_{i}-L_{i}}\right\rfloor\left(D_{i}-L_{i}\right)$
-    \end{itemize}
+    \begin{block}{リーディングアクティブVP}
+        $D_i$
+    \end{block}
+    \begin{block}{最後以外の非リーディングアクティブVP}
+        $D_i - L_i$
+    \end{block}
+    \begin{block}{最後の非リーディングアクティブVP}
+        $C_{i}-D_{i}-\left\lfloor\frac{C_{i}-D_{i}}{D_{i}-L_{i}}\right\rfloor\left(D_{i}-L_{i}\right)$
+    \end{block}
 \end{frame}
 
 \begin{frame}{アクティブVPの数の求め方}
-    タスク $\tau_{i}$ に割り当てるアクティブ VP グループ内のアクティブ VP の数は, 次のように計算する
+    タスク $\tau_{i}$ に割り当てるアクティブ VP グループ内のアクティブ VP の数は, 次のように計算
     \begin{equation*}
         m_{i}=\left\lceil\frac{C_{i}-L_{i}}{D_{i}-L_{i}}\right\rceil
     \end{equation*}
 \end{frame}
 
-\forme{
-    \begin{frame}{}
-        \begin{itemize}
-            \item 次に, アクティブ VP で実行するタスクとパッシブ VP で実行するタスクを決定する戦略について説明する
-            \item Theorem 2 の条件 (8) とTheorem 3 の条件 (10) により, パッシブ VP $\pi_{x}$ によって提供される処理能力がタスク $\tau_{j}$ にとって有用であることがわかるのは, 次の場合のみである
-
-                  \begin{equation*}
-                      \operatorname{sbf}_{\pi_{x}}\left(D_{j}\right)>L_{j}
-                  \end{equation*}
-        \end{itemize}
-    \end{frame}
-
-    \begin{frame}{}
-        \begin{itemize}
-            \item したがって, パッシブ VP をタスク $\tau_{i}$ に割り当てる場合, (17) を満たすものだけを割り当てる必要があることは明らかである
-            \item 次のLemmaは, (17) を満たすための必要条件を与える
-        \end{itemize}
-    \end{frame}
-}
+\begin{frame}{パッシブVPが有用である条件}
+    \hlink{thorem2}{Theorem 2} と \hlink{thorem3}{Theorem 3} の条件より, パッシブ VP $\pi_{x}$ によって提供される処理能力がタスク $\tau_{j}$ にとって有用であるのは, 以下の場合である
+    \begin{equation*}
+        \operatorname{sbf}_{\pi_{x}}\left(D_{j}\right)>L_{j}
+    \end{equation*}
+\end{frame}
 
 \begin{frame}[label=lemma6]{Lemma 6}
-    2つのタスク $\tau_{i}$ と $\tau_{j}$が与えられたとき, $\tau_i$ に対して初期バジェット $D_{i}-L_{i}$ でアクティブVPを構成すると, 対のパッシブVPが $\tau_j$ に有用であるための必要条件は $D_{i}-L_{i}<D_{j}-L_{j}$ であることを示す
+    \hlink{lemma6}{Lemma 6} は対のパッシブVPが $\tau_j$ に有用であるための必要条件は $D_{i}-L_{i}<D_{j}-L_{j}$ であることを示す
     \begin{lemma}[]
-        $\pi_{x}$ が, 初期バジェット $\theta_{z}=D_{i}-L_{i}$ で $\tau_{i}$ に割り当てられたアクティブ VP の対のパッシブ VP である場合,
-
+        \setlength{\linewidth}{0.98\columnwidth}
+        \begin{itemize}
+            \item 2つのタスク $\tau_{i}$ と $\tau_{j}$ を考える
+            \item $\pi_{x}$ が, 初期バジェット $\theta_{z}=D_{i}-L_{i}$ で $\tau_{i}$ に割り当てられたアクティブ VP の対のパッシブ VP である場合, 以下が成り立つ
+        \end{itemize}
         \begin{equation*}
             s b f_{\pi_{x}}\left(D_{j}\right)>L_{j} \Rightarrow D_{i}-L_{i}<D_{j}-L_{j}
         \end{equation*}
@@ -123,7 +117,7 @@
 \end{frame}
 
 \begin{frame}{アクティブ/パッシブVPの選択戦略}
-    Lemma 6 より, 割り当てヒューリスティックは, 小さい $D_{i}-L_{i}$ を持つタスクを選択してアクティブ VP で実行し, 大きい $D_{i}-L_{i}$ を持つタスクをパッシブ VP で実行するようにする
+    \hlink{lemma6}{Lemma 6} より, 割り当てヒューリスティックは, 小さい $D_{i}-L_{i}$ を持つタスクを選択してアクティブ VP で実行し, 大きい $D_{i}-L_{i}$ を持つタスクをパッシブ VP で実行するようにする
 \end{frame}
 
 \forme{
