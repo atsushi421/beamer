@@ -4,11 +4,18 @@
 \label{sec: tasks executed on active-vp}
 
 \begin{frame}{アクティブ VP グループ}
+    \begin{definition}[アクティブVP]
+        \begin{itemize}
+            \item 各物理プロセッサはアクティブ VP を最大 1 つ構築する
+            \item アクティブVPはそのプロセッサ上で最高の優先度で実行される
+            \item 各アクティブVPは固有のバジェットを持つ
+        \end{itemize}
+    \end{definition}
+    \vspace{5mm}
     \begin{itemize}
         \item アクティブ VP グループは, 異なるプロセッサ上の複数のアクティブ VP で構成される
         \item 各アクティブ VP グループはただ 1 つのタスクを処理する
-        \item 各物理プロセッサはアクティブ VP を最大 1 つホストする
-        \item アクティブVPはそのプロセッサ上で最高の優先度で実行される
+        \setlength{\linewidth}{0.98\columnwidth}
     \end{itemize}
 \end{frame}
 
@@ -51,10 +58,7 @@
     \begin{itemize}
         \item $\Theta$ の最初のアクティブ VP をリーディングアクティブVPとする
               \begin{definition}[リーディングアクティブ VP]
-                  \begin{itemize}
-                      \item 対象タスクのワークロードを実行する特権を持つアクティブVP
-                      \item $\tau_{i}$ の現在のジョブに実行可能な頂点がある場合, $\Theta$ のリーディングアクティブアクティブ VP を使用する必要がある
-                  \end{itemize}
+                $\tau_{i}$ の現在のジョブに実行可能な頂点がある場合, $\Theta$ のリーディングアクティブアクティブ VP を使用する必要がある
               \end{definition}
               \vspace{5mm}
         \item 非リーディングアクティブ VP は, リーディングアクティブ VP がビジーの場合にのみ, $\tau_{i}$ のワークロードを実行できる

@@ -4,13 +4,15 @@
 \label{sec: tasks executed on passive-vp}
 
 \begin{frame}{パッシブ VP}
-    \begin{itemize}
-        \item プロセッサ上のアクティブ VP によって残された未使用の処理能力は, パッシブ VP として他のタスクに割り当てられる
-              \begin{itemize}
-                  \item このとき, パッシブVPはアクティブVPの対であると言う
-              \end{itemize}
-        \item パッシブ VP はそのプロセッサでアクティブ VP が実行されていない場合にのみ実行できる
-    \end{itemize}
+    \begin{definition}[パッシブVP]
+        \setlength{\linewidth}{0.98\columnwidth}
+        \begin{itemize}
+            \item プロセッサ上のアクティブ VP によって残された未使用の処理能力は, パッシブ VP として他のタスクに割り当てられる
+                  \begin{itemize}
+                      \item このとき, パッシブVPはアクティブVPの対であると言う
+                  \end{itemize}
+            \item パッシブ VP はそのプロセッサでアクティブ VP が実行されていない場合にのみ実行できる
+        \end{itemize}
 \end{frame}
 
 \begin{frame}{タスクの実行方法}
@@ -37,7 +39,6 @@
         \begin{itemize}
             \item ジョブ $J_{i}$ はアクティブ VP グループ $\Theta=\left\{\theta_{1}=\right.$  $\left.6, \theta_{2}=2\right\}$ によって処理され, 未使用の処理能力は, $J_{k}$ を処理するパッシブ VP グループを形成する
             \item $J_{k}$ はアクティブ VP がビジーでない場合にパッシブ VP で実行される
-
         \end{itemize}
     }{passive_vp}
 \end{frame}
@@ -50,7 +51,7 @@
 }
 
 \begin{frame}{供給境界関数}
-    各パッシブ VP $\pi_{x}$ について, 供給境界関数 $s b f_{\pi_{x}}(\Delta)$ を導き出すことができる
+    各パッシブ VP $\pi_{x}$ について, 供給境界関数 $s b f_{\pi_{x}}(\Delta)$ が導き出せる
     \begin{block}{供給境界関数 $s b f_{\pi_{x}}(\Delta)$}
         長さ $\Delta$ の任意の時間間隔で $\pi_{x}$ によって提供される処理能力の最小量を示す
     \end{block}
