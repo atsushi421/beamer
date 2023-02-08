@@ -8,30 +8,18 @@
 \subsection{ROS2}
 \label{ssec: ros2}
 
-\begin{frame}{}
-    \begin{itemize}
-        \item 本論文ではマルチスレッドエグゼキュータに焦点を当てる
-    \end{itemize}
+\begin{frame}{分析対象のエグゼキュータ}
+    本論文ではマルチスレッドエグゼキュータに焦点を当てる
 \end{frame}
-
-
-\begin{frame}{エグゼキュータ}
-    \begin{itemize}
-        \item ROS 2 アプリケーションがプラットフォームに展開される際には, 個々のノードが OS のプロセスにマップされる
-        \item ROS 2 クライアントライブラリの\al{エグゼキュータ}は, OS プロセス内のノードのコールバックの実行を調整する
-    \end{itemize}
-\end{frame}
-
 
 \begin{frame}{処理チェーン}
     \fitimage{
         \begin{itemize}
-            \item \al{処理チェーン}はコールバックの列
+            \item 処理チェーンはコールバックの列
             \item 処理チェーンは特定のイベントによってトリガされ, 複数のエグゼキュータにまたがる可能性がある
         \end{itemize}
     }{multi_threaded_executor.png}
 \end{frame}
-
 
 \begin{frame}{本論文の分析の焦点}
     \fitimage{
@@ -40,13 +28,8 @@
     }{multi_threaded_executor.png}
 \end{frame}
 
-
-\begin{frame}{ノード}
-    \begin{itemize}
-        \item コールバックは異なる\al{ノード}に属す場合もある
-        \item ROS 2 では, 同じノード内のコールバックはデフォルトで同じコールバックグループとなる
-        \item これを除いてノードの概念は本論文とは無関係
-    \end{itemize}
+\begin{frame}{ノードに関する簡単化}
+    同じノード内のコールバックはデフォルトで同じコールバックグループとなることを除いて, ノードの概念は本論文とは無関係
 
     \assume{簡単にするために, モデルにノードレベルの情報を含めない}
 \end{frame}
@@ -55,51 +38,26 @@
 \subsection{Scheduling of multi-threaded executor}
 \label{ssec: scheduling_of_multi_threaded_executor}
 
-\begin{frame}{セクションサマリ}
-    \begin{itembox}[l]{\textbf{目的}}
-        ROS 2 マルチスレッドエグゼキュータのスケジューリング動作を説明
-        \notes{本論文の内容は ROS 2 Foxy Fitzroy に基づいている}
-    \end{itembox}
-\end{frame}
-
-\begin{frame}{コールバック}
-    \begin{itemize}
-        \item \al{コールバック}は ROS 2 の最小のスケジューリングエンティティ
-        \item マルチスレッドエグゼキュータでは, スレッドは抽象 DDS レイヤからメッセージを受け取り, 対応するコールバックを実行する
-    \end{itemize}
-\end{frame}
-
-\begin{frame}{コールバックの優先度決定方法}
-    コールバックの優先度は以下 2 つの基準で決定される
-
-    \begin{block}{コールバックタイプ}
-        \setlength{\linewidth}{0.98\columnwidth}
-        \begin{itemize}
-            \item コールバックはタイマ・サブスクライバ・サービス・クライアントの 4 つのタイプに分類される
-            \item 優先度は, タイマ $\succ$ サブスクライバ $\succ$ サービス $\succ$ クライアント \notes{\desc{$\succ$}{より高い優先度を持つ}}
-        \end{itemize}
-    \end{block}
-
-    \begin{block}{登録順}
-        先に登録されたコールバックが優先される
-    \end{block}
-\end{frame}
-
 \begin{frame}{コールバックタイプに関する簡単化}
-    \full{
-        \assume{本論文ではコールバックタイプに関する情報は含めない}
-    }
+    コールバックはタイマ・サブスクライバ・サービス・クライアントの 4 つのタイプに分類される
+    \assume{本論文ではコールバックタイプに関する情報は含めない}
 \end{frame}
 
-\begin{frame}{yield\_before\_execute}
+\begin{frame}{yield\_before\_execute の設定}
+    \begin{block}{yield\_before\_execute}
+    \setlength{\linewidth}{0.98\columnwidth}
     \begin{itemize}
-        \item \al{yield\_before\_execute} が false に設定されている場合, スレッドは選択されたコールバックの実行をすぐに開始する
+        \item yield\_before\_execute が false に設定されている場合, スレッドは選択されたコールバックの実行をすぐに開始する
         \item yield\_before\_execute が true に設定されている場合, スレッドは再度スケジュールされるまでプロセッサを OS に譲る
+    \end{itemize}
+    \end{block}
+    \vspace{5mm}
+    \begin{itemize}
         \item 本論文ではデフォルトの設定である yield\_before\_execute $=$ false とする
     \end{itemize}
 \end{frame}
 
-\begin{frame}{メッセージキュー}
+\begin{frame}{メッセージキューに関する簡単化}
     各コールバックに到着したメッセージをバッファリングするためのキューがあり, その深さはユーザによって指定される
     \assume{
         \setlength{\linewidth}{0.98\columnwidth}
@@ -110,68 +68,7 @@
     }
 \end{frame}
 
-\begin{frame}{wait\_set}
-    エグゼキュータ内のスレッドは共通のセット \al{wait\_set} によって, 利用可能なメッセージを持つコールバックを保持する
+\begin{frame}{wait\_setに関する簡単化}
+    エグゼキュータ内のスレッドは共通のセット wait\_set によって, 利用可能なメッセージを持つコールバックを保持する
     \assume{スレッドが wait\_set にアクセスする際に発生するオーバヘッドはゼロであるとする}
-\end{frame}
-
-\begin{frame}{reentrant/mutually exclusiveコールバックグループ}
-    \tb{コールバックグループには以下2つの種類がある}
-    \begin{block}{Reentrantコールバックグループ}
-        wait\_set内のコールバックはいつでも選択できる
-    \end{block}
-    \begin{block}{Mutually exclusiveコールバックグループ}
-        \setlength{\linewidth}{0.98\columnwidth}
-        \begin{itemize}
-            \item 各グループに排他制御フラグ \al{can\_be\_taken\_from} がある
-            \item グループのコールバックが選択されるとフラグは false に設定され, コールバックの終了後に true に設定される
-            \item mutually exclusive コールバックグループに属すコールバックは,  can\_be\_taken\_from が true の場合にのみ選択できる
-        \end{itemize}
-    \end{block}
-\end{frame}
-
-\begin{frame}{スレッドのワークフロー全体像}
-    \fullimage{thread_workflow.png}
-\end{frame}
-
-\begin{frame}{[ワークフロー] low\_priority\_wait\_mutex}
-    \fitimage{
-        \begin{itemize}
-            \item スレッドは wait\_set にアクセスする前に, 排他制御ロック \al{low\_priority\_wait\_mutex} を獲得する必要がある
-            \item すなわち \tb{wait\_set を変更できるのは一度に 1 つのスレッドのみ}
-            \item それ以外の場合, スレッドはブロックされる
-        \end{itemize}
-    }{workflow1.jpg}
-\end{frame}
-
-\begin{frame}{[ワークフロー] mutually exclusiveコールバックグループの挙動1}
-    \fullimage{workflow2.jpg}
-\end{frame}
-
-\begin{frame}{[ワークフロー] コールバック選択後}
-    \fitimage{
-        コールバックが選択されると, \tb{スレッドは wait\_set からコールバックを削除}し, low\_priority\_wait\_mutex をリリースする
-    }{workflow4.jpg}
-\end{frame}
-
-\begin{frame}{[ワークフロー] mutually exclusiveコールバックグループの挙動2}
-    \fullimage{workflow3.jpg}
-\end{frame}
-
-
-\begin{frame}{[ワークフロー] コールバックが選択できない場合}
-    \fitimage{
-        全てのコールバックがチェックされ, 実行するコールバックを選択できない場合, \tb{スレッドは wait\_set をリセットし, wait\_set を更新する}
-    }{workflow5.jpg}
-\end{frame}
-
-\begin{frame}{[ワークフロー] コールバックを wait\_set に追加できない場合}
-    \begin{columns}
-        \begin{column}{0.4\textwidth}
-            コールバックを wait\_set に追加できない場合, スレッドは low\_priority\_wait\_mutex をリリースしてアイドル状態になる
-        \end{column}
-        \begin{column}{0.6\textwidth}
-            \fullimage{workflow6.jpg}
-        \end{column}
-    \end{columns}
 \end{frame}

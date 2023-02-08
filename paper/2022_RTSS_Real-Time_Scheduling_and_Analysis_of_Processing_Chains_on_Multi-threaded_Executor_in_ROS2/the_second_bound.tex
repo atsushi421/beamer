@@ -5,7 +5,7 @@
 
 \begin{frame}{セクションサマリ}
     \begin{itembox}[l]{\textbf{目的}}
-        $J$ の個々のコールバックインスタンスに関して, サブ干渉シーケンスの任意の組み合わせを探索し, 最大の $\mathcal{Q}_{k}$ になる組み合わせを見つける
+        $\mathcal{Q}_{k}$ の上界をより正確に分析し, $R(J)$ のより厳密な上界を導き出す
     \end{itembox}
     \begin{itembox}[l]{\textbf{流れ}}
         \begin{enumerate}
@@ -22,7 +22,7 @@
 \begin{frame}{超干渉シーケンス}
     \begin{itemize}
         \begin{definition}[超干渉シーケンス $\overrightarrow{\mathcal{M}}_{k}$]
-            $\mathcal{C}_{k}$ から $J$ への超干渉シーケンス $\overrightarrow{\mathcal{M}}_{k}$ は, $\mathcal{C}_{k}$ の $n_{k}(L)$ チェーンインスタンスの実行シーケンスであり, コールバックインスタンスを 1 つずつ順番に実行する
+            $\mathcal{C}_{k}$ から $J$ への超干渉シーケンス $\overrightarrow{\mathcal{M}}_{k}$ は, $n_{k}(L)$ 個の $\mathcal{C}_{k}$ のインスタンスの実行シーケンスであり, コールバックインスタンスを 1 つずつ順番に実行する
         \end{definition}
         \vspace{5mm}
         \item 一般性を失うことなく,  $\overrightarrow{\mathcal{M}}_{k}$ が時間 0 で開始すると仮定する
@@ -31,14 +31,14 @@
 
 \begin{frame}{超干渉シーケンスとサブ干渉シーケンスの関係}
     \begin{itemize}
-        \item 直観的に, 各サブ干渉シーケンス $\mathcal{S}_{k, i}$ は, $\overrightarrow{\mathcal{M}}_{k}$ のコールバックインスタンスの一部に対応し, 時間ウィンドウ $\left(t_{i}, t_{i}^{\prime}\right)$に分類される
+        \item 各サブ干渉シーケンス $\mathcal{S}_{k, i}$ は, $\overrightarrow{\mathcal{M}}_{k}$ のコールバックインスタンスの一部に対応し, 時間ウィンドウ $\left(t_{i}, t_{i}^{\prime}\right)$に分類される
         \item 曖昧さを避けるため, $\overrightarrow{\mathcal{M}}_{k}$ と $\mathcal{S}_{k, i}$ の対応するコールバックインスタンスの実行時間は同じであると仮定
     \end{itemize}
 \end{frame}
 
 \begin{frame}{干渉シーケンスとウィンドウ}
     \begin{itemize}
-        \item $\mathcal{S}_{k, i}$ は, ウィンドウ $\left(t_{i}, t_{i}^{\prime}\right)$ の\al{結果である}と呼ぶ
+        \item $\mathcal{S}_{k, i}$ は ウィンドウ $\left(t_{i}, t_{i}^{\prime}\right)$ の結果であると呼ぶ
         \item 干渉シーケンス $\mathcal{S}_{k}$ は, 一連のウィンドウ $\mathcal{Y}=\left\{\left(t_{1}, t_{1}^{\prime}\right),\left(t_{2}, t_{2}^{\prime}\right), \cdots,\left(t_{|\mathcal{C}|}, t_{|\mathcal{C}|}^{\prime}\right)\right\}$ の結果である
         \item 一般性を失うことなく, $\mathcal{S}_{k, i}=\langle 0\rangle$ の場合は $\left(t_{i}, t_{i}^{\prime}\right)=n u l l$ とする
     \end{itemize}
@@ -47,23 +47,23 @@
 \begin{frame}{超干渉シーケンスの例}
     \fitimage{
         \begin{itemize}
-            \item $J_{3}^{1}$ の問題ウィンドウの長さは 8 で, その間に $\mathcal{C}_{2}$ の最大 2 つのチェーンインスタンスが実行される可能性がある (\hlink{lemma3}{Lemma 3})
+            \item $J_{3}^{1}$ の問題ウィンドウの長さは 8 で, その間に $\mathcal{C}_{2}$ の最大 2 つのチェーンインスタンスが実行される可能性がある (\hlink{lemma3}{Lemma 2})
             \item $\mathcal{C}_{2}$ から $J_{3}^{1}$ への干渉シーケンスは, 一連のウィンドウ $\mathcal{Y}=\{ null, (1,3), null, (3,4)\}$ によって発生する
         \end{itemize}
     }{super_interfering_sequence_ex.jpg}
 \end{frame}
 
-
-\begin{frame}{以降の流れ}
-    \begin{itemize}
-        \item 目的は, \tb{$\mathcal{Y}$ の干渉シーケンスによって生じる $\mathcal{Q}_{k}$ が最大化されるように,}\\ \tb{タイムウィンドウのセット $\mathcal{Y}$ を見つけること}
-        \item 全てのケースを列挙できるが, そのようなウィンドウセットの探索空間は組み合わせ爆発になる可能性がある
-        \item この問題を解決するために, サブ干渉シーケンスが $J$ のコールバックインスタンスに干渉するために満たさなければならない制約を導き出す
-              % \item 具体的には, 考慮されるコールバックインスタンスをブロックできるかどうかに応じて, 2 つのケースを区別する
-        \item そして, 考えられる全ての干渉シーケンスの中で発生する可能性のある $\mathcal{Q}_{k}$ の上界を効率的に取得するアルゴリズムを開発する
-    \end{itemize}
-\end{frame}
-
+\forme{
+    \begin{frame}{以降の流れ}
+        \begin{itemize}
+            \item 目的は, \tb{$\mathcal{Y}$ の干渉シーケンスによって生じる $\mathcal{Q}_{k}$ が最大化されるように,}\\ \tb{タイムウィンドウのセット $\mathcal{Y}$ を見つけること}
+            \item 全てのケースを列挙できるが, そのようなウィンドウセットの探索空間は組み合わせ爆発になる可能性がある
+            \item この問題を解決するために, サブ干渉シーケンスが $J$ のコールバックインスタンスに干渉するために満たさなければならない制約を導き出す
+                  % \item 具体的には, 考慮されるコールバックインスタンスをブロックできるかどうかに応じて, 2 つのケースを区別する
+            \item そして, 考えられる全ての干渉シーケンスの中で発生する可能性のある $\mathcal{Q}_{k}$ の上界を効率的に取得するアルゴリズムを開発する
+        \end{itemize}
+    \end{frame}
+}
 
 \subsection{Callbacks that cannot be blocked}
 \label{ssec: callbacks_that_cannot_be_blocked}
@@ -74,34 +74,35 @@
     \end{itembox}
 \end{frame}
 
-\begin{frame}{分析の視点}
-    境界は 2 点に基づいて導出される
-    \begin{itemize}
-        \item マルチスレッドエグゼキュータはバッチ内の異なるチェーンからのコールバックをスケジュールするため, $c_{i}$ はバッチからのコールバックインスタンスによってのみ干渉される可能性がある
-        \item $c_{i}$ が $\Omega$ に追加されると, $\Omega$ 内のそれより優先度の高い他のコールバックインスタンスによってのみレイテンシできる
-    \end{itemize}
-\end{frame}
+\forme{
+    \begin{frame}{分析の視点}
+        境界は 2 点に基づいて導出される
+        \begin{itemize}
+            \item マルチスレッドエグゼキュータはバッチ内の異なるチェーンからのコールバックをスケジュールするため, $c_{i}$ はバッチからのコールバックインスタンスによってのみ干渉される可能性がある
+            \item $c_{i}$ が $\Omega$ に追加されると, $\Omega$ 内のそれより優先度の高い他のコールバックインスタンスによってのみレイテンシできる
+        \end{itemize}
+    \end{frame}
 
-\begin{frame}[label=lemma5]{Lemma 5}
-    \begin{lemma}[]
-        $c_{i}$ がreentrant コールバックグループまたは $\forall \mathcal{C}_{k} \in \Gamma \backslash\{\mathcal{C}\}: \mathcal{G}\left(c_{i}\right) \notin \theta_{k}$ に属している場合, $\left[r_{i}, s_{i}\right)$ の時間間隔中にポーリングポイントが 1 つだけ存在する
-    \end{lemma}
-\end{frame}
+    \begin{frame}[label=lemma5]{Lemma 5}
+        \begin{lemma}[]
+            $c_{i}$ がreentrant コールバックグループまたは $\forall \mathcal{C}_{k} \in \Gamma \backslash\{\mathcal{C}\}: \mathcal{G}\left(c_{i}\right) \notin \theta_{k}$ に属している場合, $\left[r_{i}, s_{i}\right)$ の時間間隔中にポーリングポイントが 1 つだけ存在する
+        \end{lemma}
+    \end{frame}
+}
 
-
-\begin{frame}[label=lemma6]{Lemma 6}
+\begin{frame}[label=lemma6]{Lemma 4}
     \begin{lemma}[]
         $c_{i}$ がreentrant コールバックグループまたは $\forall \mathcal{C}_{k} \in \Gamma \backslash\{\mathcal{C}\}: \mathcal{G}\left(c_{i}\right) \notin \theta_{k}$ に属している場合, 時間間隔 $\left[r_{i}, s_{i}\right)$ 中に $\overrightarrow{\mathcal{M}}_{k}$ の中で実行できるコールバックインスタンスは最大 2 つ
     \end{lemma}
 \end{frame}
 
-\begin{frame}[label=lemma7]{Lemma 7}
+\begin{frame}[label=lemma7]{Lemma 5}
     \begin{lemma}[]
         $c_{i}$ がreentrant コールバックグループまたは $\forall \mathcal{C}_{k} \in \Gamma \backslash\{\mathcal{C}\}: \mathcal{G}\left(c_{i}\right) \notin \theta_{k}$ に属している場合, 干渉チェーン $\mathcal{C}_{k}$ からの 2 つのコールバックインスタンスが $\left[r_{i}, s_{i}\right)$ の時間間隔中に実行される場合, 2 番目のインスタンスは $c_{i}$ よりも高い優先度を持つ
     \end{lemma}
 \end{frame}
 
-\begin{frame}[label=lemma8]{Lemma 8}
+\begin{frame}[label=lemma8]{Lemma 6}
     \begin{lemma}[]
         $c_{i}$ がreentrant コールバックグループまたは $\forall \mathcal{C}_{k} \in \Gamma \backslash\{\mathcal{C}\}: \mathcal{G}\left(c_{i}\right) \notin \theta_{k}$ に属している場合, $m \geq|\Gamma|$ であれば $\left[r_{i}, s_{i}\right)$ の時間間隔中に $\mathcal{C}_{k}$ からのコールバックインスタンスは実行できない
     \end{lemma}
@@ -117,25 +118,29 @@
     \end{itembox}
 \end{frame}
 
-\begin{frame}{分析の視点}
-    \begin{itemize}
-        \item $c_{i}$ がブロックされている場合, $\Omega$ が何度も更新される可能性がある
-        \item $c_{i}$ が $\Omega$ に追加された後, 優先度の低いコールバックインスタンスによって $c_{i}$ がブロックされる可能性があるため, レイテンシすることもある
-        \item そのため, 前のセクションで行ったように, $\left[r_{i}, s_{i}\right)$ 中のポーリングポイントの数を制限することは困難
-    \end{itemize}
-\end{frame}
+\forme{
+    \begin{frame}{分析の視点}
+        \begin{itemize}
+            \item $c_{i}$ がブロックされている場合, $\Omega$ が何度も更新される可能性がある
+            \item $c_{i}$ が $\Omega$ に追加された後, 優先度の低いコールバックインスタンスによって $c_{i}$ がブロックされる可能性があるため, レイテンシすることもある
+            \item そのため, 前のセクションで行ったように, $\left[r_{i}, s_{i}\right)$ 中のポーリングポイントの数を制限することは困難
+        \end{itemize}
+    \end{frame}
+}
 
-\begin{frame}[label=lemma9]{Lemma 9}
+\begin{frame}[label=lemma9]{Lemma 7}
     \begin{lemma}[]
         $\mathcal{G}\left(c_{i}\right) \in \cup_{\forall \mathcal{C}_{k} \in \Gamma \backslash\{\mathcal{C}\}} \theta_{k}$ であり, $\mathcal{C}_{k}$ の 2 つ以上のコールバックが $\left[r_{i}, s_{i}\right)$ の間に実行される場合, 最初のコールバックを除くそれぞれのコールバックは, $c_{i}$ とは異なるコールバックグループに属しているか, $c_{i}$ よりも高い優先度を持っている
     \end{lemma}
 \end{frame}
 
-\begin{frame}[label=lemma10]{Lemma 10}
-    \begin{lemma}[]
-        $\mathcal{G}\left(c_{i}\right) \in \cup_{\forall \mathcal{C}_{k} \in \Gamma \backslash\{\mathcal{C}\}} \theta_{k}$ であり, $m \geq \Gamma$ の場合, $c_{i}$ とは異なるコールバックグループに属す $\mathcal{C}_{k}$ のコールバックインスタンスは, $\mathcal{I}_{k, i}^{\mathcal{E}}$ にのみ寄与できる
-    \end{lemma}
-\end{frame}
+\forme{
+    \begin{frame}[label=lemma10]{Lemma 10}
+        \begin{lemma}[]
+            $\mathcal{G}\left(c_{i}\right) \in \cup_{\forall \mathcal{C}_{k} \in \Gamma \backslash\{\mathcal{C}\}} \theta_{k}$ であり, $m \geq \Gamma$ の場合, $c_{i}$ とは異なるコールバックグループに属す $\mathcal{C}_{k}$ のコールバックインスタンスは, $\mathcal{I}_{k, i}^{\mathcal{E}}$ にのみ寄与できる
+        \end{lemma}
+    \end{frame}
+}
 
 
 \subsection{Bounding $\Phi_{k, i}$}
@@ -147,12 +152,14 @@
     \end{itembox}
 \end{frame}
 
-\begin{frame}{分析の視点}
-    \begin{itemize}
-        \item \hlink{defPhi}{寄与の定義}から, $c_{i}$ をブロックできない場合は $\Phi_{k, i}=\mathcal{I}_{k, i}$, それ以外の場合は $\Phi_{k, i}=\mathcal{I}_{k, i}+(m-1) \mathcal{I}_{k, i}^{\mathcal{B}}-\mathcal{I}_{k, i}^{\mathcal{E}}$
-        \item サブ干渉シーケンス $\mathcal{S}_{k, i}$ が与えられると, $\mathcal{S}_{k, i}$ の各コールバックインスタンスの実行時間で $\mathcal{I}_{k, i}$ と $\mathcal{I}_{k, i}^{\mathcal{B}}$ を計算できる
-    \end{itemize}
-\end{frame}
+\forme{
+    \begin{frame}{分析の視点}
+        \begin{itemize}
+            \item \hlink{defPhi}{寄与の定義}から, $c_{i}$ をブロックできない場合は $\Phi_{k, i}=\mathcal{I}_{k, i}$, それ以外の場合は $\Phi_{k, i}=\mathcal{I}_{k, i}+(m-1) \mathcal{I}_{k, i}^{\mathcal{B}}-\mathcal{I}_{k, i}^{\mathcal{E}}$
+            \item サブ干渉シーケンス $\mathcal{S}_{k, i}$ が与えられると, $\mathcal{S}_{k, i}$ の各コールバックインスタンスの実行時間で $\mathcal{I}_{k, i}$ と $\mathcal{I}_{k, i}^{\mathcal{B}}$ を計算できる
+        \end{itemize}
+    \end{frame}
+}
 
 \begin{frame}{$c_{i}$ がブロックされない場合の $\Phi_{k, i}$の上界}
     \begin{definition}[$c_{i}$ がブロックされない場合の $\Phi_{k, i}$の上界 $\hat{\Phi}_{k, i}$]
@@ -163,7 +170,7 @@
                 \mathcal{I}_{k, i}, & \text { otherwise } .
             \end{array}\right.
         \end{equation*}
-        \notes{Lemma 8から成り立つ}
+        \forme{\notes{Lemma 8から成り立つ}}
     \end{definition}
 \end{frame}
 
@@ -176,30 +183,35 @@
                 \mathcal{I}_{k, i}+(m-1) \mathcal{I}_{k, i},                                                    & \text { otherwise } .
             \end{array}\right.
         \end{equation*}
-        \notes{Lemma 10から成り立つ}
+        \forme{\notes{Lemma 10から成り立つ}}
     \end{definition}
 \end{frame}
 
-\begin{frame}{$\Phi_{k, i}$ の上界 $\hat{\Phi}_{k, i}$ まとめ}
-    \begin{itemize}
-        \item 要約すると, サブ干渉シーケンス $\mathcal{S}_{k, i}$ ごとに $\Phi_{k, i} \leq \hat{\Phi}_{k, i}$ が成立する
-        \item $\hat{\Phi}_{k, i}$ は, $c_{i}$ をブロックできるかどうか応じて異なる式で計算される
-    \end{itemize}
-\end{frame}
+\forme{
+    \begin{frame}{$\Phi_{k, i}$ の上界 $\hat{\Phi}_{k, i}$ まとめ}
+        \begin{itemize}
+            \item 要約すると, サブ干渉シーケンス $\mathcal{S}_{k, i}$ ごとに $\Phi_{k, i} \leq \hat{\Phi}_{k, i}$ が成立する
+            \item $\hat{\Phi}_{k, i}$ は, $c_{i}$ をブロックできるかどうか応じて異なる式で計算される
+        \end{itemize}
+    \end{frame}
+}
 
 \begin{frame}{$\mathcal{Q}_{k}(\mathcal{Y})$ の導入}
     \begin{block}{$\mathcal{Q}_{k}(\mathcal{Y})$}
         $\mathcal{Y}$ によって生じた干渉シーケンス $\mathcal{S}_{k}$ が与えられた場合の, 各サブ干渉シーケンス $\mathcal{S}_{k, i}$ に関する $\hat{\Phi}_{k, i}$ の合計
     \end{block}
-    \vspace{5mm}
-    $\mathcal{Q}_{k}(\mathcal{Y})$ は $\mathcal{Y}$ に\al{起因する}と呼ぶ
+    \forme{
+        \vspace{5mm}
+        \begin{itemize}
+            \item $\mathcal{Q}_{k}(\mathcal{Y})$ は $\mathcal{Y}$ に起因すると呼ぶ
+        \end{itemize}
+    }
 \end{frame}
 
 \begin{frame}{以降の流れ}
     \begin{itemize}
-        \item 結果として得られる各サブ干渉シーケンスが \hlink{lemma6}{Lemma 6}--10 を満たす可能なウィンドウの組み合わせを全て列挙し, $\max _{\forall \mathcal{Y}}\left\{\mathcal{Q}_{k}(\mathcal{Y})\right\}$ を $\mathcal{Q}_{k}$ の安全な上界と見なせるが, これは計算量の爆発になる可能性がある
-        \item この問題を解決するために, まず, ウィンドウの境界の探索スペースを $\overrightarrow{\mathcal{M}}_{k}$ のコールバックインスタンスの境界に制限できることを示す
-        \item 次に, 動的計画法 (DP) に基づくアルゴリズムを開発して, $\max _{\forall \mathcal{Y}}\left\{\mathcal{Q}_{k}(\mathcal{Y})\right\}$ の上界を計算する
+        \item 結果として得られる各サブ干渉シーケンスが Lemma 4--7 を満たす可能なウィンドウの組み合わせを全て列挙し, $\max _{\forall \mathcal{Y}}\left\{\mathcal{Q}_{k}(\mathcal{Y})\right\}$ を $\mathcal{Q}_{k}$ の安全な上界と見なせるが, これは計算量の爆発になる可能性がある
+        \item この問題を解決するために, 動的計画法 (DP) に基づくアルゴリズムを開発して, $\max _{\forall \mathcal{Y}}\left\{\mathcal{Q}_{k}(\mathcal{Y})\right\}$ の上界を計算する
     \end{itemize}
 \end{frame}
 
@@ -217,16 +229,18 @@
     }{y_a_b.png}
 \end{frame}
 
-\begin{frame}[label=lemma11]{Lemma 11}
-    \hlink{lemma11}{Lemma 11} は, $\max _{\forall \mathcal{Y}}\left\{\mathcal{Q}_{k}(\mathcal{Y})\right\}$ を見つけるには, 境界が $\overrightarrow{\mathcal{M}}_{k}$ のコールバックインスタンスの開始/終了時間と一致するウィンドウのみを考慮する必要があることを示す
-    \begin{lemma}[]
-        $\mathcal{Q}_{k}(\mathcal{Y}) \leq \max _{\forall j \in[a, b]}\left\{\mathcal{Q}_{k}\left(\mathcal{Y}_{j}\right)\right\}$
-    \end{lemma}
-\end{frame}
+\forme{
+    \begin{frame}[label=lemma11]{Lemma 11}
+        \hlink{lemma11}{Lemma 11} は, $\max _{\forall \mathcal{Y}}\left\{\mathcal{Q}_{k}(\mathcal{Y})\right\}$ を見つけるには, 境界が $\overrightarrow{\mathcal{M}}_{k}$ のコールバックインスタンスの開始/終了時間と一致するウィンドウのみを考慮する必要があることを示す
+        \begin{lemma}[]
+            $\mathcal{Q}_{k}(\mathcal{Y}) \leq \max _{\forall j \in[a, b]}\left\{\mathcal{Q}_{k}\left(\mathcal{Y}_{j}\right)\right\}$
+        \end{lemma}
+    \end{frame}
 
-\begin{frame}{動的計画法 (DP) の使用}
-    任意の組み合わせの数は依然として非常に多いため, 動的計画法 (DP) に基づく手法を開発する
-\end{frame}
+    \begin{frame}{動的計画法 (DP) の使用}
+        任意の組み合わせの数は依然として非常に多いため, 動的計画法 (DP) に基づく手法を開発する
+    \end{frame}
+}
 
 \begin{frame}{$\Phi_{k, i}^{p, q}$ の導入}
     \begin{block}{$\Phi_{k, i}^{p, q}$}
@@ -272,17 +286,13 @@
     \end{itemize}
 \end{frame}
 
-\begin{frame}{$\mathcal{Q}_k$ の上界計算疑似アルゴリズム全体像}
-    \fullimage{alg2.png}
-\end{frame}
-
-\begin{frame}{$\mathcal{Q}_k$ の上界計算疑似アルゴリズム補足}
+\begin{frame}[label=alg2]{$\mathcal{Q}_k$ の上界計算疑似アルゴリズム}
     \fullimage{alg2_sup.jpg}
 \end{frame}
 
 \begin{frame}{$\mathcal{Q}_k$ の上界計算疑似アルゴリズム例}
     \fitimage{
-        $\mathcal{C}_3$ のチェーンインスタンスに対して, $\overrightarrow{\mathcal{M}}_{2}$ の任意の干渉シーケンスによって発生しうる$\mathcal{Q}_2$ の上界を表に示す
+        $\mathcal{C}_3$ のチェーンインスタンスに対して, $\overrightarrow{\mathcal{M}}_{2}$ の任意の干渉シーケンスによって発生しうる$\mathcal{Q}_2$ の上界
     }{alg2_ex.jpg}
 \end{frame}
 
@@ -296,14 +306,12 @@
         \begin{equation*}
             L=E-e_{|\mathcal{C}|}+\frac{\sum_{\mathcal{C}_{k} \in \Gamma \backslash\{\mathcal{C}\}} \mathcal{Q}_{k}}{m}
         \end{equation*}
-        \notes{$\mathcal{Q}_{k}$ は, $\mathcal{C}_{k}$ の $n_{k}(L)$ インスタンスを含む $\overrightarrow{\mathcal{M}}_{k}$ を使用してアルゴリズム 2 によって計算される}
+        \notes{$\mathcal{Q}_{k}$ は, $\mathcal{C}_{k}$ の $n_{k}(L)$ インスタンスを含む $\overrightarrow{\mathcal{M}}_{k}$ を使用して \hlink{alg2}{アルゴリズム 2} によって計算される}
     \end{theorem}
 \end{frame}
 
-\forme{
-    \begin{frame}[label=theorem3]{Theorem 3}
-        \begin{theorem}[]
-            $L+e_{|\mathcal{C}|} \leq D$ が $\mathcal{C} \in \Gamma$ のチェーンごとに成立し, $L$ が \hlink{theorem1}{Theorem 1} または \hlink{theorem2}{Theorem 2} によって取得される場合, $\Gamma$ はスケジュール可能である
-        \end{theorem}
-    \end{frame}
-}
+\begin{frame}[label=theorem3]{Theorem 3}
+    \begin{theorem}[]
+        $L+e_{|\mathcal{C}|} \leq D$ が $\mathcal{C} \in \Gamma$ のチェーンごとに成立し, $L$ が \hlink{theorem1}{Theorem 1} または \hlink{theorem2}{Theorem 2} によって取得される場合, $\Gamma$ はスケジュール可能である
+    \end{theorem}
+\end{frame}

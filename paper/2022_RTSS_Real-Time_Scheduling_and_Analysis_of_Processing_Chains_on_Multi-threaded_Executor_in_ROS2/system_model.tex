@@ -110,59 +110,54 @@
     \end{block}
 \end{frame}
 
-\begin{frame}{$\Omega$}
+\begin{frame}{ready セット $\Omega$}
     \begin{itemize}
         \item エグゼキュータは readyコールバックインスタンスを保持する共通のreadyセット $\Omega$ を持つ
         \item \tb{コールバックインスタンスが実行のために選択されると, $\Omega$ から削除される}
     \end{itemize}
 \end{frame}
 
-\begin{frame}{Rブロック, eligible}
-    \tb{$\Omega$ 内の ready のコールバックインスタンス $c_{i, j}$ が実行のために選択される条件は eligible であること}
+\begin{frame}{Rブロック, 適格}
+    \tb{$\Omega$ 内の ready のコールバックインスタンス $c_{i, j}$ が実行のために選択される条件は適格であること}
     \begin{definition}[Rブロック]
         $c_{i, j}$ が mutually exclusive コールバックグループに属すかつ, $\Omega$ 内に存在し, $c_{i, j}$ と同じグループ内のコールバックのインスタンスが実行されている場合, $c_{i, j}$ は Rブロックされている
     \end{definition}
-    \begin{definition}[eligible]
-        $c_{i, j}$ が $\Omega$ 内に存在し, Rブロックされていない場合, eligible である
+    \begin{definition}[適格]
+        $c_{i, j}$ が $\Omega$ 内に存在し, Rブロックされていない場合,適格である
     \end{definition}
 \end{frame}
 
 \begin{frame}{$\Omega$ 内のコールバックインスタンスの状態}
-    \tb{$\Omega$ 内のコールバックインスタンスは eligible であるか, Rブロックされている}
+    \tb{$\Omega$ 内のコールバックインスタンスは適格であるか, Rブロックされている}
     \begin{block}{$c_{i, j}$ が mutually exclusive コールバックグループに属す場合}
         \setlength{\linewidth}{0.98\columnwidth}
         \begin{itemize}
-            \item $c_{i, j}$ と同じコールバックグループ内のコールバックのインスタンスが実行されていない場合, $c_{i, j}$ は eligible
+            \item $c_{i, j}$ と同じコールバックグループ内のコールバックのインスタンスが実行されていない場合, $c_{i, j}$ は 適格
             \item それ以外の場合, $c_{i, j}$ はRブロックされている
         \end{itemize}
     \end{block}
     \begin{block}{$c_{i, j}$ が reentrant コールバックグループに属す場合}
-        $c_{i, j}$ は 常に eligible
+        $c_{i, j}$ は 常に 適格
     \end{block}
 \end{frame}
-
-\begin{frame}{mutually exclusiveコールバックグループの特徴}
-    上記の設計により, \tb{同じmutually exclusiveコールバックグループに属すコールバックのインスタンスは並列に実行されない}
-\end{frame}
-
 
 \begin{frame}{ポーリングポイント}
     コールバックインスタンスは ready でもすぐには $\Omega$ に追加されず, ポーリングポイントのみで $\Omega$ に追加される
     \begin{definition}[ポーリングポイント]
-        $\Omega$ に eligible なコールバックが無く, スレッドがアイドル状態の場合に, ready のコールバックインスタンスを $\Omega$ に追加する時点
+        $\Omega$ に適格なコールバックが無く, スレッドがアイドル状態の場合に, ready のコールバックインスタンスを $\Omega$ に追加する時点
     \end{definition}
 \end{frame}
 
 \begin{frame}{スレッド}
     \begin{itemize}
-        \item \tb{$\Omega$ 内のeligibleなコールバックインスタンスは, $m$ 個のスレッドによって1つずつ選択され, ノンプリエンプティブに実行される}
+        \item \tb{$\Omega$ 内の適格なコールバックインスタンスは, $m$ 個のスレッドによって1つずつ選択され, ノンプリエンプティブに実行される}
         \item スレッドとは, 処理リソースの観点から, 対応するプロセッサを表すもの
     \end{itemize}
 \end{frame}
 
 \begin{frame}{コールバックインスタンスの優先度}
     \begin{itemize}
-        \item \tb{eligibleなコールバックインスタンスを選択する順序はそれらの優先度によって決定される}
+        \item \tb{適格なコールバックインスタンスを選択する順序はそれらの優先度によって決定される}
         \item 各コールバックには固定の固有の優先度があり, 全てのインスタンスがこの優先度を継承する
     \end{itemize}
 \end{frame}
