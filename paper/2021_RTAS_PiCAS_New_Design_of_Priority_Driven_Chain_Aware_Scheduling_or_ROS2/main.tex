@@ -26,29 +26,30 @@
 \maketitle
 
 % \summary{-5}{2}
-\input{abstract.tex}
+% \input{abstract.tex}
 
-% \begin{frame}{Outline}
-%     \setbeamertemplate{section in toc}[sections numbered]
-%     \scriptsize\tableofcontents[hideallsubsections]
-% \end{frame}
+\begin{frame}{Outline}
+    \setbeamertemplate{section in toc}[sections numbered]
+    \tiny\tableofcontents[hideallsubsections]
+\end{frame}
 
-% \input{introduction.tex}
-% \input{related_work.tex}
+\input{prior_knowledge.tex}
+\input{introduction.tex}
+\input{related_work.tex}
 \input{background_and_system_model.tex}
-% \input{challenges.tex}
+\forme{\input{challenges.tex}}
 \input{priority_driven_chain_aware_scheduling.tex}
-% \input{analysis_of_end_to_end_latency.tex}
-% \input{evaluation.tex}
-% \input{conclusion.tex}
+\input{analysis_of_end_to_end_latency.tex}
+\input{evaluation.tex}
+\input{conclusion.tex}
 
 \lastpage
 
-% \section*{Reference}
-% \begin{frame}[allowframebreaks]{Reference}
-%     \beamertemplatetextbibitems
-%     \bibliographystyle{unsrt}
-%     \bibliography{\beamerDir/bibtex/master_reference}
-% \end{frame}
+\section*{Reference}
+\begin{frame}[allowframebreaks]{Reference}
+    \beamertemplatetextbibitems
+    \bibliographystyle{unsrt}
+    \bibliography{\beamerDir/bibtex/master_reference}
+\end{frame}
 
 \end{document}

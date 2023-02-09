@@ -3,115 +3,6 @@
 \section{BACKGROUND AND SYSTEM MODEL}
 \label{sec: background_and_system_model}
 
-
-% \subsection{ROS2 architecture}
-% \label{ssec: ros2 architecture}
-
-% \begin{frame}{ROS2}
-%     \fitimage{
-%         ROS2 は複数の抽象化レイヤの統一された実装である
-%     }{ROS2.png}
-% \end{frame}
-
-% \begin{frame}{ROS2 詳細}
-%     \begin{itemize}
-%         \item アプリケーションは $\mathrm{C}++$ や Python などの言語固有のクライアントライブラリや, ROS コミュニティの他の多くのプログラミング言語によってサポートされている
-%         \item ROS クライアントライブラリ ($r c l)$ は, 異なる言語で記述されたプログラム間で一貫した動作を保証する API を提供する
-%         \item ROS ミドルウェアライブラリ $(r m w)$ は, $r c l$ と Data Distribution Service (DDS) 間の通信インターフェイスであり, DDS ベンダー固有に実装されている
-%         \item DDSは ROS2 に新たに追加された業界標準の標準のリアルタイム通信システムであり, ノードのpublisherとsubscriberの間でメッセージを交換する
-%     \end{itemize}
-% \end{frame}
-
-
-% \subsection{Scheduling-related abstractions}
-% \label{ssec: scheduling-related abstractions}
-
-% \begin{frame}{セクションサマリ}
-%     \begin{itembox}[l]{\textbf{目的}}
-%         ROS2 の基本的なスケジューリング関連の要素を説明する
-%     \end{itembox}
-% \end{frame}
-
-% \begin{frame}{コールバック}
-%     \begin{itemize}
-%         \item コールバックは, ROS2 でスケジュール可能な最小限のエンティティである
-%         \item ROS2 には, タイマ, サブスクリプション, サービス, クライアント, および待機可能なコールバックの 5 種類のコールバックがある
-%         \item タイマコールバックは, 独自のレートで定期的に到着する, すなわち, 時間によってトリガされる
-%         \item その他は, 外部イベントによってトリガされる, すなわち, イベントトリガである
-%         \item 基本的に, publisherとsubscriber間のメッセージの転送は, ROS2 でコールバック関数を実装することによって実現できる
-%     \end{itemize}
-% \end{frame}
-
-% \begin{frame}{ノード}
-%     \begin{itemize}
-%         \item ノードはコールバック関数の集合であり, 機能のモジュール化と論理分割のためにアプリケーションプログラマーによって編成されている
-%         \item 各ノードは, エグゼキュータへの最小割り当て単位としても機能する
-%         \item したがって, 同じノード内の全てのコールバックは同じエグゼキュータによって実行され, 2 つ以上のエグゼキュータに割り当てることはできない
-%         \item 一般に, 各アプリケーションは, ノードごとに複数のコールバックを持つ複数のノードで構成される
-%     \end{itemize}
-% \end{frame}
-
-% \begin{frame}{エグゼキュータ}
-%     \begin{itemize}
-%         \item エグゼキュータは, CPU コア (スレッド) で実行される OS レベルのスケジュール可能なエンティティであり, 割り当てられたコールバックを実行する
-%         \item エグゼキュータへのコールバックの割り当ては, ノードの抽象化によって行われる
-%         \item ノードがエグゼキュータに割り当てられると, コールバックの発信元に関係なく, それらのノードの全てのコールバックがエグゼキュータによって処理される
-%     \end{itemize}
-% \end{frame}
-
-% \begin{frame}{}
-%     \begin{itemize}
-%         \item エグゼキュータ内のコールバックスケジューリングは, 従来の優先度ベースのリアルタイムタスクスケジューリングとは全く異なり, 固有の動作がある
-%     \end{itemize}
-% \end{frame}
-
-% \begin{frame}{ エグゼキュータ固有の動作}
-%     \begin{itemize}
-%         \item コールバックの優先度はそのタイプによって決定される
-%               \begin{itemize}
-%                   \item タイマコールバックは常に最高の優先度を持ち, 他のものは前に示した順序で次に高い優先度を取得する
-%               \end{itemize}
-%         \item 全てのコールバックはノンプリエンプティブに実行される
-%         \item エグゼキュータは, 通信ミドルウェア層 $(\mathrm{rmw})$ と対話することにより, それぞれのキュー内の非タイマコールバックの準備ステータスを更新する
-%               \begin{itemize}
-%                   \item この更新はポーリングポイントと呼ばれ, 全てのキューが空のときに発生する
-%               \end{itemize}
-%         \item ready コールバックの更新により, 非タイマコールバックの優先度割り当てが無効になり, チェーンがラウンドロビンのような方法で実行される
-%     \end{itemize}
-% \end{frame}
-
-% \begin{frame}{チェーン}
-%     \begin{itemize}
-%         \item アプリケーション開発者はチェーンを構築できる
-%         \item チェーンは, 1 つ以上のノードのコールバック間のメッセージ交換によって定義される
-%         \item ROS2 はチェーンのプロパティを定義せず, エグゼキュータはコールバックスケジューリングでチェーンのタイミングとリソース要件を考慮しない
-%         \item しかし, チェーンのエンドツーエンドレイテンシは, 安全性が重要なリアルタイムシステムのパフォーマンスに大きな影響を与えるため, 本論文では, チェーンのスケジューリング, リソース割り当て, および分析に焦点を当てる
-%     \end{itemize}
-% \end{frame}
-
-% \begin{frame}{オーバーロード処理メカニズム}
-%     ROS2 は, タイマコールバックが 1 つ以上の周期を逃した場合に備えて, オーバーロード処理メカニズムを備えている
-%     \begin{block}{オーバーロード処理メカニズム}
-%         \setlength{\linewidth}{0.98\columnwidth}
-%         \begin{enumerate}
-%             \item 新しい値が次のタイマコールバックをトリガする時間を示すように, 現在の値にタイマコールバックの周期を追加することによって next\_call\_time 変数が更新される
-%             \item next\_call\_time が現在の時刻よりも遅れている場合は, 最初の手順が繰り返され, 最も早い将来の時刻が示される
-%         \end{enumerate}
-%     \end{block}
-% \end{frame}
-
-% \begin{frame}{オーバーロード詳細}
-%     \begin{itemize}
-%         \item オーバーロード処理メカニズムは, タイマコールバックの実行の開始時に発生する
-%         \item オーバーロードによって, 周期を逃したタイマジョブは自然にスキップされ, タイマコールバックは次の周期で実行できる
-%         \item オーバーロードが発生した場合, タイムトリガチェーンのエンドツーエンドレイテンシに課される最大レイテンシは, 過去にスキップされたタイマジョブの数に関係なく, タイマコールバックの最大 1 周期である
-%               \begin{itemize}
-%                   \item これは, チェーンインスタンスのリリース時刻が, タイマコールバックジョブが実行され, そのチェーンインスタンスを開始する周期の開始時刻によって実質的に決定されるためである
-%               \end{itemize}
-%     \end{itemize}
-% \end{frame}
-
-
 \subsection{System model}
 \label{ssec: system model}
 
@@ -183,7 +74,7 @@
               \begin{equation*}
                   \Gamma^{c}:=\left[\tau_{s}, \tau_{m 1}, \tau_{m 2}, \ldots, \tau_{e}\right]
               \end{equation*}
-        \item チェーンの開始コールバックはタイマコールバックであり, その他はレギュラーコールバックであると想定する
+        \item チェーンの開始コールバックはタイマコールバックであり, その他はレギュラーコールバック
               \notes{イベントによってトリガされるチェーンの場合, チェーンの最初のレギュラーコールバックを, イベントの到着周期を持つタイマコールバックとしてモデル化できる~\cite{casini2019response}}
               \forme{\item 従来のタスクモデルでの周期的なリアルタイムタスクは, 本論文のモデルでは単一のタイマコールバックチェーンとして表すことができる}
     \end{itemize}
