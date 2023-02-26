@@ -3,190 +3,244 @@
 \section{PRELIMINARIES}
 \label{sec: preliminaries}
 
-\begin{frame}{}
-    \begin{itemize}
-        \item AVは, 周辺環境を Perception し, 車両の状態を監視するための各種センサと, 操縦を制御するための複数のアクチュエータを搭載したサイバーフィジカルシステムである
-        \item センサには, LiDAR, Radar, カメラ, GNSS, IMU, オドメーターなどがあり, 自己位置推定 (LiDAR, GNSS) , 物体検出 (LiDAR, Radar, カメラ) , 推測航法 (IMU, オドメーター) などに利用されている
-        \item センサの種類によって, LiDARは50～200ms[8], カメラは33.3～100ms, GNSSは10～100ms[9]など, それぞれの周期でサンプリングデータを生成している
-    \end{itemize}
-\end{frame}
-\begin{frame}{}
-    \begin{itemize}
-        \item また, アクチュエータには, ステアリングホイールやスロットル/ブレーキペダルを操作するモータがあり, これらは, 例えば $10 \mathrm{~ms}$ という共通の制御周期で自動車電子 (AE) システムにより制御される
-        \item したがって, アクチュエータを有するAEシステムを, 例えば (目標加速度 $a$, 目標舵角 $\delta$ )というタプルの制御信号を受け付ける単一の仮想アクチュエータとして一括して扱うことができる
-    \end{itemize}
-\end{frame}
+% \begin{frame}{}
+%     \begin{itemize}
+%         \item AVは, 周辺環境を Perception し, 車両の状態を監視するための各種センサと, 操縦を制御するための複数のアクチュエータを搭載したサイバーフィジカルシステムである
+%         \item センサには, LiDAR, Radar, カメラ, GNSS, IMU, オドメーターなどがあり, 自己位置推定 (LiDAR, GNSS) , 物体検出 (LiDAR, Radar, カメラ) , 推測航法 (IMU, オドメーター) などに利用されている
+%         \item センサの種類によって, LiDARは50～200ms[8], カメラは33.3～100ms, GNSSは10～100ms[9]など, それぞれの周期でサンプリングデータを生成している
+%     \end{itemize}
+% \end{frame}
+% \begin{frame}{}
+%     \begin{itemize}
+%         \item また, アクチュエータには, ステアリングホイールやスロットル/ブレーキペダルを操作するモータがあり, これらは, 例えば $10 \mathrm{~ms}$ という共通の制御周期で自動車電子 (AE) システムにより制御される
+%         \item したがって, アクチュエータを有するAEシステムを, 例えば (目標加速度 $a$, 目標舵角 $\delta$ )というタプルの制御信号を受け付ける単一の仮想アクチュエータとして一括して扱うことができる
+%     \end{itemize}
+% \end{frame}
 
-\begin{frame}{}
-    \fitimage{
-        \begin{itemize}
-            \item 図 は一般的な AV スタックの上位概念である
-            \item 自己位置推定, 障害物検出追従, 経路計画, 軌道計画追従, 車両制御の 5 つのコア機能から構成されている
-        \end{itemize}
-    }{av_stack}
-\end{frame}
+% \begin{frame}{}
+%     \fitimage{
+%         \begin{itemize}
+%             \item 図 は一般的な AV スタックの上位概念である
+%             \item 自己位置推定, 障害物検出追従, 経路計画, 軌道計画追従, 車両制御の 5 つのコア機能から構成されている
+%         \end{itemize}
+%     }{av_stack}
+% \end{frame}
 
-\begin{frame}{}
-    \begin{itemize}
-        \item 上記のAVスタックは, メッセージで通信するタスクのグラフで実装されることを想定する
-        \item タスクグラフは, センサからデータを読み出すソースタスク, 制御信号を生成するシンクタスク, および両者の間の中間タスクから構成される
-        \item このタスクモデルは, ROS (Robot Operating System) ベースのオープンソースのAVスタック[1], [2]やAutoSAR[10]で広く使われているものである
-        \item ROS では, ノードと呼ばれる実行単位は, ROS のメッセージと明示的に通信する限り, プロセスかスレッドかに関わらず, タスクとしてモデル化することが可能である
-        \item また, AVスタックはマルチコアプロセッサを搭載したシングルボードコンピュータ上で動作することを想定する[11], [12]
-    \end{itemize}
-\end{frame}
+% \begin{frame}{}
+%     \begin{itemize}
+%         \item 上記のAVスタックは, メッセージで通信するタスクのグラフで実装されることを想定する
+%         \item タスクグラフは, センサからデータを読み出すソースタスク, 制御信号を生成するシンクタスク, および両者の間の中間タスクから構成される
+%         \item このタスクモデルは, ROS (Robot Operating System) ベースのオープンソースのAVスタック[1], [2]やAutoSAR[10]で広く使われているものである
+%         \item ROS では, ノードと呼ばれる実行単位は, ROS のメッセージと明示的に通信する限り, プロセスかスレッドかに関わらず, タスクとしてモデル化することが可能である
+%         \item また, AVスタックはマルチコアプロセッサを搭載したシングルボードコンピュータ上で動作することを想定する[11], [12]
+%     \end{itemize}
+% \end{frame}
 
 
 \subsection{Task Model}
 \label{ssec: task model}
 
-\begin{frame}{}
+\begin{frame}{DAGへのモデル化}
     \fitimage{
-        提案する解析では, 図 (a) に示すように, AVスタックのタスクグラフを有向非巡回グラフ (DAG) としてモデル化する
+        AVスタックのタスクグラフを有向非巡回グラフ (DAG) としてモデル化する
+    }{DAG}
+\end{frame}
+
+\begin{frame}{DAGの説明}
+    \begin{itemize}
+        \item あるタスク $\tau_{i}$ が $\tau_{j}$ に直接メッセージを送る場合, それを $\tau_{i} \rightarrow \tau_{j}$ と表記し, $\tau_{i}$ を $\tau_{j}$ の直接先行ノード, $\tau_{j}$ を $\tau_{i}$ の直接後続ノードと呼ぶ
+        \item 説明の便宜上, グラフに$\tau_\alpha, \tau_\Omega$の2つのダミータスクを追加する
+              \begin{block}{$\tau_\alpha$}
+                  \setlength{\linewidth}{0.98\columnwidth}
+                  \begin{itemize}
+                      \item ダミーソースタスク
+                      \item 元の全てのソースタスク ($\tau_{A}$ と $\tau_{E}$) にエッジを繋ぐ
+                  \end{itemize}
+              \end{block}
+              \begin{block}{$\tau_\Omega$}
+                  \setlength{\linewidth}{0.98\columnwidth}
+                  \begin{itemize}
+                      \item ダミーシンクタスク
+                      \item 元の全てのシンクタスク ($\tau_{D}$ と $\tau_{F}$) からエッジが接続される
+                  \end{itemize}
+              \end{block}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{閉路がある場合}
+    グラフ内の先行タスクにメッセージをフィードバックするタスクが存在し, 元のグラフに閉路が発生している場合, 先行タスクへのフィードバックを定期的に生成する仮想ソースタスクを作成することにより, 閉路を削除する
+\end{frame}
+
+\begin{frame}{サブグラフ}
+    \fitimage{
+        DAGは, それぞれが同じ周期で周期的にリリースされるタスクからなるサブグラフに分解できる
     }{task_graph}
 \end{frame}
 
-\begin{frame}{}
+\begin{frame}{周期に関する仮定}
+    本論文では, 任意のパス $\Gamma^{1} \rightarrow \Gamma^{2} \rightarrow \cdots \rightarrow \Gamma^{L}$ に対して, 関係するサブグラフの周期が降順, すなわち $T^{1} \geq T^{2} \geq \cdots \geq T^{L}$ を持つと仮定する
+    \begin{block}{設計理由}
+        ロストしたメッセージに対するエンドツーエンドレイテンシを定義できないため, グラフ間通信でメッセージのロストがないことを保証する
+    \end{block}
+\end{frame}
+
+% \begin{frame}{}
+%     \begin{itemize}
+%         \item したがって, $\Gamma^{l+1}$ の全てのインスタンスは, 単一の出力メッセージの計算のために, $\Gamma^{l}$ から複数の入力メッセージを一度に消費する必要がある
+%         \item このとき, $\Gamma^{l+1}$ から見て冗長であったり古かったりする入力メッセージは削除してもよい
+%         \item 例えば, AVスタックでは, 自己位置推定や物体追跡で必要な状態推定は, 一般に最新の入力メッセージのみを使用する
+%         \item 我々の観察によれば, AVスタックでは, 以下の理由により, 上記の条件を容易に受け入れることができる
+%         \item まず, 前述したように, 一般にセンサの周期はアクチュエーターの周期より長い
+%         \item したがって, メッセージがサブグラフの列に流れ込むと, 各サブグラフの周期がだんだん短くなるような傾向が存在する
+%     \end{itemize}
+% \end{frame}
+
+% \begin{frame}{}
+%     \begin{itemize}
+%         \item 第二に, この傾向はセンサフュージョンにおいて顕著に現れる
+%         \item 例えば, 後述の図6 (a) に示す我々のカスタマイズしたAutowareでは, RVFタスクは $50 \mathrm{~ms}$ ごとに, $100 \mathrm{~ms}$ の周期を持つLidar由来のメッセージと $50 \mathrm{~ms}$ の周期を持つカメラ由来のメッセージをフュージョンさせる
+%         \item 条件に違反する部分グラフのパスは, その周期を調整するだけで条件を満たすように書き換えることができる
+%     \end{itemize}
+% \end{frame}
+
+\begin{frame}{タスクのアクティベーションタイミング}
+    \begin{block}{ソースタスクの場合}
+        サブグラフがリリースされた時点で実行可能
+    \end{block}
+    \begin{block}{中間タスクやシンクタスクの場合}
+        以下の場合に実行可能になる
+        \setlength{\linewidth}{0.98\columnwidth}
+        \begin{itemize}
+            \item 異なるサブグラフの先行タスクからのメッセージを受信した時
+            \item 同じサブグラフの全ての直前タスクからのメッセージを受信した時
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}{タスク間通信の方法}
+    \begin{block}{同じサブグラフ内の場合}
+        ブロッキング $I / O$
+    \end{block}
+    \begin{block}{異なるサブグラフ間の場合}
+        ノンブロッキング $I / O$
+    \end{block}
+    \vspace{5mm}
+    \begin{block}{設計理由}
+        各サブグラフの周期を保つために, 周期の異なる2つサブグラフ間でブロッキングI/Oを許可できないため
+    \end{block}
+\end{frame}
+
+\begin{frame}{タスク間通信例}
+    \fitimage{
+        $\tau_{F}$ は太い辺の $\tau_{E} \rightarrow \tau_{F}$ のグラフ内通信に対してブロッキング $I / O$ を行い, 破線の $\tau_{B} \rightarrow \tau_{F}$ のグラフ間通信に対してノンブロッキング $I / O$ を行う
+    }{task_graph}
+\end{frame}
+
+\begin{frame}{メッセージ送信・受信タイミング}
     \begin{itemize}
-        \item あるタスク $\tau_{i}$ が $\tau_{j}$ に直接メッセージを送る場合, それを $\tau_{i} \rightarrow \tau_{j}$ と表記し, $\tau_{i}$ を $\tau_{j}$ の直接前任ノード, $\tau_{j}$ を $\tau_{i}$ の直接後続ノードと呼ぶことにした
-        \item 前者は全てのソースタスク($\tau_{A}$ と $\tau_{E}$)を指し, 後者は全てのシンクタスク($\tau_{D}$ と $\tau_{F}$)が指す
-        \item グラフ内の先行タスクにメッセージをフィードバックするタスクが存在し, 元のグラフにサイクルが発生している場合, 先行タスクへのフィードバックを定期的に生成する仮想ソースタスクを作成することにより, サイクルを削除する
+        \item タスクが後続ノードにメッセージを送信するタイミングは, タスクが実行を終了した時点
+        \item 各タスクはI/Oモードに関係なく, 実行を開始した時点でメッセージを読み込む
     \end{itemize}
 \end{frame}
 
-\begin{frame}{}
+\begin{frame}{各タスクのリリースタイミング}
+    $\tau_i^k$ の $j$ 番目のインスタンス $\tau_{i, j}^{k}$ は, $\varphi^{k}+\phi_{i}^{k}+(j-1) \times T^{k}$ でリリースされる
+    \begin{block}{グラフ位相 $\varphi^{k}$}
+        $\Gamma^{k}$ のリリース時刻と基準時間の原点 $\left(0 \leq \varphi^{k}<\right.$  $\left.T^{k}\right)$ との相対オフセット
+    \end{block}
+    \begin{block}{タスク位相 $\phi_{i}^k$}
+        $\Gamma^{k}$ 内の各タスク $\tau_{i}^k$ の $\varphi^{k}$ に対する相対オフセット
+    \end{block}
+    \begin{block}{絶対タスク位相 $\Phi_{i}^{k}$}
+        $\Gamma^{k}$ 内の $\tau_{i}^{k}$ の絶対タスク位相 $\Phi_{i}^{k}$ は, $\varphi^{k}+\phi_{i}^{k}$
+    \end{block}
+\end{frame}
+
+\begin{frame}{確率的実行時間}
     \begin{itemize}
-        \item そして, モデル化されたグラフは, それぞれが同じ周期で周期的にリリースされるタスクからなるいくつかの不連続なサブグラフに分解できる
-        \item 前述したように, AVスタックでは, 各タスクは, センサやアクチュエータと関連して, あるいはそれ自身の必要性から定義される周期 $T$ を持つ
-        \item 図2 (a) のタスクグラフの例では, 周期 $T^{1}$ の $\Gamma^{1}$ と周期 $T^{2}$ の $\Gamma^{2}$ に分割されているので, 図2 (a) の右側に示す2つのサブグラフに $\Gamma^{\alpha}$ と $\Gamma^{\Omega}$ というダミーを加えたグラフとして理解できる
-        \item この抽象化されたグラフもDAGである
-        \item $\Gamma^{k}$ が $\Gamma^{l}$ に直接メッセージを送る場合, $\Gamma^{k} \rightarrow \Gamma^{l}$ と表記する
+        \item 各タスク $\tau_{i}^{k}$ は確率的な実行時間 $C_{i}^{k}$ を持つ
+        \item $C_{i}^{k}$ の確率分布は, 実際の代表的なセンサワークロードから生成した publish メッセージによるタスクのプロファイリング, あるいは publish メッセージからの極値理論 [6]や拡張経路網羅法 [7] による確率的推論によって得られる
+        \item あるタスクの実行時間は同一分布で, 他のタスクの実行時間とは独立であると仮定する
     \end{itemize}
 \end{frame}
 
-\begin{frame}{}
-    \begin{itemize}
-        \item 本論文では, 抽象化グラフで見つかった任意のパス $\Gamma^{1} \rightarrow \Gamma^{2} \rightarrow \cdots \rightarrow \Gamma^{L}$ に対して, 関係するサブグラフが非増加期間の順序, すなわち $T^{1} \geq T^{2} \geq \cdots \geq T^{L}$ を持つようなDAGを考えている
-        \item この条件は, 提案する解析が, グラフ間通信でメッセージの脱落がないことを仮定しているため, 必要な条件である
-        \item この仮定をするのは, 脱落したメッセージに対するエンドツーエンドレイテンシを定義できないからである
-        \item $\Gamma^{l} \rightarrow \Gamma^{l+1}$, すなわち $T^{l}<T^{l+1}$ でこの条件が成立しない場合, $\Gamma^{l}$ は $\Gamma^{l+1}$ が消費するメッセージより速くメッセージを生成することを意味する
-    \end{itemize}
+\begin{frame}{確率的応答時間}
+    \begin{block}{確率的応答時間 $R_{i, j}^{k}$}
+        $R_{i, j}^{k} = \eta_{i, j}^{k}-\lambda_{i, j}^{k}$
+        \setlength{\linewidth}{0.98\columnwidth}
+        \begin{itemize}
+            \item \desc{$\lambda_{i, j}^{k}$}{$\tau_{i, j}^{k}$ のリリース時刻}
+            \item \desc{$\eta_{i, j}^{k}$}{$\tau_{i, j}^{k}$ の完了時刻}
+        \end{itemize}
+    \end{block}
 \end{frame}
 
-\begin{frame}{}
-    \begin{itemize}
-        \item したがって, $\Gamma^{l+1}$ の全てのインスタンスは, 単一の出力メッセージの計算のために, $\Gamma^{l}$ から複数の入力メッセージを一度に消費する必要がある
-        \item このとき, $\Gamma^{l+1}$ から見て冗長であったり古かったりする入力メッセージは削除してもよい
-        \item 例えば, AVスタックでは, 自己位置推定や物体追跡で必要な状態推定は, 一般に最新の入力メッセージのみを使用する
-        \item 我々の観察によれば, AVスタックでは, 以下の理由により, 上記の条件を容易に受け入れることができる
-        \item まず, 前述したように, 一般にセンサの周期はアクチュエーターの周期より長い
-        \item したがって, メッセージがサブグラフの列に流れ込むと, 各サブグラフの周期がだんだん短くなるような傾向が存在する
-    \end{itemize}
-\end{frame}
+% \begin{frame}{}
+%     \begin{itemize}
+%         \item 本タスクモデルでは, このようなCPUとGPUの両方を使用するタスクを許可している
+%         \item この場合, そのようなタスクのGPUコードは, 同じタスクのCPUコードと非同期で実行されるかもしれない
+%         \item しかし, $\mathrm{CPU}$ とGPUコードの並列実行は, タスクが終了する前に全て同期していると考えて差し支えない
+%         \item なぜなら, 全てのタスク (シンクタスクを除く) は, 後続タスクにメッセージを送信するためのCPUコードで終了するからである
+%         \item すなわち, GPUコードの全ての非同期実行は, 最後のCPUコードが出力メッセージを生成する前に終了する必要がある
+%         \item これらの CPU コードは, CPU コアと GPU の間の同期ポイントとして機能する
+%         \item なお, タスクの全実行時間は, タスク間で GPU の競合があろうとなかろうと, 単純にタスクの開始時刻と終了時刻の差として定義される
+%         \item 純粋な GPU 実行時間を正確にモデル化することは, 本論文の 範囲外である
+%     \end{itemize}
+% \end{frame}
 
-\begin{frame}{}
-    \begin{itemize}
-        \item 第二に, この傾向はセンサフュージョンにおいて顕著に現れる
-        \item 例えば, 後述の図6 (a) に示す我々のカスタマイズしたAutowareでは, RVFタスクは $50 \mathrm{~ms}$ ごとに, $100 \mathrm{~ms}$ の周期を持つLidar由来のメッセージと $50 \mathrm{~ms}$ の周期を持つカメラ由来のメッセージをフュージョンさせる
-        \item 条件に違反する部分グラフのパスは, その周期を調整するだけで条件を満たすように書き換えることができる
-        \item 本モデルでは, 全てのタスクがリリースと同時に実行可能になるわけではない
-        \item ソースタスクはリリースされた時点で実行可能になる
-    \end{itemize}
-\end{frame}
-
-\begin{frame}{}
-    \begin{itemize}
-        \item 中間タスクやシンクタスク($\tau_{F}$)は, 異なるサブグラフの先行タスク($\left.\tau_{B}\right)$)からのメッセージを受信しても, 同じサブグラフの全ての直前タスク($\tau_{E}$)からのメッセージを受信しても, すぐに実行可能になる (例: $\left.\tau_{B}\right)$
-        \item すなわち, $\tau_{F}$ は, 図2 (a) において太い辺で表される $\tau_{E} \rightarrow \tau_{F}$ のグラフ内通信に対してブロッキング $I / O$ を行い, 破線で表される $\tau_{B} \rightarrow \tau_{F}$ のグラフ間通信に対してノンブロッキング $I / O$ を行う
-    \end{itemize}
-\end{frame}
-
-\begin{frame}{}
-    \begin{itemize}
-        \item この仮定の根拠は, 各タスク (またはサブグラフ) の周期を保つために, 周期の異なる2つのタスク (またはサブグラフ) 間でブロッキングI/Oを許可することができないためである
-        \item タスクが後続ノードにメッセージを送信するタイミングについては, タスクが実行を終了した時点で送信することを想定する
-        \item また, 各タスクはI/Oモードに関係なく, 実行の途中ではなく, 実行を開始した時点でメッセージを読み込むと仮定する
-        \item どちらの仮定も, 常に悲観的な分析になるという点で安全であることに注意
-    \end{itemize}
-\end{frame}
-
-\begin{frame}{}
-    \begin{itemize}
-        \item サブグラフのリリース時刻については, サブグラフ $\Gamma^{k}$ の (その中で最初にリリースされた) リリース時刻と基準時間の原点 $\left(0 \leq \varphi^{k}<\right.$  $\left.T^{k}\right)$ との相対オフセットを $\varphi^{k}$ と定義している
-        \item これを $\Gamma^{k}$ のグラフ位相と呼ぶ
-        \item 次に, サブグラフ内の各タスク $\tau_{i}$ の $\varphi^{k}$ に対する相対オフセット $\phi_{i}$ を, タスク位相と呼ぶことにする
-        \item すなわち, サブグラフ $\Gamma^{k}$ 内の $\tau_{i}^{k}$ の絶対タスク位相 $\Phi_{i}^{k}$ は, $\varphi^{k}+\phi_{i}^{k}$ と等しくなる
-        \item したがって, $j$ 番目のインスタンス $\tau_{i, j}^{k}$ は, $\varphi^{k}+\phi_{i}^{k}+(j-1) \times T^{k}$ でリリースされる
-    \end{itemize}
-\end{frame}
-
-\begin{frame}{}
-    \begin{itemize}
-        \item 各タスク $\tau_{i}^{k}$ は確率的な実行時間 $C_{i}^{k}$ を持ち, これは離散的な確率変数と見なされている
-        \item $C_{i}^{k}$ の確率分布, すなわち実行時間分布 (ETD) は, 実際の代表的なセンサワークロードから生成した極めて多数のpublish メッセージによるタスクのプロファイリング, あるいは比較的少数のpublish メッセージから極値理論 [6]や拡張経路網羅法 [7] による確率的推論によって得ることができる
-        \item したがって, $\tau_{i, j}^{k}$ の応答時間 $R_{i, j}^{k}$ も確率変数であり, $\eta_{i, j}^{k}$ と $\lambda_{i, j}^{k}$ はそれぞれ $\tau_{i, j}^{k}$ の完了時間とリリース時刻であり, $\eta_{i, j}^{k}-\lambda_{i, j}^{k}$ と定義される
-        \item $\eta_{i, j}^{k}$ と $\lambda_{i, j}^{k}$ はそれぞれ $\tau_{i, j}^{k}$ と $\tau_{i, j}^{k}$ の完了時間とリリース時刻である
-        \item したがって, $\tau_{i}^{k}$ の応答時間分布 (RTD) は, それら のタスクからの干渉を含んで定義される
-        \item 確率的な解析が可能なように, あるタスクの実行時間は同一分布で, 同じサブグラフ内の他のタスクや他のサブグラフのタスクの実行時間とは独立であると仮定する
-    \end{itemize}
-\end{frame}
-
-\begin{frame}{}
-    \begin{itemize}
-        \item 本タスクモデルでは, このようなCPUとGPUの両方を使用するタスクを許可している
-        \item この場合, そのようなタスクのGPUコードは, 同じタスクのCPUコードと非同期で実行されるかもしれない
-        \item しかし, $\mathrm{CPU}$ とGPUコードの並列実行は, タスクが終了する前に全て同期していると考えて差し支えない
-        \item なぜなら, 全てのタスク (シンクタスクを除く) は, 後続タスクにメッセージを送信するためのCPUコードで終了するからである
-        \item すなわち, GPUコードの全ての非同期実行は, 最後のCPUコードが出力メッセージを生成する前に終了する必要がある
-        \item これらの CPU コードは, CPU コアと GPU の間の同期ポイントとして機能する
-        \item なお, タスクの全実行時間は, タスク間で GPU の競合があろうとなかろうと, 単純にタスクの開始時刻と終了時刻の差として定義される
-        \item 純粋な GPU 実行時間を正確にモデル化することは, 本論文の 範囲外である
-    \end{itemize}
-\end{frame}
-
-\begin{frame}{}
-    \begin{itemize}
-        \item この解析の目的は, AVスタックにおけるセンシングから制御までの安全なエンドツーエンドレイテンシ分布 (LD) を計算することである
-        \item 例えば, 図 2(a)のタスクグラフの CPU スケジュールが可能な場合のエンドツーエンドレイテンシ $L\left(\tau_{A} \rightarrow \tau_{F}\right)$ を図 2(b)に示す
-        \item $L\left(\tau_{s r c} \rightarrow \tau_{s i n k}\right)$ または $L_{\tau_{s i n k}}^{\tau_{s s c}}$ は, $\tau_{s r c}$ のリリースから $\tau_{s i n k}$ の完了までのエンドツーエンドレイテンシを示す
-        \item エンドツーエンドレイテンシは, 単にパスに関わる全タスクの実行時間の総和ではないことに注意する
-        \item 図2 (b) に示すように, $L\left(\tau_{A} \rightarrow \tau_{F}\right)$ の場合, $\tau_{D}$ の完了から $\tau_{E}$ のリリースまでのアイドルタイムが含まれる
-        \item このように, 本分析では, タスクやサブグラフの位相の影響もモデル化することになる
-        \item また, DAGの中には, 注目すべきパスが複数存在する場合がある ことに注意
-    \end{itemize}
+\begin{frame}{エンドツーエンドレイテンシ}
+    \fitimage{
+        分析の目的は, AVスタックにおけるセンシングから制御までの安全なエンドツーエンドレイテンシ分布を計算すること
+        % \item エンドツーエンドレイテンシは, 単にパスに関わる全タスクの実行時間の総和ではないことに注意する
+        % \item 図2 (b) に示すように, $L\left(\tau_{A} \rightarrow \tau_{F}\right)$ の場合, $\tau_{D}$ の完了から $\tau_{E}$ のリリースまでのアイドルタイムが含まれる
+        % \item このように, 本分析では, タスクやサブグラフの位相の影響もモデル化することになる
+        % \item また, DAGの中には, 注目すべきパスが複数存在する場合があることに注意
+    }{end_to_end_latency}
 \end{frame}
 
 
 \subsection{Scheduling Model}
 \label{ssec: scheduling model}
 
-\begin{frame}{}
+\begin{frame}{使用スケジューリングアルゴリズム}
+    完全パーティショニングEDF (Earliest Deadline First) スケジューリングを使用する
+    \begin{block}{完全パーティショニングEDF}
+        \setlength{\linewidth}{0.98\columnwidth}
+        \begin{itemize}
+            \item 各サブグラフ $\Gamma^{k}$ に, パーティション (CPUコアのセット) $P^{k}$ を割り当てる
+            \item 各パーティション $P^{k}$ において, 全てのタスク $\tau_{i}^{k}$ は特定のコアに静的に割り当てられ, $P^{k}$ 内のコア間および $P^{k}$ 間のマイグレーションは許可されない
+            \item デッドラインが最も早いタスクを優先する
+            \item 2つのタスクの絶対デッドラインが同じ場合は, タスクインデックスが小さい方を選択する
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}{デッドラインの決め方}
     \begin{itemize}
-        \item 完全パーティション化されたEDF (Earliest Deadline First) スケジューリングを使用する
-        \item 各サブグラフ $\Gamma^{k}$ には, CPUコアのパーティションセット $P^{k}$ が割り当てられ, $K$ のサブグラフがあれば, 最低でも $K$ のコアが必要になる
-        \item 各パーティション $P^{k}$ において, 全てのタスク $\tau_{i}^{k}$ は特定のコアに静的に割り当てられ, $P^{k}$ 内のコア間および $P^{k}$ 間の移動は許可されない
-        \item そして, 各コアにおいて, $\tau_{i}^{k}$ の相対デッドライン $D_{i}^{k}$ が $T^{k}$ と等しいと仮定してEDFスケジューリングを行う
-        \item すなわち, $\tau_{i, j}^{k}$ の絶対デッドライン $d_{i, j}^{k}$ は $\lambda_{i, j}^{k}+T^{k}$ であり, 値が小さいほど優先度が高いことを意味する2つのタスクの絶対デッドラインが同じ場合は, 常に $i$ のタスクインデックスが小さい方を選択することで同点を解消する
+        \item $\tau_{i}^{k}$ の相対デッドライン $D_{i}^{k}$ が $T^{k}$ と等しいと仮定する
+        \item すなわち, $\tau_{i, j}^{k}$ の絶対デッドラインは $d_{i, j}^{k} = \lambda_{i, j}^{k}+T^{k}$
     \end{itemize}
 \end{frame}
 
-\begin{frame}{}
+\begin{frame}{完全パーティショニングEDF例}
+    \fullimage{scheduling_example}
+\end{frame}
+
+\begin{frame}{スケジューリングの例 [実際の実行]}
     \begin{itemize}
-        \item DAGにおけるEDFスケジューリングの仕組みを理解するために, 図3のような例を考えてみよう
-        \item この例では, 優先度 $\left(\tau_{A}\right)>\operatorname{priority}\left(\tau_{B}\right)>$ は $\tau_{A}, \tau_{B}$ のリリース順なので $\left(\tau_{C}\right)$ を優先し, $\tau_{C}$ は同じ周期なので直ちに絶対デッドライン順となる
+        \item 優先度は絶対デッドライン順であり, 全てのタスクの周期は同じなので, 単純にリリース順の $\tau_{A} > \tau_{B} > \tau_{C}$ となる
         \item グラフによると, $\tau_{A}$ の実行が終了すると $\tau_{C}$ はすぐに実行可能になるが, $\tau_{D}$ が終了しなければ $\tau_{B}$ は実行可能にならない
         \item この場合, $\tau_{C}$ はCPU1を占有し, 実行を開始する
-        \item しかし, $\tau_{C}$ が終了する前に $\tau_{D}$ が終了すると, $\tau_{B}$ は直ちに実行可能状態になり, $\tau_{C}$ を先取りしてCPU 1を奪還する
+        \item $\tau_{C}$ が終了する前に $\tau_{D}$ が終了すると, $\tau_{B}$ は直ちに実行可能状態になり, $\tau_{C}$ をプリエンプトしてCPU 1を奪う
+        \item そして, $\tau_{B}$ の終了後, $\tau_{C}$ が再開される
     \end{itemize}
 \end{frame}
 
-\begin{frame}{}
+\begin{frame}{スケジューリングの例 [分析]}
     \begin{itemize}
-        \item
-        \item そして, $\tau_{B}$ の終了後, $\tau_{C}$ が再開される
-        \item 解析では, 図3の下半分に示すように, $\tau_{B}$ が終了した後, 必ず $\tau_{C}$ が実行を開始すると仮定して, このようなプリエンプトシナリオを安全にモデル化することにしている
-        \item 解析の観点からは, これによってEDFスケジューリングはプリエンプトのないFCFS (First Come First Served) に縮退される
-        \item この仮定は解析にとって悲観的なアーティファクトに見えますが, $\tau_{D}$ が $\tau_{B}$ にレイテンシを与えないように, タスクスケジュールの中で $\tau_{D}$ をかなり早くリリースするだけで, アーティファクトの悪影響を軽減できる
+        \item 分析では, $\tau_{B}$ が終了した後に $\tau_{C}$ が実行を開始すると仮定して, このようなプリエンプトシナリオを安全にモデル化する
+        \item すなわち, 分析の観点からは, EDFスケジューリングをプリエンプトのないFCFS (First Come First Served) として扱う
+              % \item この仮定は分析にとって悲観的なアーティファクトに見えますが, $\tau_{D}$ が $\tau_{B}$ にレイテンシを与えないように, タスクスケジュールの中で $\tau_{D}$ をかなり早くリリースするだけで, アーティファクトの悪影響を軽減できる
     \end{itemize}
 \end{frame}
 
@@ -194,21 +248,36 @@
 \subsection{Problem Statement}
 \label{ssec: problem statement}
 
-\begin{frame}{}
+\begin{frame}{セクションサマリ}
+    \begin{itembox}[l]{\textbf{目的}}
+        我々が考える問題を定式化する
+    \end{itembox}
+\end{frame}
+
+\begin{frame}{タスクの定式化}
     \begin{itemize}
-        \item 上記のタスクモデルとスケジューリングモデルから, 我々の問題を以下のように定式化できる
-        \item まず, サブグラフ $\Gamma^{k}$ のタスク $\tau_{i}^{k}$ は, $\phi_{i}^{k}$ を $\tau_{i}^{k}, a_{i}^{k}$ のタスクフェーズ, $\tau_{i}^{k}$ を割り当てられたCPUコアのID, $C_{i}^{k}$ を $\tau_{i}^{k}$ の割り当てコアでの確率的実行時間として $\left(\phi_{i}^{k}, a_{i}^{k}, C_{i}^{k}\right)$ に定義される
-        \item 次に, 部分グラフ $\Gamma^{k}$ は, $T^{k}$ をグラフ位相の期間, $V^{k}$ を頂点となるタスクの集合, すなわち $\left\{\tau_{1}^{k}, \cdots, \tau_{n_{k}}^{k}\right\}$, $E^{k}$ をタスク間の有向辺の集合とした $\left(T^{k}, \varphi^{k}, V^{k}, E^{k}\right)$ として定義される
+        \item サブグラフ $\Gamma^{k}$ のタスク $\tau_{i}^{k}$ は, $\left(\phi_{i}^{k}, a_{i}^{k}, C_{i}^{k}\right)$ に定義される
+        \begin{itemize}
+            \item \desc{$a_{i}^{k}$}{$\tau_{i}^{k}$ が割り当てられたCPUコアのID}
+        \end{itemize}
+        \item 部分グラフ $\Gamma^{k}$ は, $\left(T^{k}, \varphi^{k}, V^{k}, E^{k}\right)$ として定義される
+        \begin{itemize}
+            \item \desc{$V^{k}$}{頂点であるタスクの集合}
+            \item \desc{$E^{k}$}{タスク間のエッジの集合}
+        \end{itemize}
+        \item グラフ全体 $\Gamma$ は $\left\{\Gamma^{1}, \cdots, \Gamma^{K}\right\}$ と定義される
     \end{itemize}
 \end{frame}
 
-\begin{frame}{}
+\begin{frame}{目標の定式化}
     \begin{itemize}
-        \item そして, グラフ全体 $\Gamma$ は $\left\{\Gamma^{1}, \cdots, \Gamma^{K}\right\}$ と定義される
-        \item したがって, 我々の目標は, タスクの各経路 $S$ について, 実システムで観測されるものを上回るエンドツーエンドレイテンシ分布を得ることである
-        \item $h$ ハイパー期間内にリリースされたパス $S$ の $j$ 番目のインスタンスを $S_{j}^{\langle h>}$ とし, $L\left(S^{<h>}\right)$ を $h$ ハイパー期間内にリリースされた全ての $S$ インスタンスの終了時レイテンシを記述する確率変数として定義する
-        \item ハイパーピリオドは, 長さが全ての期間の最小公倍数に等しい期間, すなわち, $T^{1}, T^{2}, \cdots$, $T^{K}$ である
-        \item 各コアの最大利用率が $1.0$ を超える場合まで考慮するので, システムが定常状態に達したときに得られる $L\left(S^{<h>}\right)$ の定常分布を求めようとする
-        \item この分布は, $h \rightarrow \infty$ に近づくことで得られる極限分布と定義される
+        \item 我々の目標は, タスクの各経路 $S$ について, 実システムで観測されるものを上回るエンドツーエンドレイテンシ分布を得ること
+        \item 各コアの最大利用率が $1.0$ を超える場合まで考慮するので, システムが定常状態に達したときに得られる $L\left(S^{<h>}\right)$ の定常分布を求める
+        % \item この分布は, $h \rightarrow \infty$ に近づくことで得られる極限分布と定義される
+        \begin{itemize}
+            \item \desc{ハイパーピリオド}{全ての周期の最小公倍数に等しい期間}
+            \item \desc{$S_{j}^{<h>}$}{$h$ 番目のハイパーピリオド内にリリースされたパス $S$ の $j$ 番目のインスタンス}
+            \item \desc{$L\left(S^{<h>}\right)$}{$h$ 番目のハイパーピリオド内にリリースされた全ての $S$ のインスタンスのエンドツーエンドレイテンシを記述する確率変数}
+        \end{itemize}
     \end{itemize}
 \end{frame}

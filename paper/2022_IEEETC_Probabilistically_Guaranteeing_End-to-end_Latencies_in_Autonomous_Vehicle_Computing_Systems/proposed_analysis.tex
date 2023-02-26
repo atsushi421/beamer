@@ -3,222 +3,248 @@
 \section{PROPOSED ANALYSIS}
 \label{sec: proposed analysis}
 
-\begin{frame}{}
-    \begin{itemize}
-        \item 提案する解析は, グラフ内解析とグラフ間解析の2つのステージに分けられる
-\item 第一段階では, 各 $\Gamma_{k}$ 内の各タスクのレイテンシ分布 (WTD) とRTDを, 他のサブグラフとは独立に計算する
-\item 第2段階では, 得られたタスクのRTDから, 各パス $S$ のend-to-end LDを導出する
-    \end{itemize}
+\begin{frame}{分析の流れ}
+    提案する分析は, グラフ内分析とグラフ間分析の2つのステージに分けられる
+    \begin{block}{グラフ内分析}
+        各 $\Gamma_{k}$ 内の各タスクのレイテンシ分布とRTDを, 他のサブグラフとは独立に計算する
+    \end{block}
+    \begin{block}{グラフ間分析}
+        得られたタスクのRTDから, 各パス $S$ のエンドツーエンドレイテンシ分布を導出する
+    \end{block}
 \end{frame}
 
 
 \subsection{Intra-graph Analysis}
 \label{ssec: intra-graph analysis}
 
-\begin{frame}{}
-    \begin{itemize}
-        \item グラフ内解析は3つのステップから構成される
-\item (1)グラフ変換, (2)タスクRTDの計算, (3)グラフ内エンドツーエンドLDの計算の3ステップからなる
-    \end{itemize}
+\begin{frame}{セクションサマリ}
+    \begin{itembox}[l]{\textbf{目的}}
+        グラフ内分析を行う
+    \end{itembox}
+    \begin{itembox}[l]{\textbf{流れ}}
+        \begin{enumerate}
+            \item グラフ変換
+            \item タスクRTDの計算
+            \item グラフ内エンドツーエンドレイテンシ分布の計算
+        \end{enumerate}
+    \end{itembox}
 \end{frame}
 
-\begin{frame}{}
-    \begin{itemize}
-        \item グラフ変換を行う
-\item タスクグラフ全体を分解して得られた $\Gamma^{k}$ に対して, それぞれ独立にイントラグラフ解析を行う
-\item $\Gamma^{k}$ の全てのタスクは, 同じ周期 $T^{k}$ を持ち, タスク間通信にブロッキングI/Oを使用する
-\item グラフ内解析では, まず, 各 $\Gamma^{k}$ をタスクプリエンプションのないグラフに変換する
-\item この変換は, 次のLemmaで説明するように, $\Gamma^{k}$ の全てのタスクを直列化することで可能である
-\item 得られたグラフは, [13]で提案された解析を拡張することによって解析できる
-\item 先の解析はタスクのパイプラインのみを扱うが, 我々の拡張解析は任意のDAGを扱う
-    \end{itemize}
+\begin{frame}{サブグラフの直列化}
+    \begin{block}{直列化}
+        \begin{enumerate}
+            \item $\Gamma$ に対して, コア $m$ 上に割り当てられたタスクセットを $L_{m}$ とする
+            \item $L_{m}$ 上では, あるタスク $\tau_{j}$ が先行ノード $\tau_{i}$ より早くリリースされても意味がないので, $\lambda_{j}<\lambda_{i}$ の場合 $\tau_{i} \rightarrow \tau_{j}$ は存在しないとする
+            \item リリース時刻の昇順に従って, $\lambda_{i} \leq \lambda_{j}$なら $i<j$ となるようにタスクに番号を振る
+            \item $\lambda_{i}=\lambda_{j}$ で $\tau_{i} \rightarrow \tau_{j}$ があれば, $i$ は $j$ より小さくなければならない
+            \item このリストにおいて, $\tau_{i}$ と $\tau_{i+1}$ が連続して存在し, その間にエッジがない場合, $\tau_{i} \rightarrow \tau_{i+1}$ となるようなエッジを追加する
+        \end{enumerate}
+    \end{block}
 \end{frame}
 
-\begin{frame}[label=lemma1]{lemma 1}
-    \begin{lemma}[直列化]
+\begin{frame}[label=lemma1]{直列化サブグラフの応答時間}
+    \begin{lemma}[]
         \begin{itemize}
-            \item 同じ周期のタスクのグラフ $\Gamma$ に対して, コア $m$ 上に割り当てられたタスクのリストを $L_{m}$ とする
-\item $L_{m}$ 上では, あるタスク $\tau_{j}$ が前任ノード $\tau_{i}$ より早くリリースされても意味がないので, $\tau_{i} \rightarrow \tau_{j}$ と $\lambda_{j}<\lambda_{i}$ を結ぶような辺は存在しないものとする
-\item 次に, リリース時刻の昇順に従って, $i<j$ なら $\lambda_{i} \leq \lambda_{j}$ となるようにタスクに番号を振る
-\item $\lambda_{i}=\lambda_{j}$ と $\tau_{i} \rightarrow \tau_{j}$ があれば, $i$ は $j$ より小さいはずである
-\item この順序付きリストにおいて, $\tau_{i}$ と $\tau_{i+1}$ の2つのタスクが連続して存在し, その間にエッジがない場合, $\tau_{i} \rightarrow \tau_{i+1}$ となるようなエッジを追加する
-\item 各コアの順序付きタスクリストを補強した結果のグラフを $\Gamma^{\text {serial }}$ とする
-\item すると, $\Gamma^{\text {serial }}$ における各タスクの応答時間は, 常に $\Gamma$ で得られた応答時間以上となる
+            \item 直列化サブグラフを $\Gamma^{\text {serial}}$ とする
+            \item $\Gamma^{\text {serial }}$ における各タスクの応答時間は, 常に $\Gamma$ で得られた応答時間以上である
         \end{itemize}
     \end{lemma}
 \end{frame}
 
-\begin{frame}{}
+\begin{frame}{バックログ依存性グラフへの変換}
     \begin{itemize}
-        \item 次に, 直列化されたタスクレベルグラフをタスクインスタンスレベルのバックログ依存性グラフに変換する
-\item これは, 結果として得られるグラフにおいて, 各インスタンス $\tau_{i, j}$ は, その応答時間 $R_{i, j}$ に直接影響を与える直前の前任ノードのみを持つことを意味する
-\item このインスタンスレベルグラフは, タスクのRTDを計算する際に直接利用できる
-\item これは以下のように構成される
+        \item 次に, 直列化サブグラフをタスクインスタンスレベルのバックログ依存性グラフに変換する
+        \item すなわち, 各インスタンス $\tau_{i, j}$ がその応答時間 $R_{i, j}$ に直接影響を与える直前の先行ノードのみを持つように変換する
+        \item 変換は以下の手順で行われる
+              \begin{enumerate}
+                  \item ダミータスクの追加
+                  \item 冗長なエッジの削除
+                  \item バックログエッジの追加
+              \end{enumerate}
     \end{itemize}
 \end{frame}
 
-\begin{frame}{}
-    \begin{itemize}
-        \item まず, 元の $\Gamma^{k}$ に再び, 前述と同様に $\tau_{\alpha}$ と $\tau_{\Omega}$ の2つのダミータスクを追加する
-\item 両タスクの実行時間はゼロとし, $\phi_{\alpha}=0$ と $\phi_{\Omega}=T^{k}$ とする
-\item すなわち, 図2 (a) の $\Gamma^{1}$ の例では, $\tau_{\alpha} \rightarrow \tau_{A}$ と $\tau_{D} \rightarrow \tau_{\Omega}$ である
-    \end{itemize}
-\end{frame}
-
-\begin{frame}{}
-    \begin{itemize}
-        \item 第二に, ダミー拡張グラフにおいて, タスクインスタンスレベルのバックログ依存性の観点から, 冗長なエッジを削除する
-\item 図4 (a) において, $\tau_{A, 1} \rightarrow \tau_{D, 1}$ のエッジは, 関連する依存関係が, 直接依存関係の代替シーケンス, すなわち $\tau_{A, 1} \rightarrow \tau_{B, 1} \rightarrow \tau_{D, 1}$ または $\tau_{A, 1} \rightarrow \tau_{C, 1} \rightarrow \tau_{D, 1}$ によって間接依存関係となるため, 削除される
-\item すなわち, $\tau_{D, 1}$ が実行可能になったとき, $\tau_{A, 1}$ は $\tau_{B, 1}$ と $\tau_{C, 1}$ の両方と既に完了していることが保証されているので, $\tau_{A, 1}$ からの出力メッセージは常に $\tau_{D, 1}$ に利用可能である
-\item このような間接依存のエッジを削除して, 直接依存のグラフを得 る必要がある
-    \end{itemize}
-\end{frame}
-
-\begin{frame}{}
-    \begin{itemize}
-        \item 第三に, 各コアにおいて, $j$ 期の最後のタスクインスタンスから $(j+1)$ 期の最初のタスクインスタンスに向けられたエッジを追加することである
-\item すなわち, 図 $4(\mathrm{a})$ において, $\tau_{B, 1}$ と $\tau_{A, 2}$ の間, $\tau_{D, 1}$ と $\tau_{C, 2}$ の間にそれぞれエッジが追加される
-\item これは, 同一コア上で実行される連続したインスタンス間に, タスク間通信がないにもかかわらず, バックログ依存性が存在するためである
-    \end{itemize}
-\end{frame}
-
-\begin{frame}{}
-    \begin{itemize}
-        \item その結果, 最終的に図4 (b) に示すタスクインスタンスレベルのバックログ依存性グラフが得られる
-\item これは無限個の期間にわたって展開されるが, 各コアの最後のタスクから最初のタスク, すなわち $\tau_{B} \rightarrow \tau_{A}$ と $\tau_{D} \rightarrow \tau_{C}$ に仮想的にエッジを作成し, その縮小形を使用する
-    \end{itemize}
-\end{frame}
-
-\begin{frame}{}
-    \begin{itemize}
-        \item 応答時間の計算全タスクの限界RTDを一度に計算するために, 上記で得られたタスクインスタンスレベルのバックログ依存性グラフを $\tau_{\alpha}$ からトラバースし始め, エッジを辿って全タスクインスタンスのRTDを計算する
-\item 訪問した $\tau_{i, j}$ ごとに, 最初の期間から, $\tau_{i, j}$ のWTD, すなわち, $\tau_{i, j}$ のリリースから実行開始までのレイテンシに関する確率分布を, 直接依存する全ての先行タスクのRTDから計算する
-\item そして, $\tau_{i, j}$ のRTDは, そのWTDとETDから容易に算出される
-\item $j$ 番目の期間について全てのタスクインスタンスのRTDが計算されたら, $j$ をインクリメントして同じ処理を繰り返し, 以下同様である
-\item この処理を $\tau_{\Omega, j}$ のRTDが収束するのが確認できるまで繰り返す
-\item $\tau_{\Omega, j}$ のRTDが限界分布に収束すれば, $\tau_{\Omega, j}$ の前身である他の全てのタスクも限界RTDを持つことは直感的である
-    \end{itemize}
-\end{frame}
-
-\begin{frame}{}
-    \begin{itemize}
-        \item RTDの計算では, 確率分布の演算子として, 縮小[14], 畳み込み, 最大化[4]の3種類が必要である
-    \end{itemize}
-\end{frame}
-
-\begin{frame}{}
-    \begin{definition}[シュリンキング [14]]
-        \setlength{\linewidth}{0.98\columnwidth}
+\begin{frame}{ダミータスクの追加}
+    \fitimage{
         \begin{itemize}
-            \item 確率変数 $X$ に対して, $X$ を $d$ の整数で縮小して得られる変数 $Y$ を $X \ominus d$ と呼び, 以下の関数で定義する
-\item 直接依存する先行者 $\tau_{X}$ のRTDが与えられると, 縮小演算子は後続ノード $\tau_{Y}$ のWTDを計算するために使用できる
-\item この場合, オペランド $d$ は $\lambda_{Y}-\lambda_{X}$ に設定されるため, $W T D_{Y}=R T D_{X} \ominus d$ となる
+            \item 元の $\Gamma^{k}$ に $\tau_{\alpha}$ と $\tau_{\Omega}$ の2つのダミータスクを追加する
+            \item 両タスクの実行時間はゼロとし, $\phi_{\alpha}=0$ と $\phi_{\Omega}=T^{k}$ とする
         \end{itemize}
-    \end{definition}
+    }{dummy_task}
 \end{frame}
 
-\begin{frame}{}
-    \begin{definition}[コンボリューション [4]]
-        \setlength{\linewidth}{0.98\columnwidth}
+\begin{frame}{冗長なエッジの削除}
+    \fitimage{
         \begin{itemize}
-            \item 2つの独立な確率変数 $X$ と $Y$ に対して, $X$ と $Y$ の和 $Z$ $X \otimes Y$ とする) は, 以下の関数で定義される
-
-                  \begin{equation*}
-                      \mathbf{P}(Z=t)=\sum_{s=-\infty}^{s=\infty} \mathbf{P}(X=s) \mathbf{P}(Y=t-s)
-                  \end{equation*}
-
-            \item コンボリューション演算子により, $\tau_{i}$ のRTDを $\tau_{i}$ のWTDとETDのコンボリューション, すなわち $R T D_{i}=$  $W T D_{i} \otimes E T D_{i}$
+            \item $\tau_{A, 1} \rightarrow \tau_{D, 1}$ のエッジは, $\tau_{A, 1} \rightarrow \tau_{B, 1} \rightarrow \tau_{D, 1}$ または $\tau_{A, 1} \rightarrow \tau_{C, 1} \rightarrow \tau_{D, 1}$ の存在によって冗長であるため削除する
+            \item すなわち, $\tau_{D, 1}$ が実行可能になったとき, $\tau_{A, 1}$ は既に完了しているので, $\tau_{A, 1}$ からの出力メッセージは常に $\tau_{D, 1}$ が利用可能
         \end{itemize}
-    \end{definition}
+    }{remove_edge}
 \end{frame}
 
-\begin{frame}{}
-    \begin{definition}[最大値[4]]
-        \setlength{\linewidth}{0.98\columnwidth}
+\begin{frame}{バックログエッジの追加}
+    \fitimage{
         \begin{itemize}
-            \item 2つの独立な確率変数 $X$ と $Y$ に対して, $X$ と $Y$ の最大値 $Z$ ($X \bowtie Y$ とする) は, 以下の関数で定義される
-
-                  \begin{equation*}
-                      \mathbf{P}(Z=t)=\sum_{\max (x, y)=t} \mathbf{P}(X=x) \mathbf{P}(Y=y)
-                  \end{equation*}
-
-            \item 最大演算子は, 複数の直接依存する前任ノードを持つ $\tau_{Z}$ のWTDを計算するために使用される
-\item $\tau_{Z}$ が2つの先行者, すなわち $\tau_{X}$ と $\tau_{Y}, W T D_{Z}=$  $W T D_{X \rightarrow Z} \bowtie W T D_{Y \rightarrow Z}$ を持つ場合, $W T D_{X \rightarrow Z}=R T D_{X} \ominus$  $\left(\lambda_{Z}-\lambda_{X}\right)$ と $W T D_{Y \rightarrow Z}=R T D_{Y} \ominus\left(\lambda_{Z}-\lambda_{Y}\right)$ である
+            \item 各コアにおいて, $j$ 番目の周期の最後のタスクインスタンスから $(j+1)$ 番目の周期の最初のタスクインスタンスに向けられたエッジを追加する
+            \item これは, 同一コア上で実行される連続したインスタンス間に, タスク間通信がないにもかかわらず, バックログ依存性が存在するため
         \end{itemize}
-    \end{definition}
+    }{backlog}
 \end{frame}
 
-\begin{frame}{}
+\begin{frame}{得られるバックログ依存性グラフ}
+    \fitimage{
+        最終的にタスクインスタンスレベルのバックログ依存性グラフが得られる
+    }{backlog_dependence_graph}
+\end{frame}
+
+\begin{frame}{応答時間分布 (RTD) の計算方法}
     \begin{itemize}
-        \item この3つの演算子をバックログ依存性グラフに適用すると, 各タスクの限界RTDが存在する場合, それを計算できる
-\item 図4の例で考えてみよう
-\item 以降, 確率変数 $X$ の確率分布を確率値の順序付きリスト, すなわち $[\mathbf{P}(X=0), \mathbf{P}(X=1), \mathbf{P}(X=2), \cdots, \mathbf{P}\left(X=X^{\max }\right)]$ と表記する
-\item $T^{1}=6$, $E T D_{A}=E T D_{B}=E T D_{C}=E T D_{D}=[0,1 / 3,1 / 3,1 / 3]$, および $\Phi_{A, 1}=1, \Phi_{B, 1}=\Phi_{C, 1}=2$, $\Phi_{D, 1}=4$ であるとする
-\item そして, 最初の期間において, 各タスクのRTDは以下のように計算される
+        \item タスクインスタンスレベルのバックログ依存性グラフを $\tau_{\alpha}$ から探索し, エッジを辿って全タスクインスタンスのRTDを計算する
+        \item 各 $\tau_{i, j}$ について, 最初の周期から, $\tau_{i, j}$ のWTD, すなわち, $\tau_{i, j}$ のリリースから実行開始までのレイテンシに関する確率分布を, 直接依存する全ての先行タスクのRTDから計算する
+        \item $\tau_{i, j}$ のRTDは, そのWTDとETDから容易に算出される
+        \item $j$ 番目の周期について全てのタスクインスタンスのRTDが計算されたら, $j$ をインクリメントして同じ処理を繰り返す
+        \item この処理を $\tau_{\Omega, j}$ のRTDが収束するまで繰り返す
+              % \item $\tau_{\Omega, j}$ のRTDが極限分布に収束すれば, $\tau_{\Omega, j}$ の前身である他の全てのタスクも極限RTDを持つ
     \end{itemize}
 \end{frame}
 
-\begin{frame}{}
-    \begin{itemize}
-        \item 次に, 第2期間については, 上記と同様に各タスクのRTDを計算できるが, CPU1の $\tau_{B, 1} \rightarrow \tau_{A, 2}$ とCPU2の $\tau_{D, 1} \rightarrow$  $\tau_{C, 2}$ のバックログ依存を考慮する必要がある
-\item WT $D_{B, 1 \rightarrow A, 2}=R T D_{B, 1} \ominus\left(\lambda_{A, 2}-\lambda_{B, 1}\right)=$  $R T D_{B, 1} \ominus 5=[1]$ はバックログがないことを意味する1点分布であるため, $R T D_{A, 2}$ には影響しない
-\item 逆に $W T D_{D, 1 \rightarrow C, 2}=R T D_{D, 1} \ominus\left(\lambda_{C, 2}-\lambda_{D, 1}\right)=R T D_{D, 1} \ominus 4=$ [ $181 / 243,45 / 243,17 / 243$ ]は1点分布ではないので, $R T D_{C, 2}$ に影響する
-    \end{itemize}
-\end{frame}
+% \begin{frame}{使用する演算子}
+%     RTDの計算では, 以下の3種類の確率分布の演算子を使用する
+%     \begin{itemize}
+%         \item 縮小化
+%         \item 畳み込み
+%         \item 最大化
+%     \end{itemize}
+% \end{frame}
 
-\begin{frame}{}
-    \begin{itemize}
-        \item $W T D_{D, j \rightarrow C, j+1}$ の極限分布を計算するには, $j$ の周期インデックスを増加させながら, $W T D_{\Omega}$ が収束するのを確認するまで上記の計算を繰り返す
-\item 収束すれば, 各コアの最初のタスクのWTD, ひいては全てのタスクのRTDも収束する
-\item $W T D_{\Omega}$ が収束するかどうかを確認するために, $W T D_{\Omega, j}$ と $W T D_{\Omega, j+1}$ の間でKolmogorov-Smirnov検定を実行する
-    \end{itemize}
-\end{frame}
+% \begin{frame}{縮小化演算子}
+%     \begin{definition}[縮小化]
+%         確率変数 $X$ に対して, $X$ を $d$ の整数で縮小して得られる変数 $Y$ を $X \ominus d$ と呼び, 以下の関数で定義する
+%         \begin{equation}
+%             \mathbf{P}(Y=t)= \begin{cases}0 & \text { if } t<0 \\ \sum_{s=-\infty}^{s=d} \mathbf{P}(X=s) & \text { if } t=0 \\ \mathbf{P}(X=t+d) & \text { if } t>0\end{cases}
+%         \end{equation}
+%     \end{definition}
+% \end{frame}
 
-\begin{frame}{}
-    \begin{itemize}
-        \item CPU 2 の最大コア利用率 $U^{\max }=C_{C}^{\max } / T^{1}+C_{D}^{\max } / T^{1}=3 / 6+3 / 6 \leq 1.0$ を考慮すると, $W T D_{D, 1 \rightarrow C, 2}$ が NULL でないことは直感に反することに注意
-\item シングルコアシステムでは, $U^{\max } \leq 1.0$ であれば, 次期の最初のタスクインスタンスにバックログが発生しないことが保証される
-\item しかし, マルチコアシステムでは, $\eta_{C}$ から $\lambda_{D}$ の間に, $\eta_{C}<\eta_{B}$ のときにCPU 2でアイドル時間が発生する可能性があるため, これが成立しない
-\item このアイドル時間はCPU 2の他のタスクが利用できないため, CPU 2の $U^{\max }$ が $1.0$ を超える効果がある
-    \end{itemize}
-\end{frame}
+% \begin{frame}{}
+%     \begin{itemize}
+%         \item 直接依存する先行者 $\tau_{X}$ のRTDが与えられると, 縮小演算子は後続ノード $\tau_{Y}$ のWTDを計算するために使用できる
+%         \item この場合, オペランド $d$ は $\lambda_{Y}-\lambda_{X}$ に設定されるため, $W T D_{Y}=R T D_{X} \ominus d$ となる
+%     \end{itemize}
+% \end{frame}
 
-\begin{frame}{}
-    \begin{itemize}
-        \item $\tau$ のRTDを計算する手順を表Iに, $j$ の期間インデックスにおける全タスクのRTDを計算する手順を表IIに擬似的に示す
-    \end{itemize}
-\end{frame}
 
-\begin{frame}[label=theorem1]{Theorem 1}
-    \begin{theorem}[]
-        \begin{itemize}
-            \item $\Gamma^{o r i g}$ からLemma 1で定義された直列化によって得られるグラフを $\Gamma^{\text {serial }}$, $\Gamma^{\text {serial }}$ から得られるタスクインスタンスレベルのバックログ依存性グラフを $\Gamma^{\text {bdep }}$ とする
-\item $j \rightarrow \infty$ のときに得られる限定的な $R T D_{i, j}^{b d e p}$ を $R T D_{i}^{\text {serial }}$ と定義する
-\item $R T D_{i}^{\text {serial }}$ が存在する場合, 任意の $t>0$ に対して $\mathbf{P}\left(R_{i}^{\text {orig }} \leq t\right) \geq$  $\mathbf{P}\left(R_{i}^{\text {serial }} \leq t\right)$ というように, $\tau_{i}$ の $\Gamma^{\text {orig }}$ における上界とする
-        \end{itemize}
-    \end{theorem}
-\end{frame}
+% \begin{frame}{畳み込み演算子}
+%     \begin{definition}[畳み込み]
+%         \setlength{\linewidth}{0.98\columnwidth}
+%         \begin{itemize}
+%             \item 2つの独立な確率変数 $X$ と $Y$ に対して, $X$ と $Y$ の和 $Z$ $X \otimes Y$ とする) は, 以下の関数で定義される
+
+%                   \begin{equation*}
+%                       \mathbf{P}(Z=t)=\sum_{s=-\infty}^{s=\infty} \mathbf{P}(X=s) \mathbf{P}(Y=t-s)
+%                   \end{equation*}
+
+%             \item コンボリューション演算子により, $\tau_{i}$ のRTDを $\tau_{i}$ のWTDとETDのコンボリューション, すなわち $R T D_{i}=$  $W T D_{i} \otimes E T D_{i}$
+%         \end{itemize}
+%     \end{definition}
+% \end{frame}
+
+% \begin{frame}{}
+%     \begin{definition}[最大値[4]]
+%         \setlength{\linewidth}{0.98\columnwidth}
+%         \begin{itemize}
+%             \item 2つの独立な確率変数 $X$ と $Y$ に対して, $X$ と $Y$ の最大値 $Z$ ($X \bowtie Y$ とする) は, 以下の関数で定義される
+
+%                   \begin{equation*}
+%                       \mathbf{P}(Z=t)=\sum_{\max (x, y)=t} \mathbf{P}(X=x) \mathbf{P}(Y=y)
+%                   \end{equation*}
+
+%             \item 最大演算子は, 複数の直接依存する先行ノードを持つ $\tau_{Z}$ のWTDを計算するために使用される
+%             \item $\tau_{Z}$ が2つの先行者, すなわち $\tau_{X}$ と $\tau_{Y}, W T D_{Z}=$  $W T D_{X \rightarrow Z} \bowtie W T D_{Y \rightarrow Z}$ を持つ場合, $W T D_{X \rightarrow Z}=R T D_{X} \ominus$  $\left(\lambda_{Z}-\lambda_{X}\right)$ と $W T D_{Y \rightarrow Z}=R T D_{Y} \ominus\left(\lambda_{Z}-\lambda_{Y}\right)$ である
+%         \end{itemize}
+%     \end{definition}
+% \end{frame}
+
+% \begin{frame}{}
+%     \begin{itemize}
+%         \item この3つの演算子をバックログ依存性グラフに適用すると, 各タスクの極限RTDが存在する場合, それを計算できる
+%         \item 図4の例で考えてみよう
+%         \item 以降, 確率変数 $X$ の確率分布を確率値の順序付きリスト, すなわち $[\mathbf{P}(X=0), \mathbf{P}(X=1), \mathbf{P}(X=2), \cdots, \mathbf{P}\left(X=X^{\max }\right)]$ と表記する
+%         \item $T^{1}=6$, $E T D_{A}=E T D_{B}=E T D_{C}=E T D_{D}=[0,1 / 3,1 / 3,1 / 3]$, および $\Phi_{A, 1}=1, \Phi_{B, 1}=\Phi_{C, 1}=2$, $\Phi_{D, 1}=4$ であるとする
+%         \item そして, 最初の期間において, 各タスクのRTDは以下のように計算される
+%     \end{itemize}
+% \end{frame}
+
+% \begin{frame}{}
+%     \begin{itemize}
+%         \item 次に, 第2期間については, 上記と同様に各タスクのRTDを計算できるが, CPU1の $\tau_{B, 1} \rightarrow \tau_{A, 2}$ とCPU2の $\tau_{D, 1} \rightarrow$  $\tau_{C, 2}$ のバックログ依存を考慮する必要がある
+%         \item WT $D_{B, 1 \rightarrow A, 2}=R T D_{B, 1} \ominus\left(\lambda_{A, 2}-\lambda_{B, 1}\right)=$  $R T D_{B, 1} \ominus 5=[1]$ はバックログがないことを意味する1点分布であるため, $R T D_{A, 2}$ には影響しない
+%         \item 逆に $W T D_{D, 1 \rightarrow C, 2}=R T D_{D, 1} \ominus\left(\lambda_{C, 2}-\lambda_{D, 1}\right)=R T D_{D, 1} \ominus 4=$ [ $181 / 243,45 / 243,17 / 243$ ]は1点分布ではないので, $R T D_{C, 2}$ に影響する
+%     \end{itemize}
+% \end{frame}
+
+% \begin{frame}{}
+%     \begin{itemize}
+%         \item $W T D_{D, j \rightarrow C, j+1}$ の極限分布を計算するには, $j$ の周期インデックスを増加させながら, $W T D_{\Omega}$ が収束するのを確認するまで上記の計算を繰り返す
+%         \item 収束すれば, 各コアの最初のタスクのWTD, ひいては全てのタスクのRTDも収束する
+%         \item $W T D_{\Omega}$ が収束するかどうかを確認するために, $W T D_{\Omega, j}$ と $W T D_{\Omega, j+1}$ の間でKolmogorov-Smirnov検定を実行する
+%     \end{itemize}
+% \end{frame}
+
+% \begin{frame}{}
+%     \begin{itemize}
+%         \item CPU 2 の最大コア利用率 $U^{\max }=C_{C}^{\max } / T^{1}+C_{D}^{\max } / T^{1}=3 / 6+3 / 6 \leq 1.0$ を考慮すると, $W T D_{D, 1 \rightarrow C, 2}$ が NULL でないことは直感に反することに注意
+%         \item シングルコアシステムでは, $U^{\max } \leq 1.0$ であれば, 次期の最初のタスクインスタンスにバックログが発生しないことが保証される
+%         \item しかし, マルチコアシステムでは, $\eta_{C}$ から $\lambda_{D}$ の間に, $\eta_{C}<\eta_{B}$ のときにCPU 2でアイドル時間が発生する可能性があるため, これが成立しない
+%         \item このアイドル時間はCPU 2の他のタスクが利用できないため, CPU 2の $U^{\max }$ が $1.0$ を超える効果がある
+%     \end{itemize}
+% \end{frame}
+
+% \begin{frame}{}
+%     \begin{itemize}
+%         \item $\tau$ のRTDを計算する手順を表Iに, $j$ の期間インデックスにおける全タスクのRTDを計算する手順を表IIに擬似的に示す
+%     \end{itemize}
+% \end{frame}
+
+% \begin{frame}[label=theorem1]{Theorem 1}
+%     \begin{theorem}[]
+%         \begin{itemize}
+%             \item $\Gamma^{o r i g}$ からLemma 1で定義された直列化によって得られるグラフを $\Gamma^{\text {serial }}$, $\Gamma^{\text {serial }}$ から得られるタスクインスタンスレベルのバックログ依存性グラフを $\Gamma^{\text {bdep }}$ とする
+%             \item $j \rightarrow \infty$ のときに得られる限定的な $R T D_{i, j}^{b d e p}$ を $R T D_{i}^{\text {serial }}$ と定義する
+%             \item $R T D_{i}^{\text {serial }}$ が存在する場合, 任意の $t>0$ に対して $\mathbf{P}\left(R_{i}^{\text {orig }} \leq t\right) \geq$  $\mathbf{P}\left(R_{i}^{\text {serial }} \leq t\right)$ というように, $\tau_{i}$ の $\Gamma^{\text {orig }}$ における上界とする
+%         \end{itemize}
+%     \end{theorem}
+% \end{frame}
 
 
 \subsection{Inter-graph Analysis}
 \label{ssec: inter-graph analysis}
 
-\begin{frame}{}
+\begin{frame}{セクションサマリ}
+    \begin{itembox}[l]{\textbf{目的}}
+        各 $\Gamma^{\text {serial }}$ における各 $\tau$ の極限RTDから, パス $S$ のエンドツーエンドレイテンシを計算する
+    \end{itembox}
+\end{frame}
+
+\begin{frame}{パスセグメント}
     \begin{itemize}
-        \item 各 $\Gamma^{\text {serial }}$ における各 $\tau$ の限界RTDが与えられれば, あるサブグラフ内のタスクから別のサブグラフ内のタスクへのパス $S$ のエンドツーエンドレイテンシを計算できる
-\item $S$ が貫通する各 $\Gamma$ について, 出現順に $\Gamma^{1}, \Gamma^{2}, \cdots, \Gamma^{L}$ と番号を振ることにする
-\item 元のグラフはDAGなので, 同じサブグラフが $S$ に2回現れることはないことを思い出してください
-\item そして, $S$ はパスセグメント $S^{1}, S^{2}$, $\cdots, S^{L}$ に分解でき, $S^{l}$ は $\Gamma^{l}$ に属すタスクの部分列となる
-\item したがって, 図2 (a) の $S=\tau_{A} \rightarrow \tau_{B} \rightarrow \tau_{F}$ の例では, $S^{1}=\tau_{A} \rightarrow \tau_{B}$ と $S^{2}=\tau_{F}$ の $S^{1} \rightarrow S^{2}$ と書き換えることができる
+        \item $S$ が通る各 $\Gamma$ について, 出現順に $\Gamma^{1}, \Gamma^{2}, \cdots, \Gamma^{L}$ と番号を振る
+        \item $S$ はパスセグメント $S^{1}, S^{2}$, $\cdots, S^{L}$ に分解でき, $S^{l}$ は $\Gamma^{l}$ に属すタスクの部分列を示す
     \end{itemize}
+\end{frame}
+
+\begin{frame}{パスセグメント例}
+    \fitimage{
+        $S=\tau_{A} \rightarrow \tau_{B} \rightarrow \tau_{F}$は ,$S^{1}=\tau_{A} \rightarrow \tau_{B}$ と $S^{2}=\tau_{F}$ の $S^{1} \rightarrow S^{2}$ に書き換えることができる
+    }{DAG}
 \end{frame}
 
 \begin{frame}{}
     \begin{itemize}
-        \item グラフ間解析の複雑さは, 連続する2つのパスセグメントの間にある
-\item 定義によれば, 2つのセグメント, 例えば $S^{1}$ と $S^{2}$ は, 異なる周期値, すなわち $T^{1} \neq T^{2}$ を有するので, インスタンス $S_{m}^{1}$ から生成された出力メッセージは, $S_{m}^{1}$ の完了時間によって, 異なるインスタンス $S^{2}$ に達する可能性が存在する
-\item $S=S^{1} \rightarrow S^{2}$ の例では, $S_{1}^{1}$ の完了時間によって, $S_{1}^{1}$ が送信したメッセージを $S_{2}^{2}, S_{3}^{2}, S_{4}^{2}$, $\cdots$ が受信し, その後の $T^{2}$ の呼び出しでリリースされる可能性がある
-\item 図5 (a) は, このシナリオを $T^{1}=T^{\text {hyper }}$ のときに示している
+        \item グラフ間分析の複雑さは, 連続する2つのパスセグメントの間にある
+        \item 定義によれば, 2つのセグメント, 例えば $S^{1}$ と $S^{2}$ は, 異なる周期値, すなわち $T^{1} \neq T^{2}$ を有するので, インスタンス $S_{m}^{1}$ から生成された出力メッセージは, $S_{m}^{1}$ の完了時間によって, 異なるインスタンス $S^{2}$ に達する可能性が存在する
+        \item $S=S^{1} \rightarrow S^{2}$ の例では, $S_{1}^{1}$ の完了時間によって, $S_{1}^{1}$ が送信したメッセージを $S_{2}^{2}, S_{3}^{2}, S_{4}^{2}$, $\cdots$ が受信し, その後の $T^{2}$ の呼び出しでリリースされる可能性がある
+        \item 図5 (a) は, このシナリオを $T^{1}=T^{\text {hyper }}$ のときに示している
     \end{itemize}
 \end{frame}
 
@@ -226,7 +252,7 @@
     \begin{lemma}[]
         \begin{itemize}
             \item $S=S^{1} \rightarrow S^{2}$ のインスタンスにおいて, $S_{n-1}^{2}$ のリリースから $S_{n}^{2}$ のリリースまでの間に $S_{m}^{1}$ が完了したとする
-\item すると, $S_{m}^{1}$ から $S^{2}$ までのエンドツーエンドレイテンシは, 以下のように表すことができる
+            \item すると, $S_{m}^{1}$ から $S^{2}$ までのエンドツーエンドレイテンシは, 以下のように表すことができる
                   \begin{equation*}
                       \begin{aligned}
                           L\left(S_{m}^{1} \rightarrow S^{2}\right) & \leq \lambda_{S_{n}^{2}}-\lambda_{S_{m}^{1}}+L\left(S_{n}^{2}\right)         \\
@@ -237,16 +263,16 @@
     \end{lemma}
 \end{frame}
 
-\begin{frame}{}
-    \begin{itemize}
-        \item このとき, $L\left(S_{m}^{1}\right)$ と $L\left(S_{n}^{2}\right)$ はすでに先のイントラグラフ解析で $m \rightarrow \infty$ と $n \rightarrow \infty$ によって極限分布として計算されていることを思い出してください
-\item さらに, 定常状態では, $n \rightarrow \infty$ のとき, $L D\left(S_{n-k}^{2}\right)=\cdots=L D\left(S_{n}^{2}\right)$ と仮定して差し支えない
-    \end{itemize}
-\end{frame}
+% \begin{frame}{}
+%     \begin{itemize}
+%         \item このとき, $L\left(S_{m}^{1}\right)$ と $L\left(S_{n}^{2}\right)$ はすでに先のイントラグラフ分析で $m \rightarrow \infty$ と $n \rightarrow \infty$ によって極限分布として計算されていることを思い出してください
+%         \item さらに, 定常状態では, $n \rightarrow \infty$ のとき, $L D\left(S_{n-k}^{2}\right)=\cdots=L D\left(S_{n}^{2}\right)$ と仮定して差し支えない
+%     \end{itemize}
+% \end{frame}
 
 \begin{frame}{}
     \begin{itemize}
-        \item この処理は, 表IIIにComputeLDとして擬似的にコード化されており, 2つの連続するパスセグメント (headとtail) にわたってend-to-end LDを計算する.この手続きにおいて, $\delta$ の引数は $\lambda_{S_{\text {tail }}-\lambda_{S^{\text {head }}}}$ , として与えられるべきであること, そして, 全ての条件付き分布を1つの分布にマージするために, calescion [3]と呼ばれる$\oplus$の演算子が使用されることに注意されたい.Coalescionの定義は以下の通りである.
+        \item この処理は, 表IIIにComputeLDとして擬似的にコード化されており, 2つの連続するパスセグメント (headとtail) にわたってエンドツーエンドレイテンシ分布を計算する.この手続きにおいて, $\delta$ の引数は $\lambda_{S_{\text {tail }}-\lambda_{S^{\text {head }}}}$ , として与えられるべきであること, そして, 全ての条件付き分布を1つの分布にマージするために, calescion [3]と呼ばれる$\oplus$の演算子が使用されることに注意されたい.Coalescionの定義は以下の通りである.
     \end{itemize}
 \end{frame}
 
@@ -261,7 +287,7 @@
                   \end{equation*}
 
             \item $X$ と $Y$ は条件付きなので $\sum_{t} \mathbf{P}(X=t)<1$ と $\sum \mathbf{P}(Y=t)<1$ に注意
-\item $X$ と $Y$ が $Z, \sum \mathbf{P}(Z)=1$ の標本空間を全てカバーする場合
+            \item $X$ と $Y$ が $Z, \sum \mathbf{P}(Z)=1$ の標本空間を全てカバーする場合
         \end{itemize}
     \end{definition}
 \end{frame}
@@ -269,8 +295,8 @@
 \begin{frame}{}
     \begin{itemize}
         \item 先頭セグメントのエンドツーエンドレイテンシを条件とするこの考え方は, パスの後続セグメントを全てカバーするように一般化できる
-\item この一般化のために, まず, $T^{1}=T^{\text {hyper }}$ の調和的なケースを検討する
-\item この場合, $S^{1}$ のインスタンスはハイパーピリオド内に1つだけ存在するため, $L D\left(S^{1} \rightarrow \cdots \rightarrow S^{L}\right)$ ($L D_{S^{L}}^{S^{1}}$ と略記) は以下のように計算できる
+        \item この一般化のために, まず, $T^{1}=T^{\text {hyper }}$ の調和的なケースを検討する
+        \item この場合, $S^{1}$ のインスタンスはハイパーピリオド内に1つだけ存在するため, $L D\left(S^{1} \rightarrow \cdots \rightarrow S^{L}\right)$ ($L D_{S^{L}}^{S^{1}}$ と略記) は以下のように計算できる
 
               $L D_{S^{2}}^{S^{1}}=$ ComputeLD $\left(L D\left(S^{1}\right), L D\left(S^{2}\right), T^{2}, \Delta_{2}\right)$,
 
@@ -285,74 +311,74 @@
 \begin{frame}{}
     \begin{itemize}
         \item 次に, 図 5(b)に示すように, $T^{1}<T^{\text {hyper }}$ の場合を考える
-\item ハイパーピリオド内に $S^{1}$ のインスタンスが複数あるため, ComputeLD を用いて, ハイパーピリオド内のインスタンス $S_{m}^{1}$ 毎に $L D_{m}=L D\left(S_{m}^{1} \rightarrow \cdots \rightarrow S^{L}\right)$ を計算し, 計算した LD を全て平均して $m=1, \cdots, M\left(M=T^{\text {hyper }} / T^{1}\right)$ を計算する
-\item $S^{1}$ のインスタンス毎に計算を行うのは, 図5 (b) の例では, $S_{1}^{1}$ と $S_{2}^{2}$ の間のグラフ間位相 $\Delta$ と $S_{2}^{1}$ と $S_{3}^{2}$ の間の位相が異なっているためである
-\item この考え方を一般化したものが $L D(S)=\frac{1}{M} \times\left(L D_{1} \oplus L D_{2} \oplus \cdots \oplus L D_{M}\right)$ である
-\item この計算処理を表IVにAnalyzePathとして擬似的に示す
+        \item ハイパーピリオド内に $S^{1}$ のインスタンスが複数あるため, ComputeLD を用いて, ハイパーピリオド内のインスタンス $S_{m}^{1}$ 毎に $L D_{m}=L D\left(S_{m}^{1} \rightarrow \cdots \rightarrow S^{L}\right)$ を計算し, 計算した レイテンシ分布 を全て平均して $m=1, \cdots, M\left(M=T^{\text {hyper }} / T^{1}\right)$ を計算する
+        \item $S^{1}$ のインスタンス毎に計算を行うのは, 図5 (b) の例では, $S_{1}^{1}$ と $S_{2}^{2}$ の間のグラフ間位相 $\Delta$ と $S_{2}^{1}$ と $S_{3}^{2}$ の間の位相が異なっているためである
+        \item この考え方を一般化したものが $L D(S)=\frac{1}{M} \times\left(L D_{1} \oplus L D_{2} \oplus \cdots \oplus L D_{M}\right)$ である
+        \item この計算処理を表IVにAnalyzePathとして擬似的に示す
     \end{itemize}
 \end{frame}
 
-\begin{frame}{}
-    \begin{itemize}
-        \item しかし, $S^{l+1}$ が $S^{l}$ から複数のメッセージを受信する可能性は低い可能性がある
-\item 図5 (b) では, $\lambda_{S_{2}^{2}}$ と $\lambda_{S_{3}^{2}}$ の間で $S_{1}^{1}$ が完了し, $\lambda_{S_{3}^{2}}$ の前で $S_{2}^{1}$ が完了した場合, $S_{3}^{2}$ は $S_{1}^{1}$  (ケース1-2) および $S_{2}^{1}$  (ケース2-1) からそれぞれ2メッセージ受信する可能性があるとわかる
-\item 本モデルではメッセージの取りこぼしを許さないので, $S_{3}^{2}$ が2つの入力メッセージに応答して1つの出力メッセージしか生成しなかったとしても, 両方の入力メッセージのエンドツーエンドレイテンシを完了するために, 1つの出力メッセージを仮想的に2つとみなしている
-\item 最後に, 以下のTheoremにより, 上述のグラフ間解析が安全であることを示す
-    \end{itemize}
-\end{frame}
+% \begin{frame}{}
+%     \begin{itemize}
+%         \item しかし, $S^{l+1}$ が $S^{l}$ から複数のメッセージを受信する可能性は低い可能性がある
+%         \item 図5 (b) では, $\lambda_{S_{2}^{2}}$ と $\lambda_{S_{3}^{2}}$ の間で $S_{1}^{1}$ が完了し, $\lambda_{S_{3}^{2}}$ の前で $S_{2}^{1}$ が完了した場合, $S_{3}^{2}$ は $S_{1}^{1}$  (ケース1-2) および $S_{2}^{1}$  (ケース2-1) からそれぞれ2メッセージ受信する可能性があるとわかる
+%         \item 本モデルではメッセージの取りこぼしを許さないので, $S_{3}^{2}$ が2つの入力メッセージに応答して1つの出力メッセージしか生成しなかったとしても, 両方の入力メッセージのエンドツーエンドレイテンシを完了するために, 1つの出力メッセージを仮想的に2つとみなしている
+%         \item 最後に, 以下のTheoremにより, 上述のグラフ間分析が安全であることを示す
+%     \end{itemize}
+% \end{frame}
 
-\begin{frame}[label=theorem2]{Theorem 2}
-    \begin{theorem}[]
-        \begin{itemize}
-            \item  $\boldsymbol{\Gamma}^{\text {serial }}$ の各 $\Gamma$ における各 $\tau$ の極限RTD $D_{\tau}^{\text {serial }}$ が与えられたとき, 任意のパス $S=S^{1} \rightarrow \cdots \rightarrow S^{L}$ に対して, $S$ の極限LDシリアルは $\Gamma^{\text {orig }}$ の $S$ の上界をなす
-        \end{itemize}
-    \end{theorem}
-\end{frame}
+% \begin{frame}[label=theorem2]{Theorem 2}
+%     \begin{theorem}[]
+%         \begin{itemize}
+%             \item  $\boldsymbol{\Gamma}^{\text {serial }}$ の各 $\Gamma$ における各 $\tau$ の極限RTD $D_{\tau}^{\text {serial }}$ が与えられたとき, 任意のパス $S=S^{1} \rightarrow \cdots \rightarrow S^{L}$ に対して, $S$ の極限レイテンシ分布シリアルは $\Gamma^{\text {orig }}$ の $S$ の上界をなす
+%         \end{itemize}
+%     \end{theorem}
+% \end{frame}
 
 
-\subsection{Task Grouping}
-\label{ssec: task grouping}
+% \subsection{Task Grouping}
+% \label{ssec: task grouping}
 
-\begin{frame}{}
-    \begin{itemize}
-        \item 提案した解析は, タスク間の実行時間が独立であるという仮定に基づいているが, 現実にはそれが成立しない可能性がある
-\item タスク間に依存する実行時間を扱うには, 連続する任意の2つのタスクの実行時間の結合分布を導出し, その結合分布に基づくように提案の解析を修正することが一つの方法として考えられる
-\item しかし, このようなアプローチは, 1つの実行時間分布を複数に分割し, 異なるタスクからのピースの組み合わせを膨大に作成して解析することになるため, 解析の複雑さが著しく増大することは明らかである
-    \end{itemize}
-\end{frame}
+% \begin{frame}{}
+%     \begin{itemize}
+%         \item 提案した分析は, タスク間の実行時間が独立であるという仮定に基づいているが, 現実にはそれが成立しない可能性がある
+%         \item タスク間に依存する実行時間を扱うには, 連続する任意の2つのタスクの実行時間の結合分布を導出し, その結合分布に基づくように提案の分析を修正することが一つの方法として考えられる
+%         \item しかし, このようなアプローチは, 1つの実行時間分布を複数に分割し, 異なるタスクからのピースの組み合わせを膨大に作成して分析することになるため, 分析の複雑さが著しく増大することは明らかである
+%     \end{itemize}
+% \end{frame}
 
-\begin{frame}{}
-    \begin{itemize}
-        \item 本論文では, できるだけ多くの依存するタスクを1つの仮想タスクにグループ化するタスクグルーピングのアプローチをとります
-\item このグループ化では, 同一コア上で動作するタスクのみからグループを構成することができ, 全てのソースタスクと, 異なるサブグラフに直前のタスクがある場合は, 新しいグループを開き, そのタスクから始まる全てのタスクパスが対応するグループパスを持つことができるようにする必要がある
-    \end{itemize}
-\end{frame}
+% \begin{frame}{}
+%     \begin{itemize}
+%         \item 本論文では, できるだけ多くの依存するタスクを1つの仮想タスクにグループ化するタスクグルーピングのアプローチをとります
+%         \item このグループ化では, 同一コア上で動作するタスクのみからグループを構成することができ, 全てのソースタスクと, 異なるサブグラフに直前のタスクがある場合は, 新しいグループを開き, そのタスクから始まる全てのタスクパスが対応するグループパスを持つことができるようにする必要がある
+%     \end{itemize}
+% \end{frame}
 
-\begin{frame}{}
-    \begin{itemize}
-        \item 図6 (a) は, カスタマイズしたAutowareのタスクグラフ全体を, 制御グラフ $\Gamma^{C}$, LiDARグラフ $\Gamma^{L}$, ビジョングラフ $N$ の6つの不連続なサブグラフに分割して示したものである
-\item グラフ内通信はブロッキング, グラフ間通信はノンブロッキングという仮定に従うため, 若干の修正を加えている
-\item 表 $\mathrm{V}$ はタスクセットの詳細な説明である
-    \end{itemize}
-\end{frame}
+% \begin{frame}{}
+%     \begin{itemize}
+%         \item 図6 (a) は, カスタマイズしたAutowareのタスクグラフ全体を, 制御グラフ $\Gamma^{C}$, LiDARグラフ $\Gamma^{L}$, ビジョングラフ $N$ の6つの不連続なサブグラフに分割して示したものである
+%         \item グラフ内通信はブロッキング, グラフ間通信はノンブロッキングという仮定に従うため, 若干の修正を加えている
+%         \item 表 $\mathrm{V}$ はタスクセットの詳細な説明である
+%     \end{itemize}
+% \end{frame}
 
-\begin{frame}{}
-    \begin{itemize}
-        \item 実行時間のタスク間依存性の程度を評価するために, 任意の2つの連続するAutowareタスク間のピアソン相関係数 (PCC) を分析する
-\item 図6(a)の矢印に注釈された数字がPCCである
-\item PCCの値が $1.0$ であれば強い正の相関, $-1.0$ であれば強い負の相関, 0であれば一般に相関がないことを意味する
-\item 図から, 多くのAutowareタスクのペアが $0.7$ よりも高いPCC値を持つことがわかり, 分析の前提が崩れる可能性があることがわかる
-\item 強いタスク間相関を緩和するために, タスクのグループ化を行い, グループレベルの実行時間のプロファイリングによりグループ間PCCを分析する
-\item 解析したPCCを図6(b)に示す
-\item 一方, このタスクのグループ化は, 各グループ内のタスク間相関を隠蔽する主効果がある
-    \end{itemize}
-\end{frame}
+% \begin{frame}{}
+%     \begin{itemize}
+%         \item 実行時間のタスク間依存性の程度を評価するために, 任意の2つの連続するAutowareタスク間のピアソン相関係数 (PCC) を分析する
+%         \item 図6(a)の矢印に注釈された数字がPCCである
+%         \item PCCの値が $1.0$ であれば強い正の相関, $-1.0$ であれば強い負の相関, 0であれば一般に相関がないことを意味する
+%         \item 図から, 多くのAutowareタスクのペアが $0.7$ よりも高いPCC値を持つことがわかり, 分析の前提が崩れる可能性があることがわかる
+%         \item 強いタスク間相関を緩和するために, タスクのグループ化を行い, グループレベルの実行時間のプロファイリングによりグループ間PCCを分析する
+%         \item 分析したPCCを図6(b)に示す
+%         \item 一方, このタスクのグループ化は, 各グループ内のタスク間相関を隠蔽する主効果がある
+%     \end{itemize}
+% \end{frame}
 
-\begin{frame}{}
-    \begin{itemize}
-        \item 一方, いくつかのケースでは, 関連するタスク間PCCよりも低いグループ間PCCを生成している
-\item 例えば, PCC $(\mathrm{ODO} \rightarrow \mathrm{EKF})=0.97$ は $\mathrm{PCC}(\mathrm{A} 2 \mathrm{O} \rightarrow \mathrm{E} 2 \mathrm{G})=0.39, \mathrm{PCC}(\mathrm{TGE} \rightarrow \mathrm{TEV})=0.83$ に, $\mathrm{TEV})=0.46$ は $\mathrm{PCC}(\mathrm{R} 2 \mathrm{O}(3) \rightarrow \mathrm{T} 2 \mathrm{P})=0.29$ に, $\mathrm{PCC}(\mathrm{OMP}(4) \rightarrow \mathrm{TEV})=0.40$ は $\mathrm{PCC}(\mathrm{R} 2 \mathrm{O}(4) \rightarrow$ にT2P $)=0.25$ は減少する
-\item 他の例として, PCC(VBT(3)) $\rightarrow \operatorname{RVF}(3))$  $=0.29$ は $\mathrm{PCC}(\mathrm{C} 2 \mathrm{~V}(3) \rightarrow \mathrm{R} 2 \mathrm{O}(3))=0.40$ に増加し, $\mathrm{PCC}(\mathrm{VBT}(4) \rightarrow \mathrm{RVF}(4))=0.50$ は $\mathrm{PCC}(\mathrm{C} 2 \mathrm{~V}(4)$  $\rightarrow \mathrm{R} 2 \mathrm{O}(4))=0.67$ に増加する
-\item その他のケースでは, グループ間PCCは関連するタスク間PCCとほぼ等しいか, わずかに高くなっている
-    \end{itemize}
-\end{frame}
+% \begin{frame}{}
+%     \begin{itemize}
+%         \item 一方, いくつかのケースでは, 関連するタスク間PCCよりも低いグループ間PCCを生成している
+%         \item 例えば, PCC $(\mathrm{ODO} \rightarrow \mathrm{EKF})=0.97$ は $\mathrm{PCC}(\mathrm{A} 2 \mathrm{O} \rightarrow \mathrm{E} 2 \mathrm{G})=0.39, \mathrm{PCC}(\mathrm{TGE} \rightarrow \mathrm{TEV})=0.83$ に, $\mathrm{TEV})=0.46$ は $\mathrm{PCC}(\mathrm{R} 2 \mathrm{O}(3) \rightarrow \mathrm{T} 2 \mathrm{P})=0.29$ に, $\mathrm{PCC}(\mathrm{OMP}(4) \rightarrow \mathrm{TEV})=0.40$ は $\mathrm{PCC}(\mathrm{R} 2 \mathrm{O}(4) \rightarrow$ にT2P $)=0.25$ は減少する
+%         \item 他の例として, PCC(VBT(3)) $\rightarrow \operatorname{RVF}(3))$  $=0.29$ は $\mathrm{PCC}(\mathrm{C} 2 \mathrm{~V}(3) \rightarrow \mathrm{R} 2 \mathrm{O}(3))=0.40$ に増加し, $\mathrm{PCC}(\mathrm{VBT}(4) \rightarrow \mathrm{RVF}(4))=0.50$ は $\mathrm{PCC}(\mathrm{C} 2 \mathrm{~V}(4)$  $\rightarrow \mathrm{R} 2 \mathrm{O}(4))=0.67$ に増加する
+%         \item その他のケースでは, グループ間PCCは関連するタスク間PCCとほぼ等しいか, わずかに高くなっている
+%     \end{itemize}
+% \end{frame}

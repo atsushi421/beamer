@@ -3,161 +3,201 @@
 \section{EXPERIMENTAL RESULTS}
 \label{sec: experimental results}
 
-\begin{frame}{}
+\begin{frame}{セクションサマリ}
+    \begin{itembox}[l]{\textbf{目的}}
+        提案する分析について, 確率的保証と分析精度の観点から評価する
+    \end{itembox}
+\end{frame}
+
+\begin{frame}{実験環境}
     \begin{itemize}
-        \item 本節では, 提案する解析について, 確率的保証と解析精度の観点から評価する
-\item 実験には, 我々のカスタマイズしたAutowareスタックが動作する, 我々のAVの実機[15]を使用した
-\item AVはK-City[16]を30～ $40 \mathrm{~km} / \mathrm{h}$ で15分間走行し, センサワークロードを記録する
+        \item カスタマイズしたAutowareスタックが動作する, AVの実機[15]を使用
+        \item AVはK-City[16]を30--$40 \mathrm{~km} / \mathrm{h}$ で15分間走行し, センサワークロードを記録
+        \item 実験に用いた計算機システムは, Ubuntu Linux $18.04$ と Autoware $1.13$ を Linux 上で docker コンテナで実行する
+        \item 実験では, Autowareをあらかじめ記録したセンサワークロードで実行し, センサデバイスを接続しないため, PREEMPT-RTなどのリアルタイム拡張を行わない素のLinuxカーネルv5.4.0を使用した
+        \item $2.6 \mathrm{GHz}$ で動作する6コア (12仮想コア) のIntel i7プロセッサ, $32 \mathrm{~GB}$ のメインメモリ, RTX 2070のGPUが搭載されている
     \end{itemize}
 \end{frame}
 
-\begin{frame}{}
-    \begin{itemize}
-        \item 実験に用いた計算機システムは, Ubuntu Linux $18.04$ と Autoware $1.13$ を Linux 上で docker コンテナで実行するものである
-\item 実験では, Autowareをあらかじめ記録したセンサワークロードで実行し, センサデバイスを接続しないため, PREEMPT-RTなどのリアルタイム拡張を行わない素のLinuxカーネルv5.4.0を使用した
-\item $2.6 \mathrm{GHz}$ で動作する6コア (12仮想コア) のIntel i7プロセッサ, $32 \mathrm{~GB}$ のメインメモリ, RTX 2070のGPUが搭載されている
-\item タイミング情報を収集するために, 当社のAutowareスタックをインスツルメンテーションしている
-\item タスク (グループ) のETDをプロファイリングするために, タスクのメインループの反復に相当する各インスタンスについて, Linuxシステムコールのclock-gettimeで開始時刻と終了時刻を記録している
-    \end{itemize}
+\begin{frame}{エンドツーエンドレイテンシ}
+    エンドツーエンドレイテンシは, 最初のソースタスクがセンサメッセージを受信した瞬間と, 最後のシンクタスクが同じシーケンス番号を持つ制御メッセージを出 力した瞬間との差
 \end{frame}
 
-\begin{frame}{}
-    \begin{itemize}
-        \item このプロファイリングオーバヘッドは, 各タスクインスタンスで50us以下と測定された(*1)
-\item
-\item 各タスクパスのエンドツーエンドLDをプロファイリングするために, Autowareスタック全体は, 全てのセンサメッセージが一意のシーケンス番号を含み, メッセージに応答して実行される一連のタスクがその出力メッセージでシーケンス番号をリレーするようにインスツルメンテーションされている
-\item したがって, エンドツーエンドレイテンシは, 最初の (ソース) タスクがセンサメッセージを受信した瞬間と, 最後の (シンク) タスクが同じシーケンス番号を持つ制御メッセージを出力した瞬間との差として測定される
-    \end{itemize}
+% \begin{frame}{}
+%     \begin{itemize}
+%         \item タイミング情報を収集するために, 当社のAutowareスタックをインスツルメンテーションしている
+%         \item タスクの実行時間分布をプロファイリングするために, タスクのメインループの反復に相当する各インスタンスについて, Linuxシステムコールのclock-gettimeで開始時刻と終了時刻を記録する
+%         \item 各タスクパスのエンドツーエンドレイテンシ分布をプロファイリングするために, Autowareスタック全体は, 全てのセンサメッセージが一意のシーケンス番号を含み, メッセージに応答して実行される一連のタスクがその出力メッセージでシーケンス番号をリレーするようにインスツルメンテーションされている
+%     \end{itemize}
+% \end{frame}
+
+% \begin{frame}{}
+% このプロファイリングオーバヘッドは, 各タスクインスタンスで50us以下と測定された
+%     \begin{itemize}
+%         \item プロファイリングのオーバヘッドを評価するために, Autowareタスクにインスツルメンテーションを行い, メインループの各反復のタイムスタンプを取得できるようにした
+%         \item インスツルメンテーションされたVDDタスクの1000回の繰り返し実行時間は, プロファイリングありで $5896.840 \mathrm{~ms}$, プロファイリングなしで $5872.829 \mathrm{~ms}$ となる
+%         \item したがって, clock-gettimeを1回呼び出すことによる正味のプロファイリングオーバヘッドは $\frac{5896.840-5872.829}{1000}=\frac{24.011}{1000}=$  $0.024 \mathrm{~ms}$ となる
+%     \end{itemize}
+% \end{frame}
+
+\begin{frame}{Autowareタスクのパラメータ}
+    \fullimage{autoware_stack_param}
 \end{frame}
 
-\begin{frame}{}
-    \begin{itemize}
-        \item (*1):プロファイリングのオーバヘッドを評価するために, Autowareタスクにインスツルメンテーションを行い, メインループの各反復のタイムスタンプを取得できるようにした
-\item インスツルメンテーションされたVDDタスクの1000回の繰り返し実行時間は, プロファイリングありで $5896.840 \mathrm{~ms}$, プロファイリングなしで $5872.829 \mathrm{~ms}$ となる
-\item したがって, clock-gettimeを1回呼び出すことによる正味のプロファイリングオーバヘッドは $\frac{5896.840-5872.829}{1000}=\frac{24.011}{1000}=$  $0.024 \mathrm{~ms}$ となる
-    \end{itemize}
-\end{frame}
+% \begin{frame}{}
+%     \begin{itemize}
+% \item 各サブグラフが直列化されるように, CPUの割り当てとタスクのフェーズが決定されている
+% \item 表中, VDDタスクは1つのGPUを共有してYOLOv3というディープニューラルネットワークを実行するため, タスク間の相関が強くなる可能性があることに注意
+% \item 表から, タスクグラフ全体が $4+N$ のコアに分割され, その $\bar{U}$ がほぼバランスしていること, コア0と2が $U^{\max }>1.0$ を持つことが分かる
+% \item 全タスクの実行時間分布を決定するために, 各タスクの実行時間をマイクロ秒単位でプロファイリングし, ミリ秒単位で離散化した
+%     \end{itemize}
+% \end{frame}
 
-\begin{frame}{}
-    \begin{itemize}
-        \item 表 $\mathrm{V}$ にAutowareタスクのパラメータを示す
-\item 各サブグラフが直列化されるように, CPUの割り当てとタスクのフェーズが決定されている
-\item 表中, VDDタスクは1つのGPUを共有してYOLOv3というディープニューラルネットワークを実行するため, タスク間の相関が強くなる可能性があることに注意
-\item 表から, タスクグラフ全体が $4+N$ のコアに分割され, その $\bar{U}$ がほぼバランスしていること, コア0と2が $U^{\max }>1.0$ を持つことが分かる
-\item 全タスクのETDを決定するために, 各タスクの実行時間をマイクロ秒単位でプロファイリングし, ミリ秒単位で離散化した
-    \end{itemize}
-\end{frame}
-
-\begin{frame}{}
-    \begin{itemize}
-        \item 図 6 の Autoware タスクグラフに, 走行距離計, ルーフに設置した 64ch Ouster LiDAR, バックミラー裏に設置したフル HD の Sekonix カメラを搭載した車両から記録したセンサワークロードを投入している
-\item 複数のカメラの効果を見るために, 1台のカメラからの画像を複製し, 複数のビジョングラフに供給している
-    \end{itemize}
+\begin{frame}{Autoware タスクグラフ}
+    \fitimage{
+        Autoware タスクグラフに, 走行距離計, ルーフに設置した 64ch Ouster LiDAR, バックミラー裏に設置したフル HD の Sekonix カメラを搭載した車両から記録したセンサワークロードを投入する
+    }{autoware_task_graph}
+    % \begin{itemize}
+    %     \item 複数のカメラの効果を見るために, 1台のカメラからの画像を複製し, 複数のビジョングラフに供給している
+    % \end{itemize}
 \end{frame}
 
 
 \subsection{Probabilistic Guarantee}
 \label{ssec: probabilistic guarantee}
 
-\begin{frame}{}
+\begin{frame}{セクションサマリ}
+    \begin{itembox}[l]{\textbf{目的}}
+        提案する分析を評価するために, ソースグループからシンクグループまでの各可能なパスのレイテンシ分布のプロファイリングを行う
+    \end{itembox}
+\end{frame}
+
+\begin{frame}{Autowareタスクグループ}
+    \fitimage{
+        4つのビジョングラフを持つタスクグループのパスが10個ある
+    }{autoware_task_group}
+\end{frame}
+
+\begin{frame}{Autowareタスクグループのレイテンシ分布結果}
+    \fullimage{ld}
+\end{frame}
+
+\begin{frame}{結果の分析}
     \begin{itemize}
-        \item 提案する解析を評価するために, ソースグループからシンクグループまでの各可能なパスのレイテンシ分布のプロファイリングを行う
-\item 図6 (b) において, 4つのビジョングラフを持つタスクグループのパスが10個あり, そのLDは図7に示す通りである
-\item この図は, プロファイル化されたLDを緑, 解析されたLDを黒として, CDFの形で示している
-\item CDFにおいて, プロファイルされたグラフより解析されたグラフが常に下にある場合, 前者が後者を上回ることを意味する
-\item 図から, 全てのパスにおいて, 解析済みグラフがプロファイル済みグラフを上回る傾向が強いことが分かる
+        \item 全てのパスにおいて, 分析済みグラフがプロファイル済みグラフを上回る傾向が強い
+        \item しかし, 図(e),(f),(i),(j)では, 分析グラフの始点がプロファイルグラフより上になる場合がある
+              \begin{itemize}
+                  \item これらは単一 GPU を共有するパスであり, 実行時間に強いタスク間依存性があるため
+              \end{itemize}
+        \item 図(a) を除き, 図5で説明したレイテンシ条件付けにより, 階段状の形状をしている
     \end{itemize}
 \end{frame}
 
-\begin{frame}{}
+\begin{frame}{$99.9999 \%$ のテールレイテンシ ($TL$) のパーセンタイル結果}
+    \fullimage{tail_latency}
+\end{frame}
+
+\begin{frame}{結果の分析1}
     \begin{itemize}
-        \item しかし, 図7(e),(f),(i),(j)では, 分析グラフの始点がプロファイルグラフより上になる場合があることがわかる
-\item これらは単一 GPU を共有するパスであり, 実行時間に強いタスク間依存性があることがわかる
-\item このとき, 図6(b)ではビジョングラフに関連するグループ間PCCが比較的高く, 一様でないことに注目する必要がある
-\item 例えば, $\mathrm{PCC}(\mathrm{C} 2 \mathrm{~V}(n) \rightarrow \mathrm{R} 2 \mathrm{O}(n))=0.62,0.63,0.40,0.67$ に対して $n=1,2,3,4$ がそれぞれある
-\item 図7のレイテンシグラフは, 図7 (a) を除き, 図5で説明したレイテンシ条件付けにより, 階段状の形状をしている
+        \item $N=4$ と $N=6$ のいずれの場合も, 全てのパスで, 分析されたテールレイテンシ ($TL_{a z}$) がプロファイルされた ($T L_{p f}$) よりも大きい
+        \item これは, 分析が無限に続く期間をカバーするため, 有限時間でのプロファイリングよりもテールが長くなる傾向があるため
+        \item 本論文では, このようなテールレイテンシに着目し, 車両の確率的な最悪応答性を説明する
+        \item 既存の決定論的分析では, 単一の最悪レイテンシを計算することはできないが, $U^{\max }>1.0$ を一部のコアに使用したマルチコアシステムでは, レイテンシが無限大となるため, 適用できる
     \end{itemize}
 \end{frame}
 
-\begin{frame}{}
+\begin{frame}{結果の分析2}
     \begin{itemize}
-        \item 表VIは, 各パスのプロファイルと解析グラフから得られた $99.9999 \%$ のテールレイテンシ $T L$ のパーセンタイルである
-\item この表から, $N=4$ と $N=6$ のいずれの場合も, 全てのパスで, 解析されたテールレイテンシ $T L_{a z}$ がプロファイルされた $T L_{p f}$ よりも大きいことが分かる
-\item これは, 解析が無限に続く期間をカバーするため, 有限時間でのプロファイリングよりもテールが長くなる傾向があるためである
-\item 本論文では, このようなテールレイテンシに着目し, 車両の確率的な最悪応答性を説明する
-\item 既存の決定論的解析では, 単一の最悪レイテンシを計算することはできないが, $U^{\max }>1.0$ を一部のコアに使用したマルチコアシステムでは, レイテンシが無限大となるため, 適用できる
+        \item $\mathrm{C} 2 \mathrm{~V}(n) \rightarrow \mathrm{R} 2 \mathrm{O}(n) \rightarrow \mathrm{T} 2 \mathrm{P}$ と $N=6$ のTLは, $N=4$ の場合よりも大きくなる傾向がある
+        \item GPU を使用するタスクが増えると GPU 利用率が高くなり, $\mathrm{C} 2 \mathrm{~V}$ のタスクが GPU 内でインターリーブ実行される可能性が高くなる
+        \item このようなインターリーブ実行が行われた場合, タスクの実行時間は単独実行の場合よりも大きく計測される
     \end{itemize}
 \end{frame}
 
-\begin{frame}{}
-    \begin{itemize}
-        \item また, $\mathrm{C} 2 \mathrm{~V}(n) \rightarrow \mathrm{R} 2 \mathrm{O}(n) \rightarrow \mathrm{T} 2 \mathrm{P}$ と $N=6$ のTLは, $N=4$ の場合よりも大きくなる傾向があることも重要である
-\item GPU を使用するタスクが増えると GPU 利用率が高くなり, $\mathrm{C} 2 \mathrm{~V}$ のタスクが GPU 内でインターリーブ実行される可能性が高くなる
-\item このようなインターリーブ実行が行われた場合, タスクの実行時間は単独実行の場合よりも大きく計測される
-\item 表VIIは, $N$ を変化させながら, $\mathrm{C} 2 \mathrm{~V}$ タスクの平均実行時間を示したものである
-\item 図から, $N=6$ のときに得られる平均実行時間は, より小さい $N$ のときに得られる平均実行時間に比べて自明に増加していることがわかる
-\item これは, より多くのインターリーブ実行を意味する
-    \end{itemize}
+\begin{frame}{$N$の変動に伴う $\mathrm{C} 2 \mathrm{~V}$ タスクの平均実行時間}
+    \fitimage{
+        \begin{itemize}
+            \item $N=6$ のときに得られる平均実行時間は, より小さい $N$ のときに得られる平均実行時間に比べて増加している
+            \item これは, より多くのインターリーブ実行をしているため
+        \end{itemize}
+    }{interleaved_executions}
 \end{frame}
 
 
 \subsection{Analysis Accuracy}
 \label{ssec: analysis accuracy}
 
-\begin{frame}{}
-    \begin{itemize}
-        \item 直列化されたグラフ $\Gamma^{\text {serial }}$ に対する解析の精度を評価するために, 合成タスクグラフを生成する
-\item 全ての合成タスクグラフは5つの部分グラフに分解され, それらは直列に接続される, すなわち, $\Gamma^{1} \rightarrow \Gamma^{2} \rightarrow \cdots \rightarrow \Gamma^{5}$ である5つの部分グラフはランダム位相 $\left(\varphi^{1}, \varphi^{2}, \cdots\right.$, $\left.\varphi^{5}\right)$ と調和周期 $\left(T^{1}, T^{2}, T^{3}, T^{4}, T^{5}\right)=(16 T$, $8 T, 4 T, 2 T, T)$ の集合を持つ.各 $\Gamma^{k}$ は同数の $N$ のタスクからなり, これらも直列に接続され, すなわち $\tau_{1}^{k} \rightarrow \tau_{2}^{k} \rightarrow$  $\cdots \rightarrow \tau_{N}^{k}$ となる
-    \end{itemize}
+\begin{frame}{セクションサマリ}
+    \begin{itembox}[l]{\textbf{目的}}
+        直列化されたグラフ $\Gamma^{\text {serial }}$ に対する分析の精度を評価する
+    \end{itembox}
 \end{frame}
 
-\begin{frame}{}
+\begin{frame}{合成タスクグラフの生成方法1}
     \begin{itemize}
+        \item 全ての合成タスクグラフは5つの部分グラフに分解され, それらは直列に接続される,
+        \item $\Gamma^{1} \rightarrow \Gamma^{2} \rightarrow \cdots \rightarrow \Gamma^{5}$ である5つの部分グラフはランダム位相 $\left(\varphi^{1}, \varphi^{2}, \cdots\right.$, $\left.\varphi^{5}\right)$ と調和周期 $\left(T^{1}, T^{2}, T^{3}, T^{4}, T^{5}\right)=(16 T$, $8 T, 4 T, 2 T, T)$ の集合を持つ
+        \item 各 $\Gamma^{k}$ は同数の $N$ のタスクからなり, これらも直列に接続され, $\tau_{1}^{k} \rightarrow \tau_{2}^{k} \rightarrow$  $\cdots \rightarrow \tau_{N}^{k}$ となる
         \item $\Gamma^{k}$ のタスクは全てCPU $k$ に割り当てられ, タスクフェーズは0である
-\item 各タスク $\tau_{i}^{k}$ は, 1～ $2 \times \bar{C}^{k}-1$ の範囲で一様なETDを持つ
-\item 各 $\Gamma^{k}$ において, 全ての $\tau_{i}^{k}$ の平均実行時間 $\bar{C}^{k}$ は同じであるため, コア $k$ の平均コア利用率 $\bar{U}$ は $\frac{N \times \bar{C}^{k}}{T^{k}}$ になる
-\item また, どのコアも同じ平均利用率 $\bar{U}$ であると仮定する
-\item この合成タスクグラフは, 我々の分析が遭遇するはずの様々なケースを作り出すのに十分な一般性を持っていることに注意
-\item すなわち, 任意のタスクグラフを考えた場合, グラフ間解析はソースからシンクへの各パスを解析し, 解析対象の各単一パスは, 連続したタスクを持つサブグラフのシーケンスとみなすことができる
-\item 上の合成グラフはそのようなパスの1つを表している
     \end{itemize}
 \end{frame}
 
-\begin{frame}{}
+\begin{frame}{合成タスクグラフの生成方法2}
     \begin{itemize}
-        \item 実験では, $\bar{U}$ を変化させながら, ランダムな位相の組み合わせで100個の合成グラフを生成した
-\item 平均コア利用率 $\bar{U}$ は, $40 \%, 60 \%$ と $80 \%$ の中から選択される
-\item 全てのタスクの最大実行時間は $2 \times \bar{C}^{k}-1$ であるため, $U^{\max }$ は $2 \times \bar{U}$ とほぼ等しいことを思い出してください
-\item 各合成グラフについて, 各パス $S^{1} \rightarrow S^{k}$ に対する $T L^{99.9 \%}$ と $T L^{99.9999 \%}$ を分析する
-\item サブグラフ周期の影響を考慮するため, テールレイテンシを $T^{1}$ で割って正規化し, 各 $L_{S^{k}}^{S^{1}}$ について得られた100個の正規化テールレイテンシの平均をとる
-\item また, 比較のために, 100個の合成グラフについて, $160,000 T$ の期間, 独自に開発した離散イベントシミュレータでシミュレーションを行った
+        \item 各タスク $\tau_{i}^{k}$ は, 1～ $2 \times \bar{C}^{k}-1$ の範囲で一様な実行時間分布を持つ
+        \item 各 $\Gamma^{k}$ において, 全ての $\tau_{i}^{k}$ の平均実行時間 $\bar{C}^{k}$ は同じであるため, コア $k$ の平均コア利用率 $\bar{U}$ は $\frac{N \times \bar{C}^{k}}{T^{k}}$ になる
+        \item どのコアも同じ平均利用率 $\bar{U}$ であると仮定する
+              % \item この合成タスクグラフは, 我々の分析が遭遇するはずの様々なケースを作り出すのに十分な一般性を持っていることに注意
+              % \item すなわち, 任意のタスクグラフを考えた場合, グラフ間分析はソースからシンクへの各パスを分析し, 分析対象の各単一パスは, 連続したタスクを持つサブグラフのシーケンスとみなすことができる
+              % \item 上の合成グラフはそのようなパスの1つを表している
     \end{itemize}
 \end{frame}
 
-\begin{frame}{}
+\begin{frame}{実験方法1}
     \begin{itemize}
+        \item $\bar{U}$ を変化させながら, ランダムな位相の組み合わせで100個の合成グラフを生成する
+        \item 平均コア利用率 $\bar{U}$ は, $40 \%, 60 \%$ と $80 \%$ の中から選択される
+              % \item 全てのタスクの最大実行時間は $2 \times \bar{C}^{k}-1$ であるため, $U^{\max }$ は $2 \times \bar{U}$ とほぼ等しい
+        \item 各合成グラフについて, 各パス $S^{1} \rightarrow S^{k}$ に対する $T L^{99.9 \%}$ と $T L^{99.9999 \%}$ を分析する
+        \item サブグラフ周期の影響を考慮するため, テールレイテンシを $T^{1}$ で割って正規化し, 各 $L_{S^{k}}^{S^{1}}$ について得られた100個の正規化テールレイテンシの平均をとる
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{実験方法2}
+    \begin{itemize}
+        \item また, 比較のために, 100個の合成グラフについて, $160,000 T$ の期間, 独自に開発した離散イベントシミュレータでシミュレーションを行った
         \item これはPython言語で記述され, タスクのライフサイクルイベント (タスクの到着, 実行, 待機, 先取り, 完了) とメッセージのライフサイクルイベント (生成, 送信, 破棄) のみをタスクグラフとリソース割り当てに従って模倣する
-\item シミュレーションで得られた100個の正規化テールレイテンシの平均値をとり, 解析で得られた平均テールレイテンシと比較する
-\item 図8は, $N=8$ を使用し, $\bar{U}$ を変化させて, 各パスで得られた平均正規化テールレイテンシを示したものである
-\item この図から, 解析で得られた平均的な $T L^{99.9999 \%}$  (または $T L^{99.9 \%}$ )が, シミュレーションで得られたもの よりも常に高いことが明らかである
-\item 最後に,  $\bar{U}=80 \%$ の場合,  $T L^{99.9999 \%}$ の解析精度のオーバヘッドは $\frac{3.19-2.87}{2.87}=11.1 \%$ に過ぎないことに注意されたい
+        \item シミュレーションで得られた100個の正規化テールレイテンシの平均値をとり, 分析で得られた平均テールレイテンシと比較する
     \end{itemize}
+\end{frame}
+
+\begin{frame}{$\bar{U}$の変動に伴う各パスの平均正規化テールレイテンシ結果}
+    \fitimage{
+        \begin{itemize}
+            \item 分析で得られた平均的な $T L^{99.9999 \%}$が, シミュレーションよりも常に高い
+            \item $\bar{U}=80 \%$ の場合,  $T L^{99.9999 \%}$ の分析精度のオーバヘッドは $\frac{3.19-2.87}{2.87}=11.1 \%$
+        \end{itemize}
+    }{random_tail_latency}
 \end{frame}
 
 
 \subsection{Analysis Time}
 \label{ssec: analysis time}
 
-\begin{frame}{}
-    \begin{itemize}
-        \item 我々の解析の複雑さを理解するために, 3つの合成タスクグラフを生成する
-\item 各タスクグラフは, 表VIIIに示す $\left(T^{1}\right.$, $\left.T^{2}, T^{3}\right)$ の周期の組み合わせで, それぞれが4つのタスクからなる3つの部分グラフ, すなわち $\Gamma^{1} \rightarrow \Gamma^{2} \rightarrow \Gamma^{3}$ の連続である
-    \end{itemize}
+\begin{frame}{合成タスクグラフの生成}
+    \fitimage{
+        \begin{itemize}
+            \item 我々の分析の複雑さを理解するために, 3つの合成タスクグラフを生成する
+            \item 各タスクグラフは, 表に示す $\left(T^{1}\right.$, $\left.T^{2}, T^{3}\right)$ の周期の組み合わせで, それぞれが4つのタスクからなる3つの部分グラフ $\Gamma^{1} \rightarrow \Gamma^{2} \rightarrow \Gamma^{3}$ である
+        \end{itemize}
+    }{random_param}
 \end{frame}
 
-\begin{frame}{}
-    \begin{itemize}
-        \item 表から, $T^{\text {hyper }}$ が大きくなっても解析時間は大きく増加しないことがわかる
-\item タスクRTDが収束するためには, $\bar{U}$ が高いほど長い時間を必要とする
-    \end{itemize}
+\begin{frame}{結果の分析}
+    \fitimage{
+        \begin{itemize}
+            \item $T^{\text {hyper }}$ が大きくなっても分析時間は大きく増加しない
+            \item タスク応答時間分布が収束するためには, $\bar{U}$ が高いほど長い時間を必要とする
+        \end{itemize}
+    }{analysis_time_param}
 \end{frame}

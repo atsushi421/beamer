@@ -1,1 +1,62 @@
 % !TeX root = main.tex
+
+
+\begin{frame}{表記法・用語 1}
+    \full{
+        \begin{table}[tb]
+            \adjustbox{max width=\textwidth, max height=\slideheight}{
+                \centering\begin{tabular}{|c|l|} \hline
+                    $\tau_{i}$                          & タスク                                              \\\hline
+                    $\tau_{i} \rightarrow \tau_{j}$     & $\tau_{i}$ が $\tau_{j}$ に直接メッセージを送る     \\\hline
+                    $\tau_\alpha$                       & ダミーソースタスク                                  \\\hline
+                    $\tau_\Omega$                       & ダミーシンクタスク                                  \\\hline
+                    $\Gamma_k$                          & サブグラフ                                          \\\hline
+                    $T_k$                               & $\Gamma_k$の周期                                    \\\hline
+                    $\Gamma^{k} \rightarrow \Gamma^{l}$ & $\Gamma^{k}$ が $\Gamma^{l}$ に直接メッセージを送る \\\hline
+                    $\varphi^{k}$                       & $\Gamma^{k}$のグラフ位相                            \\\hline
+                    $\tau_i^k$                          & $\Gamma^{k}$ に所属するタスク                       \\\hline
+                    $\phi_{i}^k$                        & $\tau_i^k$のタスク位相                              \\\hline
+                    $\Phi_{i}^{k}$                      & $\Gamma^{k}$ 内の $\tau_{i}^{k}$ の絶対タスク位相   \\\hline
+                \end{tabular}
+            }
+        \end{table}
+    }
+\end{frame}
+
+\begin{frame}{表記法・用語 2}
+    \full{
+        \begin{table}[tb]
+            \adjustbox{max width=\textwidth, max height=\slideheight}{
+                \centering\begin{tabular}{|c|l|} \hline
+                    $C_{i}^{k}$                                                                                        & $\tau_{i}^{k}$ の確率的実行時間                                                       \\\hline
+                    $R_{i, j}^{k}$                                                                                     & $\tau_{i}^{k}$ の確率的応答時間                                                       \\\hline
+                    $\lambda_{i, j}^{k}$                                                                               & $\tau_{i, j}^{k}$ のリリース時刻                                                      \\\hline
+                    $\eta_{i, j}^{k}$                                                                                  & $\tau_{i, j}^{k}$ の完了時刻                                                          \\\hline
+                    $L\left(\tau_{s r c} \rightarrow \tau_{s i n k}\right)$ または $L_{\tau_{s i n k}}^{\tau_{s s c}}$ & $\tau_{s r c}$ のリリースから $\tau_{s i n k}$ の完了までのエンドツーエンドレイテンシ \\\hline
+                    $P^{k}$                                                                                            & $\Gamma^{k}$ に割り当てられたパーティション                                           \\\hline
+                    $D_{i}^{k}$                                                                                        & $\tau_{i}^{k}$ の相対デッドライン                                                     \\\hline
+                    $d_{i, j}^{k}$                                                                                     & $\tau_{i, j}^{k}$ の絶対デッドライン                                                  \\\hline
+                    $a_{i}^{k}$                                                                                        & $\tau_{i}^{k}$ が割り当てられたCPUコアのID                                            \\\hline
+                    $V^{k}$                                                                                            & $\Gamma^{k}$内のタスクの集合                                                          \\\hline
+                    $E^{k}$                                                                                            & $\Gamma^{k}$内のエッジの集合                                                          \\\hline
+                    $\Gamma$                                                                                           & グラフ全体                                                                            \\\hline
+                    $S_{j}^{<h>}$                                                                                      & $h$ 番目のハイパーピリオド内にリリースされたパス $S$ の $j$ 番目のインスタンス        \\\hline
+                    $L\left(S^{<h>}\right)$                                                                            & \tabml{$h$ 番目のハイパーピリオド内にリリースされた                                   \\全ての $S$ のインスタンスのエンドツーエンドレイテンシを記述する確率変数} \\\hline
+                \end{tabular}
+            }
+        \end{table}
+    }
+\end{frame}
+
+\begin{frame}{表記法・用語 3}
+    \full{
+        \begin{table}[tb]
+            \adjustbox{max width=\textwidth, max height=\slideheight}{
+                \centering\begin{tabular}{|c|l|} \hline
+                    $\Gamma^{\text {serial }}$ & 直列化サブグラフ                  \\\hline
+                    $S^l$                      & $\Gamma^{l}$ に属すタスクの部分列 \\\hline
+                \end{tabular}
+            }
+        \end{table}
+    }
+\end{frame}
