@@ -1,0 +1,95 @@
+% !TeX root = main.tex
+
+\section{PERFORMANCE EVALUATION}
+\label{sec: performance evaluation}
+
+
+\subsection{Experimental Setup}
+\label{ssec: Experimental Setup}
+
+\begin{frame}{ランダム DAG 生成のパラメータ1}
+    \begin{block}{$|V|$}
+        $|V| = \{10, 20, 30, 40, 50\}$
+    \end{block}
+    \begin{block}{$\alpha$}
+        \setlength{\linewidth}{0.98\columnwidth}
+        \begin{itemize}
+            \item DAGの高さと幅を定義するパラメータ
+            \item $\alpha = \{0.5, 1, 2\}$
+        \end{itemize}
+    \end{block}
+    \begin{block}{$|P|$}
+        $|P| = \{4, 8, 16, 32\}$
+    \end{block}
+\end{frame}
+
+\begin{frame}{使用ベンチマーク}
+    \fullimage{benchmark}
+\end{frame}
+
+
+\subsection{Performance Metrics}
+\label{ssec: Performance Metrics}
+
+\begin{frame}{Schedule Length Ratio (SLR)}
+    \fitimage{
+        \begin{itemize}
+            \item SLR は最短スケジュール長に対する比率
+            \item SLR の値が小さいほど, スケジューリングアルゴリズムの性能が高い
+        \end{itemize}
+    }{slr}
+\end{frame}
+
+\begin{frame}{Run-time}
+    一定のパラメータ値で得られたデータセットに対するスケジューリング戦略の平均解生成時間
+\end{frame}
+
+
+\subsection{Experimental Results}
+\label{ssec: Experimental Results}
+
+\begin{frame}{メイクスパンの比較}
+    \fitimage{
+        優れた性能を発揮したテストケース，同等の性能を発揮したテストケース，劣った性能を発揮したテストケースの割合
+    }{eva1}
+\end{frame}
+
+\begin{frame}{パラメータを変動させた場合のSLRの比較}
+    \fitimage{
+        HMDSはすべてのアルゴリズムを総合的に上回っている
+    }{eva2}
+\end{frame}
+
+\begin{frame}{パラメータを変動させた場合のRun-timeの比較}
+    \fitimage{
+        Run-timeは $PALG, HEFT < HMDS-Bl < PEFT < PPTS < PSLS$
+    }{eva3}
+\end{frame}
+
+\begin{frame}{HMDSとHMDS-Blの比較指標}
+    \begin{block}{Average Improvement in Schedule length ratios (AIS)}
+        \begin{equation}
+            A I S=\frac{S L R_{H M D S-B l}-S L R_{H M D S}}{S L R_{H M D S}} \times 100
+        \end{equation}
+    \end{block}
+    \begin{block}{Average Slow Down (ASD)}
+        \begin{equation}
+            A S D=\frac{\text { run-time }_{H M D S}}{\text { run-time }_{H M D S-B l}}
+        \end{equation}
+    \end{block}
+\end{frame}
+
+\begin{frame}{$\lambda$を変動させた場合のHMDSとHMDS-Blの比較}
+    \fitimage{
+        全てのケースでHMDSがHMDS-Blよりも優れた性能を示す
+    }{eva4}
+\end{frame}
+
+\begin{frame}{許容Run-timeを変動させた場合の結果}
+    \fitimage{
+        \begin{itemize}
+            \item HMDS はより良い解を探索するために時間をかけることで，着実に性能を向上させている
+            \item 当然のことながら，実行時間に制限がある場合には，タスク数やプロセッサ数の増加に伴って性能が低下する
+        \end{itemize}
+    }{eva5}
+\end{frame}

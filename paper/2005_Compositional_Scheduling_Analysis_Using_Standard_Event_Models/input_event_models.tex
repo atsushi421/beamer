@@ -16,10 +16,10 @@
 
 \begin{frame}{リアルタイムスケジューリング理論で重要な入力イベントモデル}
     \begin{itemize}
-        \item 周期的 (strictly periodic)
-        \item ジッターを含む周期的 (periodic with jitter)
-        \item 散発的 (sporadic)
-        \item 散発的バースト (sporadic bursts)
+        \item 周期的 ($P$)
+        \item ジッタを含む周期的 ($P + J$)
+        \item 散発的 ($S$)
+        \item 散発的バースト ($B$)
     \end{itemize}
 \end{frame}
 
@@ -56,25 +56,22 @@
 \subsection{Strictly Periodic Events}
 \label{ssec: strictly periodic events}
 
-\begin{frame}{周期的イベントストリームのパラメータ}
+\begin{frame}{周期的イベントストリーム $P$}
     \begin{itemize}
         \item 周期的イベントストリームは, 周期 $T$ によって特徴付けられる
         \item すなわち, 完全に $T$ 周期でイベントが到着する
     \end{itemize}
 \end{frame}
 
-\begin{frame}{}
-    時間間隔 $\Delta t$ における周期的イベントの最大数は以下
-    \begin{equation*}
-        \forall \Delta t>0: \eta_{\mathrm{P}}^{+}(\Delta t)=\left\lceil\frac{\Delta t}{T}\right\rceil
-    \end{equation*}
+\begin{frame}{周期的イベントストリームの時間間隔とイベント数}
+    \fullimage{Maximum_Number_of_Events_of_Periodic_Event_Streams}
 \end{frame}
 
-\begin{frame}{}
-    \fitimage{
-        連続関数を考えた場合の, 周期的イベントストリームの時間間隔とイベント数
-    }{Time_Intervals_and_Number_of_Events_of_Periodic_Event_Streams}
-\end{frame}
+% \begin{frame}{}
+%     \fitimage{
+%         連続関数を考えた場合の, 周期的イベントストリームの時間間隔とイベント数
+%     }{Time_Intervals_and_Number_of_Events_of_Periodic_Event_Streams}
+% \end{frame}
 
 % \begin{frame}{}
 %     \fitimage{
@@ -85,9 +82,11 @@
 %     }{Maximum_Number_of_Events_of_Periodic_Event_Streams}
 % \end{frame}
 
-\begin{frame}{}
+\begin{frame}{最大イベント到着関数 $\eta^{+}(\Delta t)$}
     \fitimage{
-        最大関数 $\eta^{+}(\Delta t)$ は, 最大イベント到着曲線を導き出す
+        \begin{equation*}
+            \forall \Delta t>0: \eta_{\mathrm{P}}^{+}(\Delta t)=\left\lceil\frac{\Delta t}{T}\right\rceil
+        \end{equation*}
     }{upper_bound_arrival_curve_of_strictly_periodic_events}
 \end{frame}
 
@@ -95,182 +94,175 @@
 \subsection{Periodic Events with Jitter}
 \label{ssec: periodic events with jitter}
 
-\begin{frame}{}
-    \begin{itemize}
-        \item 多くの周期的なシステムでは, 周期的なストリームが経験する可能性のある歪みをとらえた, いわゆるジッターを示す
-    \end{itemize}
+\begin{frame}{ジッタ}
+    多くの周期的なシステムでは, 周期的なイベントストリームにジッタが生じる可能性がある
+    \begin{block}{ジッタ}
+        \begin{itemize}
+            \item イベント到着の $T$ 周期からの遅れ
+            \item 各イベントに発生する最大のジッタを $J$ と表記する
+            \item ここで, $J < T$ とする
+        \end{itemize}
+    \end{block}
 \end{frame}
 
-\begin{frame}{}
+\begin{frame}{ジッタを含む周期的イベントストリーム $P+J$ の例}
     \fitimage{
-        観測可能な最大数と最小数が最大3つ異なっている
+        同じ時間間隔でも, イベント到着数が最大3つ異なっている
     }{time_intervals_and_number_of_events_of_periodic_evants_with_jiter}
 \end{frame}
 
-\begin{frame}{}
+\begin{frame}{最悪イベント到着シナリオ}
     \begin{itemize}
-        \item どのイベントに間隔を合わせればよいのだろうか
-        \item ここでも, スケジューリング理論に関する既存の研究がその答えを提供してくれます
-        \item ジッターモデルはLocke [75]によって最初に検討された
-        \item 彼は, 最悪イベント到着シナリオを次のように構築した
-        \item 彼は, イベントの流れの中で, あるイベントが最大許容時間偏差の範囲内で可能な限り遅く到着し, その後に到着するイベントは全てその最初のイベントの後で可能な限り早く到着すると仮定した
+        \item ジッタを含む周期的モデルにおける, 最悪イベント到着シナリオは以下の場合であることが証明されている
+              \begin{block}{最悪イベント到着シナリオ}
+                  あるイベントが最大ジッタの範囲内で最も遅く到着し, その後に到着するイベントが最も早く到着する
+              \end{block}
+              \vspace{5mm}
+        \item イベント最大到着関数 $\eta^{+}(\Delta t)$ は最悪イベント到着シナリオで得られる
     \end{itemize}
 \end{frame}
 
-\begin{frame}{}
+\begin{frame}{最大イベント到着関数 $\eta^{+}(\Delta t)$}
     \fitimage{
-        このシナリオと, その結果得られる上界到着曲線
+        \begin{equation*}
+            \forall \Delta t>0: \eta_{\mathrm{P+J}}^{+}(\Delta t)=\left\lceil\tilde{\eta}^{+}(\Delta t)\right\rceil=\left\lceil\frac{\Delta t+J}{T}\right\rceil
+        \end{equation*}
     }{upper_bound_arrival_curve_of_periodic_events_with_jitter}
 \end{frame}
 
-\begin{frame}{}
-    \begin{itemize}
-        \item 最悪の場合, ジッター付きストリームの全てのイベント (最初のイベントを除く) は, 厳密に周期的なストリームよりも $J$ 早く再到達する
-        \item より正確には, 最初のイベントだけが遅れて到着するが, $\Delta t$ の時間オフセットも同じ量, すなわちジッター $J$ だけシフトする
-    \end{itemize}
-\end{frame}
+% \begin{frame}{}
+%     \begin{itemize}
+%         \item 最悪の場合, ジッタ付きストリームの全てのイベント (最初のイベントを除く) は, 厳密に周期的なストリームよりも $J$ 早く再到達する
+%         \item より正確には, 最初のイベントだけが遅れて到着するが, $\Delta t$ の時間オフセットも同じ量, すなわちジッタ $J$ だけシフトする
+%     \end{itemize}
+% \end{frame}
 
-\begin{frame}{}
-    $\eta^{+}$ 関数は, 式3.18で与えられる
-    \begin{equation*}
-        \forall \Delta t>0: \eta_{\mathrm{P+J}}^{+}(\Delta t)=\left\lceil\tilde{\eta}^{+}(\Delta t)\right\rceil=\left\lceil\frac{\Delta t+J}{T}\right\rceil
-    \end{equation*}
-\end{frame}
-
-\begin{frame}{}
-    \begin{itemize}
-        \item ジッターを含む周期的なイベントのモデルは非常に強力である
-        \item 静的で厳密に周期的なイベントに加え, ジッターの概念により, 一般的に周期的なストリームの中で不確実で部分的にしか動作が分かっていない動的なイベントストリームをモデル化できる
-    \end{itemize}
-\end{frame}
+% \begin{frame}{}
+%     \begin{itemize}
+%         \item ジッタを含む周期的なイベントのモデルは非常に強力である
+%         \item 静的で厳密に周期的なイベントに加え, ジッタの概念により, 一般的に周期的なストリームの中で不確実で部分的にしか動作が分かっていない動的なイベントストリームをモデル化できる
+%     \end{itemize}
+% \end{frame}
 
 
 \subsection{Sporadic Events}
 \label{ssec: sporadic events}
 
-\begin{frame}{}
+% \begin{frame}{}
+%     \begin{itemize}
+%         \item 周期的なイベントの他に, 不規則に到着する非周期的イベント [108] というクラスがある
+%         \item 一般に, イベント到着の最大数 $\eta(\Delta t)$ のような重要な特性は安全に境界を定めることができないので, このような非周期的イベントはいかなるリアルタイム分析の対象にもなりえません
+%         \item しかし, 散発的イベントと呼ばれる非周期的イベントのサブクラスがあり, 最小限の予測可能性と分析可能性を可能にする特別な特性を備えている
+%     \end{itemize}
+% \end{frame}
+
+\begin{frame}{散発的イベントストリーム $S$}
+    散発的イベントストリームは不規則に到着するが, 連続するイベント間の最小到着間隔 $d^{-}$ を持つ
+\end{frame}
+
+\begin{frame}{最悪イベント到着シナリオ}
     \begin{itemize}
-        \item 周期的なイベントの他に, 不規則に到着する非周期的イベント [108] というクラスがある
-        \item 一般に, イベント到着の最大数 $\eta(\Delta t)$ のような重要な特性は安全に境界を定めることができないので, このような非周期的イベントはいかなるリアルタイム分析の対象にもなりえません
-        \item しかし, 散発的イベントと呼ばれる非周期的イベントのサブクラスがあり, 最小限の予測可能性と分析可能性を可能にする特別な特性を備えている
+        \item 散発的イベントストリームの最悪イベント到着シナリオは, 全てのイベントが $d^{-}$ 間隔で到着する場合
+        \item すなわち, 散発的イベントストリームの最悪イベント到着シナリオは, 周期 $d^{-}$ の周期的イベントストリームとみなせる
     \end{itemize}
 \end{frame}
 
-\begin{frame}{}
-    \begin{itemize}
-        \item 周期的なイベントとは対照的に, 散発的なイベントは不規則にやってくる
-        \item 平均周期, 繰り返し時間, 頻度などは存在しない
-        \item しかし, 散発的事象は, 連続する事象間の時間的な最小間隔 (到着間時間 $d^{-}[108,3]$ と呼ばれる) が既知であるため, 最大事象の到着を制限できる
-    \end{itemize}
-\end{frame}
-
-\begin{frame}{}
-    \begin{itemize}
-        \item イベントの最大数は到着間時間から簡単に計算できる
-        \item 直感的には, この数は到着間時間に等しい周期を持つ周期的ストリームのイベント数の最大値に等しい
-        \item すなわち, 散発的なストリームの最悪動作 (イベントの最大数) は, 厳密には周期的なストリームである
-    \end{itemize}
-\end{frame}
-
-\begin{frame}{}
+\begin{frame}{最大イベント到着関数 $\eta_{\mathrm{S}}^{+}(\Delta t)$}
     \fitimage{
-        最大イベント到着曲線
+        \begin{equation*}
+            \forall \Delta t>0: \eta_{\mathrm{S}}^{+}(\Delta t)=\left\lceil\tilde{\eta}_{\mathrm{S}}^{+}(\Delta t)\right\rceil=\left\lceil\frac{\Delta t}{d^{-}}\right\rceil
+        \end{equation*}
     }{upper_bound_arrival_curve_of_sporadic_events}
-\end{frame}
-
-\begin{frame}{}
-    $\eta^{+}$ 関数は式 $3.29$ で与えられる
-    \begin{equation*}
-        \forall \Delta t>0: \eta_{\mathrm{S}}^{+}(\Delta t)=\left\lceil\tilde{\eta}_{\mathrm{S}}^{+}(\Delta t)\right\rceil=\left\lceil\frac{\Delta t}{d^{-}}\right\rceil
-    \end{equation*}
 \end{frame}
 
 
 \subsection{Sporadically Periodic Events}
 \label{ssec: sporadically periodic events}
 
-\begin{frame}{}
+\begin{frame}{散発的バーストイベント $B$}
     \begin{itemize}
-        \item 散発的な周期性イベント [4] は, 散発的なイベントの特殊なクラス を表している
-        \item 他の研究 [121] は同じモデルを使用しているが, このようなストリームを散発的バースト性 (B) と呼び, いくつかのイベントの各出現をバーストとみなしている
+        \item 散発的バーストイベントは, 散発的イベントの特殊クラス
+        \item 散発的バーストイベントは以下3つのパラメータによって特徴付けられる
+              \begin{block}{外部周期 $T^{O}$}
+                  連続するバーストの最小間隔
+              \end{block}
+              \begin{block}{$b$}
+                  1バースト内のイベントの最大数
+              \end{block}
+              \begin{block}{内部周期 $T^{I}$}
+                  1バースト内の2イベント間の最小間隔
+              \end{block}
     \end{itemize}
 \end{frame}
 
-\begin{frame}{}
-    \begin{itemize}
-        \item ストリームは3つのパラメータによって特徴付けられる
-        \item 連続するバーストの最小時間間隔を定義する外側期間 $T^{O}$, 1バースト内のイベントの最大数を決定するバースト長 $b$, 1バースト内の2イベント間の最小距離を定義する内側期間 $T^{I}$ である
-    \end{itemize}
+\begin{frame}{最悪イベント到着シナリオ}
+    散発的バーストイベントの最悪イベント到着シナリオは以下
+    \begin{block}{最悪イベント到着シナリオ}
+        \begin{itemize}
+            \item 測定間隔の始めは, バースト内の最初のイベント
+            \item そのバースト内の後続のイベントが内部周期で到着する
+            \item 後続の各バーストは同じ特性を持ち, 外部周期で到達する
+        \end{itemize}
+    \end{block}
 \end{frame}
 
-\begin{frame}{上界の到着関数}
-    \begin{itemize}
-        \item ここでも, いくつかの簡単な考察が, 最大数のイベントによるシナリオを構築するのに役立つ
-        \item 測定間隔は, バースト内の最初のイベントと一致する
-        \item そのバースト内の後続のイベントは, ジッターのある周期的なストリームの「早い」イベントと同様に, できるだけ早く, すなわち, その内部周期で到着する
-        \item 後続の各バーストは同じ特性を持つそして, バーストはできるだけ早く/頻繁に, すなわち外周期で再到達する
-    \end{itemize}
-\end{frame}
-
-\begin{frame}{}
+\begin{frame}{最悪イベント到着シナリオ例}
     \fitimage{
-        バースト長が $b=4$ のシナリオと, それに対応する上界到達曲線
+        バースト長が $b=4$ の場合の最大イベント到達関数
     }{3_12}
 \end{frame}
 
-\begin{frame}{}
-    \begin{itemize}
-        \item この曲線はバーストとアイドル期間を示している
-        \item これは,  (最悪の場合) バースト内の周期的な性質と, 「バースト」自体の出現が散発的であることを示している
-        \item $\eta^{+}(\Delta t)$ 関数は, 式3.34で与えられる
-        \item この式は, a) それぞれ $b$ 個の事象からなる多数の $\left\lfloor\frac{\Delta t}{T^{O}}\right\rfloor$ 個のフルバーストと, b) 最終的に最大バースト長 $b$ によって境界づけられる残りの時間間隔 $\Delta t-\left\lfloor\frac{\Delta t}{T^{O}}\right\rfloor T^{O}$ における残りの散発的事象を分離している
+\begin{frame}{最大イベント到着関数}
+    散発的バーストイベントの最大イベント到着関数 $\eta^{+}(\Delta t)$ 関数は以下
 
-              \begin{equation*}
-                  \forall \Delta t>0: \eta_{\mathrm{B}}^{+}(\Delta t)=\underbrace{\left\lfloor\frac{\Delta t}{T^{O}}\right\rfloor b}_{\text {full bursts }}+\underbrace{\min \left(\left[\frac{\Delta t-\left\lfloor\frac{\Delta t}{T^{O}}\right\rfloor T^{O}}{T^{I}}\right], b\right)}_{\text {remaining events }}
-              \end{equation*}
+    \begin{equation*}
+        \forall \Delta t>0: \eta_{\mathrm{B}}^{+}(\Delta t)=\underbrace{\left\lfloor\frac{\Delta t}{T^{O}}\right\rfloor b}_{\text {full bursts }}+\underbrace{\min \left(\left[\frac{\Delta t-\left\lfloor\frac{\Delta t}{T^{O}}\right\rfloor T^{O}}{T^{I}}\right], b\right)}_{\text {remaining events}}
+    \end{equation*}
+    この式は以下の2項から構成される
+    \begin{itemize}
+        \item $b$ 個のイベントからなる $\left\lfloor\frac{\Delta t}{T^{O}}\right\rfloor$ 個のフルバースト
+        \item 残りの時間間隔 $\Delta t-\left\lfloor\frac{\Delta t}{T^{O}}\right\rfloor T^{O}$ における, $b$ 個以下の散発的イベント
     \end{itemize}
 \end{frame}
 
-\begin{frame}{}
-    \begin{itemize}
-        \item 他の3つのモデルとは対照的に, 同じように単純な連続的 $\tilde{\eta}^{+}$ 関数は存在しない
-        \item しかし, 散発的な周期的事象という異なる問題に着目して, 2つの連続的なものを用意できる
-        \item 式3.9の $\tilde{\eta}_{\mathrm{P}}^{+}$ に内周期を適用すると, 図3.12のバースト時の最大周波数に対応する $\tilde{\eta}_{\text {inner }}^{+}$ が得られる
-        \item 同様に, 外周期とバースト長を用いると $\tilde{\eta}_{\text {outer }}^{+}$ が得られ, 長期平均イベント数が得られる
-        \item これらの曲線はいずれも図3.12に示されている
-    \end{itemize}
-\end{frame}
+% \begin{frame}{}
+%     \begin{itemize}
+%         \item 他の3つのモデルとは対照的に, 同じように単純な連続的 $\tilde{\eta}^{+}$ 関数は存在しない
+%         \item しかし, 散発的な周期的事象という異なる問題に着目して, 2つの連続的なものを用意できる
+%         \item 式3.9の $\tilde{\eta}_{\mathrm{P}}^{+}$ に内周期を適用すると, 図3.12のバースト時の最大周波数に対応する $\tilde{\eta}_{\text {inner }}^{+}$ が得られる
+%         \item 同様に, 外周期とバースト長を用いると $\tilde{\eta}_{\text {outer }}^{+}$ が得られ, 長期平均イベント数が得られる
+%         \item これらの曲線はいずれも図3.12に示されている
+%     \end{itemize}
+% \end{frame}
 
 
 \subsection{Summary}
 \label{ssec: summary}
 
-\begin{frame}{}
-    \begin{itemize}
-        \item RMS (Rate-monotonic scheduling) などの多くのスケジューリング分析技法では, 抽象的なイベントストリームの利用が不可欠である
-        \item イベントストリームとイベントモデルを定義し, 文献上最も一般的な4つのイベントモデル：厳密な周期性 $(\mathrm{P})$, ジッターを含む周期性 $(\mathrm{P}+\mathrm{J})$, 散発的 (S) , 散発的な周期性または散発的バースト (B) について検討した
-        \item これらのモデルは, ストリームの挙動を記述するために, いくつかの重要なパラメータを必要とするだけである
-    \end{itemize}
-\end{frame}
+% \begin{frame}{}
+%     \begin{itemize}
+%         \item RMS (Rate-monotonic scheduling) などの多くのスケジューリング分析技法では, 抽象的なイベントストリームの利用が不可欠である
+%         \item イベントストリームとイベントモデルを定義し, 文献上最も一般的な4つのイベントモデル：厳密な周期性 $(\mathrm{P})$, ジッタを含む周期性 $(\mathrm{P}+\mathrm{J})$, 散発的 (S) , 散発的な周期性または散発的バースト (B) について検討した
+%         \item これらのモデルは, ストリームの挙動を記述するために, いくつかの重要なパラメータを必要とするだけである
+%     \end{itemize}
+% \end{frame}
 
-\begin{frame}{}
-    \begin{itemize}
-        \item $3.7$ 式や3.22式のような例を用いて, これらのパラメータがスケジューリング分析にどのように使用されるかを示した4つの特性関数は, 全てのイベントストリームに適用される
-        \item 例えば, タスクのプリエンプト回数を決定するためには, イベントの最大数 $\eta^{+}(\Delta t)$ が必要である
-        \item イベント間の最小距離 $\delta^{-}(n)$ は, タスクのデッドラインを制限したり (式3.26参照) , 式3.14のようにタスクの再帰性を正しく捉えるために使用される
-    \end{itemize}
-\end{frame}
+% \begin{frame}{}
+%     \begin{itemize}
+%         \item $3.7$ 式や3.22式のような例を用いて, これらのパラメータがスケジューリング分析にどのように使用されるかを示した4つの特性関数は, 全てのイベントストリームに適用される
+%         \item 例えば, タスクのプリエンプト回数を決定するためには, イベントの最大数 $\eta^{+}(\Delta t)$ が必要である
+%         \item イベント間の最小距離 $\delta^{-}(n)$ は, タスクのデッドラインを制限したり (式3.26参照) , 式3.14のようにタスクの再帰性を正しく捉えるために使用される
+%     \end{itemize}
+% \end{frame}
 
-\begin{frame}{}
-    \begin{itemize}
-        \item この2つの関数は, タスクと通信の最大 (最悪) 応答時間を目標とする古典的なスケジューリング分析の領域における重要なイベントストリームの特性を捕捉している
-        \item 分散システムを対象とするアプローチでは, さらに, 最小応答時間を決定するために, 最小イベント数と最大距離を必要とし, その結果, システムレベルのスケジューリング異常の解決に必要となる
-        \item これらの効果については, 2.2.2節で説明したとおりである
-    \end{itemize}
-\end{frame}
+% \begin{frame}{}
+%     \begin{itemize}
+%         \item この2つの関数は, タスクと通信の最大 (最悪) 応答時間を目標とする古典的なスケジューリング分析の領域における重要なイベントストリームの特性を捕捉している
+%         \item 分散システムを対象とするアプローチでは, さらに, 最小応答時間を決定するために, 最小イベント数と最大距離を必要とし, その結果, システムレベルのスケジューリング異常の解決に必要となる
+%         \item これらの効果については, 2.2.2節で説明したとおりである
+%     \end{itemize}
+% \end{frame}
 
-\begin{frame}{}
-    \fitimage{
-        4 つのイベントモデルの特徴的な機能
-    }{table_3_1}
+\begin{frame}{各イベントモデルの最大イベント到着曲線}
+    \fullimage{table_3_1}
 \end{frame}

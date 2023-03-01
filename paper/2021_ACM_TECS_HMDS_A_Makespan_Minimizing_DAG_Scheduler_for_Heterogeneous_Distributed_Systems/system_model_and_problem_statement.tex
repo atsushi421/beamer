@@ -1,0 +1,28 @@
+% !TeX root = main.tex
+
+\section{SYSTEM MODEL AND PROBLEM STATEMENT}
+\label{sec: system model and problem statement}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item 始めに, 本論文で登場する表記法・用語の表を示す
+        \item 基本的な表記法・用語は資料中で説明無しで使用する
+        \item 別ファイルで開く・印刷するなどして, 常に参照できる状態にしておくことを推奨する
+    \end{itemize}
+\end{frame}
+
+\input{symbols_terms.tex}
+
+\begin{frame}{対象モデル}
+    \fitimage{
+        Unrelatedヘテロジニアスプラットフォーム上でスケジューリングされるDAGタスクを考える
+    }{system_model}
+\end{frame}
+
+\begin{frame}{本論文の目標}
+    リソースと優先順位の制約を満たしながら, スケジュールの長さ（メイクスパン）が最小になるように, すべてのタスクの「実行開始時刻」と「プロセッサ割り当て」を決定する
+\end{frame}
+
+\begin{frame}{メイクスパンの定義}
+    スケジュールのメイクスパンは出口タスクの完了時刻に等しい
+\end{frame}

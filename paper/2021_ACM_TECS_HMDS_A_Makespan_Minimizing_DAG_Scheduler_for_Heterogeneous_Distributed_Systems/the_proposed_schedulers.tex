@@ -1,0 +1,188 @@
+% !TeX root = main.tex
+
+\section{THE PROPOSED SCHEDULERS}
+\label{sec: the proposed schedulers}
+
+
+\subsection{HMDS-Bl: The Baseline List Scheduler}
+\label{ssec: hmds-bl: the baseline list scheduler}
+
+\begin{frame}{Predicted Finish Time (PFT)}
+    HMDS-Bl は以下2つの機能を持つ Predicted Finish Time (PFT) に大きく依存している
+    \begin{itemize}
+        \item 各タスクのランク値を決定し, ソートされたタスクリストを生成
+        \item メイクスパンを最小化するという観点から, タスクに最も適したプロセッサを決定
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{PFT 計算方法}
+    \fitimage{
+        $PFT[\tau_j, p_n]$ は $\tau_j$ をプロセッサ $p_n$ 上で実行した場合の，タスク $\tau_j$ の全ての後続ノードの実行を完了するために必要な最小総実行時間の推定値を示す
+    }{pft}
+\end{frame}
+
+\begin{frame}{タスクの優先順位付け}
+    \begin{itemize}
+        \item タスクの優先順位としてランク値を使用する
+        \item ランクの降順でタスクをソートし, タスクリストを作成する
+              \begin{block}{ランク値}
+                  $\tau_j$ のランク値 $rank_{pft}[\tau_j]$ は, 全プロセッサにおける $\tau_j$ の平均 PFT
+                  \begin{equation}
+                      \operatorname{rank}_{p f t}\left[\tau_j\right]=\frac{\sum_{n=1}^{|P|} P F T\left[\tau_j, p_n\right]}{|P|}
+                  \end{equation}
+              \end{block}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{例のDAGにおけるPFT行列とランク値}
+    \fullimage{pft_rank}
+\end{frame}
+
+\begin{frame}{ランク値の逆転への対策}
+    \fitimage{
+        \begin{itemize}
+            \item あるタスクのランク値が, そのタスクの後続ノードのランク値よりも小さくなると, 生成されたタスクリストで優先順位制約違反となってしまう
+            \item 以下の処理によって, 優先順位制約を保証する
+        \end{itemize}
+    }{rank_recalc}
+\end{frame}
+
+\begin{frame}{プロセッサへの割り当て}
+    以下3つの指標に基づいて, タスクを適切なプロセッサに割り当てる
+    \begin{itemize}
+        \item 有効開始時間 (EST)
+        \item 有効終了時間 (EFT)
+        \item 最適有効終了時間 (OEFT)
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{EST計算式}
+    \fitimage{
+        $p_n$ 上の $\tau_j$ の有効開始時間 $EST[\tau_j, p_n]$の定義
+    }{est}
+\end{frame}
+
+\begin{frame}{EFT計算式}
+    \fitimage{
+        $p_n$ 上の $\tau_j$ の有効終了時間 $EFT[\tau_j, p_n]$の定義
+    }{eft}
+\end{frame}
+
+\begin{frame}{OEFT計算式}
+    \fitimage{
+        $p_n$ 上の $\tau_j$ の最適有効終了時間 $O_{EFT}[\tau_j, p_n]$の定義
+    }{oeft}
+\end{frame}
+
+\begin{frame}{プロセッサ割り当ての方策}
+    HMDS-Bl はOEFTが最小となるプロセッサにタスクを割り当てる
+    \begin{block}{設計理由}
+        OEFTの定義より, OEFTが最小=出口タスクの完了が最も早くなると予想されるため, メイクスパン最小化に繋がる
+    \end{block}
+\end{frame}
+
+\begin{frame}{HMDS-Blアルゴリズムまとめ}
+    \fullimage{hmds_bl}
+\end{frame}
+
+
+\subsection{HMDS: DFBB Search Based Extension to HMDS-Bl}
+\label{ssec: hmds: dfbb search based extension to hmds-bl}
+
+\begin{frame}{HMDS-Blの問題点}
+    \fitimage{
+        HMDS-Bl は常に最小のメイクスパンを実現するとは限らない
+    }{bl_problem}
+\end{frame}
+
+\begin{frame}{HMDS-Bl改良方針}
+    HMDSをDepth-First Branch and Bound (DFBB) を用いて拡張することで, 解生成時間を低く抑えつつ, 大幅な性能向上を実現する
+\end{frame}
+
+\begin{frame}{HMDSで使用するシンボル}
+    \full{
+        \begin{table}[tb]
+            \adjustbox{max width=\textwidth, max height=\slideheight}{
+                \centering\begin{tabular}{|c|l|} \hline
+                    $initT$            & 現在のCPUクロック時間                                                                    \\\hline
+                    $msl$              & 現在の最短スケジュール長                                                                 \\\hline
+                    $ops$              & プロセッサ選択肢の上限（枝切りメカニズム2）                                              \\\hline
+                    $\lambda$          & OEFTの許容増加率 （枝切りメカニズム3）                                                   \\\hline
+                    $capT$             & Run-timeの上限                                                                           \\\hline
+                    $BAST, BAFT, BPRO$ & \tabml{最適なスケジュールを保持する配列                                                  \\スケジュール内のすべてのタスクについて、BAST は開始時刻、\\BAFT は終了時刻、BPRO はプロセッサの割り当てを格納}  \\\hline
+                    $p'$               & \tabml{タスクに対するプロセッサ選択の優先順位を表すプロセッサ ID を含むサイズ OPS の配列 \\OEFT の降順にソートされている} \\\hline
+                    $taskListID$       & 現在処理中のタスクのタスクリストにおけるインデックス                                     \\\hline
+                    $FSTime$           & HMDSの最初の解を生成するのにかかる時間                                                   \\\hline
+                \end{tabular}
+            }
+        \end{table}
+    }
+\end{frame}
+
+\begin{frame}{HMDSアルゴリズム}
+    \fullimage{hmds}
+\end{frame}
+
+\begin{frame}{assignTasks関数全体像}
+    \fullimage{assigntasks}
+\end{frame}
+
+\begin{frame}{assignTasks関数補足1}
+    \fitimage{
+        assignTasks関数を呼び出すたびに, 現在生成されている部分スケジュールを1タスクだけ拡張する
+    }{assign_sup1}
+\end{frame}
+
+\begin{frame}{assignTasks関数補足2}
+    \fitimage{
+        assignTasks関数は, DAG内のすべてのタスクが探索されたときに完全なスケジュールを生成して呼び出し元に戻る
+    }{assignTasks_sup2}
+\end{frame}
+
+\begin{frame}{HMDSの枝切りメカニズム}
+    HMDS-Bl と同等の解生成時間を維持しつつ, より優れた解を確保するために, HMDSの探索手順には 4 つの枝切りメカニズムを備えている
+\end{frame}
+
+\begin{frame}{枝切りメカニズム1}
+    \fitimage{
+        推定されたメイクスパンの下限値が, これまでに得られた最良の実際のスケジュールのメイクスパンよりも大きい場合, 部分的なスケジュールを枝切りする
+        \begin{block}{根拠となる定理（証明略）}
+            DAGが与えられた場合, $O_{EFT}[\tau_j, p_n]$は, 現在の部分スケジュールと $p_n$ への $\tau_j$ の割り当てを含む完全なスケジュールで達成可能なメイクスパンの下限である
+        \end{block}
+    }{eda1}
+\end{frame}
+
+\begin{frame}{枝切りメカニズム2}
+    \fitimage{
+        各タスクに対するプロセッサの選択肢の数を $ops$ に制限する
+        \begin{block}{設計理由}
+            最初の2つのプロセッサ（OEFT の値の1位・2位）のよりも後のプロセッサでは, より良い解決策が得られる可能性は非常に低い
+        \end{block}
+    }{eda2}
+\end{frame}
+
+\begin{frame}{枝切りメカニズム3}
+    \fitimage{
+        各タスクに対するプロセッサの選択肢の数を, 最良の選択肢（OEFT の1位）と比較した場合の OEFT の許容増加率（$\delta $）に基づいて制限
+        \begin{block}{設計理由}
+            $OEFT[\tau_j, p_i]$が$OEFT[\tau_j, p_1]$よりも優位に高い場合, より低いメイクスパンを見つける可能性は低い
+        \end{block}
+    }{eda3}
+\end{frame}
+
+\begin{frame}{枝切りメカニズム4}
+    \fitimage{
+        HMDS-Bl が要した時間を超えた場合, 探索を終了する
+        \begin{block}{設計理由}
+            HMDS は, $FSTime$ を超える時間が経過した場合, 少なくとも HMDS-Bl と同等の解を返すことが保証されている
+        \end{block}
+    }{eda4}
+\end{frame}
+
+\begin{frame}{HMDSの計算量}
+    \begin{itemize}
+        \item 枝切りメカニズムがない場合, assignTasks関数のオーバーヘッドは $O(|P|^{|V|})$
+        \item 枝切りメカニズム1,2を導入することでオーバーヘッドは $O(2^{|V|})$ に減少する
+        \item さらに, 枝切りメカニズム3,4の存在により, HMDSのスケーラビリティは増加する
+    \end{itemize}
+\end{frame}
