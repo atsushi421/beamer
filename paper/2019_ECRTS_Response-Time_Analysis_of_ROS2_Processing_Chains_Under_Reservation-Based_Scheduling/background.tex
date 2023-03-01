@@ -8,24 +8,25 @@
 \label{ssec: resource reservations}
 
 \begin{frame}{リソースの予約}
-    \begin{itemize}
-        \item ROS スレッドの予測可能なサービスを確保するためにリソースの予約を使用する
-        \item リソースの予約は通常, 予約サーバによって実装される
-        \item Linux システムでは, リソースの予約は SCHED\_DEADLINE~\cite{lelli2016deadline} を通じて利用できる
-    \end{itemize}
+    ROS スレッドの予測可能なサービスを確保するためにリソースの予約を使用する
+    \begin{block}{リソースの予約}
+        \begin{itemize}
+            \item Linux システムでは, リソースの予約は SCHED\_DEADLINE~\cite{lelli2016deadline} を通じて利用できる
+            \item ある長さの区間において予約が提供するプロセッササービスの最小量は, 既知の供給境界関数 $sbf()$ \cite{shin2003periodic, lipari2003resource} で得られる
+        \end{itemize}
+    \end{block}
 \end{frame}
 
-\begin{frame}{リソースの予約に関する仮定}
-    \begin{itemize}
-        \item 本論文では, 予約サーバーが周期的リソースモデル~\cite{shin2003periodic}に準拠している, すなわち, 以下を仮定する
-              \begin{enumerate}
-                  \item 各予約には暗黙のデッドラインがある
-                  \item 予約サーバ $r_i$がワークロードを持つときはいつでも, 予約アルゴリズムが$P_i$時間単位ごとに少なくとも$Q_i$単位のサービスを保証する
-                  \item バジェット枯渇と他の予約のレイテンシによる, ある予約で実行中のプロセスが受ける有限の最大リリースレイテンシが存在する
-              \end{enumerate}
-        \item ある長さの区間において予約が提供するサービスの最小量は, 既知の供給境界関数 $sbf()$ \cite{shin2003periodic, lipari2003resource} で得られる
-    \end{itemize}
-\end{frame}
+% \begin{frame}{リソースの予約に関する仮定}
+%     \begin{itemize}
+%         \item 本論文では, 予約サーバーが周期的リソースモデル~\cite{shin2003periodic}に準拠している, すなわち, 以下を仮定する
+%               \begin{enumerate}
+%                   \item 各予約には暗黙のデッドラインがある
+%                   \item 予約サーバ $r_i$がワークロードを持つときはいつでも, 予約アルゴリズムが$P_i$時間単位ごとに少なくとも$Q_i$単位のサービスを保証する
+%                   \item バジェット枯渇と他の予約のレイテンシによる, ある予約で実行中のプロセスが受ける有限の最大リリースレイテンシが存在する
+%               \end{enumerate}
+%     \end{itemize}
+% \end{frame}
 
 
 \forme{

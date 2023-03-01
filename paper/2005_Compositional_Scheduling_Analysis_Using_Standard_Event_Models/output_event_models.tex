@@ -1,0 +1,859 @@
+% !TeX root = main.tex
+
+\section{OUTPUT EVENT MODELS}
+\label{sec: output event models}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item これまで, タスクの起動を捉えるためにイベントモデルが使用されることを見てきま した
+        \item 厳密には周期的なイベントは, 例えばタイマ割り込みによって生成されるかもしれない
+        \item しかし, 他のモデルは, イベントソース, すなわち, タスクを起動するイベントを生成する他のタスクの部分的非決定的な動作を捕らえることを目的としている
+        \item このことは, イベントのタイミングはタスクの入力だけでなく, タスクの出力も考慮する必要があることを示している
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item あるタスクの出力が別のタスクの入力になる.また, 適切な出力イベントモデルが必要であり, そうでなければ, 2つのモデルを合理的に結合することはできない
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item 我々は表現力豊かな例を用いて, 出力モデリングの基本概念を紹介する
+        \item まず, 決定論的なタイミング動作をする周期的タスクのような, 単純で制約の多いタスク構成から始めます
+        \item その後, ジッター, 散発的なイベント源, 条件付きタスクの実行など, 非決定性の原因となり得る全ての概念を徐々に追加していく
+    \end{itemize}
+\end{frame}
+
+
+\subsection{Periodic Task Activation}
+\label{ssec: periodic task activation}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item $3.1$ 章では, タスクの起動は, イベントを生成するイベントソースを適切に記述できれば, 常にイベントトリガとしてモデル化できることを述べました
+        \item しかし, これまでのところ, 固定周波数のシステムタイマのような比較的単純なイベントソースしか考慮されていない
+        \item このようなイベント生成は出力生成の一形態であり, タイマはイベントを出力し, 周期的イベントモデルを使用して記述できる2.1 節で述べた局所分析技術では, このようなイベントモデルをそのままタスクの入力イベントモデル, すなわちアクティベーションイベントとして利用する
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item 周期的出力生成は一般に, 周期的に起動され, 一定の入出力レイテンシ, すなわち一定の応答時間を持つ全てのタスクに適用される
+        \item 本論文では, タスクは完了時にその出力を生成すると仮定する
+        \item すなわち, i番目の出力の出力生成時間は, i番目のタスク実行のタスク完了時間に等しい
+
+    \end{itemize}
+    \begin{equation*}
+        t_{\text {out }}(i)=t_{\text {in }}(i)+R(i)
+    \end{equation*}
+\end{frame}
+
+\begin{frame}{}
+    \fitimage{
+        応答時間が一定の周期タスク $\mathcal{T}_{1}$ と, その周期的な入出力ストリーム
+    }{periodic_constant}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item イベントモデルで考慮されない一定の位相レイテンシの場合を除き, 入力と出力のストリームはどちらも同等の特性を持ち, それらは同一であることは明らかである
+
+    \end{itemize}
+    \begin{equation*}
+        \mathcal{S}_{1, \text { out }}=\mathcal{S}_{1, \text { in }}=\mathcal{S}_{\mathrm{P}}\left(T_{\text {in }}\right)
+    \end{equation*}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item しかし, このような単純で静的な入出力動作は, 一般的ではない
+        \item パイプラインやキャッシュなどの高度なアーキテクチャでは, 一見非決定的な方法でタスクを停止させる, すなわちレイテンシを強制することがある
+        \item また, if文, thenelse文, ループ回数などのデータ依存の制御フローを持つタスクもある
+        \item スケジューラビリティは, 他のアーキテクチャの影響をはるかに超えるレイテンシを発生させます
+        \item 同じリソース上の他のタスクの動作によって, プリエンプトの回数が少なくなったり, 多くなったりすることがある
+        \item そのようなタスクは序章であるでに見てきた (図1.3参照)
+        \item その結果, 図4.2(a)に示すように, 最悪応答時間と下限で制約された区間で表されるタスクの応答時間が一定でなくなってしまう
+
+    \end{itemize}
+    \begin{equation*}
+        R_{1}(i) \in R_{1}=\left[R_{1}^{-} ,  R_{1}^{+}\right]
+    \end{equation*}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item このようなタスクの出力は, 厳密に周期的に起動しても, 応答時間ジッター $J_{1, R}$ を継承する
+        \item 図4.2(b)は, 応答時間を変化させた実行シナリオである
+        \item 最小または最短の応答時間は早い出力となり, 最大の応答は遅い出力となる
+        \item したがって, 出力ジッターは2つの応答時間間隔の境界の差である応答時間ジッターに等しくなる
+
+    \end{itemize}
+    \begin{equation*}
+        J_{1, \text { out }}=J_{1, R}=R_{1}^{+}-R_{1}^{-}
+    \end{equation*}
+\end{frame}
+
+\begin{frame}{}
+    タスク $\mathcal{T}_{1}$ の出力ストリームは, 以下の通り
+
+    \begin{equation*}
+        \mathcal{S}_{1, \text { out }}=\mathcal{S}_{\mathrm{P}+\mathrm{J}}\left(T_{1, \text { in }}, R_{1}^{+}-R_{1}^{-}\right)
+    \end{equation*}
+\end{frame}
+
+\begin{frame}{}
+    \fitimage{
+        \begin{itemize}
+            \item このようなジッターを伴う周期的なストリームは, 他のタスクをアクティベーションさせることができる
+            \item 図 4.1.3 は, タスクのチェーンを示している
+        \end{itemize}
+    }{periodic_with_jitter_output}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item タスク $\mathcal{T}_{1}$ は前の例から取られており, 厳密に周期的なアクティベーションと出力ジッターを持つことが知られている
+        \item この出力ジッタはタスク $\mathcal{T}_{2}$ の入力ジッタに変化する
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item Tindell and Clark [122] はこのようなシステムを研究し,  (内部) 応答時間ジッターが継承されるように, タスクの出力にも入力ジッターの可能性が継承されることを認識した
+        \item すなわち, 応答時間ジッターはタスクチェーンに沿って蓄積され, 各タスクは入力から出力までその応答時間ジッターを付加するのである
+
+
+    \end{itemize}
+    \begin{equation*}
+        \begin{aligned}
+            J_{i, \text { out }} & =J_{i, \text { in }}+J_{i, R}                        \\
+                                 & =J_{i, \mathrm{in}}+\left(R_{i}^{+}-R_{i}^{-}\right)
+        \end{aligned}
+    \end{equation*}
+\end{frame}
+
+\begin{frame}{}
+    したがって, 出力ストリームは次式で与えられる
+
+    \begin{equation*}
+        \mathcal{S}_{i, \text { out }}=\mathcal{S}_{\mathrm{P}+\mathrm{J}}\left(T_{i, \text { in }}, J_{i, \text { in }}+J_{i, R}\right)
+    \end{equation*}
+\end{frame}
+
+\begin{frame}{}
+    \fitimage{
+        初期実行シーケンス図, 後期実行シーケンス図, ジッター蓄積量を示す
+    }{non_constant_response_times_in_a_task_chain}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item ベストケース分析の改善により, ジッターの計算精度を高めることができる
+        \item しかし, 改善しても実際のジッタは減少せず, タスクチェーンに沿って単調に増加し, 元の周期を超えることさえある
+        \item $3.5$ 章で, 既知のスケジューリングおよび分析技術の多くは, 適用するために周期未満のジッタを必要とすることを述べました
+        \item 周期に等しいジッターは, 2つのタスク起動が同時に到着することになり, タスクの再帰を引き起こすことになる
+        \item 全ての分析手法が再帰性を考慮するわけではないが, 次の起動が到着する前に1つの実行が終了していることが必要である
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item 周期以上のジッターを許容するようにモデルを拡張する
+        \item 上界到着シナリオを構築するために最初のイベントは可能な限り遅く到着し, 他のイベントは可能な限り早く到着すると仮定する
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+    \fitimage{
+        \begin{itemize}
+            \item 図 $4.5$ はジッターが周期より大きいイベントストリームの上界到着を示す
+            \item この曲線は, ジッターが周期より小さいストリームの曲線とほぼ同じ性質を持っている
+        \end{itemize}
+    }{upper_bound_arrival_curve_of_large_jitter}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item したがって, $\eta^{+}(\Delta t)$ 関数は3.5章の式 $3.18$ から再利用できる
+
+    \end{itemize}
+    \begin{equation*}
+        \forall \Delta t>0: \eta_{\mathrm{P}+\mathrm{J}}^{+}(\Delta t)=\left\lceil\frac{\Delta t+J}{T}\right\rceil
+    \end{equation*}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item しかし, 周期未満のジッターと, 周期と同じかそれ以上のジッターには, いくつかの重要な違いがある
+        \item 図4.5では, 最初の3つのイベントは一見同時に, すなわち $\Delta t=0$ 時間単位の間隔で到着していることが分かる
+        \item しかし, 3.3.1節で説明した理由により, $\eta(\Delta t)$ 関数は $\Delta t=0$ でゼロになるように定義されている
+        \item 同時に到着するイベントの数 $\left(n_{0}\right)$ を計算するために, $\Delta t \rightarrow 0, \Delta t>0:$ のライムを決定する必要がある
+
+    \end{itemize}
+    \begin{equation*}
+        n_{0}=\lim _{\Delta t \rightarrow 0, \Delta t>0} \eta^{+}(\Delta t)=\left\lfloor\frac{J}{T}\right\rfloor+1
+    \end{equation*}
+\end{frame}
+
+
+\begin{frame}{}
+    \begin{itemize}
+        \item 図 $4.5$ のもうひとつの重要な観察点は, 2番目と3番目のイベントも, 本来は早いはずなのに遅れが生じていることである
+        \item これは, ストリーム中のイベントは通常, 到着した順番を維持しなければならないからである
+        \item すなわち, イベントは互いに「追い越す」ことが許されないため, 「待つ」必要があるのである
+        \item これは, タスクの入出力ストリームの因果関係を維持し, また, 個々のイベントの最大「レイテンシ」を短縮するための最良の戦略である
+        \item したがって, 2番目と3番目のイベントは, 即座にという意味で早いということはありえない
+        \item これは大きなジッターの重要な特性であるすなわち, イベントの順序を保つ最小の相互到着時間0が暗黙のうちに存在するのである
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item 大きなジッターを持つストリーム (ここでは周期より大きなジッターに対して大きなジッターという表現を使いる) の重要な特性は, イベントが同時に到着する可能性があることである
+        \item しかし, タスクは通常同時に起動されることはなく, 一定のレイテンシを伴って起動される
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+    \fitimage{
+        \begin{itemize}
+            \item 図 $4.7$ の実行シーケンスは, その一例である
+            \item これは, 図 $1.4$ の拡大図を含み, タスク $\mathcal{T}_{3}$ の最悪バッファリングシナリオを示している
+        \end{itemize}
+    }{examaple_output_events_with_jitter}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item 全てのタスクは入力のジッターなしに定期的に起動される
+        \item スケジューリングは静的優先度に従っており, $\mathcal{T}_{1}$ が最高, $\mathcal{T}_{3}$ が最低の優先度である
+        \item 期間はそれぞれ $T_{1}, T_{2}$, $T_{3}$ である
+        \item タスク $\mathcal{T}_{3}$ は, いくつかの期間ブロックされた後, 数回連続して実行される (バースト的)
+        \item スケジューラ図では, 応答時間のジッター (ベストケースと最悪の差) が周期をはるかに超えていることがわかる
+        \item すなわち, タスク $\mathcal{T}_{3}$ は, 出力ジッタが大きいのである
+        \item この大きな出力ジッタが, 他のタスクのスケジューリングや分析に与える影響をこれから分析していきます
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+    \fitimage{
+        \begin{itemize}
+            \item 図 $4.8$ は分散システムを示す
+            \item $\mathrm{CPU}_{1}$ のスケジューリングは上記で分析したところである
+        \end{itemize}
+    }{distributed_system}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item $\mathrm{CPU}_{2}$ のスケジューリング分析では, $\mathcal{T}_{3}$ の出力ストリームを用いて, $\mathcal{T}_{4}$ の起動実行動作を決定する
+        \item まず, ストリームパラメータを伝搬させる必要がある
+
+    \end{itemize}
+    \begin{equation*}
+        \begin{aligned}
+            \mathcal{S}_{4, \text { in }} & =\mathcal{S}_{3, \text { out }}                                  \\
+                                          & =\mathcal{S}_{\mathrm{P}+\mathrm{J}}\left(T_{3}, J_{3, R}\right)
+        \end{aligned}
+    \end{equation*}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item さて, この $\mathcal{T}_{4}$ の入力ストリーム表現に基づいて, あらゆるスケジューラビリティの分析が可能である
+        \item ここでは, タスク $\mathcal{T}_{4}$ がタスク $\mathcal{T}_{5}$ よりも高い優先度を持つという静的優先度に従ったスケジューリングを想定する
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+    \fitimage{
+        図 $4.9$ は, 2番目のリソースのスケジューリング図
+    }{Scheduling_with_Simultaneous_Task_Activation_due_to_Large_Jitters}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item ジッタが大きいため, 両タスクの最悪スケジューリング分析では, 4.1.4.1節で紹介したように, $n_{0,4}$ タスク $\mathcal{T}_{4}$ の起動が同時に到達することを想定する必要がある
+        \item 事実上, タスク $\mathcal{T}_{4}$ が同時に起動され, 対応する実行が互いに干渉することになる
+        \item このことは, 2つの重要な結果をもたらす
+        \item まず, タスク $\mathcal{T}_{4}$ は最大応答時間が大きく, また出力ジッタも大きくなる
+        \item 次に, このバースト実行により, タスク $\mathcal{T}_{5}$ の最大応答時間も大きくなる
+        \item バーストフェーズが終了した後, 「通常」状態での最初のタスク起動は, バースト開始後の $n_{0,4} T_{4}-J_{4}$ に到着する
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item 複数のタスクが同時に起動することは, 最大応答時間に大きな (負の) 影響を与え, その後, 応答時間ジッターとシステム全体のジッターに影響を与えることは明らかで, 大きなジッターは, 順番に, 同時発生イベントの仮定につながる
+        \item この例は, スケジューリング依存性と入力ジッタの継承と蓄積 (4.1.3項参照) が, すぐに極めて大きなジッタにつながり, その結果, 高い過渡負荷と広い応答時間間隔になることを示している
+        \item ジッター分析における悲観的な見方を減らすことは, 結果として, より悲観的な応答時間につながるため, 重要な課題である
+        \item 応答時間間隔が狭くなれば, 結果的にジッターも狭くなる
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item 実際には, ジッターの影響で同一タスクの同時起動が発生することはほとんどない
+        \item タスクの実行とスケジューリング, 特にリソース $\mathrm{CPU}_{1}$ 上のタスク $\mathcal{T}_{3}$  (図4.7) を詳しく見てみると, 複数回連続して実行されているものの, 出力イベントが同時に生成されていないことが分かる
+        \item したがって, リソース $\mathrm{CPU}_{2}$ 上の $\mathcal{T}_{4}$ は同時には起動されない
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+    \fitimage{
+        \begin{itemize}
+            \item 図 $4.10$ は, アクティベーションが同時ではなく, 次々と到着するスケジューリングシナリオを示す
+            \item わかりやすくするために, $\mathrm{CPU}_{1}$ 上のタスク $\mathcal{T}_{3}$ のスケジューリングを図に含めている
+            \item タスク $\mathcal{T}_{3}$ が終了すると, タスク $\mathcal{T}_{4}$ が起動する
+        \end{itemize}
+    }{scheduling_with_large_jitter_but_bounded_inter_arrival_time}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item 同時起動の場合と比較して, $\mathcal{T}_{4}$ と $\mathcal{T}_{5}$ の両タスクの最悪応答時間が大幅に改善されることが確認された
+        \item タスク $\mathcal{T}_{4}$ は, コア実行時間が比較的一定であると仮定すると, 自分自身と干渉せず, 応答時間の変動はほとんどない
+        \item さらに, 同じ効果($\mathcal{T}_{4}$ のバースト実行なし) により, タスク $\mathcal{T}_{5}$ はスケジュールの「ギャップ」を利用できるため, $\mathcal{T}_{5}$ は $\mathcal{T}_{4}$ が同時に起動した場合の5回に対し, 最大2回の $\mathcal{T}_{4}$ による先制を経験している (図4.9参照
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+    \fitimage{
+        \begin{itemize}
+            \item 図 $4.11$ に, 2つのスケジューラの詳細な比較を示した
+            \item 最大最悪応答時間の短縮が強調されているこれは, 出力ジッターの悲観的な見方を減らすことに直結している
+        \end{itemize}
+    }{comparison_between_two_schedules}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item この最適化は, タスク $\mathcal{T}_{3}$ がイベントを同時に出力するのではなく, 連続する2つのイベントの間に一定の時間を空けて出力することから可能となった
+        \item イベント間に時間的な隔たりがあることは, $\mathcal{T}_{3}$ の $\mathrm{CPU}_{1}$ 上での実行とスケジューリングに関する詳細な情報が元になっている
+        \item 残念ながら, ジッターを含む周期的イベントのモデルではこの特性を捉えることができないため, この情報は出力ストリーム表現に保存されない
+        \item すなわち, 出力ストリーム表現では情報が失われているのである
+        \item そのため, $\mathrm{CPU}_{2}$ の分析では, イベントの同時到着を想定しなければならず, その非効率性が知られている
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item ジッターの大きい周期的なイベントのモデルは, その表現力に決定的な限界がある
+        \item $\mathrm{CPU}_{2}$ のスケジューリング分析において, イベントの非同時的な到着を利用するためには, そのような情報を利用したイベントストリーム表現が必要である
+        \item $3.7$ 節で散発的周期イベントまたは散発的バーストのモデルについてまとめた
+        \item このイベントモデルは, イベントの同時到着を防ぐために必要な概念を提供する最小の相互到着時間または内部周期の概念を持っている
+        \item このモデルはそれによって, ちょうど上記の例で観察されたように, バースト中の過渡的なイベント頻度の最大値を制限する
+        \item すなわち, このイベントモデルは, 出力イベントの非同時性を捕らえることができるのである
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item しかし, 散発的に発生する周期的なイベントのモデルにはもう一つ限界がある
+        \item 散発的なイベントに基づいているため, 元の入力ストリームの周期的な性質を捉えることができないのである
+        \item すなわち, ベストケース分析では, プリエンプトが少なすぎるため, タスクの最小応答時間が過小評価され, 結果的に出力ジッターが大きくなる可能性があるのである
+        \item では, 他にどうすればよいのか？
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item 図4.7では, ジッターを含む周期的なストリームにおいて, イベント間の時間的な分離が知られていることが確認されている
+        \item そこで, 大きなジッターに対応するための直接的な拡張として, ジッターを含む周期的モデルに対する最小限の到着間という概念も導入する
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item 非常に興味深いことに, この拡張はこれまで提案されたことがない
+        \item すなわち, 分散した周期的なシステムにおけるジッターの増加の影響を合理的なレベルで正確に捉えるイベントモデルはまだ存在しないのである
+        \item 逆に, 既存のモデルは, 分散環境におけるスケジューリングと実行の重要な効果を捉えるための健全かつ体系的な方法というよりは, 独立して定義された形式手法の集合体であるように思われる
+        \item これらの不十分さは, 過度に保守的な結果を導き, システムレベルの分析の可能性を著しく低下させます
+    \end{itemize}
+\end{frame}
+
+
+\subsection{A New Model: Periodic Events with Burst}
+\label{ssec: a new model: periodic events with burst}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item 我々は, ジッターを含む周期的事象のモデルに, 最小の相互到着時間または内部周期の考え方を導入する
+        \item その結果, 標準的なジッターモデルの直接の拡張として, バースト付き周期的イベント $(\mathrm{P}+\mathrm{B})$ と呼ぶ, 非常に強力なモデルができた
+        \item バースト付き周期的ストリームは, 3つのパラメータで特徴付けられる
+        \item 周期 $T$, ジッター $J$, および最小イベント距離 $d$ である
+        \item 簡単に言えば, このモデルは, セクション 3.5 で紹介したように, 通常のジッターを捕捉している
+        \item さらに, 最大過渡事象の周波数は, 散発的な周期事象のモデル (3.7節参照) と同じように, 境界が設定されている
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+    \fitimage{
+        図 $4.12$ は, 結果として得られた上界到着曲線を示している
+    }{sporadic_burst_upper_bound}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item $\Delta t$ について2つの領域を区別することができ, それぞれの領域は別の効果によって支配されている
+        \item $\Delta t$ の大きな値は, ジッターを伴う周期的なストリームの長期的な挙動を反映している
+        \item この「正常な」動作のもとでは, セクション 4.1.4 で述べたように, ストリームは大きなジッターによって特徴付けられる
+        \item この曲線は, 式4.9で記述できる
+
+        \item 小さな $\Delta t$ はバースト中の挙動を捉え, 最悪到達は最小イベント距離 $d$ によって支配され, バースト中の最大過渡周波数を束縛する
+        \item このような挙動は $3.6$ と3.7節の2つの散発的モデルからすでに知られており, その曲線は式3.29で与えられる
+        \item バーストが終了した後, イベントストリームは "通常 "の動作に戻る
+
+        \item 基本的に, 両方の効果 (と対応する $\eta^{+}$ function) は互いに重なり合っている
+        \item どちらもイベントの最大数を制限する
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item 結果として得られる $\eta^{+}(\Delta t)$ 関数は, 2つの個別関数の最小値となる
+
+    \end{itemize}
+    \begin{equation*}
+        \forall \Delta t>0: \eta_{\mathrm{P}+\mathrm{B}}^{+}(\Delta t)=\min \left(\left\lceil\frac{\Delta t}{d}\right\rceil,\left\lceil\frac{\Delta t+J}{T}\right\rceil\right)
+    \end{equation*}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item 「バースト」から「通常」への移行は, 2つの領域の曲線の交点, より正確には, 対応する連続曲線の交点に現れる
+
+    \end{itemize}
+    \begin{equation*}
+        \begin{aligned}
+                            & \tilde{\eta}_{\text {sporadic region }}^{+}(\Delta t) & =\tilde{\eta}_{\text {jitter region }}^{+}(\Delta t) \\
+            \Leftrightarrow & \frac{\Delta t}{d}                                    & =\frac{\Delta t+J}{T}                                \\
+            \Leftrightarrow & \Delta t                                              & =\frac{J d}{T-d}
+        \end{aligned}
+    \end{equation*}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item バースト時には, 図 $4.7$ や 4.9 に見られるように, 1つのタスクの複数の実行やインスタンスが互いに干渉し, 以前のアクティベーションが完了する前に再アクティベーションされる
+        \item この効果はタスクの再帰性として知られている[69, 121]
+        \item 実際には, このような状況は, 現在のタスクインスタンスの終了 (kill) や実際の先取りを含むいくつかの方法で最終的に処理され得ます
+        \item しかし, そのような実装は, 入力と出力のイベントストリーム間の因果関係を保証しないので, ここではこれ以上検討しない
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item 図 $4.7$ と図4.9に例を示す
+        \item タスクの実行には, 少なくともその最小応答時間が必要である
+        \item したがって, 最小応答時間は, 出力バースト時の最小出力距離の追加的な下限を意味する
+        \item 最後に, 入力バースト時の出力を支配する可能性のある第三の境界がある
+
+    \end{itemize}
+    \begin{equation*}
+        \begin{aligned}
+             & \mathcal{S}_{i, \text { out }}=\mathcal{S}_{\mathrm{P}+\mathrm{B}}\left(T_{i, \text { out }}=T_{i, \text { in }},\right. \\
+             & J_{i, \text { out }}=J_{i, \text { in }}+J_{i, R},                                                                                                                                                                                        \\
+             & \left.d_{i, \text { out }}=\max (\underbrace{T_{i, \text { out }}-J_{i, \text { out }}}_{\text {as with jitter }}, \underbrace{R_{i}^{-}}_{\begin{array}{c}
+                                                                                                                                                                  \text { during } \\
+                                                                                                                                                                  \text { output }
+                                                                                                                                                              \end{array}}, \underbrace{d_{i, \text { in }}-J_{i, R}}_{\text {during input bursts }})\right) \\
+             & \text { bursts }
+        \end{aligned}
+    \end{equation*}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item 第三の境界は, ジッターの増加と同様に, 入力から出力へ増加する過渡周波数に関するもので, 次章で詳しく説明する
+    \end{itemize}
+\end{frame}
+
+
+\subsection{Sporadic Task Activation}
+\label{ssec: sporadic task activation}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item 周期的イベント (ジッターの有無にかかわらず) が確実に決定論的な振る舞いをするのに対し, 散発的イベントは一見不規則に到着する
+        \item 散発的なタスクアクティベーションモデルは, 例えば顧客からのサーバへの要求のような, 非決定 的なイベントソースの振る舞いをモデル化するのに強力であることが証明されている
+        \item 詳細はすでに3.6節でレビューしている
+        \item 本節では, 周期的ストリームの場合と同様に, 実行とスケジューリングが散発的イベントストリームの特性に及ぼす影響に焦点を当てる
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item 一定の応答時間は一定の入出力レイテンシを表し, 一定の位相レイテンシを除いたタスク出力はタスク入力と等しくなる
+        \item この挙動は, 4.1.1節で周期的事象についてすでに観察したとおりである
+        \item したがって, 出力ストリームは入力ストリームと等しい
+
+    \end{itemize}
+    \begin{equation*}
+        \mathcal{S}_{1, \text { out }}=\mathcal{S}_{1, \text { in }}=\mathcal{S}_{\mathrm{S}}\left(d_{1, \text { in }}^{-}\right)
+    \end{equation*}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item システムに入る散発的なイベントは, 周期的なイベントと同じような歪みが発生する
+        \item タスクの入力から出力までストリームのタイミングが変化すると, 応答時間間隔が, 出力イベントの到着曲線の不確実性を高めることにつながる
+        \item タスクの入出力タイミングに対する応答時間の非一定性の影響については 4.1.2 節で既に分析済みである
+        \item 周期的なイベントの場合, この効果を捉えるために, 既知のジッターイベントモデルを簡単に使用できる
+        \item しかし, 最小の相互到着時間しか定義していない散発的なイベントの場合は, ジッターの概念が不明である
+        \item そこで, 別のアプローチが必要である
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+    \fitimage{
+        最悪のケースを図4.15に示
+    }{worst_case_outpu_timing_of_sporadic_tasks}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item b) 「遅い」出力イベントの後に「早い」イベントが続く
+        \item すなわち, 応答時間のジッターが, ジッターで既に知られているように, 入力から出力までのイベント距離をさらに短くする (4.1.3節参照)
+        \item 基本的に, 最悪のケースを発生させるためには, 前述の両方の効果が重ならなければならない
+        \item 入力距離が大きければ, 出力距離も大きくなり, 応答時間分布も異なる
+        \item これらの観察から, 求められる最小出力間到着時間を計算できる
+
+
+        \item これは, 式4.19の3番目の境界を表すものでもある
+    \end{itemize}
+    \begin{equation*}
+        \mathcal{S}_{i, \text { out }}=\mathcal{S}_{\mathrm{S}}\left(d_{i, \text { out }}^{-}=d_{i, \text { in }}^{-}-J_{i, R}\right)
+    \end{equation*}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item ジッターの増加と同様に, 通常, 最小到達間時間は入力から出力へ向かって減少し, その減少量が応答時間ジッターとなる
+        \item 複数のタスクのチェーンを考えた場合, 式 $4.21$ で与えられる減少が, 理論的には $d_{\text {out }}$ の結果をマイナスに導くことが容易に想像できる
+        \item 自明に, 負のイベント距離は単純に意味をなさないし, 最小の到着間時間がゼロであれば, 最悪イベント頻度が無限となるため, 全てのイベントが同時に到着する無限の数を想定する必要がある
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item ジッターモデルにおける同時イベント到着の問題については4.2.2節で既に述べたとおりである
+        \item 基本的なジッターモデル (ここではバーストを伴う周期的イベントのモデルと呼ぶ) に対する追加的な境界として, 出力イベント距離という概念を導入した
+        \item そして, 最小応答時間がこの出力距離に束縛されることを示すことができた
+        \item この境界は新しく導入したバーストを伴う周期的事象のモデル (式4.19参照) の出力事象距離に適用されるだけではない
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item 任意のタスクの出力タイミングに対する一般的な束縛であり, 散発的なイベントのモデルにも適用され, 式 $4.21$ は次のようになる
+    \end{itemize}
+
+    \begin{equation*}
+        \mathcal{S}_{i, \text { out }}=\mathcal{S}_{\mathrm{S}}\left(d_{i, \text { out }}^{-}=\max \left(d_{i, \text { in }}^{-}-J_{i, R}, R_{i}^{-}\right)\right)
+    \end{equation*}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item $3.7$ 項の散発的周期事象(または散発的バースト)のモデルは, 内部周期 $T^{I}$ とも呼ばれる最小相互到着時間を定義している(3.7項参照)
+        \item 応答時間の最小値は, この内部周期に対する拘束力をも意味する
+        \item さらに, 4.1.2節で紹介した応答時間ジッターは, 内側と外側の出力期間の両方に影響を与える
+
+
+        \item 外周周期の数学的な境界は, 最大平均周波数 $\frac{b}{T^{O}}$ が $\frac{1}{T^{1}}$ で囲まれた最大過渡周波数を超えないという事実を捉えている
+    \end{itemize}
+    \begin{equation*}
+        \begin{gathered}
+            \mathcal{S}_{i, \text { out }}=\mathcal{S}_{\mathrm{B}}\left(T_{i, \text { out }}^{O}=\max (T_{i, \text { in }}^{O}-J_{i, R}, \underbrace{b_{i, \text { in }} \times T_{i, \text { out }}^{I}}_{\text {mathematical bound }}),\right. \\
+            T_{i, \text { out }}^{I}=\max \left(T_{i, \text { in }}^{I}-J_{i, R}, R_{i}^{-}\right), \\
+            \left.b_{i, \text { out }}=b_{i, \text { in }}\right)
+        \end{gathered}
+    \end{equation*}
+\end{frame}
+
+
+\subsection{Conditional Output Generation}
+\label{ssec: conditional output generation}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item 前節では, 環境からシステムに入力される散発的なイベントストリームの伝搬に焦点を当てた
+        \item しかし, 散発的な環境だけが散発的な事象の発生源ではなく, 条件付き通信が存在する場合には, もともと周期的な発生源から発生することもある
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item 条件付き出力生成とは, タスクが出力イベントを生成するかしないか, その判断がタスク内部の計算結果, 例えば if-then-else 文の then または else ブロック内の計算結果によって決まることを意味する
+        \item 言い換えれば, 出力はタスクの内部機能に依存する
+        \item スケジューラ分析では, このような内部機能の詳細を抽象化し, どちらのケースに至るかの条件を考慮せずに, タスク実行の比較的単純なコーナーケースだけを見ることが多い
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item ここでも, 応答時間が一定である状況からスタートする2つのコーナーケースのシナリオを確認できる
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+    \fitimage{
+        \begin{itemize}
+            \item 図4.16(a)のシナリオでは, タスクは常に完了時刻にイベントを生成する
+            \item これは自明に, 無条件の出力生成の場合 (本章の序章を参照) に紹介したように, 純粋に周期的な出力となる
+        \end{itemize}
+    }{always_output}
+\end{frame}
+
+\begin{frame}{}
+    \fitimage{
+        \begin{itemize}
+            \item もう一つの極端な例は, タスクが決して出力を生成しないシナリオである
+            \item これは図4.16(b)に示されている
+        \end{itemize}
+    }{never_output}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item このような挙動を捉えるモデルとして, 既に導入されているのが, 散発的なイベントのモデルである
+        \item $3.6$ 章の図 $3.11$ は, この二つの動作のコーナーケースをうまく示している
+        \item すなわち, 条件付き出力生成は, 周期的な入力ストリームを散発的な出力ストリームに変換する
+
+    \end{itemize}
+    \begin{equation*}
+        \mathcal{S}_{i, \text { out }}=\mathcal{S}_{\mathrm{S}}\left(T_{i, \text { in }}\right)
+    \end{equation*}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item 応答時間間隔を考慮すると, 状況はより複雑になる
+        \item ここでも, 2つのコーナーケースシナリオを区別できる
+        \item 常に出力する」シナリオでは, セクション 4.1.3 で紹介したように, ジッターを伴う周期的な出力となる
+        \item そして, 「出力なし」シナリオでは, ある種の散発的なモデルが必要である
+        \item しかし, ジッターを含む周期性を一方の境界とし, 「出力なし」を他方の境界とするモデルは文献上知られていない
+        \item バーストを伴って周期的に起動される条件付きタスクについても同様であるそのため, 厳密には散発的な事象のモデルに頼らざるを得ない
+        \item 最小の到着間時間は, 一般に周期的なストリームにおけるジッターの増加からの観測に従って計算される
+        \item これは, ジッターを含む周期的なストリームが上界の出力を表し, 散発的なモデルは上界のみを定義するため, 有効である
+
+    \end{itemize}
+    \begin{equation*}
+        \mathcal{S}_{i, \text { out }}=\mathcal{S}_{\mathrm{S}}\left(\max \left(T_{i, \text { in }}-J_{i, R}, R_{i}^{-}\right)\right)
+    \end{equation*}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item もしタスクがすでにジッター (あるいはバースト) でアクティベーションされているなら, 式4.25を簡単に拡張できる
+
+
+
+    \end{itemize}
+    \begin{equation*}
+        \mathcal{S}_{i, \text { out }}=\mathcal{S}_{\mathrm{S}}\left(\max \left(T_{i, \text { in }}-J_{i, \text { in }}-J_{i, R}, d_{i, \text { in }}-J_{i, R}, R_{i}^{-}\right)\right)
+    \end{equation*}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item タスクチェーンに沿って最小到着時間が減少し, 頻度が増加していることがわかる
+        \item しかし, このような頻度の増加は, 実際のシステム動作の特性ではなく, モデル化の効率がかなり悪いイベントストリーム表現の特性である
+    \end{itemize}
+\end{frame}
+
+
+
+\subsection{New Sporadic Models with Jitter and Burst}
+\label{ssec: new sporadic models with jitter and burst}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item これまで, タスク実行とスケジューリングが出力イベントストリームに課 す効果として, a) 入力から出力へジッターが増加し(セクション 4.1.3 参照), ついにはバーストに至る (セクション 4.3) と, b) 条件付き通信により周期的入力が散発的出力動作に変わる (セクション 4.5) の2点を自明にし てきた
+        \item この2つの効果は見かけ上直交しており, 両個別効果を捉えるために用いられる既に知られている概念を組み合わせることは比較的容易である
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item 我々は, 可能性のある入力ジッターを捕らえるために, 散発的モデルを拡張した
+        \item ジッターを含む散発的イベントのモデルは以下のように定義される
+
+    \end{itemize}
+    \begin{equation*}
+        \begin{aligned}
+             & \mathcal{E} \mathcal{M}_{\mathrm{S}+\mathrm{J}}=\left\{\mathcal{S}_{\mathrm{S}+\mathrm{J}}\left(\pi_{\mathrm{S}+\mathrm{J}}\right) \mid\right. \\
+             & \pi_{\mathrm{S}+\mathrm{J}} \in \Pi_{\mathrm{S}+\mathrm{J}}=\left\{(T, J) \mid T \in \mathbb{R}^{+} \backslash\{0\}, J \in \mathbb{R}^{+}\right\},                                 \\
+             & \left.\eta_{\mathrm{S}+\mathrm{J}}^{+}(\Delta t), \eta_{\mathrm{S}+\mathrm{J}}^{-}(\Delta t), \delta_{\mathrm{S}+\mathrm{J}}^{-}(n), \delta_{\mathrm{S}+\mathrm{J}}^{+}(n)\right\}
+        \end{aligned}
+    \end{equation*}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item 常に」の場合, ジッターを含む周期的なものは, $\eta^{+}(\Delta t)$ の上界と $\delta^{-}(n)$ の下限を提供する
+
+    \end{itemize}
+    \begin{equation*}
+        \begin{array}{r}
+            \forall \Delta t>0: \eta_{\mathrm{S}+\mathrm{J}}^{+}(\Delta t)=\eta_{\mathrm{P}+\mathrm{J}}^{+}(\Delta t)=\left\lceil\frac{\Delta t+J}{T}\right\rceil \\
+            \forall n \in N, n \geq 2: \delta_{\mathrm{S}+\mathrm{J}}^{-}(n)=\delta_{\mathrm{P}+\mathrm{J}}^{-}(n)=\max (0,(n-1) T-J)
+        \end{array}
+    \end{equation*}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item もう一つの場合, $\eta^{-}(\Delta t)$ では境界はゼロ, $\delta^{+}(n)$ では無限大となり, このモデルの散発的な性質を正式に表現している
+        \item このモデルをジッターを含む散発的イベントと呼び, $\mathrm{S}+\mathrm{J}$ というインデックスを付ける
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+    \fitimage{
+        上界と下限を合わせた到着曲線を図4.17に示す
+    }{upper_and_lower_bound_arrival_curves_of_sporadic_events_with_jitter}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item 大きなジッターによる非効率を避けるため, バースト $(\mathrm{S}+\mathrm{B})$ を持つ散発的なイベントのモデルも定義している
+
+    \end{itemize}
+    \begin{equation*}
+        \begin{aligned}
+             & \mathcal{E} \mathcal{M}_{\mathrm{S}+\mathrm{B}}=\left\{\mathcal{S}_{\mathrm{S}+\mathrm{B}}\left(\pi_{\mathrm{S}+\mathrm{B}}\right) \mid\right
+\item \\
+             & \pi_{\mathrm{S}+\mathrm{B}} \in \Pi_{\mathrm{S}+\mathrm{B}}=\left\{(T, J, d) \mid T \in \mathbb{R}^{+} \backslash\{0\}, J \in \mathbb{R}^{+}, d \in \mathbb{R}^{+}\right\},        \\
+             & \left.\eta_{\mathrm{S}+\mathrm{B}}^{+}(\Delta t), \eta_{\mathrm{S}+\mathrm{B}}^{-}(\Delta t), \delta_{\mathrm{S}+\mathrm{B}}^{-}(n), \delta_{\mathrm{S}+\mathrm{B}}^{+}(n)\right\}
+        \end{aligned}
+    \end{equation*}
+\end{frame}
+
+\begin{frame}{}
+    \fitimage{
+        上界と下限を合わせた到達曲線を図4.18に示す
+    }{4_18}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item 特性関数は次式で与えられる
+
+
+    \end{itemize}
+    \begin{equation*}
+        \forall \Delta t>0: \eta_{\mathrm{S}+\mathrm{B}}^{+}(\Delta t)=\eta_{\mathrm{P}+\mathrm{B}}^{+}(\Delta t)=\min \left(\left\lceil\frac{\Delta t}{d}\right\rceil,\left\lceil\frac{\Delta t+J}{T}\right\rceil\right)
+    \end{equation*}
+
+    \begin{equation*}
+        \begin{gathered}
+            \forall \Delta t>0: \eta_{\mathrm{S}+\mathrm{B}}^{-}(\Delta t)=0 \\
+            \forall n \in N, n \geq 2: \delta_{\mathrm{S}+\mathrm{B}}^{-}(n)=\delta_{\mathrm{P}+\mathrm{B}}^{-}(n)=\max ((n-1) d,(n-1) T-J) \\
+            \forall n \in N, n \geq 2: \delta_{\mathrm{S}+\mathrm{B}}^{+}(n)=\infty
+        \end{gathered}
+    \end{equation*}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item 散発的なアクティベーション (ジッターやバーストの有無にかかわらず) と条件付き出力生成の組み合わせは, 新しい出力モデルにつながらない
+        \item あるコーナーケースでは, 周期的な入力と「常に出力」を仮定しなければならず, 周期的な出力につながる
+        \item もう一つのケースでは, 入力がゼロ, すなわちタスクが実行されないか, 実行されても出力が得られないと仮定する
+        \item 結果は同じで, 出力生成はゼロである
+        \item 出力は散発的な事象のモデルであるジッターやバースト性は, $4.5$ 章の周期的アクティベーションの場合と同様に決定できる
+    \end{itemize}
+\end{frame}
+
+
+\subsection{A Six-Class Model Set}
+\label{ssec: a six-class model set}
+
+\begin{frame}{}
+    \fitimage{
+        図 $4.7$ に全出力イベントモデルと本章で検討した遷移を示す
+    }{six_class}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item これらのモデルのうち 6 つを標準イベントモデルと定義し, 6 クラスのモデルセットを形成している
+        \item このモデルセットは, 2つの重要な観察から導き出された
+        \item ジッターは入力から出力へと増加し, 周期的なモデルと散発的なモデルの両方でバーストを引き起こす可能性がある
+        \item 条件付き出力は周期的モデルを散発的モデルに変えるが, 散発的モデルは「より散発的に」なることはできないが, ジッターとバーストを誘発できる
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item 重要な特性として, この6クラスモデルセットは自己充足的である
+        \item すなわち, これらのモデルから影響を受けることはなく, 平均周期などの主要なストリーム情報は保持される
+        \item 文献にある一般的なモデル (図ではハイライトされている) を使用するだけでは十分ではない
+        \item これらのモデルには, 大きなジッタの影響を一貫して処理するための表現力がない
+        \item バースト (大きなジッタの結果) は周期的なモデルではまだ考慮されておらず, ジッタは散発的なモデルではまだ考慮されていない
+        \item 新しい3つのモデルは, この概念的なモデル化のギャップを埋め, 前述の不十分な点を克服している
+        \item もう一つの単純化として, 散発的モデルと周期的モデルで同じパラメータを使用できる
+        \item 最小の到着間時間 $d^{-}$ の代わりに, この値を散発的周期 $T$ と呼ぶことにする
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+    \fitimage{
+        6機種の特性関数をまとめた表
+    }{eta_function_table}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item Audsley, Tindell ら $[4,121]$ が導入した既知の「散発的周期性」事象のモデルは, 図 4.19 に重なるボックスで示したバーストを伴う散発的事象のモデルと類似しているが, 他のモデルの分類に容易に当てはめることはできない
+        \item しかし, そのバーストに関する解釈は, 大きなジッターの観測に基づくものではない
+        \item それどころか, このモデルにはジッターの概念がないため, 4.4節で示したように, 出力ストリームをモデル化する際に「人工的に周波数を増加させる」という問題が発生する
+        \item このモデルは, 制御工学や輸送システムなどの複雑な非決定論的環境のモデリングに応用されているが, システム内部の依存関係のモデリングにはあまり使われていない
+        \item しかし, 次章で, 散発的な周期的事象のモデルからバーストを伴う散発的な事象のモデルへの変換, またその逆の変換が可能であることを見ることにする
+        \item これにより, 新たに定義された6クラスモデルによって, 散発的な周期的ストリーム (およびおそらく他のストリーム) を捕捉できる
+    \end{itemize}
+\end{frame}
+
+
+\subsection{Summary}
+\label{ssec: summary}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item 本章では, 実行, スケジューリング, 条件付き通信がイベントの生成, ひいては出力イベントストリームの表現に与える影響について系統的に検討した
+        \item その結果, 既存のイベントモデルでは, 大きなジッタの影響を合理的に捉えることに大きな不足があることを確認し, モデル化の精度を落とすことなく, ジッタやバーストを系統的にサポートするように拡張した
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item 周期的と散発的の2つのクラスを定義し, 各クラスに厳密, ジッターあり, バーストありの3つのモデルを用意した
+        \item すなわち, ジッターのある周期的イベントとジッターのない周期的イベントのモデルを維持しつつ, 大きなジッターの結果としてバーストを定義している
+        \item 最大過渡周波数を制限するために, 散発的な周期イベントのモデルにおける内部周期と同様に, 任意の2つのイベント間の最小距離を追加で定義する[4, 121]
+        \item 散発的なクラスは周期的なモデルのクラスを一般化し, 1つのコーナーケースシナリオが暗黙のうちに「出力なし」に設定されている, すなわち, $\eta^{-}(\Delta t)$ 関数がゼロに設定されている
+        \item すなわち, 全ての散発的ストリームは, 最悪の場合, 対応する周期的なストリームであると仮定することができ, これは, リアルタイム分析における散発的イベントの初期のアプリケーションと一致する[108]
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item この6つのモデルは, これまで確認されていたよく知られた4つのモデルに対して, 3つの利点がある
+        \item 第一に, ストリクトからジッター, バーストへの移行が直感的である
+        \item 第二に, 周期的ストリームと散発的ストリームは同じ基礎モデルとパラメータを使用するため, さらに複雑さが軽減される
+        \item しかし, この新しいモデルのセットの大きな利点は, 概念的なものである
+        \item この新しいモデル群は, 入出力ストリームのモデリングに関して自己完結している
+        \item この6つのモデルからは, いかなる変換も出てきません
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item ジッターは周期をはるかに超えることが許され, 我々の新しいバーストの定義は, 大きなジッターの効果を直感的に特徴づけるものに過ぎない
+        \item この6種類のモデルセットは, 一方ではモデルの単純さと直感, 他方では完全性, そして最終的には適用可能性の間の効率的な妥協点であるように見える
+        \item 我々は文献から得た既知のモデルにわずかな拡張を加えただけなので, 新しいモデルは近似なしに, 確立された局所分析技術に関連して直接適用することができ, これは大きな利点であると考える
+        \item このように, 直感的に構造化されたモデルで十分であることから, システム設計者やアーキテクトは, 形式的なリアルタイム分析の全体的な考え方に関心を持つようになると思われる
+    \end{itemize}
+\end{frame}
