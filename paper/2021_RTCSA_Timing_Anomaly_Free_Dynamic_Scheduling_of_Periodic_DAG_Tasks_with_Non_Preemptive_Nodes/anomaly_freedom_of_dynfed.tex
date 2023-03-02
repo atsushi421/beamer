@@ -1,0 +1,23 @@
+% !TeX root = main.tex
+
+\section{ANOMALY FREEDOM OF DYNFED}
+\label{sec: ANOMALY FREEDOM OF DYNFED}
+
+\begin{frame}[label=theorem2]{DynFedのTheorem}
+    \begin{theorem}[]
+        DynFedはタイミング異常が無いスケジューラである
+        \notes{証明略}
+    \end{theorem}
+\end{frame}
+
+
+\subsection{Schedulability Test}
+\label{ssec: Schedulability Test}
+
+\begin{frame}{スケジューラビリティ判定方法}
+    \begin{itemize}
+        \item DynFedはタイミング異常が無いスケジューラであるため, タスクの最悪応答時間は, 全てのサブジョブがWCETで実行されたときに得られる
+        \item したがって, DynFedの下で1ハイパーピリオドのシステム実行をシミュレートすることにより, タスクの最悪応答時間を計算できる
+        \item 得られた各タスクの応答時間をそのデッドラインと比較することで, そのタスクが可能かどうかを判断できる
+    \end{itemize}
+\end{frame}

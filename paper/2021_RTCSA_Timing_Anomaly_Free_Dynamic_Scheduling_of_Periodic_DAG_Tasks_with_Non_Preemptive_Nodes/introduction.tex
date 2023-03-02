@@ -1,0 +1,22 @@
+% !TeX root = main.tex
+
+\section{INTRODUCTION}
+\label{sec: introduction}
+
+\begin{frame}{背景}
+    \begin{itemize}
+        \item 並列アプリケーションは, ノードがサブタスクとも呼ばれる逐次実行単位, エッジがサブタスク間の優先度制約を表す有向非巡回グラフ (DAG) として自然にモデル化できる
+        \item 本論文では, 限定プリエンプティブ周期的DAGタスクモデルの動的スケジューリングを考える
+        \item 動的スケジューリングでは, タイミング異常と呼ばれる応答時間の増加が発生する可能性がある
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{貢献}
+    \begin{itemize}
+        \item 従来のノンプリエンプティブジョブの概念を, 計算ユニットとして同時に複数のコアを占有できる並列計算ブロック (PCB) に一般化
+        \item PCBのスケジューリングアルゴリズムでタイミング異常が起きない条件を示す
+        \item 限定プリエンプティブ周期的DAGタスクのための動的スケジューリングアルゴリズム, DynFedを提案
+        \item DAGジョブをPCBにマッピングすることで, DynFedがタイミング異常フリーであることを証明
+        \item DynFedは, WCETに従ってジョブの実行をシミュレーションすることで, 全てのDAGタスクの正確な最悪応答時間を導き出す
+    \end{itemize}
+\end{frame}

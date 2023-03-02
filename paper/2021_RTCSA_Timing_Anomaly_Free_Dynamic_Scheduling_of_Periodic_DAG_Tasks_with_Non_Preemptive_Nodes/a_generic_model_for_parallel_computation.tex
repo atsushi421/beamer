@@ -1,0 +1,79 @@
+% !TeX root = main.tex
+
+\section{A GENERIC MODEL FOR PARALLEL COMPUTATION}
+\label{sec: A GENERIC MODEL FOR PARALLEL COMPUTATION}
+
+\begin{frame}{タイミング異常が無いスケジューラ設計方針}
+    \begin{itemize}
+        \item タイミング異常は, 実行時間がWCETより短くなったタスクが実行可能になった時点で, 他のタスクにコアが占有されていることが原因である
+        \item そこで, タスクの開始時にそのタスクの最悪リソース要求量を把握し, それに基づいてコアを確保すればタイミング異常を回避できる
+        \item 本セクションでは, DAGタスクのリソース要求を効率的に把握するためのモデルを提示する
+    \end{itemize}
+\end{frame}
+
+
+\subsection{Parallel Computation Blocks}
+\label{ssec: Parallel Computation Blocks}
+
+\begin{frame}{}
+    タスクを一般化し, 一度に複数のコアを占有できる計算ユニットとして並列計算ブロック (PCB) を定義する
+    \begin{block}{PCB の特性}
+        \begin{itemize}
+            \item PCBが要求したコアは, 要求されなくなるまでPCB専用となる
+            \item PCBが要求したコアは, その起動時に取得される
+            \item リソース要求関数を持つ
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}{PCB のリソース要求関数}
+    \begin{definition}[PCB のリソース要求関数]
+        \setlength{\linewidth}{0.98\columnwidth}
+        \begin{itemize}
+            \item PCB のリソース予約関数$rdf(t)$は, 実行開始時間を0とした場合に, 時刻 $t$でPCBが要求するコア数を示す関数
+            \item $rdf(t)$は次の性質を満たす
+        \end{itemize}
+        \begin{equation*}
+            \forall t \geq 0: rdf(t) \geq rdf(t+1)
+        \end{equation*}
+    \end{definition}
+\end{frame}
+
+\begin{frame}{リソース要求関数の例}
+    \fullimage{rdf}
+\end{frame}
+
+\begin{frame}{最悪リソース要求関数}
+    \begin{definition}[最悪リソース要求関数]
+        \setlength{\linewidth}{0.98\columnwidth}
+        \begin{itemize}
+            \item PCB が示す可能性のあるリソース要求関数のセットを $\mathcal{R}$ と表記する
+            \item 以下の条件を満たす場合, $rdf(t)$はPCBの最悪リソース要求関数
+                  \begin{equation*}
+                      \forall rdf^{\prime} \in \mathcal{R}: rdf^{\prime}(t) \leq rdf(t) \text { for all } t \geq 0
+                  \end{equation*}
+        \end{itemize}
+    \end{definition}
+\end{frame}
+
+
+\subsection{Timing-Anomaly Free Scheduling of PCBs}
+\label{ssec: Timing-Anomaly Free Scheduling of PCBs}
+
+\begin{frame}{PCBの貪欲スケジューラ}
+    \begin{definition}[PCBの貪欲スケジューラ]
+        どのPCBでも要求されていないコアの数が, 現在割り当てられていない PCB を割り当てるのに十分である限り, PCB をそのコアに割り当て続ける
+    \end{definition}
+    \begin{theorem}[]
+        実行順序に従う PCB の貪欲スケジューラは, タイミング異常が無い
+        \notes{証明略}
+    \end{theorem}
+\end{frame}
+
+\begin{frame}{タイミング異常が無い条件}
+    以下2つの条件を満たす場合, タイミング異常が無いスケジューラである
+    \begin{itemize}
+        \item 各 PCBのリソース使用量が, 最悪リソース要求関数を超えない
+        \item 全てのPCBが実行順序に従う貪欲スケジューラでスケジュールされる
+    \end{itemize}
+\end{frame}

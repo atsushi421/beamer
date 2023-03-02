@@ -1,0 +1,55 @@
+%%%%% Please set the path to 'beamer' directory in your environment %%%%%
+\newcommand{\beamerDir}[0]{/mnt/c/Users/atsushi/Documents/workspace/env/Beamer/beamer/beamer/}
+
+
+%%%%% Load setting %%%%%
+\input{\beamerDir/setting.tex}
+
+
+%%%%% Mode %%%%%
+% \newcommand{\forme}[1]{#1}
+\newcommand{\forme}[1]{}
+
+
+%%%%% Front Cover %%%%%
+\title{Timing-Anomaly Free Dynamic Scheduling of Periodic DAG Tasks with Non-Preemptive}
+\subtitle{IEEE International Conference on Embedded and Real-Time Computing Systems and Applications (RTCSA), 2021}
+\author{矢野 篤志}
+\date{\today}
+\institute[EMBIV]{EMBIV}
+\logo{\begin{textblock*}{0.1\linewidth}(2pt, 237pt)\includegraphics[scale=0.4]{\beamerDir/master_figure/Emb_logo.pdf}\end{textblock*}}
+
+
+%%%%% Document Start %%%%%
+\begin{document}
+
+\maketitle
+
+\summary{0}{0}
+\input{abstract.tex}
+
+\begin{frame}{Outline}
+    \setbeamertemplate{section in toc}[sections numbered]
+    \scriptsize\tableofcontents[hideallsubsections]
+\end{frame}
+
+\input{prior_knowledge.tex}
+\input{introduction.tex}
+\input{related_work.tex}
+\input{preliminaries.tex}
+\input{a_generic_model_for_parallel_computation.tex}
+\input{dynamic_federated_scheduling.tex}
+\input{anomaly_freedom_of_dynfed.tex}
+\input{evaluation.tex}
+\input{conclusion.tex}
+
+\lastpage
+
+% \section*{Reference}
+% \begin{frame}[allowframebreaks]{Reference}
+%     \beamertemplatetextbibitems
+%     \bibliographystyle{unsrt}
+%     \bibliography{\beamerDir/bibtex/master_reference}
+% \end{frame}
+
+\end{document}

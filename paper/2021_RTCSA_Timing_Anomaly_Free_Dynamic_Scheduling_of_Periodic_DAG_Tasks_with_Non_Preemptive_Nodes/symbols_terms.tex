@@ -1,0 +1,36 @@
+% !TeX root = main.tex
+
+\begin{frame}{表記法・用語 1}
+    \full{
+        \begin{table}[tb]
+            \adjustbox{max width=\textwidth, max height=\slideheight}{
+                \centering\begin{tabular}{|c|l|} \hline
+                    $m$                                                        & コア数                  \\\hline
+                    $\mathcal{T}=\left\{\tau_{1}, \cdots, \tau_{n}\right\}$    & 周期的タスクセット      \\\hline
+                    $n$                                                        & タスク数                \\\hline
+                    $G_{k}=\left(V_{k}, E_{k}\right)$                          & $\tau_i$のDAG           \\\hline
+                    $V_{k}=\left\{v_{k, 1}, \ldots, v_{k, q_{k}}\right\}$ & $G_{k}$のノードセット   \\\hline
+                    $E_k$                                                      & $G_{k}$のエッジセット   \\\hline
+                    $c_{k, j}$                                                 & $v_{k, j}$のWCET        \\\hline
+                    $q_k$                                                      & $V_{k}$のサブタスク数   \\\hline
+                    $\operatorname{vol}\left(\tau_{k}\right)$                  & $\tau_{k}$ のWCETの合計 \\\hline
+                \end{tabular}
+            }
+        \end{table}
+    }
+\end{frame}
+
+\begin{frame}{表記法・用語 2}
+    \full{
+        \begin{table}[tb]
+            \adjustbox{max width=\textwidth, max height=\slideheight}{
+                \centering\begin{tabular}{|c|l|} \hline
+                    $D_k$                                                           & $\tau_{k}$の相対デッドライン \\\hline
+                    $T_k$                                                           & $\tau_{k}$の周期             \\\hline
+                    $J_{k,i} = \{j_{k, 1,i}, j_{k, 2,i}, \ldots, j_{k, q_{k}, i}\}$ & $\tau_{k}$の$i$番目のジョブ  \\\hline
+                    $O_{\mathcal{I}}$ & 実行順序 \\\hline
+                \end{tabular}
+            }
+        \end{table}
+    }
+\end{frame}

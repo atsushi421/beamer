@@ -1,0 +1,113 @@
+% !TeX root = main.tex
+
+\section{EVALUATION}
+\label{sec: eva}
+
+\begin{frame}{評価方法}
+    ランダムに生成されたタスクセットに対してDynFedを適用し, 受け入れ率を測定する
+    \begin{block}{受け入れ率}
+        タスクセットの総数に対するスケジューリング可能と判断されたタスクセットの割合
+    \end{block}
+\end{frame}
+
+\begin{frame}{比較対象1}
+    \begin{block}{Federated Lazy}
+        \setlength{\linewidth}{0.98\columnwidth}
+        \begin{itemize}
+            \item Lazyスケジューリングアルゴリズムに基づく, フェデレートスケジューリング
+            \item タスクを個別に実行したときに正常にスケジューリングできる最小限のコア数を専用に割り当てる
+        \end{itemize}
+    \end{block}
+    \begin{block}{RM}
+        周期の短いタスクに高い優先度を割り当てるグローバル固定優先度スケジューリング
+    \end{block}
+\end{frame}
+
+\begin{frame}{比較対象2}
+    \begin{block}{EDF}
+        G-EDFポリシーに従ってジョブの優先度付けを行う
+    \end{block}
+    \begin{block}{オフラインスケジューリング}
+        \begin{itemize}
+            \setlength{\linewidth}{0.98\columnwidth}
+            \item ノードをその WCET に従って実行するスケジューラ
+            \item あるノードの実行時間がそのWCETより短い場合, そのノードのWCETに基づき終了するはずだった時間まで, 実行中のコアはアイドル状態になる
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}{比較対象3}
+    \begin{block}{DynFed (BFS)}
+        \setlength{\linewidth}{0.98\columnwidth}
+        \begin{itemize}
+            \item DynFedの別バージョンで, シングルタスクスケジューラの場合, 幅優先探索 (BFS) 順序を使用して優先度を決定する
+            \item BFS順序とは, あるノードの全ての先行ノードが, そのノードよりも前に来るようにしたノードのリスト
+        \end{itemize}
+    \end{block}
+    \begin{block}{FP-FIFO}
+        \setlength{\linewidth}{0.98\columnwidth}
+        \begin{itemize}
+            \item FIFOスケジューリングで, 前のジョブが完了してから新しいDAGジョブを開始する
+            \item FP-FIFOは, 全てのサブジョブの実行順序を保持するため, タイミング異常が無い
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+
+\subsection{The General Case}
+\label{ssec: gc}
+
+\begin{frame}{結果}
+    \fitimage{
+        DynFedはどのパラメータにおいても高い受け入れ率を示す
+    }{eva1}
+\end{frame}
+
+\begin{frame}{オフラインスケジューリングの結果}
+    \fitimage{
+        \begin{itemize}
+            \item オフラインスケジューリングは最も高い受け入れ率を達成している
+            \item しかし, オフラインスケジューリングはタイマに依存するという欠点がある
+        \end{itemize}
+    }{eva1}
+\end{frame}
+
+\begin{frame}{DynFedの欠点}
+    \fitimage{
+        \begin{itemize}
+            \item DynFedの大きな欠点は, 小さなタスクのためにリソースを浪費する可能性があること
+            \item 以下のようにコアに対するタスクの数が最も多い場合に顕著
+        \end{itemize}
+    }{eva2}
+\end{frame}
+
+
+\subsection{Small Task Sets}
+\label{ssec: s}
+
+\begin{frame}{小さいタスクセットにおける結果}
+    \fitimage{
+        DynFedは小さいタスクセットにおいても, 最悪を正確に把握できるため, 他の分析手法に見られる悲観性を効率的に回避できる
+    }{eva3}
+\end{frame}
+
+% \begin{frame}{}
+%     \begin{itemize}
+%         \item 図 5 は, スケジューラビリティ分析手法の違いによる性能の違いを示 したものである
+%         \item この結果から, EDFは他の分析手法, すなわち $\mathbf{R} \mathbf{M}$ を上回っており, これは可能なスケジューリングシナリオを幅広く探索することに関係していると考えられる
+%         \item これに対し, DynFedはタイミング異常の自由度が高く, シミュレーションベースのスケジューラビリティ分析が可能なため, より高い合格率を示している
+%         \item すなわち, DynFedを用いると最悪を正確に把握できるため, 他の分析手法に見られる悲観的な見方を効率的に回避できるのである
+%     \end{itemize}
+% \end{frame}
+
+% \begin{frame}{}
+%     \begin{itemize}
+%         \item 図5(b)はTableDrivenの性能に例外があることを示している
+%         \item このように, DynFedはタスクセットのスケジューリングに成功しても, Table-Drivenが失敗する場合がある
+%         \item 図5(b)は, タスク数, すなわちスケジューリングするサブジョブ数が少ない構成の結果を示している
+%         \item これは, スケジューリングされる単位 (すなわち, ノンプリエンプティブなサブジョブ) が比較的粗い粒度であることを意味する
+%         \item このため, スケジューラにとっては, タスクのスケジューリングが難しくなる (このようなスケジューリングは, 大きなアイテムによるビン詰め問題と考えることができる)
+%         \item その結果, Table-Drivenのようなグローバルスケジューラは, タスクセットのスケジューリングに失敗する可能性が高くなる
+%         \item これに対し, DynFedやFederated Lazyなどのアプローチでは, 必要なリソースを予測し, 場合によってはデッドライン切れを回避できる
+%     \end{itemize}
+% \end{frame}

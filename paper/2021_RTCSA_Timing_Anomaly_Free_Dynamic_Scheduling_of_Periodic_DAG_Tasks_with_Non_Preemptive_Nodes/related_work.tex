@@ -1,0 +1,19 @@
+\section{RELATED WORK}
+\label{sec: r}
+
+\begin{frame}{関連研究との比較表}
+    \begin{table}[]
+        \adjustbox{max width=\textwidth, max height=\slideheight}{
+            \centering
+            \begin{tabular}{|c|c|c|c|c|c|c|}
+                \hline
+                                    & \begin{tabular}[c]{@{}c@{}}グローバル\\ スケジューリング\end{tabular} & 散発的タスク & \begin{tabular}[c]{@{}c@{}}タスク内並列\\  (DAG)\end{tabular} & 複数のDAG & 限定プリエンプティブ & タイミング異常無し \\ \hline
+                {[}4, 14, 18, 24{]} & \ch                                                                   & \ch          &                                                               &           &                      &                    \\ \hline
+                {[}1, 6, 19{]}      & \ch                                                                   & \ch          & \ch                                                           &           &                      &                    \\ \hline
+                {[}36, 12{]}        &                                                                       & \ch          & \ch                                                           &           & \ch                  & \ch                \\ \hline
+                {[}25{]}            &                                                                       & \ch          & \ch                                                           & \ch       & \ch                  & \ch                \\ \hline
+                本論文              & \ch                                                                   & \ch          & \ch                                                           & \ch       & \ch                  & \ch                \\ \hline
+            \end{tabular}
+        }
+    \end{table}
+\end{frame}
