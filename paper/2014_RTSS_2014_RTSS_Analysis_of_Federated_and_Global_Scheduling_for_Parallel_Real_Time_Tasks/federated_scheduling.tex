@@ -1,0 +1,56 @@
+% !TeX root = main.tex
+
+\section{FEDERATED SCHEDULING}
+\label{sec: federated scheduling}
+
+\begin{frame}{セクションサマリ}
+    \begin{itembox}[l]{\textbf{目的}}
+        暗黙的デッドラインを持つ並列タスクのためのフェデレートスケジューリング戦略を示す
+    \end{itembox}
+\end{frame}
+
+\begin{frame}{タスクの分類}
+    \begin{itemize}
+        \item 入力はタスクセット $\tau$
+        \item まず, タスクを以下2種類に分類する
+              \begin{definition}[高利用率タスク $\tau_{\text {high }}$]
+                  利用率が1以上 $\left(u_{i} \geq 1\right)$ であるタスク
+              \end{definition}
+              \begin{definition}[低利用率タスク $\tau_{\text {low }}$]
+                  利用率が1未満 $\left(u_{i} < 1\right)$ であるタスク
+              \end{definition}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{高利用率タスクの専用コア数の決定}
+    \begin{itemize}
+        \item 各高利用率タスク $\tau_i$ に $n_{i}$ 個の専用コアを割り当てる
+        \item $n_{i}$ は以下の式で計算する
+              \begin{equation*}
+                  n_{i}=\left\lceil\frac{C_{i}-L_{i}}{D_{i}-L_{i}}\right\rceil
+              \end{equation*}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{フェデレートスケジューリングのスケジュール成功条件}
+    \begin{itemize}
+        \item 高利用率タスク $\tau_{\text {high }}$ に割り当てられたコアの総数を $n_{\text {high }}=\sum_{\tau_{i} \in \pi_{\text {high }}} n_{i}$ とする
+        \item 残りのコアを全ての低利用率タスク $\tau_{\text {low }}$ に割り当て, $n_{\text {low }}=m-n_{\text {high }}$ とする
+        \item フェデレートスケジューリングアルゴリズムは以下の式が満たされる場合, タスクセット $\tau$ をスケジュール可能
+              \[
+                  n_{\text {low }} \geq 2 \sum_{\tau_{i} \in \tau_{\text {low }}} u_{i}
+              \]
+              \notes{証明略}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{ランタイムスケジューリングの選択肢}
+    フェデレートスケジューリングでは, 以下の条件を満たす任意のランタイムスケジューリングアルゴリズムを使用できる
+    \begin{block}{高利用率タスク}
+        貪欲 (作業保存型) スケジューラ
+    \end{block}
+    \begin{block}{低利用率タスク}
+        $1 / 2$ の利用率境界を持つスケジューリングアルゴリズム
+        \notes{この時, $C_{i} \leq D_{i}$ で並列実行が必要ないため, 低利用率タスクは安全にシーケンシャルタスクとして扱える}
+    \end{block}
+\end{frame}

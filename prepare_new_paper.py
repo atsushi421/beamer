@@ -22,5 +22,7 @@ if __name__ == "__main__":
     os.rename(f"{new_dir_path}/template.tex", f"{new_dir_path}/main.tex")
     shutil.copy(f"{beamer_dir_path}/abstract.tex", new_dir_path)
     shutil.copy(f"{beamer_dir_path}/prior_knowledge.tex", new_dir_path)
+    shutil.copy(f"{beamer_dir_path}/introduction.tex", new_dir_path)
+    shutil.copy(f"{beamer_dir_path}/conclusion.tex", new_dir_path)
     shutil.copy(f"{beamer_dir_path}/symbols_terms.tex", new_dir_path)
     shutil.copy(f"{beamer_dir_path}/supplementary_figure.pptm", f"{new_dir_path}/figure")

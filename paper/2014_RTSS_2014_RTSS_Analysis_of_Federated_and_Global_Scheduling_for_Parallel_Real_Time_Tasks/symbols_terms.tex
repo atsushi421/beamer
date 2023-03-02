@@ -1,1 +1,35 @@
 % !TeX root = main.tex
+
+\begin{frame}{表記法・用語 1}
+    \full{
+        \begin{table}[tb]
+            \adjustbox{max width=\textwidth, max height=\slideheight}{
+                \centering\begin{tabular}{|c|l|} \hline
+                    $\tau = \left\{\tau_{1}, \tau_{2}, \ldots, \tau_{n}\right\}$ & 散発的タスクセット           \\\hline
+                    $n$                                                          & タスクの数                   \\\hline
+                    $T_i$                                                        & $\tau_i$の周期               \\\hline
+                    $D_i$                                                        & $\tau_i$の相対デッドライン   \\\hline
+                    $C_i$                                                        & $\tau_i$の総ワークロード     \\\hline
+                    $L_i$                                                        & $\tau_i$のクリティカルパス長 \\\hline
+                    $u_i$                                                        & $\tau_i$の利用率             \\\hline
+                    $U_{\Sigma}$                                                 & タスクセットの総利用率       \\\hline
+                \end{tabular}
+            }
+        \end{table}
+    }
+\end{frame}
+
+\begin{frame}{表記法・用語 2}
+    \full{
+        \begin{table}[tb]
+            \adjustbox{max width=\textwidth, max height=\slideheight}{
+                \centering\begin{tabular}{|c|l|} \hline
+                    $m$                    & コア数                                        \\\hline
+                    $\tau_{\text {high }}$ & 高利用率タスク                                \\\hline
+                    $\tau_{\text {low }}$  & 低利用率タスク                                \\\hline
+                    $n_i$                  & 高利用率タスク $\tau_i$に割り当てる専用コア数 \\\hline
+                \end{tabular}
+            }
+        \end{table}
+    }
+\end{frame}

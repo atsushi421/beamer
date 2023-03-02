@@ -155,11 +155,11 @@
 \end{frame}
 
 \begin{frame}{使用するスケジューリング手法}
-    ROS-Llamaはパーティションドスケジューリングを使用する
+    ROS-Llamaはパーティショニングスケジューリングを使用する
     \begin{block}{設計理由}
         \setlength{\linewidth}{0.98\columnwidth}
         \begin{itemize}
-            \item パーティションドスケジューリングは, 経験的にほとんどのワークロードでより高いスケジューラビリティを達成することが示されている~\cite{brandenburg2016global}
+            \item パーティショニングスケジューリングは, 経験的にほとんどのワークロードでより高いスケジューラビリティを達成することが示されている~\cite{brandenburg2016global}
             \item ROS-Llamaは, 適切なマッピングを自動的に決定するのに十分な情報を持っているので, システムインテグレータに追加の負担がない
         \end{itemize}
     \end{block}

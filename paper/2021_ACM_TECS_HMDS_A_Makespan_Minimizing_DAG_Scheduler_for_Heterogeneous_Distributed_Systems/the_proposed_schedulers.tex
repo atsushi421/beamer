@@ -17,13 +17,13 @@
 
 \begin{frame}{PFT 計算方法}
     \fitimage{
-        $PFT[\tau_j, p_n]$ は $\tau_j$ をプロセッサ $p_n$ 上で実行した場合の，タスク $\tau_j$ の全ての後続ノードの実行を完了するために必要な最小総実行時間の推定値を示す
+        $PFT[\tau_j, p_n]$ は $\tau_j$ をプロセッサ $p_n$ 上で実行した場合の, タスク $\tau_j$ の全ての後続ノードの実行を完了するために必要な最小総実行時間の推定値を示す
     }{pft}
 \end{frame}
 
-\begin{frame}{タスクの優先順位付け}
+\begin{frame}{タスクの優先度付け}
     \begin{itemize}
-        \item タスクの優先順位としてランク値を使用する
+        \item タスクの優先度としてランク値を使用する
         \item ランクの降順でタスクをソートし, タスクリストを作成する
               \begin{block}{ランク値}
                   $\tau_j$ のランク値 $rank_{pft}[\tau_j]$ は, 全プロセッサにおける $\tau_j$ の平均 PFT
@@ -41,8 +41,8 @@
 \begin{frame}{ランク値の逆転への対策}
     \fitimage{
         \begin{itemize}
-            \item あるタスクのランク値が, そのタスクの後続ノードのランク値よりも小さくなると, 生成されたタスクリストで優先順位制約違反となってしまう
-            \item 以下の処理によって, 優先順位制約を保証する
+            \item あるタスクのランク値が, そのタスクの後続ノードのランク値よりも小さくなると, 生成されたタスクリストで優先度制約違反となってしまう
+            \item 以下の処理によって, 優先度制約を保証する
         \end{itemize}
     }{rank_recalc}
 \end{frame}
@@ -106,11 +106,11 @@
                 \centering\begin{tabular}{|c|l|} \hline
                     $initT$            & 現在のCPUクロック時間                                                                    \\\hline
                     $msl$              & 現在の最短スケジュール長                                                                 \\\hline
-                    $ops$              & プロセッサ選択肢の上限（枝切りメカニズム2）                                              \\\hline
-                    $\lambda$          & OEFTの許容増加率 （枝切りメカニズム3）                                                   \\\hline
-                    $capT$             & Run-timeの上限                                                                           \\\hline
-                    $BAST, BAFT, BPRO$ & \tabml{最適なスケジュールを保持する配列                                                  \\スケジュール内のすべてのタスクについて、BAST は開始時刻、\\BAFT は終了時刻、BPRO はプロセッサの割り当てを格納}  \\\hline
-                    $p'$               & \tabml{タスクに対するプロセッサ選択の優先順位を表すプロセッサ ID を含むサイズ OPS の配列 \\OEFT の降順にソートされている} \\\hline
+                    $ops$              & プロセッサ選択肢の上界 (枝切りメカニズム2)                                               \\\hline
+                    $\lambda$          & OEFTの許容増加率  (枝切りメカニズム3)                                                    \\\hline
+                    $capT$             & Run-timeの上界                                                                           \\\hline
+                    $BAST, BAFT, BPRO$ & \tabml{最適なスケジュールを保持する配列                                                  \\スケジュール内の全てのタスクについて, BAST は開始時刻, \\BAFT は終了時刻, BPRO はプロセッサの割り当てを格納}  \\\hline
+                    $p'$               & \tabml{タスクに対するプロセッサ選択の優先度を表すプロセッサ ID を含むサイズ OPS の配列 \\OEFT の降順にソートされている} \\\hline
                     $taskListID$       & 現在処理中のタスクのタスクリストにおけるインデックス                                     \\\hline
                     $FSTime$           & HMDSの最初の解を生成するのにかかる時間                                                   \\\hline
                 \end{tabular}
@@ -135,7 +135,7 @@
 
 \begin{frame}{assignTasks関数補足2}
     \fitimage{
-        assignTasks関数は, DAG内のすべてのタスクが探索されたときに完全なスケジュールを生成して呼び出し元に戻る
+        assignTasks関数は, DAG内の全てのタスクが探索されたときに完全なスケジュールを生成して呼び出し元に戻る
     }{assignTasks_sup2}
 \end{frame}
 
@@ -146,7 +146,7 @@
 \begin{frame}{枝切りメカニズム1}
     \fitimage{
         推定されたメイクスパンの下限値が, これまでに得られた最良の実際のスケジュールのメイクスパンよりも大きい場合, 部分的なスケジュールを枝切りする
-        \begin{block}{根拠となる定理（証明略）}
+        \begin{block}{根拠となるTheorem (証明略) }
             DAGが与えられた場合, $O_{EFT}[\tau_j, p_n]$は, 現在の部分スケジュールと $p_n$ への $\tau_j$ の割り当てを含む完全なスケジュールで達成可能なメイクスパンの下限である
         \end{block}
     }{eda1}
@@ -156,14 +156,14 @@
     \fitimage{
         各タスクに対するプロセッサの選択肢の数を $ops$ に制限する
         \begin{block}{設計理由}
-            最初の2つのプロセッサ（OEFT の値の1位・2位）のよりも後のプロセッサでは, より良い解決策が得られる可能性は非常に低い
+            最初の2つのプロセッサ (OEFT の値の1位・2位) のよりも後のプロセッサでは, より良い解決策が得られる可能性は非常に低い
         \end{block}
     }{eda2}
 \end{frame}
 
 \begin{frame}{枝切りメカニズム3}
     \fitimage{
-        各タスクに対するプロセッサの選択肢の数を, 最良の選択肢（OEFT の1位）と比較した場合の OEFT の許容増加率（$\delta $）に基づいて制限
+        各タスクに対するプロセッサの選択肢の数を, 最良の選択肢 (OEFT の1位) と比較した場合の OEFT の許容増加率 ($\delta $) に基づいて制限
         \begin{block}{設計理由}
             $OEFT[\tau_j, p_i]$が$OEFT[\tau_j, p_1]$よりも優位に高い場合, より低いメイクスパンを見つける可能性は低い
         \end{block}
@@ -181,8 +181,8 @@
 
 \begin{frame}{HMDSの計算量}
     \begin{itemize}
-        \item 枝切りメカニズムがない場合, assignTasks関数のオーバーヘッドは $O(|P|^{|V|})$
-        \item 枝切りメカニズム1,2を導入することでオーバーヘッドは $O(2^{|V|})$ に減少する
+        \item 枝切りメカニズムがない場合, assignTasks関数のオーバヘッドは $O(|P|^{|V|})$
+        \item 枝切りメカニズム1,2を導入することでオーバヘッドは $O(2^{|V|})$ に減少する
         \item さらに, 枝切りメカニズム3,4の存在により, HMDSのスケーラビリティは増加する
     \end{itemize}
 \end{frame}

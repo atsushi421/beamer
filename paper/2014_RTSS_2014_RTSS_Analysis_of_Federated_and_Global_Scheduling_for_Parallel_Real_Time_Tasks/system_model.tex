@@ -1,0 +1,57 @@
+% !TeX root = main.tex
+
+\section{SYSTEM MODEL}
+\label{sec: system model}
+
+\begin{frame}{}
+    \begin{itemize}
+        \item 始めに, 本論文で登場する表記法・用語の表を示す
+        \item 基本的な表記法・用語は資料中で説明無しで使用する
+        \item 別ファイルで開く・印刷するなどして, 常に参照できる状態にしておくことを推奨する
+    \end{itemize}
+\end{frame}
+
+\input{symbols_terms.tex}
+
+\begin{frame}{タスクモデル}
+    \begin{itemize}
+        \item $n$ 個の独立な散発的実時間タスク $\left\{\tau_{1}, \tau_{2}, \ldots, \tau_{n}\right\}$ の集合 $\tau$ を考える
+        \item タスク $\tau_{i}$ はジョブの無限のシーケンスを表す
+        \item タスク $\tau_{i}$ に対して, 周期 $T_{i}$ はタスクインスタンスの連続到着間の最小間隔を表し, 相対デッドライン $D_{i}$ はジョブ実行の時間制約を表す
+        \item 暗黙的デッドラインタスクを考える
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{プラットフォームモデル}
+    タスクセットのスケジューラビリティを, $m$ 個のホモジニアスマルチコアプラットフォーム上で検討する
+\end{frame}
+
+\begin{frame}{DAGモデル}
+    \begin{itemize}
+        \item 各タスク $\tau_{i} \in \tau$ は並列タスクであり, 有向非巡回グラフ (DAG) として特徴付けられる
+        \item DAGの各ノード (サブタスク) は命令列 (スレッド) を表し, 各エッジはノード間の依存関係を表す
+        \item ノードは, その先行タスクが全て実行されたときに実行可能な状態になる
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{DAGのパラメータ}
+    本論文はDAGの具体的な構造に基づいた分析を行う必要がないため, 以下2つのパラメータのみを定義する
+    \begin{block}{$\tau_{i}$ の総ワークロード $C_{i}$}
+        $\tau_{i}$ の全てのサブタスクの最悪実行時間の合計
+    \end{block}
+    \begin{block}{$\tau_{i}$ のクリティカルパス長 $L_{i}$}
+        \setlength{\linewidth}{0.98\columnwidth}
+        \begin{itemize}
+            \item クリティカルパスの長さは, コアが無限にあると想定した場合のタスクの最悪実行時間
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}{利用率}
+    \begin{block}{$\tau_{i}$ の利用率 $u_i$}
+        $u_i = \frac{C_{i}}{T_{i}}=\frac{C_{i}}{D_{i}}$
+    \end{block}
+    \begin{block}{タスクセットの総利用率 $U_{\Sigma}$}
+        $U_{\Sigma}=\sum_{\tau_{i} \in \tau} u_{i}$
+    \end{block}
+\end{frame}

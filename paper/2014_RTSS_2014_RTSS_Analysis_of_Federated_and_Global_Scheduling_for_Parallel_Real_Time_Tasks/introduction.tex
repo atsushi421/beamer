@@ -1,0 +1,36 @@
+% !TeX root = main.tex
+
+\section{INTRODUCTION}
+\label{sec: introduction}
+
+\begin{frame}{既存研究の性能}
+    暗黙的デッドラインタスクに対する最も良いキャパシティ拡張境界は $3.73$
+    \begin{table}[]
+        \begin{tabular}{|l|c|c|c|}
+            \hline
+                                                & \multicolumn{1}{l|}{} & キャパシティ拡張境界 & リソース拡張境界 \\ \hline
+            \multirow{4}{*}{暗黙的デッドライン} & {[}32{]}              & 3.42                 & -                \\ \cline{2-4}
+                                                & {[}31{]}              & 3.73                 & -                \\ \cline{2-4}
+                                                & {[}44, 45{]}          & 4                    & -                \\ \cline{2-4}
+                                                & {[}40{]}              & -                    & 2                \\ \hline
+            制約付きデッドライン                & {[}4{]}               & -                    & 2                \\ \hline
+            任意のデッドライン                  & {[}15, 34{]}          & -                    & 2                \\ \hline
+        \end{tabular}
+    \end{table}
+\end{frame}
+
+\begin{frame}{貢献}
+    \begin{itemize}
+        \item 新しいフェデレートスケジューリング戦略を提案
+        \item フェデレートスケジューリングのキャパシティ拡張境界が $2$ であることを証明
+        \item どのスケジューラも並列タスクに対して $2 - \frac{1}{m}$ の容量増大境界を提供できないことを証明
+        \item したがって, $m$ が十分に大きい場合, フェデレートスケジューリングより優れたキャパシティ拡張境界を持つスケジューラは存在しない
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{貢献}
+    \begin{itemize}
+        \item グローバルEDFのキャパシティ拡張境界が $\frac{3+\sqrt{5}}{2} \approx 2.618$ であることを証明
+        \item グローバルRMのキャパシティ拡張境界が $2+\sqrt{3} \approx 3.732$ であることを証明
+    \end{itemize}
+\end{frame}
