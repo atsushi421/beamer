@@ -1,0 +1,27 @@
+% !TeX root = main.tex
+
+\section{INTRODUCTION}
+\label{sec: introduction}
+
+\begin{frame}{背景と解決する問題}
+    \begin{block}{背景}
+        \setlength{\linewidth}{0.98\columnwidth}
+        \begin{itemize}
+            \item ヘテロジニアスマルチプロセッサは高い計算能力を提供し, OpenMP などの並列プログラミングモデルを使用して実装されたリアルタイムアプリケーションの処理にも適している
+            \item 主な課題は, アプリケーションの予測可能性を保証すること
+            \item リアルタイムアプリケーションは有向非巡回グラフ (DAG) としてモデル化可能
+        \end{itemize}
+    \end{block}
+    \begin{block}{解決する問題}
+        Unrelatedヘテロジニアスマルチプロセッサプラットフォーム上で, 暗黙のデッドラインを持つ一連の散発的なDAGをスケジューリングする
+    \end{block}
+\end{frame}
+
+\begin{frame}{アプローチの概要}
+    \begin{itemize}
+        \item フェデレートスケジューリングアルゴリズムの設計では, プロセッサバリューと呼ばれる概念に基づいたヒューリスティックを提案する
+        \item プロセッサバリューは, DAGのデッドラインに間に合わせるためにunrelatedプロセッサが提供する全体的な利益を示す
+        \item クラスタレベルでは Greedy, Unrelated, Minimum-speed-preference-index (GUM) スケジューラを使用してノードを割り当てる
+        \item GUMスケジューラのスケジューリング可能性分析も行う
+    \end{itemize}
+\end{frame}

@@ -1,0 +1,33 @@
+% !TeX root = main.tex
+
+\section{SINGLE DAG SCHEDULER}
+\label{sec: SINGLE DAG SCHEDULER}
+
+\begin{frame}{セクションサマリ}
+    \begin{itembox}[l]{\textbf{目的}}
+        このセクションでは, GUM (Greedy, Unrelated, Minimum-speed-preference-index) と呼ばれる, 専用コアを割り当てられた後のDAGタスクをスケジュールするために使用するスケジューラの疑似コードを示す
+    \end{itembox}
+\end{frame}
+
+\begin{frame}{GUMの性質}
+    \begin{block}{グローバル}
+        全てのタスクは割り当てられたクラスタ内で自由にマイグレーションが許可され, 任意のプロセッサで実行できる
+    \end{block}
+    \begin{block}{作業保存型}
+        待ち状態のタスクとアイドル状態のプロセッサがある場合, 常にそのタスクをプロセッサに割り当てる
+    \end{block}
+\end{frame}
+
+\begin{frame}{GUM 全体像}
+    \fitimage{
+        待ち状態のタスクは $ReadyQ$ に保存され, $RunQ$ は実行中のタスクを追跡する
+    }{gum}
+\end{frame}
+
+\begin{frame}{GUM 補足1}
+    \fullimage{gum_sup1}
+\end{frame}
+
+\begin{frame}{GUM 補足2}
+    \fullimage{gum_sup2}
+\end{frame}

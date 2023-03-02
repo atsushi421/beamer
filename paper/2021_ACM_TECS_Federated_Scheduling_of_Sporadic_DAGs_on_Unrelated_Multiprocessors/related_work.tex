@@ -1,0 +1,22 @@
+% !TeX root = main.tex
+
+\section{RELATED WORK}
+\label{sec: related work}
+
+\begin{frame}{既存研究との比較表}
+    \full{
+        \begin{table}[tb]
+            \adjustbox{max width=\textwidth, max height=\slideheight}{
+                \centering\begin{tabular}{|c|c|c|c|c|c|c|c|} \hline
+                                             & マルチコア & ヘテロジニアス & Related & Unrelated & DAG & 作業保存型 & \tabml{クラスタ内 \\グローバルスケジューリング} \\\hline
+                    [11, 15, 28]             & \ch        & \ch            & \ch     &           & \ch & -          & -                 \\\hline
+                    [16, 42, 44]             & \ch        & \ch            & \ch     & \ch       & \ch &            & -                 \\\hline
+                    [17, 25, 35, 37, 40, 41] & \ch        &                &         &           & \ch & -          & \ch               \\\hline
+                    [33]                     & \ch        & \ch            & \ch     &           & \ch & \ch        & \ch               \\\hline
+                    [1, 2, 8, 12, 34, 36]    & \ch        & \ch            & \ch     & \ch       &     & -          & -                 \\\hline
+                    本論文                   & \ch        & \ch            & \ch     & \ch       & \ch & \ch        & \ch               \\\hline
+                \end{tabular}
+                }
+        \end{table}
+    }
+\end{frame}

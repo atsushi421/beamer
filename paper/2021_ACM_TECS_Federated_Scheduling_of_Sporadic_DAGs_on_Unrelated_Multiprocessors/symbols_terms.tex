@@ -1,0 +1,44 @@
+% !TeX root = main.tex
+
+\begin{frame}{表記法・用語 1}
+    \full{
+        \begin{table}[tb]
+            \adjustbox{max width=0.9\textwidth, max height=\slideheight}{
+                \centering\begin{tabular}{|c|l|} \hline
+                    $\mathcal{P}$                                                & プロセッサの数                                                   \\\hline
+                    $\mathcal{M} = \{1, 2, ..., \mathcal{P} \}$                  & プロセッサインデックス                                           \\\hline
+                    $\Gamma = \{G^1, ..., G^\mathcal{N} \}$                      & 散発的DAGの集合                                                  \\\hline
+                    $j \in \{1, 2, ..., \mathcal{N} \}$                          & DAGインデックス                                                  \\\hline
+                    $G^j = (V^j, E^j)$                                           & DAG                                                              \\\hline
+                    $T^j$                                                        & $G^j$の最小到着間隔                                              \\\hline
+                    $D^j$                                                        & $G^j$の相対デッドライン                                          \\\hline
+                    $V^j$                                                        & $G^j$のノードセット                                              \\\hline
+                    $E^j$                                                        & $G^j$のエッジセット                                              \\\hline
+                    $\tau^{i,j} \in V^j$                                         & $G^j$の$i$番目のノード                                           \\\hline
+                    $c_x^{i,j}$                                                  & $\tau^{i,j}$がプロセッサ$x$で実行されるときの最悪実行時間 (WCET) \\\hline
+                    $c_{min}^{i,j} \triangleq \min_{x\in\mathcal{M}}{c_x^{i,j}}$ & 任意のプロセッサでの最小$c_x^{i,j}$                              \\\hline
+                \end{tabular}
+            }
+        \end{table}
+    }
+\end{frame}
+
+\begin{frame}{表記法・用語 2}
+    \full{
+        \begin{table}[tb]
+            \adjustbox{max width=\textwidth, max height=\slideheight}{
+                \centering\begin{tabular}{|c|l|} \hline
+                    $W_1^j$                                                                                & DAG $G^j$ の総ワークロード                                         \\\hline
+                    $\gamma^j=\left(\tau^{p, j}, \tau^{p+1, j}, \ldots, \tau^{q-1, j}, \tau^{q, j}\right)$ & $G^j$ のソースからシンクへのパス                                   \\\hline
+                    $paths^j$                                                                              & $G^j$内の全てのパスセット                                          \\\hline
+                    $W(\gamma^)$                                                                           & パス $\gamma^j$ の総ワークロード                                   \\\hline
+                    $cp^j$                                                                                 & $G^j$のクリティカルパス                                            \\\hline
+                    $W_\infty^j$                                                                           & $cp^j$の総ワークロード                                             \\\hline
+                    $\delta_x^{i, j}$                                                                      & $\tau^{i,j}$のプロセッサ$x$における速度                            \\\hline
+                    $O_x^{i,j}$                                                                            & $\tau^{i,j}$ の速度のうち, 全てのプロセッサでの $x$ 番目に速い速度 \\\hline
+                    $O^{i, j}$                                                                             & $\tau^{i,j}$のSpeed-Preference \\\hline
+                \end{tabular}
+            }
+        \end{table}
+    }
+\end{frame}
