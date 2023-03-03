@@ -21,7 +21,7 @@
 
 \begin{frame}{DAGへのモデル化}
     \begin{itemize}
-        \item ROS システムを, 一連のコールバック $\mathcal{C}=\left\{c_{1}, \ldots, c_{n}\right\}$ と一連の有向辺 $\mathcal{E} \subseteq \mathcal{C} \times \mathcal{C}$ で構成される有向非巡回グラフ (DAG) $\mathcal{D}=\{\mathcal{C}, \mathcal{E}\}$ としてモデル化
+        \item ROS システムを, 一連のコールバック $\mathcal{C}=\left\{c_{1}, \ldots, c_{n}\right\}$ と一連のエッジ $\mathcal{E} \subseteq \mathcal{C} \times \mathcal{C}$ で構成される有向非巡回グラフ (DAG) $\mathcal{D}=\{\mathcal{C}, \mathcal{E}\}$ としてモデル化
         \item 各コールバックは無限のインスタンスシーケンスをリリースする
     \end{itemize}
     \assume{$\mathcal{D}$ は固定されている, すなわち, コールバックは実行時にシステムに参加したりシステムから離れたりしない}
