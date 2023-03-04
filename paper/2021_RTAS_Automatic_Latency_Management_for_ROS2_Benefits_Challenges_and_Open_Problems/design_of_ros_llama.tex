@@ -78,29 +78,29 @@
 
 \begin{frame}{コールバックグラフ構築方法}
     モデル抽出器はコールバックがpublishされるたびに, コールバックとトピックの間にエッジを追加する (トピックがまだ存在しない場合)
-    \begin{block}{静的プロパティ}
-        \setlength{\linewidth}{0.98\columnwidth}
-        \begin{itemize}
-            \footnotesize
-            \item 新しいコールバックが登録されると, 対応するトレースイベントは, タイプ・関連するトピック・識別子を報告する
-            \item これらはコールバックのライフタイム中に変更されない
-        \end{itemize}
-    \end{block}
-    \begin{block}{動的プロパティ}
-        \setlength{\linewidth}{0.98\columnwidth}
-        \begin{itemize}
-            \footnotesize
-            \item 動的プロパティは, コールバックの実行開始, 完了, またはpublish時に対応するトレースイベントから派生し, 継続的に更新される
-            \item 各トレースイベントは, 識別子, publish の場合はpublish先のトピックを含む
-        \end{itemize}
-    \end{block}
+    % \begin{block}{静的プロパティ}
+    %     \setlength{\linewidth}{0.98\columnwidth}
+    %     \begin{itemize}
+    %         \footnotesize
+    %         \item 新しいコールバックが登録されると, 対応するトレースイベントは, タイプ・関連するトピック・識別子を報告する
+    %         \item これらはコールバックのライフタイム中に変更されない
+    %     \end{itemize}
+    % \end{block}
+    % \begin{block}{動的プロパティ}
+    %     \setlength{\linewidth}{0.98\columnwidth}
+    %     \begin{itemize}
+    %         \footnotesize
+    %         \item 動的プロパティは, コールバックの実行開始, 完了, またはpublish時に対応するトレースイベントから派生し, 継続的に更新される
+    %         \item 各トレースイベントは, 識別子, publish の場合はpublish先のトピックを含む
+    %     \end{itemize}
+    % \end{block}
 \end{frame}
 
 \begin{frame}{到着/実行時間曲線の更新}
     モデル抽出器は以下のタイミングで到着/実行時間曲線を更新する
     \begin{itemize}
         \item コールバックが完了するたびに, コールバックの実行時間曲線を更新する
-        \item publishイベントと開始イベントの発生に基づいて到着曲線を更新される
+        \item publishイベントと開始イベントの発生に基づいて到着曲線を更新する
     \end{itemize}
 \end{frame}
 
@@ -148,7 +148,7 @@
     \begin{block}{設計理由}
         \setlength{\linewidth}{0.98\columnwidth}
         \begin{itemize}
-            \item ROS処理チェーンに対するCasiniらの応答時間分析~\cite{casini2019response}が, リソース予約でスケジュールされたエグゼキュータスレッドに直接適用できる
+            \item ROS処理チェーンに対する\ourl{Casiniらの応答時間分析}{https://drive.google.com/file/d/1sHujFqbmgCoJbC6g6KdC7ihua4Jqddju/view?usp=share_link}が, リソース予約でスケジュールされたエグゼキュータスレッドに直接適用できる
             \item CBSの機能により, プロセッサ要求が予想外に急増したスレッドが, 他のスレッドのバジェット受け取りを妨げない
         \end{itemize}
     \end{block}
@@ -159,18 +159,18 @@
     \begin{block}{設計理由}
         \setlength{\linewidth}{0.98\columnwidth}
         \begin{itemize}
-            \item パーティショニングスケジューリングは, 経験的にほとんどのワークロードでより高いスケジューラビリティを達成することが示されている~\cite{brandenburg2016global}
+            \item パーティショニングスケジューリングは, 経験的にほとんどのワークロードでより高いスケジューラビリティを達成することが示されている [11]
             \item ROS-Llamaは, 適切なマッピングを自動的に決定するのに十分な情報を持っているので, システムインテグレータに追加の負担がない
         \end{itemize}
     \end{block}
 \end{frame}
 
-% \begin{frame}{スレッドの分割例}
-%     \begin{itemize}
-%         \item ROS-Llamaは自分自身と, 様々なカーネルやDDSミドルウェアのスレッドのような雑多なシステムインフラを, 予約したシステムコアに分離することも可能
-%         \item 残りのコアは, ROSスレッドのプロビジョニングのためにバジェットマネージャが使用できる
-%     \end{itemize}
-% \end{frame}
+\begin{frame}{スレッドの分割例}
+    \begin{itemize}
+        \item ROS-Llamaは自分自身と, 様々なカーネルやDDSミドルウェアのスレッドのような雑多なシステムインフラを, 予約したシステムコアに分離することも可能
+        \item 残りのコアは, ROSスレッドのプロビジョニングのためにバジェットマネージャが使用できる
+    \end{itemize}
+\end{frame}
 
 \begin{frame}{ベストエフォートモードのチェーン処理方法}
     ベストエフォートモードでチェーンを処理するエグゼキュータは, ROS-Llamaによってプロビジョニングせず, デフォルトのCFSによってスケジューリングする

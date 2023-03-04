@@ -24,7 +24,7 @@
 \begin{frame}{対処法}
     \begin{itemize}
         \item /tfトピックのsubscriberセットから, サイクルを引き起こすコンポーネントを取り除く
-        \item このモデリング調整により, Casiniらの応答時間分析[6]が適用可能になる
+        \item このモデリング調整により, \ourl{Casiniらの応答時間分析}{https://drive.google.com/file/d/1sHujFqbmgCoJbC6g6KdC7ihua4Jqddju/view?usp=share_link}が適用可能になる
         \item より複雑なサイクルを実現するには, より洗練されたモデルの調整, または手動での介入が必要となる
     \end{itemize}
 \end{frame}
@@ -51,7 +51,7 @@
 \begin{frame}{対処法}
     \begin{itemize}
         \item このようなコールバックの実行時間要件をより正確に記述するために, ROS-Llamaは累積実行時間曲線 [17] を使用する
-        \item Casiniらの応答時間分析[6]を修正し, $r b f_{c}(\Delta)=E T^{+}\left(\eta_{c}(\Delta)\right)$ をコールバックのRBFとして使用するようにした
+        \item \ourl{Casiniらの応答時間分析}{https://drive.google.com/file/d/1sHujFqbmgCoJbC6g6KdC7ihua4Jqddju/view?usp=share_link}[6]を修正し, $r b f_{c}(\Delta)=E T^{+}\left(\eta_{c}(\Delta)\right)$ をコールバックのRBFとして使用するようにした
     \end{itemize}
     \begin{block}{累積実行時間曲線 $E T^{+}(n)$}
         実行時間曲線 $E T^{+}(n)$ は, 任意の $n$ 連続起動の最大累積実行時間の上界を示す

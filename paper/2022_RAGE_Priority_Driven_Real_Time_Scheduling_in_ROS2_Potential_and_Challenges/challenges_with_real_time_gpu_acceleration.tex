@@ -57,7 +57,7 @@
 \begin{frame}{提案アーキテクチャ補足}
     \begin{itemize}
         \item ROS ノードは GPU カーネルスケジューリングノードに, GPU カーネルを特定のデータセットに対して実行するよう要求する
-        \item 効率的なゼロコピー IPC メソッドである \ourl{https://github.com/eclipse-iceoryx/iceoryx}{Iceoryx} を使用してデータコピーのレイテンシを最小限に抑える
+        \item 効率的なゼロコピー IPC メソッドである \ourl{Iceoryx}{https://github.com/eclipse-iceoryx/iceoryx} を使用してデータコピーのレイテンシを最小限に抑える
         \item GPU カーネルスケジューリングノードは, 全ての GPU カーネルの構造を維持し, 対応するチェーンの優先度に従ってカーネルの実行をスケジュールする
         \item OS や GPU ドライバーに任せるのではなく, ソフトウェアスタックで GPU カーネルスケジューリングを処理することで, 特定のチェーンの GPU へのアクセスを細かく制御できる
     \end{itemize}

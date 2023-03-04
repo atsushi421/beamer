@@ -52,8 +52,8 @@
 % \end{frame}
 
 \begin{frame}{応答時間分析}
-    ROSのデフォルトのエグゼキュータによって管理されるコールバックの最悪応答時間は, Casiniらによる先行研究~\cite{casini2019response}で計算する
-    \begin{block}{先行研究~\cite{casini2019response}}
+    ROSのデフォルトのエグゼキュータによって管理されるコールバックの最悪応答時間は, \ourl{Casiniらによる先行研究}{https://drive.google.com/file/d/1sHujFqbmgCoJbC6g6KdC7ihua4Jqddju/view?usp=share_link}で計算する
+    \begin{block}{\ourl{Casiniらによる先行研究}{https://drive.google.com/file/d/1sHujFqbmgCoJbC6g6KdC7ihua4Jqddju/view?usp=share_link}}
         \begin{itemize}
             \item ROSシステムを, アクティベーション関係によって接続されたコールバックの有向非巡回グラフ (DAG) としてモデル化
             \item 処理チェーンのためのエグゼキュータを考慮した最悪応答時間, すなわちコールバックDAG内の任意のパスのエンドツーエンドレイテンシ境界を提供

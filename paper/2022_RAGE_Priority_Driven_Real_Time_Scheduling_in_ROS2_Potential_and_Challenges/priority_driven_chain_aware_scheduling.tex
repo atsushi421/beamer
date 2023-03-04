@@ -3,14 +3,6 @@
 \section{PRIORITY-DRIVEN CHAIN-AWARE SCHEDULING}
 \label{sec: priority-driven chain-aware scheduling}
 
-\subsection{Background}
-\label{ssec: background}
-
-\begin{frame}{}
-    \LARGE\centering\hlink{}{PiCASの詳細}
-\end{frame}
-
-
 \subsection{Evaluation of Priority-Driven Scheduling}
 \label{ssec: evaluation of priority-driven scheduling}
 
@@ -23,11 +15,11 @@
 
 \begin{frame}{リファレンスシステムの構成}
     \fitimage{
-        リファレンスシステムは Autoware.Auto の LIDAR ベースの認識パイプラインに似ている
+        リファレンスシステムは Autoware.Auto の LiDAR ベースの認識パイプラインを疑似的に再現している
     }{reference_system}
 \end{frame}
 
-\begin{frame}{評価に使用する KPI [ホットトピックパスのレイテンシ]}
+\begin{frame}{評価に使用する KPI1 [ホットトピックパスのレイテンシ]}
     \fitimage{
         \begin{itemize}
             \item 現実世界のシナリオでは, リファレンスシステムは障害物をできるだけ早く認識して衝突を回避する必要がある
@@ -39,14 +31,14 @@
     }{reference_system}
 \end{frame}
 
-\begin{frame}{評価に使用する KPI [破棄されたメッセージの数]}
+\begin{frame}{評価に使用する KPI2 [破棄されたメッセージの数]}
     \begin{itemize}
         \item 古いセンサデータがある状態で最新のデータが到着すると, 古いセンサデータは破棄される
         \item 破棄によって情報が失われるため, 破棄されるメッセージの数は少ないほど良い
     \end{itemize}
 \end{frame}
 
-\begin{frame}{評価に使用する KPI [Behavior Planner のジッタ]}
+\begin{frame}{評価に使用する KPI3 [Behavior Planner のジッタ]}
     \begin{itemize}
         \item Behavior Planner ノードは, 設定された周期 $(100 \mathrm{msec})$ に従って, 正確に定期的に実行する必要がある
         \item したがって, Behavior Planner ノードのジッタは低いほど良い
@@ -68,28 +60,28 @@
     \end{block}
 \end{frame}
 
-\begin{frame}{評価結果 [ホットトピックパスのエンドツーエンドレイテンシ]}
+\begin{frame}{[ホットトピックパスのエンドツーエンドレイテンシ] 結果}
     \fitimage{
         さまざまなケースで観測されたホットトピックパスの平均レイテンシ
     }{average_latency}
 \end{frame}
 
-\begin{frame}{評価結果考察1 [ホットトピックパスのエンドツーエンドレイテンシ]}
+\begin{frame}{結果の考察1}
     \begin{itemize}
         \item シングルスレッドエグゼキュータにおける ROS2-PiCAS は, シングルスレッドの ROS2-default と比較して最大 $86 \%$ まで平均レイテンシを削減し, マルチスレッドの ROS2-default に匹敵するパフォーマンスを示す
         \item この結果は, PiCAS を搭載した自動運転車が障害物を迅速に認識し, 同じ量のリソースを使用しながら適時的に障害物を回避できることを示す
     \end{itemize}
 \end{frame}
 
-\begin{frame}{評価結果考察2 [ホットトピックパスのエンドツーエンドレイテンシ]}
+\begin{frame}{結果の考察2}
     \begin{itemize}
         \item マルチスレッドエグゼキュータの場合, ROS2-default は, 複数のエグゼキュータを使用した ROS2-PiCAS よりパフォーマンスが悪い
-        \item デフォルトのマルチスレッドエグゼキュータは, ROS2-PiCAS の複数のシングルスレッドエグゼキュータが従う分割スケジューリングよりも, 未使用のリソースの再利用において優れているグローバルスケジューリングアプローチに従うため, この結果は興味深い
+        \item デフォルトのマルチスレッドエグゼキュータは, ROS2-PiCAS の複数のシングルスレッドエグゼキュータが従うパーティショニングスケジューリングよりも, 未使用のリソースの再利用において優れているグローバルスケジューリングアプローチに従うため, この結果は興味深い
         \item これは, 適切な優先度付けのサポートの欠如によるものと思われる
     \end{itemize}
 \end{frame}
 
-\begin{frame}{評価結果 [破棄されたメッセージの数]}
+\begin{frame}{[破棄されたメッセージの数] 結果}
     \fitimage{
         \begin{itemize}
             \item 表は破棄されたメッセージの数を示す
@@ -98,7 +90,7 @@
     }{drop_message}
 \end{frame}
 
-\begin{frame}{評価結果 [Behavior Planner のジッタ]}
+\begin{frame}{[Behavior Planner のジッタ] 結果}
     \fitimage{
         \begin{itemize}
             \item 100 msec からのずれはジッタを示しているため, 観測値の範囲が小さいほど良い

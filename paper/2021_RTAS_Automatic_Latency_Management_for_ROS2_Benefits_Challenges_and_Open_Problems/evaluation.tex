@@ -113,7 +113,7 @@
 \label{sssec: baselines}
 
 \begin{frame}{比較対象1}
-    \begin{block}{比較対象1}
+    \begin{block}{比較対象1 CFS}
         標準的なLinuxのセットアップで, スレッドはCFSを使用して4つのコア全てにグローバルにスケジューリングされる
     \end{block}
     % \vspace{5mm}
@@ -124,7 +124,7 @@
 \end{frame}
 
 \begin{frame}{比較対象2}
-    \begin{block}{比較対象2}
+    \begin{block}{比較対象2 SCHED\_RR}
         \begin{itemize}
             \item ROS-Llamaの原型で, 応答時間分析を用いずに, レイテンシが重要なエグゼキュータを SCHED\_RRでスケジューリングする
             \item デグレードの順序に従って優先度を割り当て, デグレードの順序が遅いエグゼキュータを, 順序が早いチェーンにのみ対応するエグゼキュータより優先させる
@@ -172,63 +172,63 @@
     \end{itemize}
 \end{frame}
 
-% \begin{frame}{パイロットチェーンレイテンシの分析}
-%     \begin{columns}
-%         \begin{column}{0.5\textwidth}
-%             \begin{itemize}
-%                 \item 図はパイロットチェーンで観測されたエンドツーエンドレイテンシのCDFを, フェーズごとに分けて示している
-%                 \item 曲線のポイントが灰色の線の左側にある場合, 目標は常に満たされている
-%             \end{itemize}
-%         \end{column}
-%         \begin{column}{0.5\textwidth}
-%             \fullimage{pilot_chain}
-%         \end{column}
-%     \end{columns}
-% \end{frame}
+\begin{frame}{パイロットチェーンレイテンシの分析}
+    \begin{columns}
+        \begin{column}{0.5\textwidth}
+            \begin{itemize}
+                \item 図はパイロットチェーンで観測されたエンドツーエンドレイテンシのCDFを, フェーズごとに分けて示している
+                \item 曲線のポイントが灰色の線の左側にある場合, 目標は常に満たされている
+            \end{itemize}
+        \end{column}
+        \begin{column}{0.5\textwidth}
+            \fullimage{pilot_chain}
+        \end{column}
+    \end{columns}
+\end{frame}
 
-% \begin{frame}{結果からわかること}
-%     \begin{itemize}
-%         \item 最初のフェーズでは, 3つのアプローチとも, レイテンシ目標に対して少なくとも $25 \mathrm{~ms}$ のマージンを確保する
-%         \item 負荷が増加するにつれて, テールが長くなり, 最終的にベースラインはレイテンシ目標を超える
-%         \item トラッカーチェーンは, クリティカルなパイロットチェーンとは機能的に全く無関係であるが, トラッカーチェーンの過負荷は, クリティカルチェーンのエンドツーエンドレイテンシに大きな影響を与え, 最も厳しいケースでは $25 \mathrm{~ms}$ 以上増加させる
-%     \end{itemize}
-% \end{frame}
+\begin{frame}{結果からわかること}
+    \begin{itemize}
+        \item 最初のフェーズでは, 3つのアプローチとも, レイテンシ目標に対して少なくとも $25 \mathrm{~ms}$ のマージンを確保する
+        \item 負荷が増加するにつれて, テールが長くなり, 最終的にベースラインはレイテンシ目標を超える
+        \item トラッカーチェーンは, クリティカルなパイロットチェーンとは機能的に全く無関係であるが, トラッカーチェーンの過負荷は, クリティカルチェーンのエンドツーエンドレイテンシに大きな影響を与え, 最も厳しいケースでは $25 \mathrm{~ms}$ 以上増加させる
+    \end{itemize}
+\end{frame}
 
-% \begin{frame}{CFSにおけるパイロットチェーンレイテンシ増加原因}
-%     \begin{block}{原因}
-%         CFSのデフォルトのタイムシェアリングポリシーでは, 両方のリソースが等しく使用されるため
-%     \end{block}
-%     \begin{block}{示唆}
-%         それぞれのレイテンシ要件と, ロボットの全体的な正しい動作に対する相対的な重要性を無視しているため, 過負荷状態ではCFSは適切なポリシーとは言えない
-%     \end{block}
-% \end{frame}
+\begin{frame}{CFSにおけるパイロットチェーンレイテンシ増加原因}
+    \begin{block}{原因}
+        CFSのデフォルトのタイムシェアリングポリシーでは, 両方のリソースが等しく使用されるため
+    \end{block}
+    \begin{block}{示唆}
+        それぞれのレイテンシ要件と, ロボットの全体的な正しい動作に対する相対的な重要性を無視しているため, 過負荷状態ではCFSは適切なポリシーとは言えない
+    \end{block}
+\end{frame}
 
-% \begin{frame}{SCHED\_RRにおけるパイロットチェーンレイテンシ増加原因}
-%     \begin{block}{原因}
-%         トラッカーチェーンはリアルタイム優先で過負荷になっているため, DDS層にもバースト的な過負荷を引き起こし, それがパイロットチェーンのチェーン内通信レイテンシに悪影響を与えている
-%     \end{block}
-% \end{frame}
+\begin{frame}{SCHED\_RRにおけるパイロットチェーンレイテンシ増加原因}
+    \begin{block}{原因}
+        トラッカーチェーンはリアルタイム優先で過負荷になっているため, DDS層にもバースト的な過負荷を引き起こし, それがパイロットチェーンのチェーン内通信レイテンシに悪影響を与えている
+    \end{block}
+\end{frame}
 
-% \begin{frame}{SCHED\_RRにおけるodometry-locチェーンレイテンシ増加}
-%     \begin{columns}
-%         \begin{column}{0.5\textwidth}
-%             SCHED\_RRベースラインでは, odometry-locチェーンで深刻なレイテンシスパイクが観測され, 高負荷時のテールレイテンシは無負荷シナリオで観測された最大レイテンシをほぼ $100 \mathrm{~ms}$ も上回った
-%         \end{column}
-%         \begin{column}{0.5\textwidth}
-%             \fullimage{odometry_loc_chain}
-%         \end{column}
-%     \end{columns}
-% \end{frame}
+\begin{frame}{SCHED\_RRにおけるodometry-locチェーンレイテンシ増加}
+    \begin{columns}
+        \begin{column}{0.5\textwidth}
+            SCHED\_RRベースラインでは, odometry-locチェーンで深刻なレイテンシスパイクが観測され, 高負荷時のテールレイテンシは無負荷シナリオで観測された最大レイテンシをほぼ $100 \mathrm{~ms}$ も上回った
+        \end{column}
+        \begin{column}{0.5\textwidth}
+            \fullimage{odometry_loc_chain}
+        \end{column}
+    \end{columns}
+\end{frame}
 
-% \begin{frame}{SCHED\_RRにおけるodometry-locチェーンレイテンシ増加原因}
-%     \begin{block}{原因}
-%         \setlength{\linewidth}{0.98\columnwidth}
-%         \begin{itemize}
-%             \item odometry-locチェーンがデグレードオーダーの初期にあり, そのコールバックに対応するエグゼキュータに低いスケジューリング優先度が割り当てられていることが原因となっている
-%             \item これは, 緊急度ではなく, クリティカリティモノトニックに優先度を割り当てる場合の典型的な問題[22]
-%         \end{itemize}
-%     \end{block}
-% \end{frame}
+\begin{frame}{SCHED\_RRにおけるodometry-locチェーンレイテンシ増加原因}
+    \begin{block}{原因}
+        \setlength{\linewidth}{0.98\columnwidth}
+        \begin{itemize}
+            \item odometry-locチェーンがデグレードオーダーの初期にあり, そのコールバックに対応するエグゼキュータに低いスケジューリング優先度が割り当てられていることが原因となっている
+            \item これは, 緊急度ではなく, クリティカリティモノトニックに優先度を割り当てる場合の典型的な問題[22]
+        \end{itemize}
+    \end{block}
+\end{frame}
 
 % \begin{frame}{}
 %     \begin{itemize}
@@ -238,50 +238,50 @@
 %     \end{itemize}
 % \end{frame}
 
-% \begin{frame}{まとめ}
-%     \begin{itemize}
-%         \item デフォルトのCFS, SCHED\_RRのベースラインは満足できる結果にはつながらない
-%         \item ROS-Llamaは, LinuxのSCHED\_DEADLINEスケジューラによって提供される既存の機能を利用し, 応答時間分析によって導かれる動的なシステムプロビジョニングを行い, 特にシステムインテグレータにリアルタイムスケジューリングの詳細を負担させないようにしている
-%     \end{itemize}
-% \end{frame}
+\begin{frame}{まとめ}
+    \begin{itemize}
+        \item デフォルトのCFS, SCHED\_RRのベースラインは満足できる結果にはつながらない
+        \item ROS-Llamaは, LinuxのSCHED\_DEADLINEスケジューラによって提供される既存の機能を利用し, 応答時間分析によって導かれる動的なシステムプロビジョニングを行い, 特にシステムインテグレータにリアルタイムスケジューリングの詳細を負担させないようにしている
+    \end{itemize}
+\end{frame}
 
 
-% \subsection{Evaluation Results: ROS-Llama Runtime Costs}
-% \label{ssec: evaluation results: ros-llama runtime costs}
+\subsection{Evaluation Results: ROS-Llama Runtime Costs}
+\label{ssec: evaluation results: ros-llama runtime costs}
 
-% \begin{frame}{セクションサマリ}
-%     \begin{itembox}[l]{\textbf{目的}}
-%         ROS-Llamaの実行に関わるコストを調査する
-%     \end{itembox}
-% \end{frame}
+\begin{frame}{セクションサマリ}
+    \begin{itembox}[l]{\textbf{目的}}
+        ROS-Llamaの実行に関わるコストを調査する
+    \end{itembox}
+\end{frame}
 
-% \begin{frame}{結果}
-%     \fitimage{
-%         ROS-Llamaの主要部分の平均的な呼び出しごとのコスト
-%     }{overhead}
-% \end{frame}
+\begin{frame}{結果}
+    \fitimage{
+        ROS-Llamaの主要部分の平均的な呼び出しごとのコスト
+    }{overhead}
+\end{frame}
 
-% \begin{frame}{結果から分かること}
-%     \begin{itemize}
-%         % \item ROS-LlamaのメモリフットプリントはROSのフットプリントと比較してごくわずかであるため, 我々はプロセッサ時間に注目した
-%         \item ROS-Llamaは6秒ごとにバジェットを再計算するように設定されており, 全体としてROS-Llamaは1CPUの30--40\% を消費する
-%         \item モデル抽出器は, システムとともに継続的に実行され, ROS-Llamaの総コストの約 $60 \%$ を占める
-%         \item 分析のためにタイミングモデルを準備するコストは, オーバヘッドの約 $15 \%$
-%         \item 残りの実行時コストは, バジェット選択プロセスによるもので, バジェット編成ヒューリスティック $(\approx 5 \%)$ と応答時間分析 $(\approx 20 \%)$ に分かれている
-%     \end{itemize}
-% \end{frame}
+\begin{frame}{結果から分かること}
+    \begin{itemize}
+        % \item ROS-LlamaのメモリフットプリントはROSのフットプリントと比較してごくわずかであるため, 我々はプロセッサ時間に注目した
+        \item ROS-Llamaは6秒ごとにバジェットを再計算するように設定されており, 全体としてROS-Llamaは1CPUの30--40\% を消費する
+        \item モデル抽出器は, システムとともに継続的に実行され, ROS-Llamaの総コストの約 $60 \%$ を占める
+        \item 分析のためにタイミングモデルを準備するコストは, オーバヘッドの約 $15 \%$
+        \item 残りの実行時コストは, バジェット選択プロセスによるもので, バジェット編成ヒューリスティック $(\approx 5 \%)$ と応答時間分析 $(\approx 20 \%)$ に分かれている
+    \end{itemize}
+\end{frame}
 
-% \begin{frame}{示唆}
-%     \begin{itemize}
-%         \item ROS-Llamaは顕著な実行時オーバヘッドをもたらす
-%         \item しかし, ROS-Llamaはレイテンシ目標への適合性が高く, デグレードの挙動も緩やか
-%         \item すなわち, ROS-Llamaは大きなコストを伴うが, 性能と予測性の良好なトレードオフを実現するのに十分な利点を提供する
-%     \end{itemize}
-% \end{frame}
+\begin{frame}{示唆}
+    \begin{itemize}
+        \item ROS-Llamaは顕著な実行時オーバヘッドをもたらす
+        \item しかし, ROS-Llamaはレイテンシ目標への適合性が高く, デグレードの挙動も緩やか
+        \item すなわち, ROS-Llamaは大きなコストを伴うが, 性能と予測性の良好なトレードオフを実現するのに十分な利点を提供する
+    \end{itemize}
+\end{frame}
 
-% \begin{frame}{オーバヘッド改善可能性}
-%     \begin{itemize}
-%         \item 現在のプロトタイプでは, 最適化されていないトレース実装のため, モデル抽出器がほとんどのオーバヘッドを発生させている
-%         \item ROS-LlamaをLTTng [23]のような成熟したトレースシステムと統合することで, ROS-Llamaの実行コストを下げることができると考えられる
-%     \end{itemize}
-% \end{frame}
+\begin{frame}{オーバヘッド改善可能性}
+    \begin{itemize}
+        \item 現在のプロトタイプでは, 最適化されていないトレース実装のため, モデル抽出器がほとんどのオーバヘッドを発生させている
+        \item ROS-LlamaをLTTng [23]のような成熟したトレースシステムと統合することで, ROS-Llamaの実行コストを下げることができると考えられる
+    \end{itemize}
+\end{frame}
