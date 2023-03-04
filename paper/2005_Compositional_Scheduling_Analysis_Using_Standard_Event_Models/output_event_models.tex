@@ -6,13 +6,12 @@
 \begin{frame}{出力イベントモデルの必要性}
     \begin{itemize}
         \item 周期的イベントストリームは, 例えばタイマ割り込みをモデル化できる
-        \item 他のモデルは, タスクを起動するイベントを生成する他のタスクの非決定的な動作をモデル化することを目的としている
-        \item すなわち, あるタスクの出力が別のタスクの入力になるケースを考える
+        \item 他のモデルは, あるタスクの出力が別のタスクの入力になるという非決定的な動作をモデル化できる
         \item 適切な出力イベントモデルによって, 2つのモデルを結合する
     \end{itemize}
 \end{frame}
 
-\begin{frame}{出力イベント生成タイミング}
+\begin{frame}{出力イベント出力タイミング}
     \begin{itemize}
         \item 本論文では, タスクは完了時に出力イベントを生成するとする
         \item すなわち, $i$番目の出力イベントの生成時間は, $i$番目のタスク完了時間に等しい
@@ -24,21 +23,21 @@
 \subsection{Periodic Task Activation}
 \label{ssec: periodic task activation}
 
-\begin{frame}{周期的イベント生成}
-    周期的イベント生成は, 周期的に起動され, 一定の応答時間を持つタスクに適用される
+\begin{frame}{周期的イベント出力}
+    周期的イベント出力は, 周期的に起動され, 一定の応答時間を持つタスクに適用される
     \begin{equation*}
         t_{\text {out }}(i)=t_{\text {in }}(i)+R(i)
     \end{equation*}
 \end{frame}
 
-\begin{frame}{応答時間が一定の周期タスクによる周期的イベント生成}
+\begin{frame}{応答時間が一定の周期タスクによる周期的イベント出力}
     \fullimage{periodic_constant}
 \end{frame}
 
-\begin{frame}{周期的イベント生成とイベントモデルの対応}
+\begin{frame}{周期的イベント出力とイベントモデルの対応}
     \begin{itemize}
         \item 入力と出力のストリームはどちらも同等の特性を持つ
-        \item すなわち, 周期的イベント生成は周期的イベントモデルとみなせる
+        \item すなわち, 周期的イベント出力は, 他のタスクから見ると周期的イベントモデルとみなせる
     \end{itemize}
     \begin{equation*}
         \mathcal{S}_{1, \text { out }}=\mathcal{S}_{1, \text { in }}=\mathcal{S}_{\mathrm{P}}\left(T_{\text {in }}\right)
@@ -60,7 +59,7 @@
               \begin{equation*}
                   J_{1, \text { out }}=J_{1, R}=R_{1}^{+}-R_{1}^{-}
               \end{equation*}
-        \item したがって, タスク $\mathcal{T}_{1}$ の出力イベントストリームは, ジッタを含む周期的イベントストリームとみなせる
+        \item したがって, タスク $\mathcal{T}_{1}$ のイベント出力は, 他のタスクから見るとジッタを含む周期的イベントとみなせる
               \begin{equation*}
                   \mathcal{S}_{1, \text { out }}=\mathcal{S}_{\mathrm{P}+\mathrm{J}}\left(T_{1, \text { in }}, R_{1}^{+}-R_{1}^{-}\right)
               \end{equation*}
@@ -77,7 +76,7 @@
                   \end{aligned}
               \end{equation*}
 
-        \item したがって, 出力イベントストリームは次式で与えられる
+        \item したがって, タスクチェーンの$i$番目のイベント出力は次式で表せる
               \begin{equation*}
                   \mathcal{S}_{i, \text { out }}=\mathcal{S}_{\mathrm{P}+\mathrm{J}}\left(T_{i, \text { in }}, J_{i, \text { in }}+J_{i, R}\right)
               \end{equation*}
@@ -101,20 +100,23 @@
 \end{frame}
 
 \begin{frame}{最悪イベント到着関数}
-    最悪イベント到着関数は, ジッタが周期より小さい場合と同じ
+    最悪イベント到着関数は, ジッタが周期より小さいイベントモデルと同じ
     \begin{equation*}
         \forall \Delta t>0: \eta_{\mathrm{P}+\mathrm{J}}^{+}(\Delta t)=\left\lceil\frac{\Delta t+J}{T}\right\rceil
     \end{equation*}
 \end{frame}
 
 \begin{frame}{周期未満のジッタと周期以上のジッタの違い}
-    \begin{itemize}
-        \item 違いはイベントが同時に到着する可能性があること
-        \item 同時に到着するイベントの最大数 $\left(n_{0}\right)$ は以下
-    \end{itemize}
-    \begin{equation*}
-        n_{0}=\lim _{\Delta t \rightarrow 0, \Delta t>0} \eta^{+}(\Delta t)=\left\lfloor\frac{J}{T}\right\rfloor+1
-    \end{equation*}
+    周期未満のジッタと周期以上のジッタの違いはイベントが同時に到着する可能性があること
+    \vspace{-10mm}
+    \begin{columns}
+        \begin{column}{0.5\textwidth}
+            \fullimage{upper_bound_arrival_curve_of_periodic_events_with_jitter}
+        \end{column}
+        \begin{column}{0.5\textwidth}
+            \fullimage{upper_bound_arrival_curve_of_large_jitter}
+        \end{column}
+    \end{columns}
 \end{frame}
 
 % \begin{frame}{}
@@ -204,7 +206,7 @@
     \begin{itemize}
         \item 複数タスクの同時起動は, 最大応答時間に大きな負の影響を与える
         \item ジッタを含む周期的イベントモデルでは, 連続する2つのイベント間の間隔を表現できない
-        \item そこで, 大きなジッタに対応するための直接的な拡張として, ジッタを含む周期的モデルに対する最小到着間隔という概念を導入する
+        \item そこで, 大きなジッタに対応するための拡張として, ジッタを含む周期的モデルに対する最小到着間隔という概念を導入する
     \end{itemize}
 \end{frame}
 
@@ -343,8 +345,7 @@
 %     \end{itemize}
 %     \begin{equation*}
 %         \begin{aligned}
-%              & \mathcal{S}_{i, \text { out }}=\mathcal{S}_{\mathrm{P}+\mathrm{B}}\left(T_{i, \text { out }}=T_{i, \text { in }},\right
-\item \\
+%              & \mathcal{S}_{i, \text { out }}=\mathcal{S}_{\mathrm{P}+\mathrm{B}}\left(T_{i, \text { out }}=T_{i, \text { in }},\right. \\
 %              & J_{i, \text { out }}=J_{i, \text { in }}+J_{i, R},                                                                                                                                                                                        \\
 %              & \left.d_{i, \text { out }}=\max (\underbrace{T_{i, \text { out }}-J_{i, \text { out }}}_{\text {as with jitter }}, \underbrace{R_{i}^{-}}_{\begin{array}{c}
 %                                                                                                                                                                   \text { during } \\
@@ -468,8 +469,7 @@
 %     \end{itemize}
 %     \begin{equation*}
 %         \begin{gathered}
-%             \mathcal{S}_{i, \text { out }}=\mathcal{S}_{\mathrm{B}}\left(T_{i, \text { out }}^{O}=\max (T_{i, \text { in }}^{O}-J_{i, R}, \underbrace{b_{i, \text { in }} \times T_{i, \text { out }}^{I}}_{\text {mathematical bound }}),\right
-\item \\
+%             \mathcal{S}_{i, \text { out }}=\mathcal{S}_{\mathrm{B}}\left(T_{i, \text { out }}^{O}=\max (T_{i, \text { in }}^{O}-J_{i, R}, \underbrace{b_{i, \text { in }} \times T_{i, \text { out }}^{I}}_{\text {mathematical bound }}),\right. \\
 %             T_{i, \text { out }}^{I}=\max \left(T_{i, \text { in }}^{I}-J_{i, R}, R_{i}^{-}\right), \\
 %             \left.b_{i, \text { out }}=b_{i, \text { in }}\right)
 %         \end{gathered}
@@ -587,8 +587,7 @@
 %     \end{itemize}
 %     \begin{equation*}
 %         \begin{aligned}
-%              & \mathcal{E} \mathcal{M}_{\mathrm{S}+\mathrm{J}}=\left\{\mathcal{S}_{\mathrm{S}+\mathrm{J}}\left(\pi_{\mathrm{S}+\mathrm{J}}\right) \mid\right
-\item \\
+%              & \mathcal{E} \mathcal{M}_{\mathrm{S}+\mathrm{J}}=\left\{\mathcal{S}_{\mathrm{S}+\mathrm{J}}\left(\pi_{\mathrm{S}+\mathrm{J}}\right) \mid\right. \\
 %              & \pi_{\mathrm{S}+\mathrm{J}} \in \Pi_{\mathrm{S}+\mathrm{J}}=\left\{(T, J) \mid T \in \mathbb{R}^{+} \backslash\{0\}, J \in \mathbb{R}^{+}\right\},                                 \\
 %              & \left.\eta_{\mathrm{S}+\mathrm{J}}^{+}(\Delta t), \eta_{\mathrm{S}+\mathrm{J}}^{-}(\Delta t), \delta_{\mathrm{S}+\mathrm{J}}^{-}(n), \delta_{\mathrm{S}+\mathrm{J}}^{+}(n)\right\}
 %         \end{aligned}
@@ -628,8 +627,7 @@
 %     \end{itemize}
 %     \begin{equation*}
 %         \begin{aligned}
-%              & \mathcal{E} \mathcal{M}_{\mathrm{S}+\mathrm{B}}=\left\{\mathcal{S}_{\mathrm{S}+\mathrm{B}}\left(\pi_{\mathrm{S}+\mathrm{B}}\right) \mid\right
-\item \\
+%              & \mathcal{E} \mathcal{M}_{\mathrm{S}+\mathrm{B}}=\left\{\mathcal{S}_{\mathrm{S}+\mathrm{B}}\left(\pi_{\mathrm{S}+\mathrm{B}}\right) \mid\right. \\
 %              & \pi_{\mathrm{S}+\mathrm{B}} \in \Pi_{\mathrm{S}+\mathrm{B}}=\left\{(T, J, d) \mid T \in \mathbb{R}^{+} \backslash\{0\}, J \in \mathbb{R}^{+}, d \in \mathbb{R}^{+}\right\},        \\
 %              & \left.\eta_{\mathrm{S}+\mathrm{B}}^{+}(\Delta t), \eta_{\mathrm{S}+\mathrm{B}}^{-}(\Delta t), \delta_{\mathrm{S}+\mathrm{B}}^{-}(n), \delta_{\mathrm{S}+\mathrm{B}}^{+}(n)\right\}
 %         \end{aligned}

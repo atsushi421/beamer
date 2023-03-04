@@ -3,12 +3,12 @@
 \section{CAPACITY AUGMENTATION BOUND}
 \label{sec: CAPACITY AUGMENTATION BOUND}
 
-\begin{frame}{各アルゴリズムの容量拡張境界 (証明略)}
+\begin{frame}{各アルゴリズムのキャパシティ拡張境界 (証明略)}
     \full{
         \begin{table}[tb]
             \adjustbox{max width=\textwidth, max height=\slideheight}{
                 \centering\begin{tabular}{|c|c|} \hline
-                                                 & 容量拡張境界                         \\\hline
+                                                 & キャパシティ拡張境界                         \\\hline
                     フェデレートスケジューリング & $2$                                  \\\hline
                     グローバルEDF                & $\frac{3 + \sqrt{5}}{2} \cong 2.618$ \\\hline
                     グローバルRMS                & $2 + \sqrt{3} \cong 3.732$           \\\hline
@@ -18,7 +18,8 @@
     }
 \end{frame}
 
-\begin{frame}[label=theorem1]{並列タスクのためのキャパシティ拡張境界Theorem}
+\begin{frame}[label=theorem1]{並列タスクのためのキャパシティ拡張境界}
+    以下の定理より, コア数 $m$ が十分に大きい場合, フェデレートスケジューリングは最適なキャパシティ拡張境界を示す
     \begin{theorem}[]
         $m$ コア上の並列タスクのための任意のスケジューラのキャパシティ拡張境界の下限は $2-\frac{1}{m}$
         \notes{証明略}
