@@ -16,23 +16,23 @@
 \begin{frame}{総ワークロード}
     \begin{definition}[DAG $G^j$ の総ワークロード $W_1^j$]
         DAG $G^j$ の総ワークロード $W_1^j$は, 直観的には最適なプロセッサに割り当てられた場合のシーケンシャルスケジュールの長さ
-        \begin{equation}
+        \begin{equation*}
             W_1^j:=\sum_{i=1}^{I^j} c_{\text {min }}^{i, j}
-        \end{equation}
+        \end{equation*}
     \end{definition}
     \begin{definition}[パス $\gamma^j$ の総ワークロード $W(\gamma^)$]
-        \begin{equation}
+        \begin{equation*}
             \mathcal{W}\left(\gamma^j\right):=\sum_{\tau^{i, j} \in \gamma^j} c_{\text {min }}^{i, j}
-        \end{equation}
+        \end{equation*}
     \end{definition}
 \end{frame}
 
 \begin{frame}{クリティカルパス}
     \begin{definition}[$G^j$のクリティカルパス $cp^j$]
         $G^j$ のパスの中で最大のワークロードを持つパスがクリティカルパス
-        \begin{equation}
+        \begin{equation*}
             c p^j=\arg \max _{\gamma^j \in p a t h s^j} \mathcal{W}\left(\gamma^j\right)
-        \end{equation}
+        \end{equation*}
     \end{definition}
     \vspace{5mm}
     $cp^j$の総ワークロードを $W_\infty^j$ と表記する
@@ -40,18 +40,18 @@
 
 \begin{frame}{Speed-Preference}
     \begin{definition}[$\tau^{i,j}$のプロセッサ$x$における速度 $\delta_x^{i,j}$]
-        \begin{equation}
+        \begin{equation*}
             \delta_x^{i, j}:=c_{\min }^{i, j} / c_x^{i, j}
-        \end{equation}
+        \end{equation*}
     \end{definition}
     \begin{definition}[Speed-Preference]
         \setlength{\linewidth}{0.98\columnwidth}
         \begin{itemize}
             \item $\tau^{i,j}$ の速度のうち, 全てのプロセッサでの $x$ 番目に速い速度を $O_x^{i,j}$ と表記する
             \item Speed-Preference $O^{i, j}$ は, $\tau^{i,j}$の全てのプロセッサにおける速度を速度順に並べたもの
-                  \begin{equation}
+                  \begin{equation*}
                       O^{i, j}=\left\langle O_1^{i, j}, O_2^{i, j}, \ldots, O_{\mathcal{P}}^{i, j}\right\rangle
-                  \end{equation}
+                  \end{equation*}
         \end{itemize}
     \end{definition}
 \end{frame}

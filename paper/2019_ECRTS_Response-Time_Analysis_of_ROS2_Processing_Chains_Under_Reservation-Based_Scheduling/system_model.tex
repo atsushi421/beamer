@@ -9,15 +9,15 @@
 %     \end{itembox}
 % \end{frame}
 
-% \begin{frame}{}
-%     \begin{itemize}
-%         \item 始めに, 本論文で登場する表記法・用語の表を示す
-%         \item 基本的な表記法・用語は資料中で説明無しで使用する
-%         \item 別ファイルで開く・印刷するなどして, 常に参照できる状態にしておくことを推奨する
-%     \end{itemize}
-% \end{frame}
+\begin{frame}{}
+    \begin{itemize}
+        \item 始めに, 本論文で登場する表記法・用語の表を示す
+        \item 基本的な表記法・用語は資料中で説明無しで使用する
+        \item 別ファイルで開く・印刷するなどして, 常に参照できる状態にしておくことを推奨する
+    \end{itemize}
+\end{frame}
 
-% \input{symbols_terms.tex}
+\input{symbols_terms.tex}
 
 \begin{frame}{DAGへのモデル化}
     \begin{itemize}
@@ -107,7 +107,7 @@
 \begin{frame}{最悪通信レイテンシ}
     予約 $\left(r_{x}, r_{y}\right)$ の各ペアは, 最悪通信レイテンシ $\delta_{i, j}$ によって特徴付けられる
     \begin{block}{最悪通信レイテンシ $\delta_{i, j}$}
-        $r_x$ に割り当てられた送信コールバック $c_i$ のDDS層から, $r_y$ に割り当てられた受信コールバック $c_j$ のDDS層によって受信されるまでに送信されるメッセージが経験する最大時間, すなわち, $c_j$ によって起動される前に経験する最大レイテンシ
+        $r_x$ に割り当てられた送信コールバック $c_i$ のDDS層から, $r_y$ に割り当てられた受信コールバック $c_j$ のDDS層によって受信されるまでに送信されるメッセージが経験する最大レイテンシ
     \end{block}
     \assume{$r_{x}=r_{y}$ の時, $\delta_{i, j}$ は無視できると想定する}
 \end{frame}

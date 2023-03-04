@@ -7,11 +7,9 @@
                 \centering\begin{tabular}{|c|l|} \hline
                     $G(V, E)$                               & DAG                                      \\\hline
                     $V = \{\tau_1, \tau_2,
-\item
-\item
-\item , \tau_{|V|}\}$ & タスクセット                             \\\hline
-                    $E$                                     & タスク間の優先度制約                   \\\hline
-                    $e_{i,j} \in E$                         & $\tau_i, \tau_j$ 間の優先度制約        \\\hline
+...  , \tau_{|V|}\}$ & タスクセット                             \\\hline
+                    $E$                                     & タスク間の優先順位制約                   \\\hline
+                    $e_{i,j} \in E$                         & $\tau_i, \tau_j$ 間の優先順位制約        \\\hline
                     $data_{i,j}$                            & $\tau_i$から$\tau_j$に送信されるデータ量 \\\hline
                     $pred(\tau_j)$                          & $\tau_j$の直接先行タスク                 \\\hline
                     $succ(\tau_j)$                          & $\tau_j$の直接後続タスク                 \\\hline
@@ -28,9 +26,7 @@
             \adjustbox{max width=\textwidth, max height=\slideheight}{
                 \centering\begin{tabular}{|c|l|} \hline
                     $P = \{p_1, p_2,
-\item
-\item
-\item , p_{|P|}\}$                     & ヘテロジニアスプロセッサセット                                               \\\hline
+...  , p_{|P|}\}$                     & ヘテロジニアスプロセッサセット                                               \\\hline
                     行列 $B$ (サイズ $|P|\times|P|$)                   & 全てのプロセッサ間のデータ転送帯域幅を格納した行列                           \\\hline
                     $b_{m,n}$                                          & $p_m$と$p_n$間のデータ転送帯域幅                                             \\\hline
                     $L_m$                                              & $p_m$の通信起動コスト                                                        \\\hline

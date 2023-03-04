@@ -27,9 +27,9 @@
         \item ランクの降順でタスクをソートし, タスクリストを作成する
               \begin{block}{ランク値}
                   $\tau_j$ のランク値 $rank_{pft}[\tau_j]$ は, 全プロセッサにおける $\tau_j$ の平均 PFT
-                  \begin{equation}
+                  \begin{equation*}
                       \operatorname{rank}_{p f t}\left[\tau_j\right]=\frac{\sum_{n=1}^{|P|} P F T\left[\tau_j, p_n\right]}{|P|}
-                  \end{equation}
+                  \end{equation*}
               \end{block}
     \end{itemize}
 \end{frame}
@@ -41,8 +41,8 @@
 \begin{frame}{ランク値の逆転への対策}
     \fitimage{
         \begin{itemize}
-            \item あるタスクのランク値が, そのタスクの後続ノードのランク値よりも小さくなると, 生成されたタスクリストで優先度制約違反となってしまう
-            \item 以下の処理によって, 優先度制約を保証する
+            \item あるタスクのランク値が, そのタスクの後続ノードのランク値よりも小さくなると, 生成されたタスクリストで優先順位制約違反となってしまう
+            \item 以下の処理によって, 優先順位制約を保証する
         \end{itemize}
     }{rank_recalc}
 \end{frame}

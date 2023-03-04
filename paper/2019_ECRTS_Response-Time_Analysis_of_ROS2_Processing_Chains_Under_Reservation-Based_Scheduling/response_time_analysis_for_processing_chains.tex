@@ -3,24 +3,24 @@
 \section{RESPONSE-TIME ANALYSIS FOR PROCESSING CHAINS}
 \label{sec: response-time analysis for processing chains}
 
-% \begin{frame}{セクションサマリ}
-%     \begin{itembox}[l]{\textbf{目的}}
-%         一般的な ROS 処理チェーンのエンドツーエンドレイテンシの分析を示す
-%     \end{itembox}
-%     \begin{itembox}[l]{\textbf{流れ}}
-%         \begin{itemize}
-%             \item コールバックの ROS 固有の応答時間分析を提示
-%             \item サブチェーンと呼ばれるチェーンの部分の応答時間分析を提示
-%         \end{itemize}
-%     \end{itembox}
-% \end{frame}
+\begin{frame}{セクションサマリ}
+    \begin{itembox}[l]{\textbf{目的}}
+        一般的な ROS 処理チェーンのエンドツーエンドレイテンシの分析を示す
+    \end{itembox}
+    \begin{itembox}[l]{\textbf{流れ}}
+        \begin{itemize}
+            \item コールバックの ROS 固有の応答時間分析を提示
+            \item サブチェーンと呼ばれるチェーンの部分の応答時間分析を提示
+        \end{itemize}
+    \end{itembox}
+\end{frame}
 
-% \begin{frame}{}
-%     \begin{itemize}
-%         \item 本資料では, 分析方法のみを示す
-%         \item 証明は論文を参照
-%     \end{itemize}
-% \end{frame}
+\begin{frame}{}
+    \begin{itemize}
+        \item 本資料では, 分析方法のみを示す
+        \item 証明は論文を参照
+    \end{itemize}
+\end{frame}
 
 \forme{
     \begin{frame}{}
@@ -71,29 +71,29 @@
 \end{frame}
 
 
-% \subsection{Analysis for Individual Callbacks}
-% \label{ssec: analysis for individual callbacks}
+\subsection{Analysis for Individual Callbacks}
+\label{ssec: analysis for individual callbacks}
 
-% \begin{frame}{セクションサマリ}
-%     \begin{itembox}[l]{\textbf{目的}}
-%         コールバックの応答時間分析を提示
-%     \end{itembox}
-% \end{frame}
+\begin{frame}{セクションサマリ}
+    \begin{itembox}[l]{\textbf{目的}}
+        コールバックの応答時間分析を提示
+    \end{itembox}
+\end{frame}
 
-% \begin{frame}{クワイエットタイム, ビジーウィンドウ}
-%     \begin{definition}[クワイエットタイム]
-%         $t$ の前に到着した $c_{i}$ のpendingインスタンスがない場合, 時間 $t$ は, コールバック $c_{i}$ に関してクワイエットタイムである
-%     \end{definition}
-%     \begin{definition}[ビジーウィンドウ]
-%         $t_{1}$ と $t_{2}$ が $c_{i}$ のクワイエットタイムであり, $t_{1}$ と $t_{2}$ の間に$c_{i}$ に関するクワイエットタイムがない場合, 間隔 $\left[t_{1}, t_{2}\right)$ は $c_{i}$ のビジーウィンドウである
-%     \end{definition}
-% \end{frame}
+\begin{frame}{クワイエットタイム, ビジーウィンドウ}
+    \begin{definition}[クワイエットタイム]
+        $t$ の前に到着した $c_{i}$ のpendingインスタンスがない場合, 時間 $t$ は, コールバック $c_{i}$ に関してクワイエットタイムである
+    \end{definition}
+    \begin{definition}[ビジーウィンドウ]
+        $t_{1}$ と $t_{2}$ が $c_{i}$ のクワイエットタイムであり, $t_{1}$ と $t_{2}$ の間に$c_{i}$ に関するクワイエットタイムがない場合, 間隔 $\left[t_{1}, t_{2}\right)$ は $c_{i}$ のビジーウィンドウである
+    \end{definition}
+\end{frame}
 
-% \begin{frame}{コールバックの最悪応答時間}
-%     \begin{definition}[コールバック $c_{i}$ の最悪応答時間 $R_{i}$]
-%         全てインスタンスの中で, 終了時間とリリース時間の間の最大の差
-%     \end{definition}
-% \end{frame}
+\begin{frame}{コールバックの最悪応答時間}
+    \begin{definition}[コールバック $c_{i}$ の最悪応答時間 $R_{i}$]
+        全てインスタンスの中で, 終了時間とリリース時間の間の最大の差
+    \end{definition}
+\end{frame}
 
 \begin{frame}{要求境界関数}
     \begin{definition}[コールバック $c_{i}$ の要求境界関数 $rbf_{i}(\Delta)$]
@@ -108,104 +108,104 @@
     \end{definition}
 \end{frame}
 
-% \begin{frame}{pp ベースのコールバック}
-%     スケジューリングの観点から, コールバックは, イベントソース, タイマ, およびポーリングポイントベース (pp ベース) のコールバックの 3 つのカテゴリに分けられる
-%     \begin{definition}[$r_{k}$ に割り当てられた pp ベースのコールバックのセット $\mathcal{C}_{k}^{\mathrm{pp}}$]
-%         $\mathcal{C}_{k}^{\mathrm{pp}}=\mathcal{C}_{k} \backslash\left(\mathcal{C}_{k}^{\text {evt}} \cup \mathcal{C}_{k}^{\mathrm{tmr}}\right)$
-%     \end{definition}
-% \end{frame}
+\begin{frame}{pp ベースのコールバック}
+    スケジューリングの観点から, コールバックは, イベントソース, タイマ, およびポーリングポイントベース (pp ベース) のコールバックの 3 つのカテゴリに分けられる
+    \begin{definition}[$r_{k}$ に割り当てられた pp ベースのコールバックのセット $\mathcal{C}_{k}^{\mathrm{pp}}$]
+        $\mathcal{C}_{k}^{\mathrm{pp}}=\mathcal{C}_{k} \backslash\left(\mathcal{C}_{k}^{\text {evt}} \cup \mathcal{C}_{k}^{\mathrm{tmr}}\right)$
+    \end{definition}
+\end{frame}
 
-% \begin{frame}[label=lemma1]{イベントソースの最悪応答時間}
-%     \begin{lemma}[イベントソースの最悪応答時間]
-%         \begin{itemize}
-%             \item $A \geq 0$ を分析対象のイベントソースコールバック $c_{i} \in \mathcal{C}_{k}^{\text {evt }}$ のインスタンスがリリースされた時刻とする
-%             \item $R_{i}^{*}(A)$ が以下の式を満たす最小の正の値である場合, $R_{i}=\max \left\{R_{i}^{*}(A) \mid A \geq 0\right\}$ は, $c_{i}$ の最悪応答時間である
-%                   \begin{equation*}
-%                       s b f_{k}\left(A+R_{i}^{*}(A)\right)=r b f_{i}(A+1)
-%                   \end{equation*}
-%         \end{itemize}
-%     \end{lemma}
-% \end{frame}
+\begin{frame}[label=lemma1]{イベントソースの最悪応答時間}
+    \begin{lemma}[イベントソースの最悪応答時間]
+        \begin{itemize}
+            \item $A \geq 0$ を分析対象のイベントソースコールバック $c_{i} \in \mathcal{C}_{k}^{\text {evt }}$ のインスタンスがリリースされた時刻とする
+            \item $R_{i}^{*}(A)$ が以下の式を満たす最小の正の値である場合, $R_{i}=\max \left\{R_{i}^{*}(A) \mid A \geq 0\right\}$ は, $c_{i}$ の最悪応答時間である
+                  \begin{equation*}
+                      s b f_{k}\left(A+R_{i}^{*}(A)\right)=r b f_{i}(A+1)
+                  \end{equation*}
+        \end{itemize}
+    \end{lemma}
+\end{frame}
 
-% \forme{
-%     \begin{frame}{}
-%         \begin{itemize}
-%             \item \hlink{lemma1}{Lemma 1} は, 可能性のあるリリースオフセット $A$ の無制限の数をチェックする必要があるため, 直接適用できない
-%             \item 応答時間分析を実際に実装するには, 分析間隔の長さの上界と, チェックする必要があるリリースオフセット数の削減の両方が必要である
-%             \item この問題については, セクション 5.3 で再検討する
-%         \end{itemize}
-%     \end{frame}
-% }
+\forme{
+    \begin{frame}{}
+        \begin{itemize}
+            \item \hlink{lemma1}{Lemma 1} は, 可能性のあるリリースオフセット $A$ の無制限の数をチェックする必要があるため, 直接適用できない
+            \item 応答時間分析を実際に実装するには, 分析間隔の長さの上界と, チェックする必要があるリリースオフセット数の削減の両方が必要である
+            \item この問題については, セクション 5.3 で再検討する
+        \end{itemize}
+    \end{frame}
+}
 
-% \begin{frame}[label=lemma2]{タイマコールバックが受ける最大ブロック時間}
-%     \begin{lemma}[タイマコールバックが受ける最大ブロック時間]
-%         タイマコールバック $c_{i} \in \mathcal{C}_{k}$ は, 優先度の低いコールバックによって最大 $B_{i}=\max \left\{e_{j} \mid c_{j} \in l p_{k}\left(c_{i}\right)\right\}$ 時間単位ブロックされる
-%     \end{lemma}
-% \end{frame}
+\begin{frame}[label=lemma2]{タイマコールバックが受ける最大ブロック時間}
+    \begin{lemma}[タイマコールバックが受ける最大ブロック時間]
+        タイマコールバック $c_{i} \in \mathcal{C}_{k}$ は, 優先度の低いコールバックによって最大 $B_{i}=\max \left\{e_{j} \mid c_{j} \in l p_{k}\left(c_{i}\right)\right\}$ 時間単位ブロックされる
+    \end{lemma}
+\end{frame}
 
-% \begin{frame}[label=lemma3]{タイマコールバックの最悪応答時間}
-%     \begin{lemma}[タイマコールバックの最悪応答時間]
-%         \begin{itemize}
-%             \item $A \geq 0$ を分析対象のタイマコールバック $c_{i} \in \mathcal{C}_{k}^{\mathrm{tmr}}$ のインスタンスがリリースされた時刻とする
-%             \item $R_{i}^{*}(A)$ が以下の式を満たす最小の正の値である場合, $R_{i}=\max \left\{R_{i}^{*}(A) \mid A \geq 0\right\}$ は, $c_{i}$ の最悪応答時間
-%                   \begin{equation*}
-%                       \begin{split}
-%                           s b f_{k}\left(A+R_{i}^{*}(A)\right)=&r b f_{i}(A+1)+\\
-%                           &R B F\left(h p_{k}\left(c_{i}\right), A+R_{i}^{*}(A)-e_{i}+1\right)+B_{i}
-%                       \end{split}
-%                   \end{equation*}
-%         \end{itemize}
-%     \end{lemma}
-% \end{frame}
+\begin{frame}[label=lemma3]{タイマコールバックの最悪応答時間}
+    \begin{lemma}[タイマコールバックの最悪応答時間]
+        \begin{itemize}
+            \item $A \geq 0$ を分析対象のタイマコールバック $c_{i} \in \mathcal{C}_{k}^{\mathrm{tmr}}$ のインスタンスがリリースされた時刻とする
+            \item $R_{i}^{*}(A)$ が以下の式を満たす最小の正の値である場合, $R_{i}=\max \left\{R_{i}^{*}(A) \mid A \geq 0\right\}$ は, $c_{i}$ の最悪応答時間
+                  \begin{equation*}
+                      \begin{split}
+                          s b f_{k}\left(A+R_{i}^{*}(A)\right)=&r b f_{i}(A+1)+\\
+                          &R B F\left(h p_{k}\left(c_{i}\right), A+R_{i}^{*}(A)-e_{i}+1\right)+B_{i}
+                      \end{split}
+                  \end{equation*}
+        \end{itemize}
+    \end{lemma}
+\end{frame}
 
-% \begin{frame}[label=lemma4]{pp ベースのコールバックの最悪応答時間}
-%     \begin{lemma}[pp ベースのコールバックの最悪応答時間]
-%         \begin{itemize}
-%             \item $A \geq 0$ を分析対象の pp ベースのコールバック $c_{i} \in \mathcal{C}_{k}^{\mathrm{pp}}$ のインスタンスがリリースされた時刻とする
-%             \item $X \geq 0$ を時刻 $A+R_{i}^{*}(A)-e_{i}$ と時刻 $A+R_{i}^{*}(A)-e_{i}$ の前の最後のポーリングポイントとの差とする
-%             \item $R_{i}^{*}(A)$ が以下の式を満たす最小の正の値である場合,  $R_{i}=\max \left\{R_{i}^{*}(A) \mid A \geq 0\right\}$ は $c_{i}$ の最悪応答時間である
-%                   \begin{equation*}
-%                       s b f_{k}\left(A+R_{i}^{*}(A)\right)=\operatorname{rbf}_{i}(A+1)+R B F\left(\left\{\mathcal{C}_{k} \backslash c_{i}\right\}, A+R_{i}^{*}(A)-e_{i}+1\right)
-%                   \end{equation*}
-%         \end{itemize}
-%     \end{lemma}
-% \end{frame}
-
-
-% \subsection{Bounding the Search Space}
-% \label{ssec: bounding the search space}
-
-% \begin{frame}{セクションサマリ}
-%     \begin{itembox}[l]{\textbf{目的}}
-%         実際の応答時間分析で前述のLemmaを使用するために,  分析間隔の制限と探索空間サイズを削減する
-%     \end{itembox}
-% \end{frame}
-
-% \begin{frame}[label=lemma6]{最長のビジーウィンドウ}
-%     \begin{lemma}[]
-%         $c_{i} \in \mathcal{C}_{k}$ が分析中のコールバックであり, $L^{*}$ が以下の条件を満たす最小の正の値である場合, $L^{*}$ は最長のビジーウィンドウである
-%         \begin{equation*}
-%             s b f_{k}\left(L^{*}\right)= \begin{cases}r b f_{i}\left(L^{*}\right) & \text { if } c_{i} \in \mathcal{C}_{k}^{\mathrm{evt}} \\ R B F\left(h p_{k}\left(c_{i}\right), L^{*}\right)+B_{i}+r b f_{i}\left(L^{*}\right) & \text { if } c_{i} \in \mathcal{C}_{k}^{\mathrm{tmr}} \\ R B F\left(\mathcal{C}_{k}, L^{*}\right) & \text { if } c_{i} \in \mathcal{C}_{k}^{\mathrm{pp}}\end{cases}
-%         \end{equation*}
-%     \end{lemma}
-% \end{frame}
-
-% \begin{frame}{探索空間の削減}
-%     コールバック $c_i$ に関する探索空間 $A_i$ は以下に制限される
-%     \begin{equation*}
-%         \mathcal{A}_{i}=\left\{0 \leq A \leq L^{*} \mid r b f_{i}(A+1) \neq r b f_{i}(A)\right\} \cup\{0\} .
-%     \end{equation*}
-% \end{frame}
+\begin{frame}[label=lemma4]{pp ベースのコールバックの最悪応答時間}
+    \begin{lemma}[pp ベースのコールバックの最悪応答時間]
+        \begin{itemize}
+            \item $A \geq 0$ を分析対象の pp ベースのコールバック $c_{i} \in \mathcal{C}_{k}^{\mathrm{pp}}$ のインスタンスがリリースされた時刻とする
+            \item $X \geq 0$ を時刻 $A+R_{i}^{*}(A)-e_{i}$ と時刻 $A+R_{i}^{*}(A)-e_{i}$ の前の最後のポーリングポイントとの差とする
+            \item $R_{i}^{*}(A)$ が以下の式を満たす最小の正の値である場合,  $R_{i}=\max \left\{R_{i}^{*}(A) \mid A \geq 0\right\}$ は $c_{i}$ の最悪応答時間である
+                  \begin{equation*}
+                      s b f_{k}\left(A+R_{i}^{*}(A)\right)=\operatorname{rbf}_{i}(A+1)+R B F\left(\left\{\mathcal{C}_{k} \backslash c_{i}\right\}, A+R_{i}^{*}(A)-e_{i}+1\right)
+                  \end{equation*}
+        \end{itemize}
+    \end{lemma}
+\end{frame}
 
 
-% \subsection{Analysis for Processing Chains}
-% \label{ssec: analysis for processing chains}
+\subsection{Bounding the Search Space}
+\label{ssec: bounding the search space}
 
-% \begin{frame}{セクションサマリ}
-%     \begin{itembox}[l]{\textbf{目的}}
-%         複数のコールバックで構成されるサブチェーンのエンドツーエンドの分析を提供する
-%     \end{itembox}
-% \end{frame}
+\begin{frame}{セクションサマリ}
+    \begin{itembox}[l]{\textbf{目的}}
+        実際の応答時間分析で前述のLemmaを使用するために,  分析間隔の制限と探索空間サイズを削減する
+    \end{itembox}
+\end{frame}
+
+\begin{frame}[label=lemma6]{最長のビジーウィンドウ}
+    \begin{lemma}[]
+        $c_{i} \in \mathcal{C}_{k}$ が分析中のコールバックであり, $L^{*}$ が以下の条件を満たす最小の正の値である場合, $L^{*}$ は最長のビジーウィンドウである
+        \begin{equation*}
+            s b f_{k}\left(L^{*}\right)= \begin{cases}r b f_{i}\left(L^{*}\right) & \text { if } c_{i} \in \mathcal{C}_{k}^{\mathrm{evt}} \\ R B F\left(h p_{k}\left(c_{i}\right), L^{*}\right)+B_{i}+r b f_{i}\left(L^{*}\right) & \text { if } c_{i} \in \mathcal{C}_{k}^{\mathrm{tmr}} \\ R B F\left(\mathcal{C}_{k}, L^{*}\right) & \text { if } c_{i} \in \mathcal{C}_{k}^{\mathrm{pp}}\end{cases}
+        \end{equation*}
+    \end{lemma}
+\end{frame}
+
+\begin{frame}{探索空間の削減}
+    コールバック $c_i$ に関する探索空間 $A_i$ は以下に制限される
+    \begin{equation*}
+        \mathcal{A}_{i}=\left\{0 \leq A \leq L^{*} \mid r b f_{i}(A+1) \neq r b f_{i}(A)\right\} \cup\{0\} .
+    \end{equation*}
+\end{frame}
+
+
+\subsection{Analysis for Processing Chains}
+\label{ssec: analysis for processing chains}
+
+\begin{frame}{セクションサマリ}
+    \begin{itembox}[l]{\textbf{目的}}
+        複数のコールバックで構成されるサブチェーンのエンドツーエンドの分析を提供する
+    \end{itembox}
+\end{frame}
 
 \begin{frame}[label=lemma8]{サブチェーンの最悪応答時間}
     \begin{lemma}[サブチェーンの最悪応答時間]
