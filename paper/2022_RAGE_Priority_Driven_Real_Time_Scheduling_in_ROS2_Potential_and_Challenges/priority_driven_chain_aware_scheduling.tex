@@ -47,14 +47,14 @@
 
 \begin{frame}{アプローチの比較}
     \vspace{-1mm}
-    優先度駆動型スケジューリングアプローチ (ROS2-PiCAS) と既定の ROS 2 スケジューリングスキーム (ROS2-default) を以下2つの方法で比較
+    優先度駆動型スケジューリングアプローチ (ROS 2-PiCAS) と既定の ROS 2 スケジューリングスキーム (ROS 2-default) を以下2つの方法で比較
     \vspace{-1mm}
     \begin{block}{シングルスレッド}
-        ROS2-default と ROS2-PiCAS をそれぞれシングルスレッドエグゼキュータで実行し, 比較
+        ROS 2-default と ROS 2-PiCAS をそれぞれシングルスレッドエグゼキュータで実行し, 比較
     \end{block}
     \begin{block}{マルチスレッド}
         \begin{itemize}
-            \item ROS2-default はマルチスレッドエグゼキュータで実行
+            \item ROS 2-default はマルチスレッドエグゼキュータで実行
             \item PiCAS はマルチスレッドエグゼキュータをサポートしていないため, Raspberry Pi 4 の 4 つのコアで 4 つのシングルスレッドエグゼキュータを使用する
         \end{itemize}
     \end{block}
@@ -68,15 +68,15 @@
 
 \begin{frame}{結果の考察1}
     \begin{itemize}
-        \item シングルスレッドエグゼキュータにおける ROS2-PiCAS は, シングルスレッドの ROS2-default と比較して最大 $86 \%$ まで平均レイテンシを削減し, マルチスレッドの ROS2-default に匹敵するパフォーマンスを示す
+        \item シングルスレッドエグゼキュータにおける ROS 2-PiCAS は, シングルスレッドの ROS 2-default と比較して最大 $86 \%$ まで平均レイテンシを削減し, マルチスレッドの ROS 2-default に匹敵するパフォーマンスを示す
         \item この結果は, PiCAS を搭載した自動運転車が障害物を迅速に認識し, 同じ量のリソースを使用しながら適時的に障害物を回避できることを示す
     \end{itemize}
 \end{frame}
 
 \begin{frame}{結果の考察2}
     \begin{itemize}
-        \item マルチスレッドエグゼキュータの場合, ROS2-default は, 複数のエグゼキュータを使用した ROS2-PiCAS よりパフォーマンスが悪い
-        \item デフォルトのマルチスレッドエグゼキュータは, ROS2-PiCAS の複数のシングルスレッドエグゼキュータが従うパーティショニングスケジューリングよりも, 未使用のリソースの再利用において優れているグローバルスケジューリングアプローチに従うため, この結果は興味深い
+        \item マルチスレッドエグゼキュータの場合, ROS 2-default は, 複数のエグゼキュータを使用した ROS 2-PiCAS よりパフォーマンスが悪い
+        \item デフォルトのマルチスレッドエグゼキュータは, ROS 2-PiCAS の複数のシングルスレッドエグゼキュータが従うパーティショニングスケジューリングよりも, 未使用のリソースの再利用において優れているグローバルスケジューリングアプローチに従うため, この結果は興味深い
         \item これは, 適切な優先度付けのサポートの欠如によるものと思われる
     \end{itemize}
 \end{frame}
@@ -85,7 +85,7 @@
     \fitimage{
         \begin{itemize}
             \item 表は破棄されたメッセージの数を示す
-            \item ROS2-PiCAS は ROS2-default よりも優れている
+            \item ROS 2-PiCAS は ROS 2-default よりも優れている
         \end{itemize}
     }{drop_message}
 \end{frame}
@@ -94,7 +94,7 @@
     \fitimage{
         \begin{itemize}
             \item 100 msec からのずれはジッタを示しているため, 観測値の範囲が小さいほど良い
-            \item ROS2-PiCAS は全ての構成で ROS2-default よりも優れている
+            \item ROS 2-PiCAS は全ての構成で ROS 2-default よりも優れている
         \end{itemize}
     }{planner_jitter}
 \end{frame}
