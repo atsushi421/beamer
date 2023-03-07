@@ -38,3 +38,23 @@
         \end{table}
     }
 \end{frame}
+
+\begin{frame}{表記法・用語 3}
+    \full{
+        \begin{table}[tb]
+            \adjustbox{max width=\textwidth, max height=\slideheight}{
+                \centering\begin{tabular}{|c|l|} \hline
+                    $initT$            & 現在のCPUクロック時間                                                                    \\\hline
+                    $msl$              & 現在の最短スケジュール長                                                                 \\\hline
+                    $ops$              & プロセッサ選択肢の上界 (枝切りメカニズム2)                                               \\\hline
+                    $\lambda$          & OEFTの許容増加率  (枝切りメカニズム3)                                                    \\\hline
+                    $capT$             & Run-timeの上界                                                                           \\\hline
+                    $BAST, BAFT, BPRO$ & \tabml{最適なスケジュールを保持する配列                                                  \\スケジュール内の全てのタスクについて, BAST は開始時刻, \\BAFT は終了時刻, BPRO はプロセッサの割り当てを格納}  \\\hline
+                    $p'$               & \tabml{タスクに対するプロセッサ選択の優先度を表すプロセッサ ID を含むサイズ OPS の配列 \\OEFT の降順にソートされている} \\\hline
+                    $taskListID$       & 現在処理中のタスクのタスクリストにおけるインデックス                                     \\\hline
+                    $FSTime$           & HMDSの最初の解を生成するのにかかる時間                                                   \\\hline
+                \end{tabular}
+            }
+        \end{table}
+    }
+\end{frame}

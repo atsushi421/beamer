@@ -133,7 +133,7 @@
 %     \begin{itemize}
 %         \item Lemmaを矛盾によって証明する
 %         \item $c_{i}$ が $t$ でブロックされておらず, $t \in\left[r_{i}, s_{i}\right)$ で $t$ でアイドル状態のスレッドがあるとする
-%         \item この場合, $t$ において $\Omega$ に他の適格なコールバックインスタンスが存在してはならない (さもなければ, アイドルスレッドにスケジューリングされる) 
+%         \item この場合, $t$ において $\Omega$ に他の適格なコールバックインスタンスが存在してはならない (さもなければ, アイドルスレッドにスケジューリングされる)
 %     \end{itemize}
 
 %     \repost{mutually exclusive コールバックグループに属す $\Omega$ 内のコールバックインスタンス $c_{i, j}$ は, $c_{i, j}$ と同じコールバックグループ内のコールバックのインスタンスが実行されていない場合に適格であり, それ以外の場合は R-blocked される}
@@ -224,25 +224,25 @@
 %     \hlink{lemma3}{Lemma 2} の証明は [21]  \hlink{theorem4}{Theorem 4} と同じ考え方に従うため, ここでは省略する
 % \end{frame}
 
+% \begin{frame}{$W_{k}(L)$の例}
+%     \fitimage{最悪のシナリオにおける $W_{k}(L)$ の例}{w_k_l.png}
+% \end{frame}
+
+\begin{frame}[label=theorem1]{Theorem 1}
+    \begin{theorem}[]
+        \setlength{\linewidth}{0.98\columnwidth}
+        \begin{itemize}
+            \item $L+e_{|\mathcal{C}|} \leq D$ の場合, $R(J)$ の上界は $L+e_{|\mathcal{C}|}$ である
+            \item ここで, $L$ は次の条件を満たす最小数
+                  \begin{equation*}
+                      L=E-e_{|\mathcal{C}|}+\frac{\sum_{\mathcal{C}_{k} \in \Gamma \backslash\{\mathcal{C}\}}\left(W_{k}(L)+n_{k}(L)(m-1) \sum_{\forall j: \mathcal{G}\left(c_{k, j}\right) \in \theta_{k} \cap \theta} e_{k, j}\right)}{m}
+                  \end{equation*}
+        \end{itemize}
+    \end{theorem}
+\end{frame}
+
+
 \forme{
-    \begin{frame}{$W_{k}(L)$の例}
-        \fitimage{最悪のシナリオにおける $W_{k}(L)$ の例}{w_k_l.png}
-    \end{frame}
-
-    \begin{frame}[label=theorem1]{Theorem 1}
-        \begin{theorem}[]
-            \setlength{\linewidth}{0.98\columnwidth}
-            \begin{itemize}
-                \item $L+e_{|\mathcal{C}|} \leq D$ の場合, $R(J)$ の上界は $L+e_{|\mathcal{C}|}$ である
-                \item ここで, $L$ は次の条件を満たす最小数
-                      \begin{equation*}
-                          L=E-e_{|\mathcal{C}|}+\frac{\sum_{\mathcal{C}_{k} \in \Gamma \backslash\{\mathcal{C}\}}\left(W_{k}(L)+n_{k}(L)(m-1) \sum_{\forall j: \mathcal{G}\left(c_{k, j}\right) \in \theta_{k} \cap \theta} e_{k, j}\right)}{m}
-                      \end{equation*}
-            \end{itemize}
-        \end{theorem}
-    \end{frame}
-
-
     \begin{frame}{Theorem 1の悲観性}
         \begin{itemize}
             \item \hlink{theorem1}{Theorem 1} の境界は悲観的である可能性がある
