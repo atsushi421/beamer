@@ -8,7 +8,7 @@
         \begin{table}[tb]
             \adjustbox{max width=\textwidth, max height=\slideheight}{
                 \centering\begin{tabular}{|c|c|c|c|c|}      \hline
-                                                                                                                                                                                & ROS & ROS2 & リアルタイム保証 & \tabmlc{優先度決定による \\エンドツーエンドレイテンシの改善} \\\hline
+                                                                                                                                                                                & ROS & ROS 2 & リアルタイム保証 & \tabmlc{優先度決定による \\エンドツーエンドレイテンシの改善} \\\hline
                     \cite{saito2016priority, wei2016rt, saito2018rosch}                                                                                                         & \ch &      &                  &                          \\\hline
                     \cite{maruyama2016exploring, gutierrez2018towards}                                                                                                          & \ch & \ch  &                  &                          \\\hline
                     \cite{palencia1998schedulability, palencia1999exploiting, davare2007period, schlatow2016response, koren1995skip, abdullah2019worst, becker2016synthesizing} &     &      & \ch              &                          \\\hline
@@ -31,8 +31,8 @@
         \end{itemize}
     \end{frame}
 
-    \begin{frame}{ROS2 のパフォーマンス評価}
-        以下の研究は測定ベースのアプローチを使用して ROS2 のパフォーマンスを評価したが, 正式なモデリングや分析は提供していない
+    \begin{frame}{ROS 2 のパフォーマンス評価}
+        以下の研究は測定ベースのアプローチを使用して ROS 2 のパフォーマンスを評価したが, 正式なモデリングや分析は提供していない
         \begin{itemize}
             \item さまざまなベンダー固有の DDS 実装の下でさまざまな QoS 構成を使用して経験的評価を実施 \cite{maruyama2016exploring}
             \item 2 つのノード間の最悪レイテンシが測定され, PREEMPT-RT パッチが適用された Linux カーネルシステムでデッドラインミスの動作を観察 \cite{gutierrez2018towards}
@@ -40,7 +40,7 @@
     \end{frame}
 
     \begin{frame}{エンドツーエンドチェーンのレイテンシ分析}
-        publisher/subscriber モデルまたは read-execute-write セマンティクスでのエンドツーエンドチェーンレイテンシの分析が行われてきたが, スケジューリングモデルの違いにより, ROS2 に直接適用することはできない
+        publisher/subscriber モデルまたは read-execute-write セマンティクスでのエンドツーエンドチェーンレイテンシの分析が行われてきたが, スケジューリングモデルの違いにより, ROS 2 に直接適用することはできない
         \setlength{\wideitemsep}{0.8\itemsep}
         {\footnotesize
             \begin{itemize}
@@ -52,8 +52,8 @@
         }
     \end{frame}
 
-    \begin{frame}{ROS2 処理チェーンのレイテンシ分析}
-        \cite{casini2019response} は ROS2 スケジューラのモデル化とチェーンの応答時間分析の提供に関する唯一の研究だが, リソースを割り当てて, クリティカルチェーンのエンドツーエンドレイテンシを改善する方法については未検討
+    \begin{frame}{ROS 2 処理チェーンのレイテンシ分析}
+        \cite{casini2019response} は ROS 2 スケジューラのモデル化とチェーンの応答時間分析の提供に関する唯一の研究だが, リソースを割り当てて, クリティカルチェーンのエンドツーエンドレイテンシを改善する方法については未検討
         \begin{block}{先行研究 \cite{casini2019response}}
             \setlength{\linewidth}{0.98\columnwidth}
             \setlength{\wideitemsep}{0.8\itemsep}

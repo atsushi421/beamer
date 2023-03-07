@@ -5,13 +5,13 @@
 
 \begin{frame}{セクションサマリ}
     \begin{itembox}[l]{\textbf{目的}}
-        組み込みプラットフォームを使用した実験から観察したスケジューリング動作に基づいて, 現在の ROS2 フレームワークの課題について詳しく説明する
+        組込みプラットフォームを使用した実験から観察したスケジューリング動作に基づいて, 現在の ROS 2 フレームワークの課題について詳しく説明する
     \end{itembox}
 \end{frame}
 
 \begin{frame}{実験環境1}
     \begin{itemize}
-        \item 実験は, NVIDIA Xavier NX 上で動作する ROS2 "Eloquent Elusor" バージョンを使用して実施する
+        \item 実験は, NVIDIA Xavier NX 上で動作する ROS 2 "Eloquent Elusor" バージョンを使用して実施する
         \item ユニプロセッサシステムを想定する
     \end{itemize}
 \end{frame}
@@ -47,7 +47,7 @@
     \fitimage{
         \begin{itemize}
             \item 図は, 2 つのチェーンが一緒に実行されるときの単一のエグゼキュータ内のコールバックのスケジューリングタイムライン
-            \item ROS2 は両方のチェーンを公平に処理することが分かる
+            \item ROS 2 は両方のチェーンを公平に処理することが分かる
         \end{itemize}
     }{challenge1_example}
 \end{frame}
@@ -64,8 +64,8 @@
       \begin{itemize}
         \item デフォルトでは, エグゼキュータは Linux カーネルの Completely Fair Scheduler (CFS)~\cite{wong2008fairness} によってスケジュールされる
         \item CFSの下では, 重要度が高いチェーンからのコールバックを実行しているエグゼキュータに予測可能な優先度を付けることは困難
-        \item 開発者は OS レベルの優先度をエグゼキュータに手動で割り当てることができるが, ROS2 は公式のインターフェイスを提供していない
-        \item ROS2 エグゼキュータの優先度の割り当てに関する一般的なガイドラインは無い
+        \item 開発者は OS レベルの優先度をエグゼキュータに手動で割り当てることができるが, ROS 2 は公式のインターフェイスを提供していない
+        \item ROS 2 エグゼキュータの優先度の割り当てに関する一般的なガイドラインは無い
       \end{itemize}
     \end{block}
 \end{frame}
