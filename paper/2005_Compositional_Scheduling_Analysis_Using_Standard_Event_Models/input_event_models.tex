@@ -8,18 +8,18 @@
 
 \begin{frame}{イベントモデル}
     \begin{itemize}
-        \item スケジューラビリティ分析技術では, 一般的にイベントモデルを用いて流入する負荷を把握する
-        \item タスクの起動は, タイムトリガかイベントトリガか, 周期的か散発的かにかかわらず, 常にイベントによってモデル化できる
+        \item スケジューラビリティ分析技術では, 一般的にイベントモデルを用いて外部からの入力を把握する
+        \item タスクの起動は, タイムトリガかイベントトリガか, 周期的か散発的かに関わらず, 常にイベントによってモデル化できる
         \item タスクはイベントストリームによってアクティベーションされ, 各タスクはアクティベーションごとに1つのイベントを消費する
     \end{itemize}
 \end{frame}
 
 \begin{frame}{リアルタイムスケジューリング理論で重要な入力イベントモデル}
     \begin{itemize}
-        \item 周期的 ($P$)
-        \item ジッタを含む周期的 ($P + J$)
-        \item 散発的 ($S$)
-        \item 散発的バースト ($B$)
+        \item 周期的イベントストリーム ($P$)
+        \item ジッタを含む周期的イベントストリーム ($P + J$)
+        \item 散発的イベントストリーム ($S$)
+        \item 散発的バーストイベントストリーム ($B$)
     \end{itemize}
 \end{frame}
 
@@ -39,10 +39,10 @@
 
 \begin{frame}{イベントストリーム $\mathcal{S}$ の4つの特性関数}
     \begin{block}{$\eta^{+}(\Delta t)$}
-        サイズ $\Delta t$ の時間間隔内で発生し得るイベントの最大数
+        任意の時間間隔 $\Delta t$ で発生し得るイベントの最大数
     \end{block}
     \begin{block}{$\eta^{-}(\Delta t)$}
-        間隔 $\Delta t$ で発生するイベントの最小数
+        任意の時間間隔 $\Delta t$ で発生し得るイベントの最小数
     \end{block}
     \begin{block}{$\delta^{-}(n)$}
         ストリーム中の連続する $n$ 個のイベント間の最小距離
@@ -118,7 +118,7 @@
                   あるイベントが最大ジッタの範囲内で最も遅く到着し, その後に到着するイベントが最も早く到着する
               \end{block}
               \vspace{5mm}
-        \item イベント最大到着関数 $\eta^{+}(\Delta t)$ は最悪イベント到着シナリオで得られる
+        \item 最大イベント到着関数 $\eta^{+}(\Delta t)$ は最悪イベント到着シナリオで得られる
     \end{itemize}
 \end{frame}
 
@@ -179,7 +179,7 @@
 \subsection{Sporadically Periodic Events}
 \label{ssec: sporadically periodic events}
 
-\begin{frame}{散発的バーストイベント $B$}
+\begin{frame}{散発的バーストイベントストリーム $B$}
     \begin{itemize}
         \item 散発的バーストイベントは, 散発的イベントの特殊クラス
         \item 散発的バーストイベントは以下3つのパラメータによって特徴付けられる
