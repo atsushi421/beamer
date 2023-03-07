@@ -34,15 +34,15 @@
     \end{block}
 \end{frame}
 
-% \begin{frame}{pending, ready}
-%     コールバックはDDS レイヤがメッセージを受信したとき, またはタイマ周期でアクティベーションされる
-%     \begin{definition}[pending]
-%         コールバックのインスタンスがアクティベーションされてから完了するまでの間, そのインスタンスは pending である
-%     \end{definition}
+\begin{frame}{pending}
+    コールバックはDDS レイヤがメッセージを受信したとき, またはタイマ周期でアクティベーションされる
+    \begin{definition}[pending]
+        コールバックのインスタンスがアクティベーションされてから完了するまでの間, そのインスタンスは pending である
+    \end{definition}
 %     \begin{definition}[ready]
 %         コールバックインスタンスが pending だが実行されていない場合, そのインスタンスは ready である
 %     \end{definition}
-% \end{frame}
+\end{frame}
 
 \begin{frame}{エッジ}
     \begin{itemize}
@@ -98,7 +98,7 @@
 
 \begin{frame}{供給境界関数}
     \begin{itemize}
-        \item 本論文は, 長さ $\Delta$ の任意の間隔で予約 $r_{k}$ によって提供される最小サービスを示す供給境界関数 $sbf_{k}(\Delta)$ \cite{lipari2003resource, shin2003periodic} に依存する
+        \item 本論文は, 長さ $\Delta$ の任意の間隔で予約 $r_{k}$ によって提供される最小サービスを示す供給境界関数 $sbf_{k}(\Delta)$ \cite{shin2003periodic, lipari2003resource} に依存する
         \item 複数の予約が同じプロセッサに割り当てられる場合は, 全ての予約がスケジュール可能である場合にのみ, 供給境界関数によって記述されるリソースの割り当てが保証される
     \end{itemize}
     \assume{予約はスケジュール可能であると想定する}
