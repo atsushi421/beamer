@@ -38,7 +38,7 @@
 \end{frame}
 
 
-\begin{frame}{$\eta_{i}\left(t, \tau_{k}\right)$}
+\begin{frame}{Lemma 2}
     \vspace{-1mm}
     $\eta_{i}\left(t, \tau_{k}\right)$ は, 任意の時間間隔 $t$ の間に, セグメント $\Phi_{i} \subset \Gamma^{c}$ に干渉するコールバック $\tau_{k} \in \Gamma^{c^{\prime}}$ の到着の最大数
     \vspace{-1mm}
@@ -57,32 +57,46 @@
     \end{block}
 \end{frame}
 
-\begin{frame}{}
-    \begin{itemize}
-        \item 証明は, 次の 2 つの場合を考えることによって行うことができる
-    \end{itemize}
+\begin{frame}{Lemma 2 証明}
+    証明は, 次の 2 つのケースを考えることによって行う
 \end{frame}
 
-\begin{frame}{}
+\begin{frame}{ケース1 概要}
     \fitimage{
         \begin{itemize}
-            \item 最初のケースは, $\tau_{k}$ のチェーンが $\Phi_{i}\left(\pi_{\Gamma^{c^{\prime}}}>\pi_{\Gamma^{c}}\right)$ のチェーンよりもセマンティックな優先度が高く, 干渉タスク $\tau_{k}$ が $\Phi_{i}\left(P(\Phi)=P\left(\tau_{k}\right)\right)$ と同じ $\mathrm{CPU}$ にある場合である
+            \item ケース1は, $\tau_{k}$ のチェーンが $\Phi_{i}$ のチェーンよりも優先度が高く $\left(\pi_{\Gamma^{c^{\prime}}}>\pi_{\Gamma^{c}}\right)$, 干渉タスク $\tau_{k}$ が $\Phi_{i}$ と同じ $\mathrm{CPU}$ にある $\left(P(\Phi)=P\left(\tau_{k}\right)\right)$ 場合
             \item この場合, $\tau_{k}$ は, 到着するたびに $\Phi_{i}$ に干渉する可能性がある
         \end{itemize}
     }{proof_case1}
 \end{frame}
 
-\begin{frame}{}
+\begin{frame}{ケース1での $\tau_k$ の到着間隔}
     \fitimage{
         \begin{itemize}
             \item システムが過負荷でない場合, $\tau_{k}$ は $T_{\Gamma^{c^{\prime}}}$ ごとに到着する可能性がある
             \item 一方, システムが過負荷で, $\Gamma^{c^{\prime}}$ のすべてのコールバックが同じ $\mathrm{CPU}$ にある場合, $\tau_{k}$ の到着間隔は, $\Gamma^{c^{\prime}}$ のすべてのコールバックの実行時間の合計よりも短くすることはできない
-            \item したがって,  $\mathcal{T}_{\Gamma^{c^{\prime}}}$ は,  $\tau_{k}$ の到着期間を制限するために, これら 2 つの最大値を取る
         \end{itemize}
     }{min_period}
 \end{frame}
 
-\begin{frame}{}
+\begin{frame}{ケース1での $\tau_k$ の到着間隔まとめ}
+    したがって,  $\mathcal{T}_{\Gamma^{c^{\prime}}}$ は,  $\tau_{k}$ の到着期間を制限するために, これら 2 つの最大値を取る
+    \begin{block}{$\eta_{i}\left(t, \tau_{k}\right)$}
+        \vspace{-2mm}
+        \begin{equation*}
+            \eta_{i}\left(t, \tau_{k}\right)= \begin{cases}{\lceil\frac{t}{\mathcal{T}_{\Gamma^{c^{\prime}}}}\rceil} & \text {, if } \pi_{\Gamma^{c^{\prime}}}>\pi_{\Gamma^{c}} \wedge P\left(\Phi_{i}\right)=P\left(\tau_{k}\right) \\ 0 &, \text { otherwise }\end{cases}
+        \end{equation*}
+        \vspace{-2mm}
+        \setlength{\linewidth}{0.98\columnwidth}
+        \begin{itemize}
+            \item $\Gamma^{c^{\prime}}$ の全てのコールバックが同じ CPU 上にある場合 $\mathcal{T}_{\Gamma^{c^{\prime}}}=\max \left(T_{\Gamma^{c^{\prime}}}, \sum_{\tau_{j} \in \Gamma^{c^{\prime}}} C_{j}\right)$, それ以外の場合 $\mathcal{T}_{\Gamma^{c^{\prime}}}=T_{\Gamma^{c^{\prime}}}$
+            \item \desc{$T_{\Gamma^{c^{\prime}}}$}{$\Gamma^{c^{\prime}}$ の周期}
+            \item \desc{$P\left(\tau_{k}\right)$}{$\tau_{k}$ の CPU コア}
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}{ケース2概要}
     \fitimage{
         2 番目のケースには, 最初のケースでは考慮されない他のすべての条件が含まれる
     }{proof_case2}
@@ -96,7 +110,7 @@
     \end{itemize}
 \end{frame}
 
-\begin{frame}{ケース (iii)の分析}
+\begin{frame}{ケース2 条件(iii)の分析}
     戦略 VI により, $\tau_{k}$ は $\Phi_{i}$ と同じかそれよりも優先度の低いエグゼキューターに割り当てられる
     \begin{block}{戦略 VI}
         \setlength{\linewidth}{0.98\columnwidth}
@@ -107,11 +121,11 @@
     \end{block}
 \end{frame}
 
-\begin{frame}{ケース (iii)の分析}
+\begin{frame}{ケース2 条件(iii)の分析}
     \fitimage{
         \begin{itemize}
             \item $\tau_{k}$ が優先順位の低いエグゼキュータにある場合, 干渉は発生しない
-            \item $\tau_{k}$ が同じエグゼキューターにある場合, Alg によって $\Phi_{i}$ よりも優先順位が低くなるので $\Phi_{i}$ への干渉遅延を引き起こすことはできない
+            \item $\tau_{k}$ が同じエグゼキューターにある場合, アルゴリズム1によって $\Phi_{i}$ よりも優先順位が低くなるので $\Phi_{i}$ へ干渉しない
         \end{itemize}
     }{alg1}
 \end{frame}

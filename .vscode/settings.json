@@ -126,7 +126,7 @@
     "python.analysis.extraPaths": [
         "C:\\Users\\atsushi\\AppData\\Local\\Programs\\Python\\Python39\\lib\\site-packages\\"
     ],
-    "diffEditor.renderSideBySide": false,
+    "diffEditor.renderSideBySide": true,
     "window.zoomLevel": -1,
     "files.trimTrailingWhitespace": true,
     "files.trimFinalNewlines": true,
