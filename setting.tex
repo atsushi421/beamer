@@ -230,21 +230,6 @@
         #1
     \end{exampleblock}
 }
-% Re-post
-\setbeamercolor{RepostBox}{fg=black!50, bg=coolblack!5}
-\newcommand{\repost}[1]{
-    \vspace{2mm}
-    \centering
-    \begin{columns}
-        \begin{column}{0.86\textwidth}
-            \begin{beamercolorbox}[wd=\textwidth, sep=1pt, rounded=true, shadow=true]{RepostBox}
-                \begin{tabular}{|p{0.95\textwidth}}
-                    {\small #1}
-                \end{tabular}
-            \end{beamercolorbox}
-        \end{column}
-    \end{columns}
-}
 
 % equation ballon
 \tcbset{
@@ -288,19 +273,3 @@
     ]{#1}
 }
 \tcbuselibrary{theorems,skins}
-% -- source --
-\renewcommand{\footnoterule}{}
-\setbeamercolor{framesource}{fg=gray}
-\setbeamerfont{framesource}{size=\tiny}
-
-\defbeamertemplate{footnote}{unnumbered}{%
-    \usebeamercolor[fg]{framesource}%
-    \usebeamerfont{framesource}%
-    \insertfootnotetext\hfill%
-}
-
-\newcommand{\source}[1]{%
-    \setbeamertemplate{footnote}[unnumbered]%
-    \footnotetext{#1}%
-}
-\newcommand{\rcap}[2]{\color{red!80}\underbrace{\color{black!80}#1}_\text{#2}\color{black!80}}
