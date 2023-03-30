@@ -181,12 +181,4 @@
 			"\\end{frame}"
 		]
 	},
-	"description":{
-		"prefix": "description",
-		"body": [
-			"\\begin{description}",
-			"\\item [$1] $2",
-			"\\end{description}"
-		]
-	}
 }
