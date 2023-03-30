@@ -1,0 +1,651 @@
+in "**/*.tex"
+replace "（"
+with " ("
+
+in "**/*.tex"
+replace "経路"
+with "パス"
+
+in "**/*.tex"
+replace "メークスパン"
+with "メイクスパン"
+
+in "**/*.tex"
+replace "マークスパン"
+with "メイクスパン"
+
+in "**/*.tex"
+replace "消費者"
+with "コンシューマ"
+
+in "**/*.tex"
+replace "サーバー"
+with "サーバ"
+
+in "**/*.tex"
+replace "パラメーター"
+with "パラメータ"
+
+in "**/*.tex"
+replace "アクセラレーター"
+with "アクセラレータ"
+
+in "**/*.tex"
+replace "同質"
+with "ホモジニアス"
+
+in "**/*.tex"
+replace "ROS2"
+with "ROS 2"
+
+in "**/*.tex"
+replace "組み込み"
+with "組込み"
+
+in "**/*.tex"
+replace "後裔"
+with "子孫"
+
+in "**/*.tex"
+replace "かかわらず"
+with "関わらず"
+
+in "**/*.tex"
+replace "）"
+with ") "
+
+in "**/*.tex"
+replace "有向辺"
+with "エッジ"
+
+in "**/*.tex"
+replace "有向非循環"
+with "有向非巡回"
+
+in "**/*.tex"
+replace "ハイパー周期"
+with "ハイパーピリオド"
+
+in "**/*.tex"
+replace "パーティションドスケジューリング"
+with "パーティショニングスケジューリング"
+
+in "**/*.tex"
+replace "タイミングアノマリー"
+with "タイミング異常"
+
+in "**/*.tex"
+replace "制限付きプリエンプティブ"
+with "限定プリエンプティブ"
+
+in "**/*.tex"
+replace "Sec."
+with "セクション"
+
+in "**/*.tex"
+replace "待ち時間"
+with "レイテンシ"
+
+in "**/*.tex"
+replace "上まわる"
+with "上回る"
+
+in "**/*.tex"
+replace "前任"
+with "先行"
+
+in "**/*.tex"
+replace "限界分布"
+with "極限分布"
+
+in "**/*.tex"
+replace "解析"
+with "分析"
+
+in "**/*.tex"
+replace "ハイパー期間"
+with "ハイパーピリオド"
+
+in "**/*.tex"
+replace "見当たりません"
+with "見当たらない"
+
+in "**/*.tex"
+replace "バジェット管理器"
+with "バジェットマネージャ"
+
+in "**/*.tex"
+replace "パーティションスケジューリング"
+with "パーティショニングスケジューリング"
+
+in "**/*.tex"
+replace "得ません"
+with "得ない"
+
+in "**/*.tex"
+replace "なりかねません"
+with "なりかねない"
+
+in "**/*.tex"
+replace "分かりません"
+with "分からない"
+
+in "**/*.tex"
+replace "まとめます"
+with "まとめる"
+
+in "**/*.tex"
+replace "言えません"
+with "言えない"
+
+in "**/*.tex"
+replace "SCHED-DEADLINE"
+with "SCHED\_DEADLINE"
+
+in "**/*.tex"
+replace "SCHED-RR"
+with "SCHED\_RR"
+
+in "**/*.tex"
+replace "統合者"
+with "インテグレータ"
+
+in "**/*.tex"
+replace "壁時計"
+with "ウォールタイマ"
+
+in "**/*.tex"
+replace "カーブ"
+with "曲線"
+
+in "**/*.tex"
+replace "することができる"
+with "できる"
+
+in "**/*.tex"
+replace "占めます"
+with "占める"
+
+in "**/*.tex"
+replace "バジェット管理者"
+with "バジェットマネージャ"
+
+in "**/*.tex"
+replace "マネージャー"
+with "マネージャ"
+
+in "**/*.tex"
+replace "原因-結果チェーン"
+with "cause-effectチェーン"
+
+in "**/*.tex"
+replace "実行者"
+with "エグゼキュータ"
+
+in "**/*.tex"
+replace "ホライズン"
+with "ホライゾン"
+
+in "**/*.tex"
+replace "subscribe者"
+with "subscriber"
+
+in "**/*.tex"
+replace "つながります"
+with "つながる"
+
+in "**/*.tex"
+replace "プロセッサの需要"
+with "プロセッサ要求"
+
+in "**/*.tex"
+replace "プロセッサ需要"
+with "プロセッサ要求"
+
+in "**/*.tex"
+replace "要求結合関数"
+with "要求境界関数"
+
+in "**/*.tex"
+replace "R ブロック"
+with "R-blocked"
+
+in "**/*.tex"
+replace "購読"
+with "subscribe"
+
+in "**/*.tex"
+replace "ペーパー"
+with "論文"
+
+in "**/*.tex"
+replace "この論文"
+with "本論文"
+
+in "**/*.tex"
+replace "この作業"
+with "本論文"
+
+in "**/*.tex"
+replace "明らかに"
+with "自明に"
+
+in "**/*.tex"
+replace "つまり"
+with "すなわち"
+
+in "**/*.tex"
+replace "干渉鎖"
+with "干渉チェーン"
+
+in "**/*.tex"
+replace "原因と結果のチェーン"
+with "cause-effectチェーン"
+
+in "**/*.tex"
+replace "Cause-effect chain"
+with "cause-effectチェーン"
+
+in "**/*.tex"
+replace "オブジェクト追跡"
+with "オブジェクトトラッキング"
+
+in "**/*.tex"
+replace "突き当たります"
+with "突き当たる"
+
+in "**/*.tex"
+replace "スケジューラー"
+with "スケジューラ"
+
+in "**/*.tex"
+replace "レイテンシー"
+with "レイテンシ"
+
+in "**/*.tex"
+replace "スケジューリング可能性"
+with "スケジューラビリティ"
+
+in "**/*.tex"
+replace "パスフォローイング"
+with "経路追従"
+
+in "**/*.tex"
+replace "通常のコールバック"
+with "レギュラーコールバック"
+
+in "**/*.tex"
+replace "プライオリティ"
+with "優先度"
+
+in "**/*.tex"
+replace "フェデレーテッド"
+with "フェデレート"
+
+in "**/*.tex"
+replace "有向非循環"
+with "有向非巡回"
+
+in "**/*.tex"
+replace "最長パス"
+with "クリティカルパス"
+
+in "**/*.tex"
+replace "作業節約"
+with "作業保存型"
+
+in "**/*.tex"
+replace "絶対的なデッドライン"
+with "絶対デッドライン"
+
+in "**/*.tex"
+replace "スケジュール可能性"
+with "スケジューラビリティ"
+
+in "**/*.tex"
+replace "予算"
+with "バジェット"
+
+in "**/*.tex"
+replace "アクティブな VP"
+with "アクティブ VP"
+
+in "**/*.tex"
+replace "欲張り"
+with "貪欲"
+
+in "**/*.tex"
+replace "最悪ケース"
+with "最悪"
+
+in "**/*.tex"
+replace "連合スケジューリング"
+with "フェデレートスケジューリング"
+
+in "**/*.tex"
+replace "最長経路"
+with "クリティカルパス"
+
+in "**/*.tex"
+replace "作業量"
+with "ワークロード"
+
+in "**/*.tex"
+replace "納期"
+with "デッドライン"
+
+in "**/*.tex"
+replace "相対的なデッドライン"
+with "相対デッドライン"
+
+in "**/*.tex"
+replace "最悪の場合の"
+with "最悪"
+
+in "**/*.tex"
+replace "たとえば"
+with "例えば"
+
+in "**/*.tex"
+replace "レンマ"
+with "Lemma"
+
+in "**/*.tex"
+replace "実行系"
+with "エグゼキュータ"
+
+in "**/*.tex"
+replace "実行器"
+with "エグゼキュータ"
+
+in "**/*.tex"
+replace "自律走行"
+with "自動運転"
+
+in "**/*.tex"
+replace "参照システム"
+with "リファレンスシステム"
+
+in "**/*.tex"
+replace "鎖"
+with "チェーン"
+
+in "**/*.tex"
+replace "遅延"
+with "レイテンシ"
+
+in "**/*.tex"
+replace "定理"
+with "Theorem"
+
+in "**/*.tex"
+replace "バインドする"
+with "制限する"
+
+in "**/*.tex"
+replace "上限"
+with "上界"
+
+in "**/*.tex"
+replace "供給限界関数"
+with "供給境界関数"
+
+in "**/*.tex"
+replace "活性化"
+with "アクティベーション"
+
+in "**/*.tex"
+replace "静かな時間"
+with "クワイエットタイム"
+
+in "**/*.tex"
+replace "休止時間"
+with "クワイエットタイム"
+
+in "**/*.tex"
+replace "ビジー間隔"
+with "ビジーウィンドウ"
+
+in "**/*.tex"
+replace "ビジー期間"
+with "ビジーウィンドウ"
+
+in "**/*.tex"
+replace "応答時間限界"
+with "最悪応答時間"
+
+in "**/*.tex"
+replace "応答時間の境界"
+with "最悪応答時間"
+
+in "**/*.tex"
+replace "応答時間の上界"
+with "最悪応答時間"
+
+in "**/*.tex"
+replace "応答時間の限界"
+with "最悪応答時間"
+
+in "**/*.tex"
+replace "応答時間境界"
+with "最悪応答時間"
+
+in "**/*.tex"
+replace "リクエストバインド関数"
+with "要求境界関数"
+
+in "**/*.tex"
+replace "想定している"
+with "想定する"
+
+in "**/*.tex"
+replace "パブリッシュ"
+with "publish"
+
+in "**/*.tex"
+replace "期限"
+with "デッドライン"
+
+in "**/*.tex"
+replace "作業負荷"
+with "ワークロード"
+
+in "**/*.tex"
+replace "相互に排他的な"
+with "mutually exclusive"
+
+in "**/*.tex"
+replace "エンドツーエンドのレイテンシ"
+with "エンドツーエンドレイテンシ"
+
+in "**/*.tex"
+replace "問題期間"
+with "問題ウィンドウ"
+
+in "**/*.tex"
+replace "再入可能なコールバックグループ"
+with "reentrant コールバックグループ"
+
+in "**/*.tex"
+replace "補題"
+with "Lemma"
+
+in "**/*.tex"
+replace "私たち"
+with "本論文"
+
+in "**/*.tex"
+replace "すべて"
+with "全て"
+
+in "**/*.tex"
+replace "呼びます"
+with "呼ぶ"
+
+in "**/*.tex"
+replace "受けません"
+with "受けない"
+
+in "**/*.tex"
+replace "されます"
+with "される"
+
+in "**/*.tex"
+replace "見なする"
+with "見なす"
+
+in "**/*.tex"
+replace "レイヤー"
+with "レイヤ"
+
+in "**/*.tex"
+replace "検索"
+with "探索"
+
+in "**/*.tex"
+replace "全ての可能な"
+with "任意の"
+
+in "**/*.tex"
+replace "使用率"
+with "利用率"
+
+in "**/*.tex"
+replace "受け入れ率"
+with "受入率"
+
+in "**/*.tex"
+replace "ただし"
+with "しかし"
+
+in "**/*.tex"
+replace "まったく"
+with "全く"
+
+in "**/*.tex"
+replace "発行"
+with "publish"
+
+in "**/*.tex"
+replace "サブスクライブ"
+with "subscribe"
+
+in "**/*.tex"
+replace "優先順位"
+with "優先度"
+
+in "**/*.tex"
+replace "着信メッセージ"
+with "publish メッセージ"
+
+in "**/*.tex"
+replace "パブリッシャー"
+with "publisher"
+
+in "**/*.tex"
+replace "サブスクライバー"
+with "subscriber"
+
+in "**/*.tex"
+replace "非プリエンプティブ"
+with "ノンプリエンプティブ"
+
+in "**/*.tex"
+replace "準備が整った"
+with "ready"
+
+in "**/*.tex"
+replace "再入可能コールバックグループ"
+with "reentrantコールバックグループ"
+
+in "**/*.tex"
+replace "譲ります"
+with "譲る"
+
+in "**/*.tex"
+replace "オーバーヘッド"
+with "オーバヘッド"
+
+in "**/*.tex"
+replace "エグゼキューター"
+with "エグゼキュータ"
+
+in "**/*.tex"
+replace "タイマー"
+with "タイマ"
+
+in "**/*.tex"
+replace "インターフェース"
+with "インタフェース"
+
+in "**/*.tex"
+replace "はまりません"
+with "はまらない"
+
+in "**/*.tex"
+replace "満たする"
+with "満たす"
+
+in "**/*.tex"
+replace "決まります"
+with "決まる"
+
+in "**/*.tex"
+replace "生じます"
+with "生じる"
+
+in "**/*.tex"
+replace "呼びます"
+with "呼ぶ"
+
+in "**/*.tex"
+replace "、"
+with "，"
+
+in "**/*.tex"
+replace "。"
+with "."
+
+in "**/*.tex"
+replace "，"
+with ", "
+
+in "**/*.tex"
+replace-regex "([^0-9t\.])\．([^0-9\}\s\^\.]+)"
+with "$1\n\item $2"
+
+in "**/*.tex"
+replace-regex "([^0-9t\.])[　 ]+\．([^0-9\}\s\^\.]+)"
+with "$1\n\item $2"
+
+in "**/*.tex"
+replace-regex "([^0-9t\.])\．[　 ]+([^0-9\}\s\^\.]+)"
+with "$1\n\item $2"
+
+in "**/*.tex"
+replace-regex "([^0-9t\.])[　 ]+\．[　 ]+([^0-9\}\s\^\.]+)"
+with "$1\n\item $2"
+
+in "**/*.tex"
+replace-regex "([^0-9t\.])[　 ]+\.([^0-9\}\s\^\.]+)"
+with "$1\n\item $2"
+
+in "**/*.tex"
+replace-regex "([^0-9t\.])\.[　 ]+([^0-9\}\s\^\.]+)"
+with "$1\n\item $2"
+
+in "**/*.tex"
+replace-regex "([^0-9t\.])[　 ]+\.[　 ]+([^0-9\}\s\^\.]+)"
+with "$1\n\item $2"
+
+in "**/*.tex"
+replace-regex "．"
+with ""
+
+in "**/*.tex"
+replace-regex "\$([a-z]+)\^\{t h\}\$"
+with "$ $1 $番目"
+
+in "**/*.tex"
+replace-regex "([ァ-ヶー]) ([ァ-ヶー])"
+with "$1$2"
