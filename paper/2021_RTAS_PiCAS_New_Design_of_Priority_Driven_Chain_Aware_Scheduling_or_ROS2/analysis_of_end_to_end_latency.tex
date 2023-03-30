@@ -74,7 +74,7 @@
     \fitimage{
         \begin{itemize}
             \item システムが過負荷でない場合, $\tau_{k}$ は $T_{\Gamma^{c^{\prime}}}$ ごとに到着する可能性がある
-            \item 一方, システムが過負荷で, $\Gamma^{c^{\prime}}$ のすべてのコールバックが同じ $\mathrm{CPU}$ にある場合, $\tau_{k}$ の到着間隔は, $\Gamma^{c^{\prime}}$ のすべてのコールバックの実行時間の合計よりも短くすることはできない
+            \item 一方, システムが過負荷で, $\Gamma^{c^{\prime}}$ の全てのコールバックが同じ $\mathrm{CPU}$ にある場合, $\tau_{k}$ の到着間隔は, $\Gamma^{c^{\prime}}$ の全てのコールバックの実行時間の合計よりも短くすることはできない
         \end{itemize}
     }{min_period}
 \end{frame}
@@ -98,20 +98,20 @@
 
 \begin{frame}{ケース2概要}
     \fitimage{
-        2 番目のケースには, 最初のケースでは考慮されない他のすべての条件が含まれる
+        2 番目のケースには, 最初のケースでは考慮されない他の全ての条件が含まれる
     }{proof_case2}
 \end{frame}
 
 \begin{frame}{条件毎の分析}
     \begin{itemize}
-        \item (i) $\pi_{\Gamma^{c^{\prime}}}>\pi_{\Gamma^{c}}$ と $\tau_{k}$ が異なるコア上にある場合, $\tau_{k}$ は明らかに $\Phi_{i}$ に干渉を引き起こさない
-        \item (ii) $\pi_{\Gamma^{c^{\prime}}}=\pi_{\Gamma^{c}}$ の場合, $\tau_{k}$ と $\Phi_{i}$ は同じチェーンからのものであり, 補題 1 により互いに干渉しない
+        \item (i) $\pi_{\Gamma^{c^{\prime}}}>\pi_{\Gamma^{c}}$ と $\tau_{k}$ が異なるコア上にある場合, $\tau_{k}$ は自明に $\Phi_{i}$ に干渉を引き起こさない
+        \item (ii) $\pi_{\Gamma^{c^{\prime}}}=\pi_{\Gamma^{c}}$ の場合, $\tau_{k}$ と $\Phi_{i}$ は同じチェーンからのものであり, Lemma 1 により互いに干渉しない
         \item (iii) $\pi_{\Gamma^{c^{\prime}}}<\pi_{\Gamma^{c}}$ の場合, $\tau_{k}$ が$\Phi_{i}$ のエグゼキュータよりも優先度の高いエグゼキュータに存在できるかどうかを考える
     \end{itemize}
 \end{frame}
 
 \begin{frame}{ケース2 条件(iii)の分析}
-    戦略 VI により, $\tau_{k}$ は $\Phi_{i}$ と同じかそれよりも優先度の低いエグゼキューターに割り当てられる
+    戦略 VI により, $\tau_{k}$ は $\Phi_{i}$ と同じかそれよりも優先度の低いエグゼキュータに割り当てられる
     \begin{block}{戦略 VI}
         \setlength{\linewidth}{0.98\columnwidth}
         \begin{itemize}
@@ -124,8 +124,8 @@
 \begin{frame}{ケース2 条件(iii)の分析}
     \fitimage{
         \begin{itemize}
-            \item $\tau_{k}$ が優先順位の低いエグゼキュータにある場合, 干渉は発生しない
-            \item $\tau_{k}$ が同じエグゼキューターにある場合, アルゴリズム1によって $\Phi_{i}$ よりも優先順位が低くなるので $\Phi_{i}$ へ干渉しない
+            \item $\tau_{k}$ が優先度の低いエグゼキュータにある場合, 干渉は発生しない
+            \item $\tau_{k}$ が同じエグゼキュータにある場合, アルゴリズム1によって $\Phi_{i}$ よりも優先度が低くなるので $\Phi_{i}$ へ干渉しない
         \end{itemize}
     }{alg1}
 \end{frame}
