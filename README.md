@@ -32,13 +32,18 @@ python3 prepare_new_paper.py -d [FOLDER NAME]
 
 
 ## よく使う標準のコマンド
-- `\input{xxx.tex}`: 他のファイルをインポートする. このコマンドを書いた部分がインポートしたファイルとそのまま置き換わると考えてOK. 主に `main.tex` で使用する.
+- `\input{xxx.tex}`: 他のファイルをインポートする. このコマンドを書いた部分がインポートしたファイルとそのまま置き換わると考えて良い. 主に `main.tex` で使用する.
 - `\begin{itemize} \item xxx \end{itemize}`: 箇条書き
+- `\begin{enumerate} \item xxx \end{enumerate}`: 番号付き箇条書き
 - `\begin{frame}{TITLE} xxx \end{frame}`: スライド作成
 - `\begin{block}{TITLE} xxx \end{block}`: TITLE を題名として, 四角で囲める
+  ![image](https://user-images.githubusercontent.com/55824710/228775470-2de492bb-036a-4d97-bfd9-ef591d6c6f3e.png)
 - `\begin{definition}{TITLE} xxx \end{definition}`: blockの色違い. 定義を入れる場合はこれを使用する
+  ![image](https://user-images.githubusercontent.com/55824710/228775890-18c116e0-df46-4310-92ec-1b6c55de31f5.png)
 - `\begin{lemma}{TITLE} xxx \end{lemma}`: blockの色違い. 補題を入れる場合はこれを使用する
+  ![image](https://user-images.githubusercontent.com/55824710/228775829-f3bcad7d-922e-476c-899a-585d8f67fa4b.png)
 - `\begin{theorem}{TITLE} xxx \end{theorem}`: blockの色違い. 定理を入れる場合はこれを使用する
+  ![image](https://user-images.githubusercontent.com/55824710/228775768-b994b7fd-49d0-4178-9a14-cad59182449d.png)
 - カラム. スライドを左右に分けたい時に使用する
     ```
     \begin{columns}
@@ -54,10 +59,12 @@ python3 prepare_new_paper.py -d [FOLDER NAME]
 
 ## カスタムコマンド
 高速化や利便性のために, いくつかのカスタムコマンドが定義されている．[]内の数字は引数の数
-- `\summary[2]`: 1pサマリをスライドとして追加する. このコマンドでは, `one_page_summary.jpg` が表示されるので, この命名を守る必要がある.
+- `\summary[2]`: 1pサマリをスライドとして追加する. このコマンドでは内部的に `one_page_summary.jpg` が表示されるので, この命名を守る必要がある.
   - 引数1: y軸方向の位置調整. ミリ単位
   - 引数2: x軸方向の位置調整. ミリ単位
 - `\notes[1]`: 注釈を入れる時に使用する
+
+  ![image](https://user-images.githubusercontent.com/55824710/228777094-1d8635b5-4226-4039-bddb-eab18cc2f62f.png)
 - `\hlink[2]`: 文書内のハイパーリンクを追加する
   - 引数1: ラベル名. `\begin{frame}[label=xxx]`でラベル名を付けられる
   - 引数2: ハイパーリンクを入れたい文字列
@@ -67,16 +74,32 @@ python3 prepare_new_paper.py -d [FOLDER NAME]
 - `\desc[2]`: シンボルの説明を1行で入れたい時に使用する
   - 引数1: 説明したいシンボルや用語
   - 引数2: 意味
+  
+  ![image](https://user-images.githubusercontent.com/55824710/228777495-68aeaf88-e726-4719-94c7-8a1dffa47e64.png)
 - `\full[1]`: スライド内に1つの要素だけ入れたい時にこれで囲む
 - `\fitimage[2]`: 文章の下に画像を入れて, 画像サイズを自動調整するコマンド
   - 引数1: 文章など
   - 引数2: 入れたい画像ファイル名
+- `\assume[1]`: 単純化の説明を block で囲める
+
+  ![image](https://user-images.githubusercontent.com/55824710/228807497-dd8d368c-ff6b-42e4-944d-20e0cdca872a.png)
 
 
 ## スニペット
 スニペットを使うことで, 構文入力を高速でできる．vscodeのLaTeX-Workshopで標準に用意されているスニペットは [このページ](https://github.com/James-Yu/LaTeX-Workshop/wiki/Snippets#environments) 参照.
-これ以外にも，beamer/.vscode/内で以下のカスタムスニペットを定義している．
-- todo
+これ以外にも，beamer/.vscode/内で以下のカスタムスニペットを定義している．詳細は .json ファイル参照
+- `sec`: 新規ファイルで新しくセクションを作成
+- `frame`: 新しいスライドを作成
+- `fi`: itemizeが用意されたスライドを作成
+- `fit image frame`: \fitimage が用意されたスライドを作成
+- `block`: blockを作成
+- `2column`: 左右半分ずつに分かれた2カラムを作成
+- `notation and terms`: 表記法の意味を記載する表を作成
+- `related work table`: 関連研究との比較表を作成
+- `row`: table の列を作成
+- `definition`: 定義blockを作成
+- `itemize-in-block`: block内でitemizeしたい場合に使用
+- `ss`: セクションのサマリスライドを作成
 
 
 ## その他Tips
@@ -90,6 +113,7 @@ python3 prepare_new_paper.py -d [FOLDER NAME]
   - テンプレートフォルダの figure/ にある `supplementary_figure.pptm` は選択されたオブジェクトを .jpg で同一ディレクトリに保存するマクロを備えている
   - 図にしたい部分をグループ化して選択し, `Alt + 3` を押すとマクロが実行され, 画像名を入力するウィンドウが出てくる
   - そのウィンドウに入力した名前で, figure/ に .jpg 画像が保存される
+- フォーマット: `Shift + Alt + F` でコードをフォーマットできる
 
 
 ## 参考資料
